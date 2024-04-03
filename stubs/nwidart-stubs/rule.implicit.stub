@@ -7,16 +7,13 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class $CLASS$ implements ValidationRule
 {
-    /**
-     * Indicates whether the rule should be implicit.
-     */
-    public bool $implicit = true;
+  /**
+   * Indicates whether the rule should be implicit.
+   */
+  public bool $implicit = true;
 
-    /**
-     * Run the validation rule.
-     */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
-    {
-        //
-    }
+  public function validate(string $attribute, mixed $value, Closure $fail): void
+  {
+    //
+  }
 }

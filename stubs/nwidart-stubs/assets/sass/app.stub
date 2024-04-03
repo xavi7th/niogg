@@ -1,0 +1,7 @@
+p{
+  margin-bottom: 20px;
+}
+
+.text-gray-500{
+  text-transform: uppercase;
+}

@@ -7,21 +7,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class $CLASS$ implements ShouldQueue
 {
-    use InteractsWithQueue;
+  use InteractsWithQueue;
 
-    /**
-     * Create the event listener
-     */
-    public function __construct()
-    {
-        //
-    }
+  public function __construct()
+  {
+    //
+  }
 
-    /**
-     * Handle the event.
-     */
-    public function handle($event): void
-    {
-        //
-    }
+  public function handle($event): void
+  {
+    //
+  }
 }

@@ -2,66 +2,63 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use $MODULE_NAMESPACE$\$MODULE$\Models\$STUDLY_NAME$;
 
 class $CLASS$ extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('$LOWER_NAME$::index');
-    }
+  public function index()
+  {
+    // $this->authorize('index', $NAME$::class);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('$LOWER_NAME$::create');
-    }
+    return Inertia::render('$STUDLY_NAME$::Index', [
+      'phpVersion' => PHP_VERSION,
+    ]);
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        //
-    }
+  public function create()
+  {
+    // $this->authorize('create', $NAME$::class);
 
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('$LOWER_NAME$::show');
-    }
+    return view('$LOWER_NAME$::create');
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('$LOWER_NAME$::edit');
-    }
+  public function store(Request $request): RedirectResponse
+  {
+    // $this->authorize('store', $NAME$::class);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
+    return back()->withFlash(['success' => 'Succesful!']);
+  }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
-    }
+  public function show($id)
+  {
+    // $this->authorize('show', $NAME$::class);
+
+    return view('$LOWER_NAME$::show');
+  }
+
+  public function edit($id)
+  {
+    // $this->authorize('edit', $NAME$::class);
+
+    return view('$LOWER_NAME$::edit');
+  }
+
+  public function update(Request $request, $id): RedirectResponse
+  {
+    // $this->authorize('update', $NAME$::class);
+
+    return back()->withFlash(['success' => 'Succesful!']);
+  }
+
+  public function destroy($id)
+  {
+    // $this->authorize('destroy', $NAME$::class);
+
+    //
+  }
 }

@@ -7,11 +7,8 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class $CLASS$ implements ValidationRule
 {
-    /**
-     * Run the validation rule.
-     */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
-    {
-        //
-    }
+  public function validate(string $attribute, mixed $value, Closure $fail): void
+  {
+    //
+  }
 }

@@ -18,6 +18,6 @@
     <body class="font-sans antialiased">
         @inertia
 
-        <a href="#/" class="hello">Hello World</a>
+        <a href="/" class="hello">Hello World</a>
     </body>
 </html>
