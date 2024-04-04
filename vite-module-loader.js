@@ -1,11 +1,12 @@
-import fs from 'fs/promises';
 import path from 'path';
+import fs from 'fs/promises';
 
 async function collectModuleAssetsPaths(paths, modulesPath) {
   modulesPath = path.join(__dirname, modulesPath);
 
   const moduleStatusesPath = path.join(__dirname, 'modules_statuses.json');
   let aliases = {};
+  let concatFiles = [];
 
   try {
     // Read module_statuses.json
@@ -37,6 +38,10 @@ async function collectModuleAssetsPaths(paths, modulesPath) {
           if (moduleConfig?.aliases) {
             aliases = {...aliases, ...moduleConfig.aliases};
           }
+
+          if (moduleConfig?.concatFiles) {
+            concatFiles.push(...moduleConfig.concatFiles);
+          }
         }
       }
     }
@@ -44,7 +49,7 @@ async function collectModuleAssetsPaths(paths, modulesPath) {
     console.error(`Error reading module statuses or module configurations: ${error}`);
   }
 
-  return {paths, aliases};
+  return {paths, aliases, concatFiles};
 }
 
 export default collectModuleAssetsPaths;

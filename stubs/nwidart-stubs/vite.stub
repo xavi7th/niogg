@@ -31,3 +31,19 @@ export const aliases = {
   '@$LOWER_NAME$-partials': '/Modules/$STUDLY_NAME$/resources/js/Pages/Partials',
   '@$LOWER_NAME$-assets': '/Modules/$STUDLY_NAME$/resources'
 };
+
+export const concatFiles = [
+  {
+    files: [
+      'Modules/$STUDLY_NAME$/resources/js/vendor/one.js',
+      'Modules/$STUDLY_NAME$/resources/js/vendor/two.js',
+    ],
+    outputFile: 'public/build/assets/vendor/$LOWER_NAME$-vendor.js',
+  },
+  {
+    files: [
+      'Modules/$STUDLY_NAME$/resources/js/vendor/three.js',
+    ],
+    outputFile: 'public/build/assets/vendor/$LOWER_NAME$-init.js',
+  }
+];

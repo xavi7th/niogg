@@ -35,6 +35,9 @@ return [
       'scaffold/config' => 'config/config.php',
       'composer' => 'composer.json',
       'assets/js/app' => 'resources/js/app.js',
+      'assets/js/vendor/vendor-file-one' => 'resources/js/vendor/one.js',
+      'assets/js/vendor/vendor-file-two' => 'resources/js/vendor/two.js',
+      'assets/js/vendor/vendor-file-three' => 'resources/js/vendor/three.js',
       'assets/js/svelte-index' => 'resources/js/Pages/Index.svelte',
       'assets/sass/app' => 'resources/sass/app.scss',
       'vite' => 'vite.config.js',
@@ -47,7 +50,7 @@ return [
       'json' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE'],
       'views/index' => ['LOWER_NAME', 'STUDLY_NAME'],
       'assets/js/app' => ['STUDLY_NAME', 'LOWER_NAME'],
-      'assets/js/svelte-index' => ['STUDLY_NAME'],
+      'assets/js/svelte-index' => ['STUDLY_NAME', 'LOWER_NAME'],
       'scaffold/config' => ['STUDLY_NAME'],
       'composer' => [
         'LOWER_NAME',

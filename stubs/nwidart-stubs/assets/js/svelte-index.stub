@@ -2,6 +2,10 @@
   export let phpVersion = undefined;
 </script>
 
+<svelte:head>
+  <script src="/build/assets/vendor/$LOWER_NAME$-init.js"></script>
+</svelte:head>
+
 <main>
   This is the $STUDLY_NAME$ Index page
 
