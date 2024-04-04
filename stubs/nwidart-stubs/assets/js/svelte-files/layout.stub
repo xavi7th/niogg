@@ -1,0 +1,30 @@
+<script>
+	import { onMount } from "svelte";
+  import { Link } from '@inertiajs/svelte';
+
+	let isMounted = false;
+
+	export let pageTitle = '$STUDLY_NAME$ App';
+
+	onMount(() => {
+		isMounted = true;
+		console.log("---====== $STUDLY_NAME$ app mounted =====---");
+	});
+</script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageTitle} />
+</svelte:head>
+
+<div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+  <div  class="sm:fixed sm:top-0 sm:right-0 p-6 text-end">
+    <Link href="/" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</Link>
+  </div>
+
+  <slot />
+</div>
+
+{#if isMounted}
+	<script src="/build/assets/vendor/$LOWER_NAME$-init.js"></script>
+{/if}
