@@ -5,6 +5,7 @@ async function collectModuleAssetsPaths(paths, modulesPath) {
   modulesPath = path.join(__dirname, modulesPath);
 
   const moduleStatusesPath = path.join(__dirname, 'modules_statuses.json');
+  let aliases = {};
 
   try {
     // Read module_statuses.json
@@ -32,6 +33,10 @@ async function collectModuleAssetsPaths(paths, modulesPath) {
           if (moduleConfig.paths && Array.isArray(moduleConfig.paths)) {
             paths.push(...moduleConfig.paths);
           }
+
+          if (moduleConfig?.aliases) {
+            aliases = {...aliases, ...moduleConfig.aliases};
+          }
         }
       }
     }
@@ -39,7 +44,7 @@ async function collectModuleAssetsPaths(paths, modulesPath) {
     console.error(`Error reading module statuses or module configurations: ${error}`);
   }
 
-  return paths;
+  return {paths, aliases};
 }
 
 export default collectModuleAssetsPaths;

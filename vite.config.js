@@ -7,12 +7,12 @@ async function getConfig () {
   const paths = [
     'resources/js/app.js',
   ];
-  const allPaths = await collectModuleAssetsPaths( paths, 'Modules' );
+  const modulesConfig = await collectModuleAssetsPaths( paths, 'Modules' );
 
   return defineConfig( {
     plugins: [
       laravel( {
-        input: allPaths,
+        input: modulesConfig.paths,
         // refresh: true,
       } ),
       svelte( {} )
@@ -20,6 +20,7 @@ async function getConfig () {
     resolve: {
       alias: {
         '@': '/resources/js',
+        ...modulesConfig.aliases
       },
     },
   } );

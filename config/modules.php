@@ -46,7 +46,7 @@ return [
       'vite' => ['LOWER_NAME', 'STUDLY_NAME'],
       'json' => ['LOWER_NAME', 'STUDLY_NAME', 'MODULE_NAMESPACE', 'PROVIDER_NAMESPACE'],
       'views/index' => ['LOWER_NAME', 'STUDLY_NAME'],
-      'assets/js/app' => ['STUDLY_NAME'],
+      'assets/js/app' => ['STUDLY_NAME', 'LOWER_NAME'],
       'assets/js/svelte-index' => ['STUDLY_NAME'],
       'scaffold/config' => ['STUDLY_NAME'],
       'composer' => [

@@ -21,6 +21,13 @@
 // });
 
 export const paths = [
-  'Modules/$STUDLY_NAME$/resources/sass/app.scss',
   'Modules/$STUDLY_NAME$/resources/js/app.js',
 ];
+
+export const aliases = {
+  '@$LOWER_NAME$-pages': '/Modules/$STUDLY_NAME$/resources/js/Pages',
+  '@$LOWER_NAME$-shared': '/Modules/$STUDLY_NAME$/resources/js/Shared',
+  '@$LOWER_NAME$-components': '/Modules/$STUDLY_NAME$/resources/js/Components',
+  '@$LOWER_NAME$-partials': '/Modules/$STUDLY_NAME$/resources/js/Pages/Partials',
+  '@$LOWER_NAME$-assets': '/Modules/$STUDLY_NAME$/resources'
+};
