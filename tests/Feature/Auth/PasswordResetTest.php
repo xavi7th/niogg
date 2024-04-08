@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
+use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {
@@ -43,7 +43,7 @@ class PasswordResetTest extends TestCase
 
       $response->assertStatus(200);
 
-      return true;
+      return TRUE;
     });
   }
 
@@ -63,11 +63,9 @@ class PasswordResetTest extends TestCase
         'password_confirmation' => 'password',
       ]);
 
-      $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('login'));
+      $response->assertSessionHasNoErrors()->assertRedirect(route('login'));
 
-      return true;
+      return TRUE;
     });
   }
 }
