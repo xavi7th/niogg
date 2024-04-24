@@ -21,6 +21,14 @@ async function getConfig () {
   }
 
   return defineConfig( {
+    build: {
+      rollupOptions: {
+        external: [ // Any url that begins from these absolute paths should be considered external urls and will be resolved at runtime
+          /^\/build\/vendor/,
+          /^\/img\//,
+        ]
+      }
+    },
     plugins: [
       concat({
         groupedFiles: [...modulesConfig.concatFiles],
