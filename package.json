@@ -2,8 +2,14 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "cp pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'hook copied'",
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "prepackage": "sed -i.bak '/public\\\/[build\\\\|vendor\\\\|assets]/d' ./.gitignore",
+    "package": "node -e \"require('child_process').execSync('npm run build && git add . && git commit -m \\\" build \\\"')\"",
+    "prepush": "if [[ ${npm_config_server} ]]; then echo \"\\033[30mbuilding production output...\\033[0m\" && node -e \"require('child_process').execSync('npm run package')\"; else echo \"\\033[32mskipping package step\\033[0m\"; fi;",
+    "push": "if [[ ${npm_config_server} ]]; then args=--force && server=${npm_config_server}; fi; node -e \"require('child_process').execSync('git push $server $args')\"",
+    "postpush": "if [[ ${npm_config_server} ]]; then echo \"\\033[31mrunning git reset\\033[0m\" && node -e \"require('child_process').execSync('git reset --hard HEAD~')\"; else echo \"\\033[33mskipping git reset...\\033[0m\"; fi;"
   },
   "devDependencies": {
     "@inertiajs/svelte": "^1.0.15",

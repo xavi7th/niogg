@@ -1,0 +1,78 @@
+#!/bin/sh
+
+echo "\t\033[41m*****You should have been running unit tests now!******\033[0m";
+echo "\n\n\n"
+
+# git stash -q --keep-index
+
+# npm test -- --watchAll=false
+
+# status=$?
+
+# git stash pop -q
+
+# echo "\t\033[32mPHPCS Tests finished with a status of $status\033[0m"
+
+echo "\t\033[43m*****Running Pre Commit Commands!******\033[0m\n\n";
+
+# If we need to sniff CSS and JS files, uncomment this line and comment out the line after
+# STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -e ".js\{0,1\}$" -e ".php\{0,1\}$" -e ".css\{0,1\}$")
+
+# For now we only conde sniff PHP files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep ".php\{0,1\}$")
+
+if [[ "$STAGED_FILES" = "" ]]; then
+  echo "\t\033[33m*****No PHP Files Staged!******\033[0m\n\n";
+  echo "\033[42m*****Proceeding with git comit******\033[0m\n\n";
+  exit 0
+fi
+
+PASS=true
+
+echo "\n\033[32mValidating Laravel Pint:\033[0m\n"
+
+# Check for laravel pint
+which ./vendor/bin/pint &> /dev/null
+if [[ "$?" == 1 ]]; then
+  echo "\t\033[31mLaravel Pint executable not found! If you wnat to pint your codebase, install pint using the command below:\033[0m \n\n \033[32mcomposer require laravel/pint --dev\033[0m"
+else
+  ./vendor/bin/pint --dirty
+
+  sort <(git diff --name-only --cached) <(git diff --name-only --) | uniq -d | xargs git add --all
+
+  echo "\t\033[32mLaravel Pint Successful\033[0m"
+fi
+
+echo "\n\033[32mValidating PHPCS:\033[0m\n"
+
+# Check for phpcs
+which ./vendor/bin/phpcs &> /dev/null
+if [[ "$?" == 1 ]]; then
+  echo "\t\033[31mPHP Code Sniffer executable not found! Please install PHPCS using the command below:\033[0m \n\n \033[32mcomposer require --dev squizlabs/php_codesniffer\033[0m"
+  exit 1
+fi
+
+RULESET=./phpcs.xml
+
+for FILE in $STAGED_FILES
+do
+  ./vendor/bin/phpcs --standard="$RULESET" "$FILE" -n
+
+  if [[ "$?" == 0 ]]; then
+    echo "\t\033[32mPHPCS Passed: $FILE\033[0m"
+  else
+    echo "\t\033[41mPHPCS Failed: $FILE\033[0m"
+    PASS=false
+  fi
+done
+
+echo "\nPHPCS validation completed!\n"
+
+if ! $PASS; then
+  echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass PHPCS but do not. Please fix the PHPCS errors and try again.\n"
+  exit 1
+else
+  echo "\033[42mCOMMIT SUCCEEDED\033[0m\n"
+fi
+
+exit $?
