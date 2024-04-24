@@ -33,7 +33,7 @@ return [
 
   'lifetime' => env('SESSION_LIFETIME', 120),
 
-  'expire_on_close' => false,
+  'expire_on_close' => FALSE,
 
   /*
    |--------------------------------------------------------------------------
@@ -46,7 +46,7 @@ return [
    |
    */
 
-  'encrypt' => false,
+  'encrypt' => FALSE,
 
   /*
    |--------------------------------------------------------------------------
@@ -127,8 +127,8 @@ return [
    */
 
   'cookie' => env(
-    'SESSION_COOKIE',
-    Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'
+      'SESSION_COOKIE',
+      Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'
   ),
 
   /*
@@ -181,7 +181,7 @@ return [
    |
    */
 
-  'http_only' => true,
+  'http_only' => TRUE,
 
   /*
    |--------------------------------------------------------------------------
@@ -209,5 +209,5 @@ return [
    |
    */
 
-  'partitioned' => false,
+  'partitioned' => FALSE,
 ];

@@ -26,7 +26,7 @@ return [
    */
 
   'stubs' => [
-    'enabled' => true,
+    'enabled' => TRUE,
     'path' => base_path('stubs/nwidart-stubs'),
     'files' => [
       'routes/web' => 'routes/web.php',
@@ -64,7 +64,7 @@ return [
         'PROVIDER_NAMESPACE',
       ],
     ],
-    'gitkeep' => true,
+    'gitkeep' => TRUE,
   ],
   'paths' => [
     /*
@@ -120,50 +120,50 @@ return [
 
     'generator' => [
       // app/
-      'channels' => ['path' => 'app/Broadcasting', 'generate' => false],
-      'command' => ['path' => 'app/Console', 'generate' => false],
-      'emails' => ['path' => 'app/Emails', 'generate' => false],
-      'event' => ['path' => 'app/Events', 'generate' => false],
-      'jobs' => ['path' => 'app/Jobs', 'generate' => false],
-      'listener' => ['path' => 'app/Listeners', 'generate' => false],
-      'model' => ['path' => 'app/Models', 'generate' => true],
-      'notifications' => ['path' => 'app/Notifications', 'generate' => false],
-      'observer' => ['path' => 'app/Observers', 'generate' => false],
-      'policies' => ['path' => 'app/Policies', 'generate' => true],
-      'provider' => ['path' => 'app/Providers', 'generate' => true],
-      'route-provider' => ['path' => 'app/Providers', 'generate' => true],
-      'repository' => ['path' => 'app/Repositories', 'generate' => false],
-      'resource' => ['path' => 'app/Transformers', 'generate' => true],
-      'rules' => ['path' => 'app/Rules', 'generate' => false],
-      'component-class' => ['path' => 'app/View/Components', 'generate' => false],
+      'channels' => ['path' => 'app/Broadcasting', 'generate' => FALSE],
+      'command' => ['path' => 'app/Console', 'generate' => FALSE],
+      'emails' => ['path' => 'app/Emails', 'generate' => FALSE],
+      'event' => ['path' => 'app/Events', 'generate' => FALSE],
+      'jobs' => ['path' => 'app/Jobs', 'generate' => FALSE],
+      'listener' => ['path' => 'app/Listeners', 'generate' => FALSE],
+      'model' => ['path' => 'app/Models', 'generate' => TRUE],
+      'notifications' => ['path' => 'app/Notifications', 'generate' => FALSE],
+      'observer' => ['path' => 'app/Observers', 'generate' => FALSE],
+      'policies' => ['path' => 'app/Policies', 'generate' => TRUE],
+      'provider' => ['path' => 'app/Providers', 'generate' => TRUE],
+      'route-provider' => ['path' => 'app/Providers', 'generate' => TRUE],
+      'repository' => ['path' => 'app/Repositories', 'generate' => FALSE],
+      'resource' => ['path' => 'app/Transformers', 'generate' => TRUE],
+      'rules' => ['path' => 'app/Rules', 'generate' => FALSE],
+      'component-class' => ['path' => 'app/View/Components', 'generate' => FALSE],
 
       // app/Http/
-      'controller' => ['path' => 'app/Http/Controllers', 'generate' => true],
-      'filter' => ['path' => 'app/Http/Middleware', 'generate' => false],
-      'request' => ['path' => 'app/Http/Requests', 'generate' => true],
+      'controller' => ['path' => 'app/Http/Controllers', 'generate' => TRUE],
+      'filter' => ['path' => 'app/Http/Middleware', 'generate' => FALSE],
+      'request' => ['path' => 'app/Http/Requests', 'generate' => TRUE],
 
       // config/
-      'config' => ['path' => 'config', 'generate' => true],
+      'config' => ['path' => 'config', 'generate' => TRUE],
 
       // database/
-      'migration' => ['path' => 'database/migrations', 'generate' => true],
-      'seeder' => ['path' => 'database/seeders', 'generate' => false],
-      'factory' => ['path' => 'database/factories', 'generate' => true],
+      'migration' => ['path' => 'database/migrations', 'generate' => TRUE],
+      'seeder' => ['path' => 'database/seeders', 'generate' => FALSE],
+      'factory' => ['path' => 'database/factories', 'generate' => TRUE],
 
       // lang/
-      'lang' => ['path' => 'lang', 'generate' => false],
+      'lang' => ['path' => 'lang', 'generate' => FALSE],
 
       // resource/
-      'assets' => ['path' => 'resources', 'generate' => true],
-      'views' => ['path' => 'resources/views', 'generate' => true],
-      'component-view' => ['path' => 'resources/views/components', 'generate' => false],
+      'assets' => ['path' => 'resources', 'generate' => TRUE],
+      'views' => ['path' => 'resources/views', 'generate' => TRUE],
+      'component-view' => ['path' => 'resources/views/components', 'generate' => FALSE],
 
       // routes/
-      'routes' => ['path' => 'routes', 'generate' => true],
+      'routes' => ['path' => 'routes', 'generate' => TRUE],
 
       // tests/
-      'test-unit' => ['path' => 'tests/Unit', 'generate' => true],
-      'test-feature' => ['path' => 'tests/Feature', 'generate' => true],
+      'test-unit' => ['path' => 'tests/Unit', 'generate' => TRUE],
+      'test-feature' => ['path' => 'tests/Feature', 'generate' => TRUE],
     ],
   ],
 
@@ -178,9 +178,9 @@ return [
    */
 
   'commands' => ConsoleServiceProvider::defaultCommands()
-    ->merge([
-      // New commands go here
-    ])->toArray(),
+      ->merge([
+        // New commands go here
+      ])->toArray(),
 
   /*
    |--------------------------------------------------------------------------
@@ -193,7 +193,7 @@ return [
    */
 
   'scan' => [
-    'enabled' => false,
+    'enabled' => FALSE,
     'paths' => [
       base_path('vendor/*/*'),
     ],
@@ -214,7 +214,7 @@ return [
       'name' => env('MODULES_NAME', 'Daniel Akhile'),
       'email' => env('MODULES_EMAIL', 'xavi7th@gmail.com'),
     ],
-    'composer-output' => false,
+    'composer-output' => FALSE,
   ],
 
   /*
@@ -227,7 +227,7 @@ return [
    */
 
   'cache' => [
-    'enabled' => false,
+    'enabled' => FALSE,
     'driver' => 'file',
     'key' => 'laravel-modules',
     'lifetime' => 60,
@@ -242,7 +242,7 @@ return [
    */
 
   'register' => [
-    'translations' => true,
+    'translations' => TRUE,
     /**
      * load files on boot or register method
      */

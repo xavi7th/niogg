@@ -39,14 +39,14 @@ return [
 
     'array' => [
       'driver' => 'array',
-      'serialize' => false,
+      'serialize' => FALSE,
     ],
 
     'database' => [
       'driver' => 'database',
       'table' => 'cache',
-      'connection' => null,
-      'lock_connection' => null,
+      'connection' => NULL,
+      'lock_connection' => NULL,
     ],
 
     'file' => [

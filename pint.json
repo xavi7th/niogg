@@ -1,7 +1,13 @@
 {
   "preset": "laravel",
+  "notPath": [
+    "path/to/excluded-file.php"
+  ],
+  "exclude": [
+    "my-specific/folder"
+  ],
   "notName": [
-    "Kernel.php"
+    "*-my-file.php"
   ],
   "rules": {
     "align_multiline_comment": true,
@@ -15,6 +21,9 @@
     "combine_consecutive_unsets": true,
     "concat_space": {
       "spacing": "one"
+    },
+    "constant_case": {
+      "case": "upper"
     },
     "explicit_indirect_variable": true,
     "explicit_string_variable": true,
@@ -46,8 +55,13 @@
       "sort_algorithm": "length"
     },
     "ordered_traits": true,
+    "php_unit_method_casing": {
+      "case": "camel_case"
+    },
     "protected_to_private": true,
+    "simple_to_complex_string_variable": true,
     "simplified_if_return": true,
+    "standardize_not_equals": true,
     "statement_indentation": false,
     "strict_comparison": true,
     "ternary_to_null_coalescing": true,
