@@ -18,7 +18,6 @@ class AuthenticatedSessionController extends Controller
   {
     return Inertia::render('UserAuth::Login', [
       'canResetPassword' => Route::has('auth.password.request'),
-      'status' => session('status'),
     ])->withViewData([
       'title' => 'Login',
       'metaDesc' => 'Login to access dashboard',

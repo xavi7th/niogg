@@ -2,19 +2,17 @@
   import { page } from "@inertiajs/svelte";
   $: ({ flash } = $page.props);
 
-  export let message = '';
+  export let message = '', className = 'mt-1';
 
-  $: props = (({message, ...rest}) => rest)($$props);
+  $: props = (({message, className, ...rest}) => rest)($$props);
 </script>
 
 <template>
   {#if message}
     {#key message}
-      <p class="text-sm text-red-600 dark:text-red-400" {...props}>{message}</p>
+      <p class="text-xs text-red-600 dark:text-red-400 { className }" {...props}>{message}</p>
     {/key}
   {:else if flash.error}
-    <p class="text-sm text-red-600 dark:text-red-400" {...props}>{flash.error}</p>
-  {:else if flash.success}
-    <p class="text-sm text-green-600 dark:text-green-400" {...props}>{flash.success}</p>
+    <p class="text-xs text-red-600 dark:text-red-400 { className }" {...props}>{flash.error}</p>
   {/if}
 </template>

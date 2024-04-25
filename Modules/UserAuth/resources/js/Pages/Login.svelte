@@ -12,8 +12,7 @@
   import InputLabel from "@/Components/InputLabel.svelte";
   import PrimaryButton from "@/Components/PrimaryButton.svelte";
 
-  export let canResetPassword = false,
-    status = "";
+  export let canResetPassword = false;
 
   $: ({ errors } = $page.props);
 
@@ -23,7 +22,7 @@
   const handleSubmit = () => {
     isLoading = true;
 
-    router.post(route("auth.login"), {
+    router.post(route("auth.login"), details, {
       onFinish: () => (isLoading = false),
     });
   };
@@ -32,24 +31,17 @@
 </script>
 
 <template>
-  {#if status}
-    <div class="mb-4 font-medium text-sm text-green-600">{status}</div>
-  {/if}
-
   <form on:submit|preventDefault={handleSubmit}>
     <div>
       <InputLabel for="email" label="Email" />
-      <TextInput id="email" type="email" bind:val={details.email} required autofocus autocomplete="email" />
-
-      <InputError class="mt-2" message={errors.email} />
+      <TextInput id="email" type="email" bind:value={details.email} required autofocus autocomplete="email" hasErrors={errors.email}/>
+      <InputError className="mt-2" message={errors.email} />
     </div>
 
     <div class="mt-4">
       <InputLabel for="password" value="Password" />
-
-      <TextInput id="password" type="password" bind:val={details.password} required autocomplete="current-password" />
-
-      <InputError class="mt-2" message={errors.password} />
+      <TextInput id="password" type="password" bind:value={details.password} required autocomplete="current-password" />
+      <InputError className="mt-2" message={errors.password} />
     </div>
 
     <div class="block mt-4">
