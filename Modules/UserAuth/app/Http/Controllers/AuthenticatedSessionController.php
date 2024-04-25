@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace Modules\UserAuth\Http\Controllers;
 
 use Inertia\Inertia;
 use Inertia\Response;
@@ -10,18 +10,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use App\Providers\RouteServiceProvider;
-use App\Http\Requests\Auth\LoginRequest;
+use Modules\UserAuth\Http\Requests\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
-  /**
-   * Display the login view.
-   */
   public function create(): Response
   {
-    return Inertia::render('Auth/Login', [
-      'canResetPassword' => Route::has('password.request'),
+    return Inertia::render('UserAuth::Login', [
+      'canResetPassword' => Route::has('auth.password.request'),
       'status' => session('status'),
+    ])->withViewData([
+      'title' => 'Login',
+      'metaDesc' => 'Login to access dashboard',
+      'ogUrl' => route('app.index'),
+      'canonical' => route('app.index'),
     ]);
   }
 

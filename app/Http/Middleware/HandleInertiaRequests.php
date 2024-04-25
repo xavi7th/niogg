@@ -40,6 +40,12 @@ class HandleInertiaRequests extends Middleware
       return $this->rootView;
     }
 
+    if (Str::startsWith(Route::currentRouteName(), 'auth.')) {
+      return 'userauth::app';
+    }
+
+    dd('Define a logic for loading required module page');
+
     return Str::before(Route::currentRouteName(), '.') . '::app';
   }
 }
