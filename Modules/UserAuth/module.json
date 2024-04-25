@@ -1,0 +1,11 @@
+{
+  "name": "UserAuth",
+  "alias": "userauth",
+  "description": "UserAuth for this project",
+  "keywords": [],
+  "priority": 0,
+  "providers": [
+    "Modules\\UserAuth\\Providers\\UserAuthServiceProvider"
+  ],
+  "files": []
+}

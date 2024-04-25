@@ -1,0 +1,30 @@
+{
+  "name": "xavi7th/userauth",
+  "description": "",
+  "authors": [
+    {
+      "name": "Daniel Akhile",
+      "email": "xavi7th@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [],
+      "aliases": {
+
+      }
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\UserAuth\\": "app/",
+      "Modules\\UserAuth\\Database\\Factories\\": "database/factories/",
+      "Modules\\UserAuth\\Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\UserAuth\\Tests\\": "tests/"
+    }
+  }
+}

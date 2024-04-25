@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace Modules\UserAuth\Http\Requests;
 
 use Illuminate\Support\Str;
 use Illuminate\Auth\Events\Lockout;
