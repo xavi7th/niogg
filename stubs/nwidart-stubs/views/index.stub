@@ -9,9 +9,21 @@
 
     <title>$STUDLY_NAME$ Module - {{ config('app.name', 'Laravel') }}</title>
 
-    <meta name="description" content="{{ $description ?? '' }}">
-    <meta name="keywords" content="{{ $keywords ?? '' }}">
     <meta name="author" content="{{ $author ?? '' }}">
+    <meta name="keywords" content="{{ $keywords ?? '' }}">
+    <meta name="description" content="{{ $description ?? '' }}">
+
+    <!-- <meta name="robots" content="index, follow" /> -->
+    <meta name="format-detection" content="telephone=yes">
+
+    <link rel="canonical" href="{{ $canonical ?? route('app.index') }}" />
+
+    <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ $ogUrl ?? route('app.index') }}" />
+    <meta property="og:title" content="{{ $title ?? ''}} | {{ config('app.name') }}" />
+    <meta property="og:description" content="{{ $metaDesc ?? ''}}" />
+    <meta property="og:image" content="{{ asset($ogImg ?? '/build/vendor/img/logo-dark.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

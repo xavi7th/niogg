@@ -17,6 +17,11 @@ class $CLASS$ extends Controller
 
     return Inertia::render('$STUDLY_NAME$::Index', [
       'phpVersion' => PHP_VERSION,
+    ])->withViewData([
+      'title' => 'Page title',
+      'metaDesc' => 'Description of this page',
+      'ogUrl' => route('app.index'),
+      'canonical' => route('app.index'),
     ]);
   }
 
