@@ -9,6 +9,7 @@ export default {
 
   // @see https://kit.svelte.dev/docs/integrations
   // This is faster but has no support for :global{ //selectors }
+  // This alos has no support for template tags wrapping HTML code in svelte files
   // This also has no need for npm install -D sass
   // preprocess: [vitePreprocess()],
 

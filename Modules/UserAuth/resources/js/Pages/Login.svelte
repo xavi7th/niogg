@@ -39,7 +39,7 @@
   <form on:submit|preventDefault={handleSubmit}>
     <div>
       <InputLabel for="email" label="Email" />
-      <TextInput id="email" type="email" class="mt-1 block w-full" bind:val={details.email} required autofocus autocomplete="email" />
+      <TextInput id="email" type="email" bind:val={details.email} required autofocus autocomplete="email" />
 
       <InputError class="mt-2" message={errors.email} />
     </div>
@@ -47,7 +47,7 @@
     <div class="mt-4">
       <InputLabel for="password" value="Password" />
 
-      <TextInput id="password" type="password" class="mt-1 block w-full" bind:val={details.password} required autocomplete="current-password" />
+      <TextInput id="password" type="password" bind:val={details.password} required autocomplete="current-password" />
 
       <InputError class="mt-2" message={errors.password} />
     </div>
