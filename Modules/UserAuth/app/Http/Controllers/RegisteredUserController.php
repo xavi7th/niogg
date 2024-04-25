@@ -16,17 +16,17 @@ use App\Providers\RouteServiceProvider;
 
 class RegisteredUserController extends Controller
 {
-  /**
-   * Display the registration view.
-   */
   public function create(): Response
   {
-    return Inertia::render('Auth/Register');
+    return Inertia::render('UserAuth::Register')->withViewData([
+      'title' => 'Register',
+      'metaDesc' => 'Create an account to access your dashbopard',
+      'ogUrl' => route('app.index'),
+      'canonical' => route('app.index'),
+    ]);
   }
 
   /**
-   * Handle an incoming registration request.
-   *
    * @throws \Illuminate\Validation\ValidationException
    */
   public function store(Request $request): RedirectResponse
