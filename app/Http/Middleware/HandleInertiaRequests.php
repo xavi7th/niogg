@@ -6,6 +6,7 @@ use Inertia\Middleware;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -28,6 +29,7 @@ class HandleInertiaRequests extends Middleware
   {
     return [
       ...parent::share($request),
+      'flash' => fn () => Session::get('flash') ?? (object) [],
       'auth' => [
         'user' => $request->user(),
       ],
