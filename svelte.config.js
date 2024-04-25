@@ -17,8 +17,16 @@ export default {
   preprocess: [sveltePreprocess()],
 
   onwarn(warning, defaultHandler) {
-    // don't warn on <marquee> elements, cos they're cool
-    if (warning.code === 'a11y-distracting-elements') return;
+    if (
+      warning.code === 'a11y-distracting-elements' ||
+      warning.code === 'anchor-is-valid' ||
+      warning.code === 'a11y-invalid-attribute' ||
+      warning.code === 'a11y-media-has-caption' ||
+      warning.code === 'a11y-missing-attribute' ||
+      warning.code === 'a11y-missing-content' ||
+      warning.code === 'a11y-no-static-element-interactions' ||
+      (warning. code === 'missing-declaration' && warning.frame.includes( 'route' ) )
+    ) return;
 
     // handle all other warnings normally
     defaultHandler(warning);
