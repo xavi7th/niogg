@@ -46,6 +46,10 @@ class HandleInertiaRequests extends Middleware
       return 'userauth::app';
     }
 
+    if (Str::startsWith(Route::currentRouteName(), 'log-viewer.')) {
+      return '';
+    }
+
     dd('Define a logic for loading required module page');
 
     return Str::before(Route::currentRouteName(), '.') . '::app';
