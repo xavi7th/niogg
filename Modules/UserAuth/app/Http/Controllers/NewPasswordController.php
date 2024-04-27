@@ -21,9 +21,14 @@ class NewPasswordController extends Controller
    */
   public function create(Request $request): Response
   {
-    return Inertia::render('Auth/ResetPassword', [
+    return Inertia::render('UserAuth::ResetPassword', [
       'email' => $request->email,
       'token' => $request->route('token'),
+    ])->withViewData([
+      'title' => 'Reset Your Password',
+      'metaDesc' => 'Create a new password for your account.',
+      'ogUrl' => route('app.index'),
+      'canonical' => route('app.index'),
     ]);
   }
 
@@ -59,7 +64,7 @@ class NewPasswordController extends Controller
     // the application's home authenticated view. If there is an error we can
     // redirect them back to where they came from with their error message.
     if ($status === Password::PASSWORD_RESET) {
-      return redirect()->route('login')->with('status', __($status));
+      return redirect()->route('auth.login')->withFlash(['success' => __($status)]);
     }
 
     throw ValidationException::withMessages([
