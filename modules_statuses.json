@@ -1,3 +1,4 @@
 {
-  "UserAuth": true
+    "UserAuth": true,
+    "AppUser": true
 }

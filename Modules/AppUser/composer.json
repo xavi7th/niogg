@@ -1,0 +1,30 @@
+{
+  "name": "xavi7th/appuser",
+  "description": "",
+  "authors": [
+    {
+      "name": "Daniel Akhile",
+      "email": "xavi7th@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [],
+      "aliases": {
+
+      }
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\AppUser\\": "app/",
+      "Modules\\AppUser\\Database\\Factories\\": "database/factories/",
+      "Modules\\AppUser\\Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\AppUser\\Tests\\": "tests/"
+    }
+  }
+}

@@ -3,7 +3,9 @@
 namespace App\Exceptions;
 
 use Throwable;
+use Illuminate\Support\Str;
 use Illuminate\Http\Response;
+use InvalidArgumentException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -23,6 +25,12 @@ class Handler extends ExceptionHandler
 
   public function register(): void
   {
+    $this->reportable(function (InvalidArgumentException $e): void {
+      if (Str::containsAll($e->getMessage(), ['View', 'not found'])) {
+        dd('Define a logic for loading required module page in HandleInertiaRequest middleware: ' . $e->getMessage());
+      }
+    });
+
     $this->reportable(function (Throwable $e): void {
     });
   }
