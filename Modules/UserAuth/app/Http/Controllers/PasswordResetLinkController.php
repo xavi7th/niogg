@@ -17,8 +17,13 @@ class PasswordResetLinkController extends Controller
    */
   public function create(): Response
   {
-    return Inertia::render('Auth/ForgotPassword', [
+    return Inertia::render('UserAuth::ForgotPassword', [
       'status' => session('status'),
+    ])->withViewData([
+      'title' => 'Password Reset',
+      'metaDesc' => 'Request a password reset link',
+      'ogUrl' => route('app.index'),
+      'canonical' => route('app.index'),
     ]);
   }
 
@@ -39,7 +44,7 @@ class PasswordResetLinkController extends Controller
     $status = Password::sendResetLink($request->only('email'));
 
     if ($status === Password::RESET_LINK_SENT) {
-      return back()->with('status', __($status));
+      return back()->withFlash(['success' => __($status)]);
     }
 
     throw ValidationException::withMessages([
