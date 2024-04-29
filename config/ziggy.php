@@ -13,6 +13,9 @@ return [
     'public' => [
       'app.*',
     ],
+    'user' => [
+      'appuser.*',
+    ],
     'auth' => [
       'auth.login',
       'auth.logout',
