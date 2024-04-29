@@ -1,8 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\AppUser\Http\Controllers\AppUserController;
+use Modules\AppUser\Http\Controllers\AppUserProfileController;
+use Modules\AppUser\Http\Controllers\AppUserDashboardController;
 
-Route::group([], function (): void {
-  Route::resource('appuser', AppUserController::class)->names('appuser');
+Route::middleware('auth')->name('appuser.')->prefix('user/')->group(function (): void {
+  Route::get('dashboard', AppUserDashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
+
+  Route::get('profile', [AppUserProfileController::class, 'edit'])->name('profile.edit');
+  Route::patch('profile', [AppUserProfileController::class, 'update'])->name('profile.update');
+  Route::delete('profile', [AppUserProfileController::class, 'destroy'])->name('profile.destroy');
 });

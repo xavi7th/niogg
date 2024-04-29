@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Modules\AppUser\Http\Controllers\AppUserController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function (): void {
-  Route::apiResource('appuser', AppUserController::class)->names('appuser');
+  Route::get('/user', fn (Request $request) => $request->user());
 });

@@ -13,7 +13,7 @@
     <meta name="keywords" content="{{ $keywords ?? '' }}">
     <meta name="description" content="{{ $description ?? '' }}">
 
-    <!-- <meta name="robots" content="index, follow" /> -->
+    <meta name="robots" content="noindex,nofollow" />
     <meta name="format-detection" content="telephone=yes">
 
     <link rel="canonical" href="{{ $canonical ?? route('app.index') }}" />
@@ -29,17 +29,12 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    @routes
+    @routes(['public', 'auth', 'user'])
     @inertiaHead
   </head>
 
   <body>
-    <p>Module: {!! config('appuser.name') !!} app.blade file</p>
-
     @inertia
-
-    {{-- Vite JS --}}
-    {{-- @vite(\Nwidart\Modules\Module::getAssets()) --}}
     @vite(['resources/js/app.js', 'Modules/AppUser/resources/js/app.js'])
     <script src="/build/assets/vendor/appuser-vendor.js"></script>
   </body>

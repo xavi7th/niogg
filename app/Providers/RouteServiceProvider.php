@@ -23,4 +23,9 @@ class RouteServiceProvider extends ServiceProvider
       Route::middleware('web')->group(base_path('routes/web.php'));
     });
   }
+
+  public static function home(): string
+  {
+    return route('appuser.dashboard');
+  }
 }
