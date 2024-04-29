@@ -50,7 +50,7 @@
 
                   <svelte:fragment slot="content">
                     <DropdownLink href={window.route("appuser.profile.edit")}>Profile</DropdownLink>
-                    <DropdownLink href={window.route("auth.logout")} method="post" as="button">Log Out</DropdownLink>
+                    <DropdownLink href={window.route("auth.logout")} method="post" asBtn>Log Out</DropdownLink>
                   </svelte:fragment>
                 </Dropdown>
               </div>
@@ -85,7 +85,7 @@
 
             <div class="mt-3 space-y-1">
               <ResponsiveNavLink href={ window.route('appuser.profile.edit') }>Profile</ResponsiveNavLink>
-              <ResponsiveNavLink href={ window.route('auth.logout') } method="post" as="button">Log Out</ResponsiveNavLink>
+              <ResponsiveNavLink href={ window.route('auth.logout') } method="post" asBtn>Log Out</ResponsiveNavLink>
             </div>
           </div>
         </div>
