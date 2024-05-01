@@ -6,13 +6,11 @@
   import { Link, useForm, page } from "@inertiajs/svelte";
   import PrimaryButton from "@/Components/PrimaryButton.svelte";
 
-  $: ({ flash, auth } = $page.props);
-
   export let must_verify_email;
 
   const form = useForm({
-    name: auth?.user.name,
-    email: auth?.user.email,
+    name: $page.props.auth?.user.name,
+    email: $page.props.auth?.user.email,
   });
 </script>
 
@@ -20,7 +18,6 @@
   <section>
     <header>
       <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Profile Information</h2>
-
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Update your account's profile information and email address.</p>
     </header>
 
@@ -41,27 +38,21 @@
         <div>
           <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
             Your email address is unverified.
-            <Link
-              href={window.route("auth.verification.send")}
-              method="post"
-              as="button"
-              class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-            >
+            <Link href={window.route("auth.verification.send")} method="post" as="button" type="button" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
               Click here to re-send the verification email.
             </Link>
           </p>
 
-          {#if flash.success == "Verification link sent"}
+          {#if $page.props.flash.success == "Verification link sent"}
             <div class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">A new verification link has been sent to your email address.</div>
           {/if}
         </div>
       {/if}
 
       <div class="flex items-center gap-4">
-
-        <PrimaryButton disabled={$form.processing}>Save</PrimaryButton>
+        <PrimaryButton type="submit" disabled={$form.processing}>Save</PrimaryButton>
         {#if $form.recentlySuccessful}
-          <p class="text-sm text-gray-600 dark:text-gray-400" transition:fly={{ y: 100, duration: 300 }}>Saved.</p>
+          <p class="text-sm text-teal-600 dark:text-teal-400" transition:fly={{ x: 20 }}>Saved.</p>
         {/if}
       </div>
     </form>

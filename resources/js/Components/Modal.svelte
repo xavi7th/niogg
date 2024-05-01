@@ -1,4 +1,5 @@
 <script>
+  import { fly, fade } from 'svelte/transition'
   import { onMount, onDestroy } from "svelte";
   import { createEventDispatcher } from "svelte";
 
@@ -41,15 +42,15 @@
 </script>
 
 <template>
-  <div class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50 {show ? 'd-block' : 'd-none'}" scroll-region>
-    <div class="fixed inset-0 transform transition-all {show ? 'd-block' : 'd-none'}" on:click={close} on:keypress={close} role="button" tabindex="">
-      <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75" />
-    </div>
+  {#if show}
+    <div class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50" scroll-region in:fade out:fade={{ delay: 150 }}>
+      <div class="fixed inset-0 transform" on:click={close} on:keypress={close} role="button" tabindex="">
+        <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"/>
+      </div>
 
-    <div class="mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto {maxWidthClass, show ? 'd-block' : 'd-none'}">
-      {#if show}
-         <slot />
-      {/if}
+      <div class="mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform sm:w-full sm:mx-auto {maxWidthClass}" in:fly={{ y: -50, delay: 300 }} out:fly={{ y: -50 }}>
+        <slot />
+      </div>
     </div>
-  </div>
+  {/if}
 </template>

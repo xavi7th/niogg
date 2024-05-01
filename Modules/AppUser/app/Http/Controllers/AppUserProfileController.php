@@ -2,22 +2,25 @@
 
 namespace Modules\AppUser\Http\Controllers;
 
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Modules\AppUser\Http\Requests\ProfileUpdateRequest;
 
 class AppUserProfileController extends Controller
 {
   public function edit(Request $request): Response
   {
+    /** @var User */
+    $user = $request->user();
+
     return Inertia::render('AppUser::Profile/Edit', [
-      'must_verify_email' => $request->user() instanceof MustVerifyEmail && is_null($request->user()->email_verified_at),
+      'must_verify_email' => $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail(),
     ])->withViewData([
       'title' => 'Profile',
       'metaDesc' => 'View your profile page',
@@ -26,9 +29,6 @@ class AppUserProfileController extends Controller
     ]);
   }
 
-  /**
-   * Update the user's profile information.
-   */
   public function update(ProfileUpdateRequest $request): RedirectResponse
   {
     $request->user()->fill($request->validated());
@@ -39,12 +39,9 @@ class AppUserProfileController extends Controller
 
     $request->user()->save();
 
-    return Redirect::route('profile.edit');
+    return to_route('appuser.profile.edit');
   }
 
-  /**
-   * Delete the user's account.
-   */
   public function destroy(Request $request): RedirectResponse
   {
     $request->validate([
@@ -60,6 +57,6 @@ class AppUserProfileController extends Controller
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    return Redirect::to('/');
+    return Inertia::location(route('app.index'));
   }
 }

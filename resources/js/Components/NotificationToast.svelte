@@ -5,7 +5,7 @@
   import { fly, fade } from "svelte/transition";
 
   $: ({ flash, errors } = $page.props);
-  $: if (flash.error || flash.success || flash.warning || Object.entries(errors).length) showNotification = true;
+  $: if (Object.entries(flash).length || Object.entries(errors).length) showNotification = true;
   $:theme = flash?.success ? "teal" : flash?.warning ? "yellow" : flash?.info ? "blue" : "red";
 
   let showNotification = false;
@@ -71,8 +71,9 @@
           </div>
 
           <!-- Notification body -->
+          <hr class="w-full basis-full">
           <div class="mt-1 pl-12 text-sm">
-            {@html flash.success || flash.warning || flash.error || getErrorString(errors)}
+            {@html flash.success || flash.warning || flash.error || flash.info || getErrorString(errors)}
           </div>
 
           <!-- Notification footer Slot footer -->
