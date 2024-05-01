@@ -17,11 +17,7 @@ return [
       'appuser.*',
     ],
     'auth' => [
-      'auth.login',
-      'auth.logout',
-      'auth.password.*',
-      'auth.register',
-      'auth.verification.notice',
+      'auth.*',
     ],
   ],
 ];

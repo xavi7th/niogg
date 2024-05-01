@@ -18,6 +18,11 @@ class EmailVerificationPromptController extends Controller
   {
     return $request->user()->hasVerifiedEmail()
       ? redirect()->intended(RouteServiceProvider::home())
-      : Inertia::render('Auth/VerifyEmail', ['status' => session('status')]);
+      : Inertia::render('UserAuth::VerifyEmail')->withViewData([
+        'title' => 'Email Verification',
+        'metaDesc' => 'Kindly verify your email to access your dashboard. Remember to check your spam mail, if you can\'t find our mail in your inbox',
+        'ogUrl' => route('app.index'),
+        'canonical' => route('app.index'),
+      ]);
   }
 }
