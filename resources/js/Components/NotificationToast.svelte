@@ -24,7 +24,7 @@
     <!-- space-y-3 to allow stacking multiple notifications -->
     <div class="space-y-3" transition:fade={{ duration: 600 }}>
       <!-- Toast -->
-      <div id="dismiss-toast" class="max-w-xs bg-{theme}-100 dark:bg-{theme}-800/10 text-{theme}-600 dark:text-{theme}-300 border border-gray-200 dark:border-{theme}-100/30 rounded-xl shadow-lg fixed top-3 right-4" role="alert" in:fly={{ x: 200, duration: 600 }} out:fade>
+      <div id="dismiss-toast" class="max-w-xs bg-{theme}-100 dark:bg-{theme}-800/10 text-{theme}-600 dark:text-{theme}-300 border border-gray-200 dark:border-{theme}-100/30 rounded-xl shadow-lg fixed top-3 right-4 z-10" role="alert" in:fly={{ x: 200, duration: 600 }} out:fade>
         <div class="flex flex-wrap p-4 box-content border-l-4 border-{theme}-500 rounded-lg">
           <div class="flex-shrink-0">
             <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-{theme}-500 bg-{theme}-100 rounded-lg dark:bg-{theme}-800/50 dark:text-{theme}-200">
