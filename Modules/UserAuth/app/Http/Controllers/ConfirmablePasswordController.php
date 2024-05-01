@@ -13,17 +13,16 @@ use Illuminate\Validation\ValidationException;
 
 class ConfirmablePasswordController extends Controller
 {
-  /**
-   * Show the confirm password view.
-   */
   public function show(): Response
   {
-    return Inertia::render('Auth/ConfirmPassword');
+    return Inertia::render('UserAuth::ConfirmPassword')->withViewData([
+      'title' => 'Confirm Password',
+      'metaDesc' => 'Confirm your password to authorize this action',
+      'ogUrl' => route('app.index'),
+      'canonical' => route('app.index'),
+    ]);
   }
 
-  /**
-   * Confirm the user's password.
-   */
   public function store(Request $request): RedirectResponse
   {
     if ( ! Auth::guard('web')->validate(['email' => $request->user()->email, 'password' => $request->password])) {
