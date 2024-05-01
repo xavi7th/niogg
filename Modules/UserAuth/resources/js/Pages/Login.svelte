@@ -50,7 +50,7 @@
 
     <div class="flex items-center justify-end mt-4">
       {#if canResetPassword}
-        <Link href={route("auth.password.request")} class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 px-4" >Forgot your password?</Link>
+        <Link href={window.route("auth.password.request")} class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 px-4" >Forgot your password?</Link>
       {/if}
 
       <PrimaryButton class="ms-4 {isLoading ? 'opacity-25' : ''}" disabled={isLoading}>Log in</PrimaryButton>

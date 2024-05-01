@@ -3,18 +3,16 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  purge: {
-    safelist: [
-      {
-        pattern: /((text|bg|border)-(red|teal|yellow|blue)-(\d){3})/,
-        variants: ['dark']
-      },
-      // {
-      //   pattern: /(text|bg)-(red|green|blue|yellow)-+/,
-      //   variants: ['lg', 'hover', 'focus', 'lg:hover'],
-      // },
-    ]
-  },
+  safelist: [
+    {
+      pattern: /((text|bg|border)-(red|teal|yellow|blue)-(\d){3})/,
+      variants: ['dark']
+    },
+    // {
+    //   pattern: /(text|bg)-(red|green|blue|yellow)-+/,
+    //   variants: ['lg', 'hover', 'focus', 'lg:hover'],
+    // },
+  ],
   content: [
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     './storage/framework/views/*.php',

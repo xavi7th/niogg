@@ -34,11 +34,11 @@ echo "\n\033[32mValidating Laravel Pint:\033[0m\n"
 # Check for laravel pint
 which ./vendor/bin/pint &> /dev/null
 if [[ "$?" == 1 ]]; then
-  echo "\t\033[31mLaravel Pint executable not found! If you wnat to pint your codebase, install pint using the command below:\033[0m \n\n \033[32mcomposer require laravel/pint --dev\033[0m"
+  echo "\t\033[31mLaravel Pint executable not found! If you want to pint your codebase, install pint using the command below:\033[0m \n\n \033[32mcomposer require laravel/pint --dev\033[0m"
 else
   ./vendor/bin/pint --dirty
 
-  sort <(git diff --name-only --cached) <(git diff --name-only --) | uniq -d | xargs git add --all
+  # sort <(git diff --name-only --cached) <(git diff --name-only --) | uniq -d | xargs git add --all
 
   echo "\t\033[32mLaravel Pint Successful\033[0m"
 fi
