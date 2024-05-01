@@ -55,6 +55,7 @@ This template has the following integrated already:
   - See [Docker Sync Website](http://docker-sync.io/) and [this article by Rohit Lingayat](https://betterprogramming.pub/improve-performance-of-docker-on-macos-by-using-docker-sync-4f46edbde570)
 - Pre commit linting (Run ```npm run dev``` to set this up). You can edit the configiration for this in package.json's predev script.
 - Sample package.json script to push production build to git remote server. Checkout package.json's push script.
+- Laravel Telescope and Laravel Telescope toolar for local development. This can be disabled or enabled via env option ```TELESCOPE_ENABLED=true```
 
 ## Getting Started
 
