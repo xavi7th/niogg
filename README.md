@@ -49,7 +49,7 @@ This template has the following integrated already:
 - Hot Module reloading using vite
 - Authentication scafolded using Laravel Breeze, InertiaJS and SvelteJS components
 - Modules Scafolded using the popular Laravel [Nwidart Modules](https://laravelmodules.com/). generate a module using ```php artisan module:create [ModuleName}``` and you are good to go
-- An opinionated code linting standard using Laravel Pint and PHPCS configurable by editing the included ```pint.json``` and ```phpcs.xml``` files. To lint run the ```vendor/bin/pint```, ```vendor/bin/phpcs``` and ```vendor/bin/phpcbf``` commands from your terminal at the project root.
+- An opinionated code linting standard using Laravel Pint and PHPCS configurable by editing the included ```pint.json``` and ```phpcs.xml``` files. To lint run the ```vendor/bin/pint```, ```vendor/bin/phpcs``` and ```vendor/bin/phpcbf``` commands from your terminal at the project root. Or you can use the preconfigured lints via ```composer lint-check``` and ```composer lint``` commands.
 - Docker (Laravel Sail) setup and configured. Run ```sail up``` to use docker
 - Docker Sync for faster docker development. (Uncomment the relevant line in the docker-compose file and then run ```make start_dev``` at project root to use docker-sync).
   - See [Docker Sync Website](http://docker-sync.io/) and [this article by Rohit Lingayat](https://betterprogramming.pub/improve-performance-of-docker-on-macos-by-using-docker-sync-4f46edbde570)

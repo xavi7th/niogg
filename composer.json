@@ -59,7 +59,9 @@
     ],
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi"
-    ]
+    ],
+    "lint": "vendor/bin/pint --test && vendor/bin/phpcbf -nv",
+    "lint-check": "vendor/bin/pint && vendor/bin/phpcs -v"
   },
   "extra": {
     "laravel": {
