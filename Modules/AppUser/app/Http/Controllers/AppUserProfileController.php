@@ -14,14 +14,15 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class AppUserProfileController extends Controller
 {
-  /**
-   * Display the user's profile form.
-   */
   public function edit(Request $request): Response
   {
-    return Inertia::render('Profile/Edit', [
-      'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-      'status' => session('status'),
+    return Inertia::render('AppUser::Profile/Edit', [
+      'must_verify_email' => $request->user() instanceof MustVerifyEmail && is_null($request->user()->email_verified_at),
+    ])->withViewData([
+      'title' => 'Profile',
+      'metaDesc' => 'View your profile page',
+      'ogUrl' => route('app.index'),
+      'canonical' => route('app.index'),
     ]);
   }
 

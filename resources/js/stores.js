@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 
 export const pageTitle = writable('Enski Integrated');
+export const pageHeader = writable('');
 export const pageDescription = writable('');
 
 export const isMobileScreen = writable(window.matchMedia('(max-width: 1023.5px)').matches)
