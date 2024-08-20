@@ -4,10 +4,16 @@
 /public/hot
 /public/storage
 /storage/*.key
+# storage/logs
 /vendor
 .env
 .env.backup
 .env.production
+.env.testing
+.env.cypress
+.env.dusk.local
+.env.save
+.env.phpunit
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -17,4 +23,20 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.docker-sync/
 .docker-sync
+/.vagrant
+.DS_Store
+*.docx
+template
+TODO.cson
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+*.tgz
+*.css.map
+*.js.map
+*.xlsx
+failure-Tests_Browser_*.png
+Tests_Browser_*.log
+tests/Coverage/*

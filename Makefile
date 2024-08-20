@@ -16,3 +16,11 @@ ifeq ($(OS),Darwin)
 else
 	./vendor/bin/sail stop
 endif
+
+kill_dev:           ## Clean everything for a fresh start
+ifeq ($(OS),Darwin)
+	./vendor/bin/sail -v stop
+	docker-sync clean
+else
+	./vendor/bin/sail -v stop
+endif
