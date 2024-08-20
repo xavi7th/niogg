@@ -3,11 +3,12 @@ import { defineConfig } from 'vite';
 import concat from 'rollup-plugin-concat';
 import laravel from 'laravel-vite-plugin';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import collectModuleAssetsPaths from './vite-module-loader.js';
 
 async function getConfig () {
   const paths = [
-    'resources/js/app.js',
+    // 'resources/js/app.js',
   ];
   const modulesConfig = await collectModuleAssetsPaths( paths, 'Modules' );
   const folderName = 'public/build/assets/vendor';
@@ -32,6 +33,9 @@ async function getConfig () {
     plugins: [
       concat({
         groupedFiles: [...modulesConfig.concatFiles],
+      }),
+      viteStaticCopy({
+        targets: modulesConfig.publicFiles
       }),
       laravel( {
         input: modulesConfig.paths,

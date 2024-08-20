@@ -7,7 +7,8 @@ export const aliases = {
   '@publicpage-shared': '/Modules/PublicPage/resources/js/Shared',
   '@publicpage-components': '/Modules/PublicPage/resources/js/Components',
   '@publicpage-partials': '/Modules/PublicPage/resources/js/Pages/Partials',
-  '@publicpage-assets': '/Modules/PublicPage/resources'
+  '@publicpage-assets': '/Modules/PublicPage/resources',
+  '@publicpage-template': '/Modules/PublicPage/resources/template/assets',
 };
 
 export const concatFiles = [
@@ -24,4 +25,16 @@ export const concatFiles = [
     ],
     outputFile: 'public/build/assets/vendor/publicpage-init.js',
   }
+];
+
+export const publicFiles = [
+  // {
+  //   src: 'Modules/PublicPage/resources/template/assets/images',
+  //   dest: '',
+  //   rename: 'img'
+  // },
+  {
+    src: 'Modules/PublicPage/resources/template/assets/fonts',
+    dest: './'
+  },
 ];
