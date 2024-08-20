@@ -1,3 +1,6 @@
+// EXAMPLE USAGE
+// import { logo } from "@/Components/icons";
+
 export const Icons = {
   logo: `
     <svg viewBox="0 0 62 65" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto bg-gray-100 dark:bg-gray-900">

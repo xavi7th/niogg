@@ -1,25 +1,3 @@
-// import { defineConfig } from 'vite';
-// import laravel from 'laravel-vite-plugin';
-//
-// export default defineConfig({
-//     build: {
-//         outDir: '../../public/build-appuser',
-//         emptyOutDir: true,
-//         manifest: true,
-//     },
-//     plugins: [
-//         laravel({
-//             publicDirectory: '../../public',
-//             buildDirectory: 'build-appuser',
-//             input: [
-//                 __dirname + '/resources/sass/app.scss',
-//                 __dirname + '/resources/js/app.js'
-//             ],
-//             refresh: true,
-//         }),
-//     ],
-// });
-
 export const paths = [
   'Modules/AppUser/resources/js/app.js',
 ];

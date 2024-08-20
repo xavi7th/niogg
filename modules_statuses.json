@@ -1,4 +1,5 @@
 {
     "UserAuth": true,
-    "AppUser": true
+    "AppUser": true,
+    "PublicPage": true
 }

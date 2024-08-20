@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class HandleInertiaRequests extends Middleware
 {
-  protected $rootView = 'app';
+  protected $rootView = 'publicpage::app';
 
   /**
    * Determine the current asset version.
@@ -29,11 +29,40 @@ class HandleInertiaRequests extends Middleware
   {
     return [
       ...parent::share($request),
+      'app' => fn () => [
+        'name' => config('app.name'),
+        'email' => config('app.email'),
+        'phone' => config('app.phone'),
+        'address' => config('app.address'),
+      ],
       'flash' => fn () => Session::get('flash') ?? (object) [],
+      'isInertiaRequest' => (bool) request()->header('X-Inertia'),
       'auth' => [
         'user' => $request->user(),
       ],
     ];
+  }
+
+  public function resolveValidationErrors(Request $request): object
+  {
+    if ( ! $request->session()->has('errors') && ! $request->session()->has('flash.error')) {
+      return (object) [];
+    }
+
+    if ($request->session()->has('errors')) {
+      return (object) collect($request->session()->get('errors')->getBags())->map(fn ($bag) => (object) collect($bag->messages())->map(fn ($errors) => $errors[0])->toArray())->pipe(function ($bags) use ($request) {
+        if ($bags->has('default') && $request->header('x-inertia-error-bag')) {
+          return [$request->header('x-inertia-error-bag') => $bags->get('default')];
+        }
+        if ($bags->has('default')) {
+          return $bags->get('default');
+        }
+
+          return $bags->toArray();
+      });
+    } elseif ($request->session()->has('flash.error')) {
+      return (object) $request->session()->get('flash');
+    }
   }
 
   public function rootView(Request $request): string
@@ -44,6 +73,10 @@ class HandleInertiaRequests extends Middleware
 
     if (Str::startsWith(Route::currentRouteName(), 'auth.')) {
       return 'userauth::app';
+    }
+
+    if ($request->user()) {
+      return mb_strtolower($request->user()->getType()) . '::app';
     }
 
     return Str::before(Route::currentRouteName(), '.') . '::app';

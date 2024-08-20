@@ -15,6 +15,9 @@
   });
 </script>
 
+<!-- EXAMPLE USAGE -->
+<!-- import TextInput from "@/Components/TextInput.svelte"; -->
+
 <template>
   <input bind:this={input} class="{defaultStyles} {className}" class:has-errors={hasErrors} bind:value {...$$restProps} on:focus on:blur on:click on:dblclick on:mousedown on:mousemove on:mouseout on:mouseover on:mouseup on:change on:keypress on:keydown on:keyup/>
 </template>

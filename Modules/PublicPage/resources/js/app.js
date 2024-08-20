@@ -1,19 +1,16 @@
-import '../css/app.css';
-
+import '@publicpage-assets/sass/app.scss'
 import { createInertiaApp } from '@inertiajs/svelte'
 
 createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob(['./Pages/**/*.svelte', '../../Modules/**/Pages/**/*.svelte'], { eager: true })
 
-    let pageUrl = `./Pages/${name}.svelte`;
+    let page = undefined, pageUrl = undefined;
 
     if ( name.includes('::') ) {
       let [module, pageLocation] = name.split('::');
-      pageUrl = `../../Modules/${module}/resources/js/Pages/${pageLocation}.svelte`;
+      page = pages[pageUrl = `../../Modules/${module}/resources/js/Pages/${pageLocation}.svelte`] ?? pages[pageUrl = `./Pages/${pageLocation}.svelte`];
     }
-
-    const page = pages[pageUrl];
 
     if ( page == undefined ) {
       throw new Error(`Page not found: ${pageUrl}`);

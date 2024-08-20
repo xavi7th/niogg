@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\AppUser\Providers;
+namespace Modules\PublicPage\Providers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,12 +15,7 @@ class RouteServiceProvider extends ServiceProvider
     RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
 
     $this->routes(function (): void {
-      Route::middleware('web')->group(module_path('AppUser', '/routes/web.php'));
+      Route::middleware('web')->group(module_path('PublicPage', '/routes/web.php'));
     });
-  }
-
-  public static function home(): string
-  {
-    return route('appuser.dashboard');
   }
 }

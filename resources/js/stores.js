@@ -1,3 +1,6 @@
+// EXAMPLE USABE
+// import { pageHeader } from "@/stores";
+
 import { writable } from 'svelte/store';
 
 export const pageTitle = writable('Enski Integrated');

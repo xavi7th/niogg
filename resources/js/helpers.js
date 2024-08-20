@@ -1,3 +1,6 @@
+// EXAMPLE USAGE
+// import { getErrorString } from "@/helpers";
+
 /**
  * Transforms an error object into HTML string
  *
