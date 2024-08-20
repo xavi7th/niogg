@@ -2,7 +2,7 @@ OS := $(shell uname)
 
 start_dev:
 ifeq ($(OS),Darwin)
-	docker volume create --name=l10-app-sync
+	docker volume create --name=niogg-app-sync
 	docker-sync start
 	./vendor/bin/sail up -d
 else

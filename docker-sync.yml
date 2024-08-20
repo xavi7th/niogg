@@ -1,6 +1,6 @@
 version: '2'
 syncs:
-  l10-app-sync: ## the unique name of the volume for this project. Recommended pattern <APPNAME>-sync
+  niogg-app-sync: ## the unique name of the volume for this project. Recommended pattern <APPNAME>-sync
     src: '.'
     sync_excludes: ['.git', '.vscode', 'node_modules', 'public/storage/*', 'mix-manifest.json', 'public/build/*', '.DS_Store', 'storage/framework/**/*', 'storage/logs/*', './vendor/**/*']
     sync_userid: '502' ## The user id gotten from the host by running id -u command in the terminal
