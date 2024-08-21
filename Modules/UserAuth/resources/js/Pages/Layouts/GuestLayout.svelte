@@ -33,5 +33,5 @@
 </template>
 
 {#if isMounted}
-	<script src="/build/assets/vendor/userauth-init.js"></script>
+	<script src="/build/assets/userauth-init.js"></script>
 {/if}

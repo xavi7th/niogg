@@ -2,18 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  @media (prefers-color-scheme: dark) {
-    color: #9ca3af;
+@import '../template/assets/css/libraries.css';
+@import '../template/assets/scss/style';
+
+
+.slider {
+
+  .slide__title{
+    font-weight: 400;
+    font-size: max(5vw, 2.6rem);
+    line-height: max(5vw, 1.5rem);
+    margin-bottom: 30px;
+
+    @media (max-width: 767px) {
+      font-weight: 500
+    }
   }
 }
 
-p{
-  margin-bottom: 20px;
-  position: fixed;
-  z-index: 1;
-}
-
-.text-gray-500{
-  text-transform: uppercase;
+.navbar-collapse{
+  &.collapse{
+    visibility: visible;
+  }
 }

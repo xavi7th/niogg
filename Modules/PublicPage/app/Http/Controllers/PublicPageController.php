@@ -20,7 +20,8 @@ class PublicPageController extends Controller
       'pageTitle' => 'Welcome to ' . config('app.name'),
     ])->withViewData([
       'pageTitle' => 'Welcome to ' . config('app.name'),
-      'metaDesc' => 'Description of this page',
+      'metaDesc' => 'NIOGG promotes good governance in Nigeria by empowering youth through leadership training, advocating for transparency and accountability in
+            public institutions, enhancing the electoral system, and educating citizens on their roles in governance to encourage active participation and societal development.',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),
     ]);

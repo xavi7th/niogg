@@ -3,6 +3,22 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["resources/js/*"],
+      "@publicpage-pages/*": ["/Modules/PublicPage/resources/js/Pages"],
+      "@publicpage-shared/*": ["/Modules/PublicPage/resources/js/Shared"],
+      "@publicpage-components/*": ["/Modules/PublicPage/resources/js/Components"],
+      "@publicpage-partials/*": ["/Modules/PublicPage/resources/js/Pages/Partials"],
+      "@publicpage-assets/*": ["/Modules/PublicPage/resources"],
+      "@publicpage-template/*": ["/Modules/PublicPage/resources/template/assets"],
+      "@userauth-pages": ["/Modules/UserAuth/resources/js/Pages"],
+      "@userauth-shared": ["/Modules/UserAuth/resources/js/Shared"],
+      "@userauth-components": ["/Modules/UserAuth/resources/js/Components"],
+      "@userauth-partials": ["/Modules/UserAuth/resources/js/Pages/Partials"],
+      "@userauth-assets": ["/Modules/UserAuth/resource"],
+      "@appuser-pages": ["/Modules/AppUser/resources/js/Pages"],
+      "@appuser-shared": ["/Modules/AppUser/resources/js/Shared"],
+      "@appuser-components": ["/Modules/AppUser/resources/js/Components"],
+      "@appuser-partials": ["/Modules/AppUser/resources/js/Pages/Partials"],
+      "@appuser-assets": ["/Modules/AppUser/resource"],
       "ziggy-js": ["./vendor/tightenco/ziggy"]
     }
   },

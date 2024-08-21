@@ -18,12 +18,27 @@
 
     <link rel="canonical" href="{{ $canonical ?? route('app.index') }}" />
 
-    <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{{ $ogUrl ?? route('app.index') }}" />
     <meta property="og:title" content="{{ $title ?? ''}} | {{ config('app.name') }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="{{ config('app.name') }}" />
+    <meta property="og:url" content="{{ $ogUrl ?? Request::fullUrl() }}" />
     <meta property="og:description" content="{{ $metaDesc ?? ''}}" />
-    <meta property="og:image" content="{{ asset($ogImg ?? '/build/vendor/img/logo-dark.png') }}" />
+    <meta property="og:image" content="{{ asset($ogImg ?? '/build/img/niogg-gold.png') }}" />
+    <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}" />
+
+    <meta name="twitter:card" content="summary_large_images" />
+    <meta name="twitter:site" content="@insightNig40403" />
+    <meta name="twitter:url" content="{{ Request::fullUrl() }}" />
+    <meta name="twitter:title" content="{{ config('app.name') }}" />
+    <meta name="twitter:description" content="{{$twitterDescription ?? $ogDescription ?? ''}}" />
+    <meta name="twitter:image" content="{{ asset($ogImg ?? '/build/img/niogg-gold.png') }}" />
+
+    <link itemprop="url" href="{{ Request::fullUrl() }}">
+    <meta itemprop="name" content="{{ config('app.name') }}">
+    <meta name="theme-color" content="#a18802">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#a18802">
+
+    <link href="{{ asset('/build/img/favicon.png') }}" rel="icon" type="image/png" sizes="512x512" >
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -36,5 +51,5 @@
   <body>
     @inertia
     @vite(['resources/js/app.js', 'Modules/AppUser/resources/js/app.js'])
-    <script src="/build/assets/vendor/appuser-vendor.js"></script>
+    <script src="/build/assets/appuser-vendor.js"></script>
   </body>

@@ -32,6 +32,8 @@ class HandleInertiaRequests extends Middleware
       'app' => fn () => [
         'name' => config('app.name'),
         'email' => config('app.email'),
+        'alt_name' => config('app.alt_name'),
+        'alt_email' => config('app.alt_email'),
         'phone' => config('app.phone'),
         'address' => config('app.address'),
       ],

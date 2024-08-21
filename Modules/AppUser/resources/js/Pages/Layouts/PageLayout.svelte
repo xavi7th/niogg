@@ -26,5 +26,5 @@
 </div>
 
 {#if isMounted}
-	<script src="/build/assets/vendor/appuser-init.js"></script>
+	<script src="/build/assets/appuser-init.js"></script>
 {/if}

@@ -26,5 +26,5 @@
 </div>
 
 {#if isMounted}
-	<script src="/build/assets/vendor/$LOWER_NAME$-init.js"></script>
+	<script src="/build/assets/$LOWER_NAME$-init.js"></script>
 {/if}

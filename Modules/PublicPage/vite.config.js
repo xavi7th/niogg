@@ -14,25 +14,25 @@ export const aliases = {
 export const concatFiles = [
   {
     files: [
-      'Modules/PublicPage/resources/js/vendor/one.js',
-      'Modules/PublicPage/resources/js/vendor/two.js',
+      'Modules/PublicPage/resources/template/assets/js/jquery-3.3.1.min.js',
+      'Modules/PublicPage/resources/template/assets/js/plugins.js',
     ],
-    outputFile: 'public/build/assets/vendor/publicpage-vendor.js',
+    outputFile: 'public/build/assets/app.js',
   },
   {
     files: [
-      'Modules/PublicPage/resources/js/vendor/three.js',
+      'Modules/PublicPage/resources/template/assets/js/main.js',
     ],
-    outputFile: 'public/build/assets/vendor/publicpage-init.js',
+    outputFile: 'public/build/assets/app-init.js',
   }
 ];
 
 export const publicFiles = [
-  // {
-  //   src: 'Modules/PublicPage/resources/template/assets/images',
-  //   dest: '',
-  //   rename: 'img'
-  // },
+  {
+    src: 'Modules/PublicPage/resources/images',
+    dest: './',
+    rename: 'img'
+  },
   {
     src: 'Modules/PublicPage/resources/template/assets/fonts',
     dest: './'

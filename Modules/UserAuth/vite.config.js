@@ -16,12 +16,12 @@ export const concatFiles = [
       'Modules/UserAuth/resources/js/vendor/one.js',
       'Modules/UserAuth/resources/js/vendor/two.js',
     ],
-    outputFile: 'public/build/assets/vendor/userauth-vendor.js',
+    outputFile: 'public/build/assets/userauth-vendor.js',
   },
   {
     files: [
       'Modules/UserAuth/resources/js/vendor/three.js',
     ],
-    outputFile: 'public/build/assets/vendor/userauth-init.js',
+    outputFile: 'public/build/assets/userauth-init.js',
   }
 ];

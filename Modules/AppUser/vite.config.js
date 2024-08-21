@@ -16,12 +16,12 @@ export const concatFiles = [
       'Modules/AppUser/resources/js/vendor/one.js',
       'Modules/AppUser/resources/js/vendor/two.js',
     ],
-    outputFile: 'public/build/assets/vendor/appuser-vendor.js',
+    outputFile: 'public/build/assets/appuser-vendor.js',
   },
   {
     files: [
       'Modules/AppUser/resources/js/vendor/three.js',
     ],
-    outputFile: 'public/build/assets/vendor/appuser-init.js',
+    outputFile: 'public/build/assets/appuser-init.js',
   }
 ];

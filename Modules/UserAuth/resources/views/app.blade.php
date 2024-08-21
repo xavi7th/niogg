@@ -29,7 +29,7 @@
 
     <!-- Scripts -->
     @vite(['resources/js/app.js', 'Modules/UserAuth/resources/js/app.js'])
-    <script src="/build/assets/vendor/userauth-vendor.js"></script>
+    <script src="/build/assets/userauth-vendor.js"></script>
 
     @routes(['auth', 'public'])
     @inertiaHead

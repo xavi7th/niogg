@@ -100,3 +100,25 @@ export const shuffle = arr => {
   }
   return arr;
 }
+
+/** @type Record<string, string> */
+export const imgUrls = import.meta.glob( '../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { eager: true, query: { url: true }, import: 'default' } );
+/** @type Record<string, CallableFunction> */
+export const imgObjs = import.meta.glob( '../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { query: { enhanced: true } } );
+
+export const getImgUrl = (key) => imgUrls['../../' + key]
+export const  getImgObj = (key) => imgObjs['../../' + key]()
+
+/**
+  <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/logo-light.png') }" class="logo-light" alt="logo" />
+
+  {#await getImgObj('Modules/PublicPage/resources/template/assets/images/logo-light.png') }
+    <p>loading...</p>
+  {:then src}
+    <enhanced:img src="{ src.default }" class="logo-light" alt="logo" />
+  {/await}
+
+  <enhanced:img src="@publicpage-template/images/logo/logo-light.png?enhanced" class="logo-light" alt="logo"/>
+
+  <div style="width:100px; height:50px; background-image: url('{ getImgUrl('Modules/PublicPage/resources/template/assets/images/logo-light.png') }')" class="logo-light" />
+ */
