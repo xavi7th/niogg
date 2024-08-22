@@ -23,7 +23,7 @@
             <ul class="dropdown-menu">
               <li class="nav__item"><a href="{ window.route('app.about') }" class="nav__item-link">Who We Are</a></li>
               <li class="nav__item"><a href="{ window.route('app.vision-and-values') }" class="nav__item-link">Vision &amp; Values</a></li>
-              <li class="nav__item"><a href="{ window.route('app.about') }" class="nav__item-link">Career</a></li>
+              <li class="nav__item"><a href="{ window.route('app.careers') }" class="nav__item-link">Career</a></li>
             </ul>
           </li>
           <!-- <li class="nav__item with-dropdown">
