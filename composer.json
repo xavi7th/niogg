@@ -47,6 +47,20 @@
     }
   },
   "scripts": {
+    "recompile": [
+      "@php artisan config:clear",
+      "@php artisan route:clear",
+      "@php artisan cache:clear",
+      "@php artisan view:clear",
+      "@php artisan event:clear",
+      "@php artisan storage:link",
+      "@php artisan route:cache",
+      "@php artisan event:cache",
+      "@php artisan config:cache",
+      "@php artisan optimize",
+      "composer dumpautoload",
+      "@php artisan queue:restart"
+    ],
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover --ansi"
