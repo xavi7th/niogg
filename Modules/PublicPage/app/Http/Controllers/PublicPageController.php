@@ -3,7 +3,11 @@
 namespace Modules\PublicPage\Http\Controllers;
 
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use Modules\PublicPage\DTOs\ContactFormMessageDTO;
+use Modules\PublicPage\Emails\NewContactFormMessage;
 
 class PublicPageController extends Controller
 {
@@ -84,5 +88,27 @@ class PublicPageController extends Controller
       'ogUrl' => route('app.vision-and-values'),
       'canonical' => route('app.vision-and-values'),
     ]);
+  }
+
+  public function contact()
+  {
+    return Inertia::render('PublicPage::ContactUs', [
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+    ])->withViewData([
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
+            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
+      'ogUrl' => route('app.careers'),
+      'canonical' => route('app.careers'),
+    ]);
+  }
+
+  public function contactUs(Request $request)
+  {
+    $message = ContactFormMessageDTO::fromRequest($request);
+
+    Mail::to([config('app.name') => config('app.email')])->send(new NewContactFormMessage($message));
+
+    return back()->withFlash(['success' => 'Thank you for reaching out to us. We will get back to you shortly.']);
   }
 }

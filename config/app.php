@@ -23,6 +23,7 @@ return [
   'phone' => env('APP_PHONE', NULL),
   'alt_phone' => env('APP_ALT_PHONE', NULL),
   'address' => env('APP_ADDRESS', NULL),
+  'working_hours' => env('APP_WORKING_HOURS', NULL),
 
   /*
    |--------------------------------------------------------------------------

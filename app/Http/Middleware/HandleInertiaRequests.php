@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
         'phone' => config('app.phone'),
         'alt_phone' => config('app.alt_phone'),
         'address' => config('app.address'),
+        'working_hours' => config('app.working_hours'),
       ],
       'flash' => fn () => Session::get('flash') ?? (object) [],
       'isInertiaRequest' => (bool) request()->header('X-Inertia'),

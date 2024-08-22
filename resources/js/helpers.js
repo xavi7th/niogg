@@ -102,9 +102,9 @@ export const shuffle = arr => {
 }
 
 /** @type Record<string, string> */
-export const imgUrls = import.meta.glob( '../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { eager: true, query: { url: true }, import: 'default' } );
+export const imgUrls = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { eager: true, query: { url: true }, import: 'default' });
 /** @type Record<string, CallableFunction> */
-export const imgObjs = import.meta.glob( '../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { query: { enhanced: true } } );
+export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { query: { enhanced: true } });
 
 export const getImgUrl = (key) => imgUrls['../../' + key]
 export const  getImgObj = (key) => imgObjs['../../' + key]()
