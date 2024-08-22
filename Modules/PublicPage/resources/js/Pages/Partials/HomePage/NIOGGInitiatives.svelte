@@ -39,7 +39,7 @@
         </div>
         <div class="feature-item feature-list-item">
           <div class="feature__content">
-            <h4 class="feature__title">100% Satisfaction Guarantee</h4>
+            <h4 class="feature__title">Free Medical Treatments</h4>
             <p class="feature__desc">
               {appAltName} provides free medical treatments through community health initiatives, offering essential care and services to underserved populations.
               Our goal is to enlighten underserved communities on the need to strive for good governance that can provide access to healthcare and promote overall well-being,

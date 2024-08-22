@@ -10,22 +10,22 @@
           <div class="footer__widget-content">
             <enhanced:img src="@publicpage-template/images/logo/niogg-logo-footer.png?enhanced&w=100" alt="logo"/>
             <p>{@html app.address}</p>
-            <p>Mail: <a href="mailto:{app.email}">{app.email}</a></p>
-            <p>Mail: <a href="mailto:{app.alt_email}">{app.alt_email}</a></p>
-            <p>Phone: <a href="tel:{app.phone}" class="font-weight-bold color-white">{app.phone}</a></p>
+            <p>Mail: <a href="mailto:{app.email}" class="font-weight-bold">{app.email}</a></p>
+            <p>Mail: <a href="mailto:{app.alt_email}" class="font-weight-bold">{app.alt_email}</a></p>
+            <p>Phone: <a href="tel:{app.phone}" class="font-weight-bold">{app.phone}</a></p>
+            <p>Phone: <a href="tel:{app.alt_phone}" class="font-weight-bold">{app.alt_phone}</a></p>
           </div>
         </div>
-        <div class="col-6 col-sm-6 col-md-3 col-lg-2 footer__widget footer__widget-nav">
+        <div class="col-6 col-sm-6 col-md-3 col-lg-2 offset-2 footer__widget footer__widget-nav pt-24">
           <h6 class="footer__widget-title">Company</h6>
           <div class="footer__widget-content">
             <nav>
               <ul class="list-unstyled">
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Meet Our Team</a></li>
-                <li><a href="#">News & Media</a></li>
-                <li><a href="#">Case Studies</a></li>
-                <li><a href="#">Contacts</a></li>
-                <li><a href="#">Careers</a></li>
+                <li><a href="{ window.route('app.about') }">About Us</a></li>
+                <li><a href="{ window.route('app.about') }#team">Meet Our Team</a></li>
+                <li><a href="#/">News & Media</a></li>
+                <li><a href="#/">Case Studies</a></li>
+                <li><a href="{ window.route('app.contact') }">Contacts</a></li>
               </ul>
             </nav>
           </div>

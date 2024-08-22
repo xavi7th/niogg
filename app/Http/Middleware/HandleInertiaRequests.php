@@ -35,6 +35,7 @@ class HandleInertiaRequests extends Middleware
         'alt_name' => config('app.alt_name'),
         'alt_email' => config('app.alt_email'),
         'phone' => config('app.phone'),
+        'alt_phone' => config('app.alt_phone'),
         'address' => config('app.address'),
       ],
       'flash' => fn () => Session::get('flash') ?? (object) [],

@@ -52,7 +52,7 @@
                   </div>
                   <h4 class="blog__title"><a href="{article.url}">{article.title}</a></h4>
                   <span class="blog__meta-date">{ new Date(article.publishedAt).toDateString() }</span>
-                  <p class="blog__desc">{article.description}</p>
+                  <p class="blog__desc line-clamp-4">{article.description}</p>
                   <a href="{article.url}" class="btn btn__secondary btn__link">
                     <span>Read More</span>
                     <i class="icon-arrow-right2"></i>

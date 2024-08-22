@@ -21,7 +21,7 @@
 </svelte:head>
 
 <main class="min-h-[60vh] wrapper">
-  <Header />
+  <Header appPhone={app.phone}/>
 
   <slot/>
 

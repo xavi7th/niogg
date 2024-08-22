@@ -25,3 +25,17 @@
     visibility: visible;
   }
 }
+
+.page-title{
+  padding: 120px 0 60px;
+
+  @media (max-width: 991px) {
+    padding: 40px 0 60px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 639px) {
+  .container {
+    max-width: inherit;
+  }
+}
