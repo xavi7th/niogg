@@ -20,6 +20,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "autoprefixer": "^10.4.12",
     "axios": "^1.6.4",
+    "estree-walker": "^3.0.3",
     "laravel-vite-plugin": "^1.0.0",
     "postcss": "^8.4.31",
     "rollup-plugin-concat": "^1.0.3",
