@@ -103,6 +103,32 @@ class PublicPageController extends Controller
     ]);
   }
 
+  public function awards()
+  {
+    return Inertia::render('PublicPage::Awards', [
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+    ])->withViewData([
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
+            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
+      'ogUrl' => route('app.careers'),
+      'canonical' => route('app.careers'),
+    ]);
+  }
+
+  public function gallery()
+  {
+    return Inertia::render('PublicPage::Gallery', [
+      'pageTitle' => 'Images speeaks thousand words',
+    ])->withViewData([
+      'pageTitle' => 'Images speeaks thousand words',
+      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
+            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
+      'ogUrl' => route('app.careers'),
+      'canonical' => route('app.careers'),
+    ]);
+  }
+
   public function contact()
   {
     return Inertia::render('PublicPage::ContactUs', [

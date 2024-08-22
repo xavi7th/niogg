@@ -26,22 +26,15 @@
               <li class="nav__item"><a href="{ window.route('app.careers') }" class="nav__item-link">Career</a></li>
             </ul>
           </li>
-          <!-- <li class="nav__item with-dropdown">
-            <a href="blog.html" class="dropdown-toggle nav__item-link">News & Media</a>
+          <li class="nav__item with-dropdown">
+            <a href="{ window.route('app.gallery') }" class="dropdown-toggle nav__item-link">News & Media</a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
-              <li class="nav__item"><a href="blog.html" class="nav__item-link">Our Blog</a></li>
-
-              <li class="nav__item"><a href="blog-single-post.html" class="nav__item-link">Single Blog Post</a></li>
-
-              <li class="nav__item"><a href="case-studies-grid.html" class="nav__item-link">Case Studies Grid</a>
-              </li>
-              <li class="nav__item"><a href="case-studies-carousel.html" class="nav__item-link">Case Studies
-                  Carousel</a></li>
-              <li class="nav__item"><a href="case-studies-single.html" class="nav__item-link">Single Case Study</a>
-              </li>
+              <li class="nav__item"><a href="{ window.route('app.awards') }" class="nav__item-link">Awards and Recognitions</a></li>
+              <li class="nav__item"><a href="{ window.route('app.gallery') }" class="nav__item-link">Gallery</a></li>
+              <li class="nav__item"><a href="{ window.route('app.blog.index') }" class="nav__item-link">News & Articles</a></li>
             </ul>
-          </li> -->
+          </li>
           <li class="nav__item">
             <a href="{ window.route('app.contact') }" class="nav__item-link">Contact Us</a>
           </li>
