@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "target": "ES2015",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["resources/js/*"],
+      "@root/*": ["./*"],
       "@publicpage-pages/*": ["/Modules/PublicPage/resources/js/Pages"],
       "@publicpage-shared/*": ["/Modules/PublicPage/resources/js/Shared"],
       "@publicpage-components/*": ["/Modules/PublicPage/resources/js/Components"],

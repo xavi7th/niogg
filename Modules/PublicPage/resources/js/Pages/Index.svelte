@@ -4,19 +4,21 @@
 </script>
 
 <script>
-  import FeaturedBlogArticles from '@publicpage-partials/HomePage/FeaturedBlogArticles.svelte';
+  import { page } from "@inertiajs/svelte";
   import CTATwo from '@publicpage-partials/HomePage/CTATwo.svelte';
-  import OurPartners from '@publicpage-partials/HomePage/OurPartners.svelte';
-  import Testimonials from '@publicpage-partials/HomePage/Testimonials.svelte';
-  import ContactForm from '@publicpage-partials/HomePage/ContactForm.svelte';
-  import NIOGGInitiatives from '@publicpage-partials/HomePage/NIOGGInitiatives.svelte';
-  import FundRaiser from '@publicpage-partials/HomePage/FundRaiser.svelte';
-  import SummarizedWhatWeDo from '@publicpage-partials/HomePage/SummarizedWhatWeDo.svelte';
-  import SummarizedAbout from '@publicpage-partials/HomePage/SummarizedAbout.svelte';
   import Features from '@publicpage-partials/HomePage/Features.svelte';
   import Slideshow from '@publicpage-partials/HomePage/Slideshow.svelte';
+  import FundRaiser from '@publicpage-partials/HomePage/FundRaiser.svelte';
+  import OurPartners from '@publicpage-partials/HomePage/OurPartners.svelte';
+  import ContactForm from '@publicpage-partials/HomePage/ContactForm.svelte';
+  import Testimonials from '@publicpage-partials/HomePage/Testimonials.svelte';
+  import SummarizedAbout from '@publicpage-partials/HomePage/SummarizedAbout.svelte';
+  import NIOGGInitiatives from '@publicpage-partials/HomePage/NIOGGInitiatives.svelte';
+  import SummarizedWhatWeDo from '@publicpage-partials/HomePage/SummarizedWhatWeDo.svelte';
+  import FeaturedBlogArticles from '@publicpage-partials/HomePage/FeaturedBlogArticles.svelte';
 
-  import { page } from "@inertiajs/svelte";
+  /** @type {import('@root/types').Testimonial[]} */
+  export let testimonials;
 
   $: ({ app } = $page.props);
 </script>
@@ -27,7 +29,7 @@
 <SummarizedWhatWeDo appAltName={app.alt_name}/>
 <FundRaiser appAltName={app.alt_name}/>
 <!-- DELETED <SummarizedProjects /> -->
-<Testimonials />
+<Testimonials {testimonials}/>
 <NIOGGInitiatives appAltName={app.alt_name} />
 <ContactForm appPhone={app.phone} appAltName={app.alt_name} />
 <OurPartners />

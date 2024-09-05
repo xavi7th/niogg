@@ -13,8 +13,42 @@ class PublicPageController extends Controller
 {
   public function index()
   {
+    $tesimonials = [
+      [
+        'name' => 'Nelson Mandela',
+        'country' => 'South Africa',
+        'testimonial' => 'A fundamental concern for others in our individual and community lives would go a long way in making the world the better place we so passionately dreamt of.',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/nelson-mandela.jpg',
+      ],
+      [
+        'name' => 'Chinua Achebe',
+        'country' => 'Nigeria',
+        'testimonial' => 'Democracy is the worst form of government except for all those other forms that have been tried from time to time.',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/china-achuebe.jpg',
+      ],
+      [
+        'name' => 'Dr. Akinwumi Adesina',
+        'country' => 'Nigeria',
+        'testimonial' => 'Proper management of our natural resources is vital for Nigeria\'s development. It ensures sustainable growth, environmental balance, and the well-being of future generations',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/adesina-a-akinwumi.jpg',
+      ],
+      [
+        'name' => 'Peter Drucker',
+        'country' => 'Austria',
+        'testimonial' => 'The best way to predict the future is to create it. Good governance lays the foundation for a sustainable future.',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/peter-drucker.jpg',
+      ],
+      [
+        'name' => 'Ban Ki-moon',
+        'country' => 'South Korea',
+        'testimonial' => 'Corruption erodes trust, destroys institutions, and stifles progress, making it one of the greatest threats to development and democracy.',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/ban-ki-moon.webp',
+      ],
+    ];
+
     return Inertia::render('PublicPage::Index', [
       'pageTitle' => 'Welcome to ' . config('app.name'),
+      'testimonials' => $tesimonials,
     ])->withViewData([
       'pageTitle' => 'Welcome to ' . config('app.name'),
       'metaDesc' => config('app.alt_name') . ' promotes good governance in Nigeria by empowering youth through leadership training, advocating for transparency and accountability in

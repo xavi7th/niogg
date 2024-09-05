@@ -87,6 +87,20 @@ export const getUrlParamsAsObject = query => {
   return params;
 };
 
+/**
+ * @param {Object} obj The object to encode as url parameters
+ * @returns {string}
+ */
+export const getObjectAsUrlParams = (obj) => {
+  const params = [];
+
+  for (const key in obj) {
+    params.push(`${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`);
+  }
+
+  return params.join('&');
+}
+
 export const isNumeric = val => {
   let num = "" + val; //coerce num to be a string
   return !isNaN(num) && !isNaN(parseFloat(num));
@@ -102,9 +116,11 @@ export const shuffle = arr => {
 }
 
 /** @type Record<string, string> */
-export const imgUrls = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { eager: true, query: { url: true }, import: 'default' });
+export const imgUrls = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { eager: true, query: { url: true }, import: 'default' });
 /** @type Record<string, CallableFunction> */
-export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg}', { query: { enhanced: true } });
+export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { query: { enhanced: true } });
+
+export const getImgModule = (url, params) => import('../../' + url + '?enhanced&' + params);
 
 export const getImgUrl = (key) => imgUrls['../../' + key]
 export const  getImgObj = (key) => imgObjs['../../' + key]()
@@ -113,6 +129,14 @@ export const  getImgObj = (key) => imgObjs['../../' + key]()
   <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/logo-light.png') }" class="logo-light" alt="logo" />
 
   {#await getImgObj('Modules/PublicPage/resources/template/assets/images/logo-light.png') }
+    <p>loading...</p>
+  {:then src}
+    <enhanced:img src="{ src.default }" class="logo-light" alt="logo" />
+  {/await}
+
+  getImgModule('Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/china-achuebe.jpg', 'w=20&h=20').then((e) => console.log(e));
+
+  {#await getImgModule(t.img_url, 'w=20&h=20')}
     <p>loading...</p>
   {:then src}
     <enhanced:img src="{ src.default }" class="logo-light" alt="logo" />
