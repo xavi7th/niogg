@@ -4,8 +4,8 @@
   "scripts": {
     "svelte-check": "svelte-check",
     "predev": "cp pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'hook copied'",
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build",
     "prepackage": "sed -i.bak '/public\\/[build\\\\|vendor\\\\|assets]/d' ./.gitignore",
     "package": "node -e \"require('child_process').execSync('npm run build && git add . && git commit -m \\\" build \\\"')\"",
     "prepush": "if [[ ${npm_config_server} ]]; then echo \"\\033[30mbuilding production output...\\033[0m\" && node -e \"require('child_process').execSync('npm run package')\"; else echo \"\\033[32mskipping package step\\033[0m\"; fi;",
@@ -34,5 +34,8 @@
   "dependencies": {
     "@sweetalert2/theme-bootstrap-4": "^5.0.18",
     "sweetalert2": "^11.12.4"
-  }
+  },
+  "trustedDependencies": [
+    "svelte-preprocess"
+  ]
 }
