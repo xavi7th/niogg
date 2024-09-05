@@ -1,17 +1,10 @@
-<script lang="ts">
-  interface Article {
-    title: string,
-    author: string
-    url: string
-    publishedAt: Date
-    description: string
-  }
-
+<script>
   export let appAltName = '';
 
-  let articles: Article[] = [];
+  /** @type {import('@root/types').NewsArticle[]} */
+  let articles;
 
-  fetch(`https://newsapi.org/v2/everything?q=nigeria&searchIn=title,description&language=en&pageSize=10&page=${Math.floor(Math.random() * 4)}&apiKey=84abb2477ec840bf8cd3073622e72058`)
+  fetch(`https://newsapi.org/v2/everything?q=nigeria&searchIn=title,description&language=en&pageSize=10&page=${Math.floor(Math.random() * 2)+1}&apiKey=84abb2477ec840bf8cd3073622e72058`)
     .then(res => res.json())
     .then(data => articles = data.articles.filter(x => x.author).filter(x => x.description))
     .catch(err => {
@@ -40,8 +33,8 @@
             <div class="col-sm-12 col-md-6 col-lg-4">
               <div class="blog-item">
                 <div class="blog__img">
-                  <a href="#">
-                    <enhanced:img src="@publicpage-template/images/blog/grid/1.jpg?enhanced&w=350&aspect=350:230" alt="blog thumb"/>
+                  <a href="{article.url}" target="_blank">
+                    <img src="{article.urlToImage}" alt="blog thumb"/>
                   </a>
                 </div>
                 <div class="blog__content">
@@ -52,7 +45,7 @@
                   </div>
                   <h4 class="blog__title"><a href="{article.url}">{article.title}</a></h4>
                   <span class="blog__meta-date">{ new Date(article.publishedAt).toDateString() }</span>
-                  <p class="blog__desc line-clamp-4">{article.description}</p>
+                  <p class="blog__desc line-clamp-3">{article.description}</p>
                   <a href="{article.url}" class="btn btn__secondary btn__link">
                     <span>Read More</span>
                     <i class="icon-arrow-right2"></i>
