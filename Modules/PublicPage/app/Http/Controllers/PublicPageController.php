@@ -73,31 +73,34 @@ class PublicPageController extends Controller
         'name' => 'Chief Victor Ukiri',
         'position' => 'Chairman',
         'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
-        'desc' => 'Aliquet adipiscing lectus praesent cras sed quis lectus egestas erat. Bibendum curabitur eget habitant feugiat nec faucibus eu lorem suscipit. Vitae vitae tempor enim eget.',
+        'desc' => 'Chief (Sir) Toranmah Victor Ukin (KSM) is from Alaka Quarters in Effurun, Uvwie L. G. A. He attended St. Mary Rrivate Schools, Lagos, Lagos State. Government College Ughell, Delta
+            State and Anambra State Polytechnic Oko, Anambra State. He has served in the public domain for over 30 years as an architect, builder, project and design supervisor.
+            He is happily married to his loving wife and they are blessed with children. He is a member of the Uvwe traditional council as a titled chief of the kingdom.
+            He is an ambassador of the International Association of World Peace Advocate.',
       ],
       [
         'name' => 'Barrister Okiemute Akpofure Esq.',
         'position' => 'Legal Adviser',
         'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
-        'desc' => 'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. Eget turpis urna maecenas cras. Nisl dictum.',
+        'desc' => '',
       ],
       [
         'name' => 'Ebenezer Emunarhine',
         'position' => 'P.R.O.',
         'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
-        'desc' => 'Aliquet adipiscing lectus praesent cras sed quis lectus egestas erat. Bibendum curabitur eget habitant feugiat nec faucibus eu lorem suscipit. Vitae vitae tempor enim eget.',
+        'desc' => '',
       ],
       [
         'name' => 'Ognenevwegba Merit',
         'position' => 'Treasurer',
         'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
-        'desc' => 'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. Eget turpis urna maecenas cras. Nisl dictum.',
+        'desc' => '',
       ],
       [
         'name' => 'Musa khairat',
         'position' => 'Secretary / Admin',
         'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
-        'desc' => 'Aliquet adipiscing lectus praesent cras sed quis lectus egestas erat. Bibendum curabitur eget habitant feugiat nec faucibus eu lorem suscipit. Vitae vitae tempor enim eget.',
+        'desc' => '',
       ],
     ];
 
