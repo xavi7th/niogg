@@ -71,6 +71,10 @@
     </properties>
   </rule>
 
+  <rule ref="PSR2.Methods.FunctionCallSignature.SpaceAfterOpenBracket">
+    <type>warning</type>
+  </rule>
+
   <rule ref="PSR12.Operators.OperatorSpacing">
     <exclude-pattern>*.js</exclude-pattern>
   </rule>

@@ -7,6 +7,10 @@
 
 @import '@sweetalert2/theme-bootstrap-4/bootstrap-4.scss';
 
+html {
+  scroll-behavior: smooth;
+}
+
 .slider {
 
   .slide__title{
