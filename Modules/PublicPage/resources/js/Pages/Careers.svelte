@@ -22,8 +22,8 @@
       <div class="col-sm-12 col-md-12 col-lg-7">
         <div class="carousel-wrap">
           <div class="carousel owl-carousel carousel-arrows" data-slide="1" data-slide-md="1" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="0" data-loop="true" data-speed="700">
-            <enhanced:img class="img-fluid" src="@publicpage-template/images/backgrounds/equal-opportunity.jpg?enhanced&w=670&aspect=670:450" alt="about thumb"/>
-            <enhanced:img class="img-fluid" src="@publicpage-template/images/backgrounds/one-nigeria.png?enhanced&w=670&aspect=670:450&position=top" alt="about thumb"/>
+            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/backgrounds/equal-opportunity.jpg?enhanced&w=670&aspect=670:450" alt="about thumb"/>
+            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/backgrounds/one-nigeria.png?enhanced&w=670&aspect=670:450&position=top" alt="about thumb"/>
           </div>
           <div class="counter-item counters-white">
             <div class="counter__icon"><i class="icon-worker-1"></i></div>

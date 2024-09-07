@@ -30,7 +30,7 @@
       <div class="col-sm-12 col-md-4 col-lg-4">
         <div class="feature-item">
           <div class="feature__img">
-            <enhanced:img class="img-fluid" src="@publicpage-template/images/awards/asuke-merit-award-2021.jpg?enhanced" alt="certificate"/>
+            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/awards/asuke-merit-award-2021.jpg?enhanced" alt="certificate"/>
           </div>
           <div class="feature__content p-0 text-center">
             <h4 class="feature__title">Merit Award</h4>
@@ -42,7 +42,7 @@
       <div class="col-sm-12 col-md-4 col-lg-4">
         <div class="feature-item">
           <div class="feature__img">
-            <enhanced:img class="img-fluid" src="@publicpage-template/images/awards/niogg-business-icon-2021.jpg?enhanced" alt="certificate"/>
+            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/awards/niogg-business-icon-2021.jpg?enhanced" alt="certificate"/>
           </div>
           <div class="feature__content p-0 text-center">
             <h4 class="feature__title">Outstanding Business Icon</h4>
@@ -53,7 +53,7 @@
       <div class="col-sm-12 col-md-4 col-lg-4">
         <div class="feature-item">
           <div class="feature__img">
-            <enhanced:img class="img-fluid" src="@publicpage-template/images/awards/niogg-merit-award-2021.jpg?enhanced" alt="certificate"/>
+            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/awards/niogg-merit-award-2021.jpg?enhanced" alt="certificate"/>
           </div>
           <div class="feature__content p-0 text-center">
             <h4 class="feature__title">Outstanding Leadership Icon Personality </h4>
@@ -64,7 +64,7 @@
       <div class="col-sm-12 col-md-4 col-lg-4">
         <div class="feature-item">
           <div class="feature__img">
-            <enhanced:img class="img-fluid" src="@publicpage-template/images/awards/asuke-business-icon-2021.jpg?enhanced" alt="certificate"/>
+            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/awards/asuke-business-icon-2021.jpg?enhanced" alt="certificate"/>
           </div>
           <div class="feature__content p-0 text-center">
             <h4 class="feature__title">Mentorship Icon Merit Award</h4>

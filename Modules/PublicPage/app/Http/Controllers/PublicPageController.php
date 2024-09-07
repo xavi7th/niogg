@@ -18,31 +18,31 @@ class PublicPageController extends Controller
         'name' => 'Nelson Mandela',
         'country' => 'South Africa',
         'testimonial' => 'A fundamental concern for others in our individual and community lives would go a long way in making the world the better place we so passionately dreamt of.',
-        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/nelson-mandela.jpg',
+        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/nelson-mandela.jpg',
       ],
       [
         'name' => 'Chinua Achebe',
         'country' => 'Nigeria',
         'testimonial' => 'Democracy is the worst form of government except for all those other forms that have been tried from time to time.',
-        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/china-achuebe.jpg',
+        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/china-achuebe.jpg',
       ],
       [
         'name' => 'Dr. Akinwumi Adesina',
         'country' => 'Nigeria',
         'testimonial' => 'Proper management of our natural resources is vital for Nigeria\'s development. It ensures sustainable growth, environmental balance, and the well-being of future generations',
-        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/adesina-a-akinwumi.jpg',
+        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/adesina-a-akinwumi.jpg',
       ],
       [
         'name' => 'Peter Drucker',
         'country' => 'Austria',
         'testimonial' => 'The best way to predict the future is to create it. Good governance lays the foundation for a sustainable future.',
-        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/peter-drucker.jpg',
+        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/peter-drucker.jpg',
       ],
       [
         'name' => 'Ban Ki-moon',
         'country' => 'South Korea',
         'testimonial' => 'Corruption erodes trust, destroys institutions, and stifles progress, making it one of the greatest threats to development and democracy.',
-        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/ban-ki-moon.webp',
+        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/ban-ki-moon.webp',
       ],
     ];
 
@@ -64,7 +64,7 @@ class PublicPageController extends Controller
       [
         'name' => 'Comrade Activist Asuke Robinson',
         'position' => 'C.E.O. / Founder',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
+        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/man.avif',
         'desc' => 'Comrade auke Robinson,hails from isoko north LGA ozoro delta state university,abraka delta state is a versatile personality with great idea and business accumen.
                   He is a visionary writer, an activist , a human resources development personnel, a motivational speaker, multiple award winning, a real estate and property
                   manager a mentor whose examplary behavior is outstanding.above all he is a philanthropist.',
@@ -72,7 +72,7 @@ class PublicPageController extends Controller
       [
         'name' => 'Chief Victor Ukiri',
         'position' => 'Chairman',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
+        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/woman.jpeg',
         'desc' => 'Chief (Sir) Toranmah Victor Ukin (KSM) is from Alaka Quarters in Effurun, Uvwie L. G. A. He attended St. Mary Rrivate Schools, Lagos, Lagos State. Government College Ughell, Delta
             State and Anambra State Polytechnic Oko, Anambra State. He has served in the public domain for over 30 years as an architect, builder, project and design supervisor.
             He is happily married to his loving wife and they are blessed with children. He is a member of the Uvwe traditional council as a titled chief of the kingdom.
@@ -81,25 +81,25 @@ class PublicPageController extends Controller
       [
         'name' => 'Barrister Okiemute Akpofure Esq.',
         'position' => 'Legal Adviser',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
+        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/man.avif',
         'desc' => '',
       ],
       [
         'name' => 'Ebenezer Emunarhine',
         'position' => 'P.R.O.',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
+        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/woman.jpeg',
         'desc' => '',
       ],
       [
         'name' => 'Ognenevwegba Merit',
         'position' => 'Treasurer',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
+        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/man.avif',
         'desc' => '',
       ],
       [
         'name' => 'Musa khairat',
         'position' => 'Secretary / Admin',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
+        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/woman.jpeg',
         'desc' => '',
       ],
     ];

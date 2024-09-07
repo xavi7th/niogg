@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-4 footer__widget footer__widget-about  mb-30">
           <div class="footer__widget-content">
-            <enhanced:img src="@publicpage-template/images/logo/niogg-logo-footer.png?enhanced&w=100" alt="logo"/>
+            <enhanced:img src="@publicpage-assets/images/src/logo/niogg-logo-footer.png?enhanced&w=100" alt="logo"/>
             <p>{@html app.address}</p>
             <p>Mail: <a href="mailto:{app.email}" class="font-weight-bold">{app.email}</a></p>
             <p>Mail: <a href="mailto:{app.alt_email}" class="font-weight-bold">{app.alt_email}</a></p>

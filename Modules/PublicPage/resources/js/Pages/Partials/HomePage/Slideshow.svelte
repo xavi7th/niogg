@@ -10,7 +10,7 @@
     data-transition="fade" data-animate-out="fadeOut" data-animate-in="fadeIn">
     <div class="slide-item align-v-h bg-overlay">
       <div class="bg-img">
-        <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/sliders/1.jpg') }" alt="slide" />
+        <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/sliders/1.jpg') }" alt="slide" />
       </div>
       <div class="container">
         <div class="row align-items-center">
@@ -53,7 +53,7 @@
     </div>
     <div class="slide-item align-v-h bg-overlay">
       <div class="bg-img">
-        <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/sliders/2.jpg') }" alt="slide" />
+        <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/sliders/2.jpg') }" alt="slide" />
       </div>
       <div class="container">
         <div class="row align-items-center">
@@ -96,7 +96,7 @@
     </div>
     <div class="slide-item align-v-h bg-overlay">
       <div class="bg-img">
-        <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/sliders/3.jpg') }" alt="slide" />
+        <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/sliders/3.jpg') }" alt="slide" />
       </div>
       <div class="container">
         <div class="row align-items-center">

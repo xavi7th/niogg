@@ -8,7 +8,7 @@
 <section id="featuresListLayout2"
   class="features-list features-list-layout2 bg-overlay bg-overlay-gradient bg-parallax pt-120">
   <div class="bg-img">
-    <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/backgrounds/3.jpg') }" alt="background" />
+    <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/placeholders/3.jpg') }" alt="background" />
   </div>
   <div class="container">
     <div class="row heading mb-30">

@@ -8,7 +8,6 @@ export const aliases = {
   '@publicpage-components': '/Modules/PublicPage/resources/js/Components',
   '@publicpage-partials': '/Modules/PublicPage/resources/js/Pages/Partials',
   '@publicpage-assets': '/Modules/PublicPage/resources',
-  '@publicpage-template': '/Modules/PublicPage/resources/template/assets',
 };
 
 export const concatFiles = [
@@ -29,7 +28,7 @@ export const concatFiles = [
 
 export const publicFiles = [
   {
-    src: 'Modules/PublicPage/resources/images',
+    src: 'Modules/PublicPage/resources/images/static',
     dest: './',
     rename: 'img'
   },

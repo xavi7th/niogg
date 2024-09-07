@@ -48,7 +48,7 @@ async function getConfig () {
       preprocessorOptions: {
         scss: {
           additionalData: `
-            @use '@publicpage-template/css/variables' as *;
+            @use '@publicpage-assets/sass/variables' as *;
           `,
         },
       },

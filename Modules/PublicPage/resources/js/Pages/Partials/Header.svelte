@@ -6,8 +6,8 @@
   <nav class="navbar navbar-expand-lg sticky-navbar">
     <div class="container">
       <a class="navbar-brand" href="index.html">
-        <enhanced:img src="@publicpage-template/images/logo/niogg-logo-light.png?enhanced&w=80" class="logo-light" alt="logo"/>
-        <enhanced:img src="@publicpage-template/images/logo/niogg-logo-dark.png?enhanced&w=70" class="logo-dark" alt="logo"/>
+        <enhanced:img src="@publicpage-assets/images/src/logo/niogg-logo-light.png?enhanced&w=80" class="logo-light" alt="logo"/>
+        <enhanced:img src="@publicpage-assets/images/src/logo/niogg-logo-dark.png?enhanced&w=70" class="logo-dark" alt="logo"/>
       </a>
       <button class="navbar-toggler" type="button">
         <span class="menu-lines"><span></span></span>

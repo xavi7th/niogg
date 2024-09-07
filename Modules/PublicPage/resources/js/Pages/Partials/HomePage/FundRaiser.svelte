@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-6 inner-padding  bg-overlay bg-overlay-theme bg-parallax">
         <div class="bg-img">
-          <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/backgrounds/2.jpg') }" alt="background" />
+          <img src="{ getImgUrl('Modules/PublicPage/resources/images/placeholders/5.jpg') }" alt="background" />
         </div>
         <div class="heading heading-2 mb-50">
           <span class="heading__subtitle color-white">Join us and Change Nigeria!</span>
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="bg-img">
-          <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/banners/awareness-drive.png') }" alt="background" />
+          <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/banners/awareness-drive.png') }" alt="background" />
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@
         <div class="request-quote-panel">
           <div class="request__panel-banner bg-overlay bg-overlay-theme">
             <div class="bg-img">
-              <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/banners/2.jpg') }" alt="banner" />
+              <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/placeholders/2.jpg') }" alt="banner" />
             </div>
             <div class="request__panel-banner-inner">
               <h5 class="request__panel-title">We are looking for Heroes</h5>
