@@ -48,7 +48,7 @@
               <div class="blog-item">
                 <div class="blog__img">
                   <a href="#">
-                    <enhanced:img src="@publicpage-template/images/blog/grid/1.jpg?enhanced&w=350&aspect=350:230" alt="blog thumb"/>
+                    <enhanced:img src="@publicpage-assets/images/src/placeholders/7.jpg?enhanced&w=350&aspect=350:230" alt="blog thumb"/>
                   </a>
                 </div>
                 <div class="blog__content">

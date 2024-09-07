@@ -35,7 +35,7 @@
       </div>
       <div class="col-sm-12 col-md-12 col-lg-6 bg-overlay bg-overlay-4 pt-100 pb-100 my-9 rounded">
         <div class="bg-img">
-          <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/banners/enlightenment-campaigns.jpg') }" alt="background" />
+          <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/banners/enlightenment-campaigns.jpg') }" alt="background" />
         </div>
       </div>
 
@@ -44,7 +44,7 @@
 
       <div class="col-sm-12 col-md-12 col-lg-6 bg-overlay bg-overlay-4 pt-100 pb-100 my-9 rounded">
         <div class="bg-img">
-          <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/banners/fight-for-good-government.jpg') }" alt="background" />
+          <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/banners/fight-for-good-government.jpg') }" alt="background" />
         </div>
       </div>
 
@@ -82,7 +82,7 @@
 
       <div class="col-sm-12 col-md-12 col-lg-6 bg-overlay bg-overlay-4 pt-100 pb-100 my-9 rounded">
         <div class="bg-img">
-          <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/banners/nigeria-elections.jpg') }" alt="background" />
+          <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/banners/nigeria-elections.jpg') }" alt="background" />
         </div>
       </div>
 

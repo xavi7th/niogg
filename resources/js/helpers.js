@@ -116,9 +116,9 @@ export const shuffle = arr => {
 }
 
 /** @type Record<string, string> */
-export const imgUrls = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { eager: true, query: { url: true }, import: 'default' });
+export const imgUrls = import.meta.glob('../../Modules/PublicPage/resources/images/src/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { eager: true, query: { url: true }, import: 'default' });
 /** @type Record<string, CallableFunction> */
-export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/template/assets/images/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { query: { enhanced: true } });
+export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/images/src/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { query: { enhanced: true } });
 
 export const getImgModule = (url, params) => import('../../' + url + '?enhanced&' + params);
 
@@ -126,15 +126,15 @@ export const getImgUrl = (key) => imgUrls['../../' + key]
 export const  getImgObj = (key) => imgObjs['../../' + key]()
 
 /**
-  <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/logo-light.png') }" class="logo-light" alt="logo" />
+  <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/logo-light.png') }" class="logo-light" alt="logo" />
 
-  {#await getImgObj('Modules/PublicPage/resources/template/assets/images/logo-light.png') }
+  {#await getImgObj('Modules/PublicPage/resources/images/src/logo-light.png') }
     <p>loading...</p>
   {:then src}
     <enhanced:img src="{ src.default }" class="logo-light" alt="logo" />
   {/await}
 
-  getImgModule('Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/china-achuebe.jpg', 'w=20&h=20').then((e) => console.log(e));
+  getImgModule('Modules/PublicPage/resources/images/src/testimonials/thumbs/china-achuebe.jpg', 'w=20&h=20').then((e) => console.log(e));
 
   {#await getImgModule(t.img_url, 'w=20&h=20')}
     <p>loading...</p>
@@ -142,7 +142,7 @@ export const  getImgObj = (key) => imgObjs['../../' + key]()
     <enhanced:img src="{ src.default }" class="logo-light" alt="logo" />
   {/await}
 
-  <enhanced:img src="@publicpage-template/images/logo/logo-light.png?enhanced" class="logo-light" alt="logo"/>
+  <enhanced:img src="@publicpage-assets/images/src/logo/logo-light.png?enhanced" class="logo-light" alt="logo"/>
 
-  <div style="width:100px; height:50px; background-image: url('{ getImgUrl('Modules/PublicPage/resources/template/assets/images/logo-light.png') }')" class="logo-light" />
+  <div style="width:100px; height:50px; background-image: url('{ getImgUrl('Modules/PublicPage/resources/images/src/logo-light.png') }')" class="logo-light" />
  */

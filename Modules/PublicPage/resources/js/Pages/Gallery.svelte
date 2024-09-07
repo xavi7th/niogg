@@ -34,7 +34,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-awards">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/1.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/1.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">Award for Whistle Blowing Initiatives</a></h4>
@@ -48,7 +48,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-protests">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/2.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/2.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">#EndBadGovernmnent Protests 2024</a></h4>
@@ -62,7 +62,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-charity">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/3.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/3.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">Charity visit to Rewane Orphanage 2023</a></h4>
@@ -76,7 +76,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-elections">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/4.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/4.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">Electoral Enlightenments</a></h4>
@@ -90,7 +90,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-medicals">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/5.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/5.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">Free Eye Testing for Otokutu and environs</a></h4>
@@ -104,7 +104,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-charity">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/6.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/6.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">Charity visit to Rewane Orphanage 2023</a></h4>
@@ -118,7 +118,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-elections project-hidden">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/1.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/1.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">Charity visit to Rewane Orphanage 2023</a></h4>
@@ -132,7 +132,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-protests project-hidden">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/3.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/3.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">Charity visit to Rewane Orphanage 2023</a></h4>
@@ -146,7 +146,7 @@
       <div class="col-sm-6 col-md-6 col-lg-4 mix filter-medicals project-hidden">
         <div class="project-item">
           <div class="project__img">
-            <enhanced:img src="@publicpage-template/images/case-studies/grid/2.jpg?enhanced" alt="gallery thumb"/>
+            <enhanced:img src="@publicpage-assets/images/src/placeholders/2.jpg?enhanced" alt="gallery thumb"/>
           </div>
           <div class="project__content">
             <h4 class="project__title"><a href="#">#EndBadGovernmnent Protests 2024</a></h4>

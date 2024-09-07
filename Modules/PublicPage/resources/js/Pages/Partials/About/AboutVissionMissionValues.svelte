@@ -39,7 +39,7 @@
       </div>
       <div class="col-sm-12 col-md-12 col-lg-6 bg-overlay bg-overlay-4 pt-100 pb-100">
         <div class="bg-img">
-          <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/banners/good-governance.jpg') }" alt="background" />
+          <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/banners/good-governance.jpg') }" alt="background" />
         </div>
       </div>
     </div>

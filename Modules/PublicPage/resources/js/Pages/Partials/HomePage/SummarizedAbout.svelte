@@ -23,12 +23,12 @@
              for its principles. Ultimately, {appAltName} contributes to the overall societal development of Nigeria through its initiatives.</p>
         </div>
         <div class="signature mb-30">
-          <enhanced:img src="@publicpage-template/images/about/singnture.png?enhanced" class="signature" alt="signature"/>
+          <enhanced:img src="@publicpage-assets/images/src/about/singnture.png?enhanced" class="signature" alt="signature"/>
         </div>
       </div>
       <div class="col-sm-12 col-md-8 col-lg-5 offset-lg-1">
         <div class="about__img">
-          <enhanced:img src="@publicpage-template/images/about/active-participation.jpg?enhanced&h=420&w=390&position=top&aspect=13:14" class="img-fluid" alt="about"/>
+          <enhanced:img src="@publicpage-assets/images/src/about/active-participation.jpg?enhanced&h=420&w=390&position=top&aspect=13:14" class="img-fluid" alt="about"/>
           <a href={ window.route('app.contact') } class="btn btn__primary popup-video">
             <span class="mr-2">Participate!</span><i class="fa fa-play"></i>
           </a>

@@ -6,14 +6,14 @@
 
 <section id="banner4" class="banner banner-4 pt-120 pb-120">
   <div class="bg-img">
-    <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/banners/nigeria-region.jpg') }" alt="background" />
+    <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/banners/nigeria-region.jpg') }" alt="background" />
   </div>
   <div class="container">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-9 col-xl-7">
         <div class="banner-content">
           <div class="heading heading-3 heading-white mb-30 d-flex flex-column align-items-center">
-            <enhanced:img src="@publicpage-template/images/logo/niogg-logo-light.png?enhanced&w=125&aspect=1:1" alt="author thumb" class="mb-30"/>
+            <enhanced:img src="@publicpage-assets/images/src/logo/niogg-logo-light.png?enhanced&w=125&aspect=1:1" alt="author thumb" class="mb-30"/>
             <span class="heading__subtitle">Building The Future, Restoring The Past</span>
             <h2 class="heading__title">Nigeria Regional Office</h2>
             <p class="heading__desc">

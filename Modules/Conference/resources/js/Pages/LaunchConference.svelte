@@ -22,23 +22,23 @@
         <aside class="sidebar mb-30 mr-0 lg:!mr-5">
 
           <div class="widget widget-help bg-overlay bg-overlay-theme !p-5 !mb-2">
-            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/template/assets/images/sidebar/1.jpg')}" alt="background"></div>
+            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/images/src/sidebar/1.jpg')}" alt="background"></div>
             <div class="widget__content">
               <h3  class="text-white font-bold text-2xl text-center uppercase mb-0">{app.alt_name} Presents</h3>
             </div>
           </div>
 
           <div class="sponsor-imgs mb-50">
-            <!-- <img src="{getImgUrl('Modules/PublicPage/resources/template/assets/images/sidebar/1.jpg')}" alt="background"> -->
+            <!-- <img src="{getImgUrl('Modules/PublicPage/resources/images/src/sidebar/1.jpg')}" alt="background"> -->
 
-            <enhanced:img src="@publicpage-template/images/sidebar/niogg-flyer.jpg?enhanced" class="w-full" alt="background">
+            <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer.jpg?enhanced" class="w-full" alt="background">
           </div>
 
           <div class="widget">
             <h5 class="widget__title capitalize">Key Sponsors</h5>
             <div class="widget__content">
               <a href="#" class="btn btn__block btn__hover3 mb-20">
-                <enhanced:img src="@publicpage-template/images/logo/logo-dark.png?enhanced" alt="pdf" />
+                <enhanced:img src="@publicpage-assets/images/src/logo/logo-dark.png?enhanced" alt="pdf" />
               </a>
             </div>
           </div>
@@ -61,7 +61,7 @@
           <p class="text__block-desc">With keynote speakers, insightful panels, and interactive discussions, attendees will gain valuable insights into emerging opportunities in governance, leadership, and economic policy. NIOGG invites public and private organizations to sponsor this impactful event, contributing to the shared goal of fostering good governance and economic development in Nigeria.</p>
           <p class="text__block-desc">Join us at the Nigeria Leadership Quest for Economic Growth Conference and be part of the movement shaping the future of Nigeria. Your sponsorship and participation will not only help propel the event’s success but also support NIOGG's mission to build a more accountable, transparent, and economically thriving Nigeria.</p>
           <div class="video-1 bg-overlay mb-25">
-            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/template/assets/images/video/1.jpg')}" alt="background"></div>
+            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/images/src/video/1.jpg')}" alt="background"></div>
             <div class="video__btn text-center">
               <a class="popup-video" href="https://youtu.be/5h2SAVvhcDc?si=TeN3o7BpBAFedM_C">
                 <span class="video__player-animation"></span>
@@ -255,8 +255,7 @@
           data-speed="800">
           <div class="project-item">
             <div class="project__img">
-              <!-- <img src="assets/images/case-studies/grid/1.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/1.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <enhanced:img src="@publicpage-assets/images/src/placeholders/1.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">John Doe</a></h4>
@@ -267,8 +266,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <!-- <img src="assets/images/case-studies/grid/2.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/2.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <enhanced:img src="@publicpage-assets/images/src/placeholders/2.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Sarah Pinkett</a></h4>
@@ -279,8 +277,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <!-- <img src="assets/images/case-studies/grid/3.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/3.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <enhanced:img src="@publicpage-assets/images/src/placeholders/3.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Allen Poe</a></h4>
@@ -291,8 +288,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <!-- <img src="assets/images/case-studies/grid/4.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/4.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <enhanced:img src="@publicpage-assets/images/src/placeholders/4.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
               <a href="#" class="zoom__icon"></a>
             </div>
             <div class="project__content">

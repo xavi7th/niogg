@@ -10,7 +10,6 @@
       "@publicpage-components/*": ["/Modules/PublicPage/resources/js/Components"],
       "@publicpage-partials/*": ["/Modules/PublicPage/resources/js/Pages/Partials"],
       "@publicpage-assets/*": ["/Modules/PublicPage/resources"],
-      "@publicpage-template/*": ["/Modules/PublicPage/resources/template/assets"],
       "@userauth-pages": ["/Modules/UserAuth/resources/js/Pages"],
       "@userauth-shared": ["/Modules/UserAuth/resources/js/Shared"],
       "@userauth-components": ["/Modules/UserAuth/resources/js/Components"],
