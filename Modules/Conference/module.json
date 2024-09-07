@@ -1,0 +1,11 @@
+{
+  "name": "Conference",
+  "alias": "conference",
+  "description": "Conference for this project",
+  "keywords": [],
+  "priority": 0,
+  "providers": [
+    "Modules\\Conference\\Providers\\ConferenceServiceProvider"
+  ],
+  "files": []
+}
