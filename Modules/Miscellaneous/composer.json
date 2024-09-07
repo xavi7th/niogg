@@ -1,0 +1,30 @@
+{
+  "name": "xavi7th/miscellaneous",
+  "description": "",
+  "authors": [
+    {
+      "name": "Daniel Akhile",
+      "email": "xavi7th@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [],
+      "aliases": {
+
+      }
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Modules\\Miscellaneous\\": "app/",
+      "Modules\\Miscellaneous\\Database\\Factories\\": "database/factories/",
+      "Modules\\Miscellaneous\\Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Modules\\Miscellaneous\\Tests\\": "tests/"
+    }
+  }
+}
