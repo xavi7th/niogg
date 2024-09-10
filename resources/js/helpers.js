@@ -120,7 +120,7 @@ export const imgUrls = import.meta.glob('../../Modules/PublicPage/resources/imag
 /** @type Record<string, CallableFunction> */
 export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/images/src/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { query: { enhanced: true } });
 
-export const getImgModule = (url, params) => import('../../' + url + '?enhanced&' + params);
+export const getImgModule = (url, params) => import(/* @vite-ignore */ '../../' + url + '?enhanced&' + params);
 
 export const getImgUrl = (key) => imgUrls['../../' + key]
 export const  getImgObj = (key) => imgObjs['../../' + key]()

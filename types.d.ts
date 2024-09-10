@@ -13,3 +13,13 @@ export type NewsArticle = {
   publishedAt: Date,
   description: string,
 }
+
+export type ConferenceRegistrant = {
+  full_name: string,
+  email: string,
+  phone: string,
+  amount: string,
+  password?: string,
+  conference_tag: string,
+  is_manual_reg: boolean,
+}

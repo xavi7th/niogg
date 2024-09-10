@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 if ( ! function_exists('slug_to_string')) {
   function slug_to_string($data)
@@ -161,5 +163,122 @@ if ( ! function_exists('is_identical')) {
     }
 
     return TRUE; //All tests passed.
+  }
+}
+
+if ( ! function_exists('unique_random')) {
+  /**
+   * Generate a unique random string of characters
+   * uses str_random() helper for generating the random string
+   *
+   * @param  string  $table  - name of the table
+   * @param  string  $col  - name of the column that needs to be tested
+   * @param  string  $prefix  Any prefix you want to add to generated string
+   * @param  int  $chars  - length of the random string
+   * @param  bool  $numeric  Whether or not the generated characters should be numeric
+   * @return string
+   */
+  function unique_random($table, $col, $prefix = NULL, $chars = NULL, $numeric = FALSE)
+  {
+    $unique = FALSE;
+
+    // Store tested results in array to not test them again
+    $tested = [];
+
+    do {
+      // Generate random string of characters
+
+      if ($chars === NULL) {
+        if ($numeric) {
+          $random = $prefix . rand(100001, 999999999);
+        } else {
+          $random = $prefix . Str::uuid();
+        }
+      } else {
+        if ($numeric) {
+          $random = $prefix . rand(mb_substr(100000001, 1, ($chars)), mb_substr(9999999999, -($chars)));
+        } else {
+          $random = $prefix . Str::random($chars);
+        }
+      }
+
+      // Check if it's already testing
+      // If so, don't query the database again
+      if (in_array($random, $tested)) {
+        continue;
+      }
+
+      // Check if it is unique in the database
+      $count = DB::table($table)->where($col, '=', $random)->count();
+
+      // Store the random character in the tested array
+      // To keep track which ones are already tested
+      $tested[] = $random;
+
+      // String appears to be unique
+      if ($count === 0) {
+        // Set unique to true to break the loop
+        $unique = TRUE;
+      }
+
+      // If unique is still false at this point
+      // it will just repeat all the steps until
+      // it has generated a random string of characters
+    } while ( ! $unique);
+
+    return $random;
+  }
+}
+
+if ( ! function_exists('str_obfuscate')) {
+  function str_obfuscate(?string $val, $decrypt = FALSE, $chunks = 2, $padding = 2, $salt_limiter = '-'): ?string
+  {
+    if (is_null($val)) {
+      return NULL;
+    }
+
+    if ($decrypt) {
+      $unhashed = $salt = '';
+      try {
+        list($chunks, $padding) = explode($salt_limiter, Str::after($val, $salt_limiter));
+      } catch (ErrorException $th) {
+        if ($th->getMessage() === 'Undefined array key 1') {
+          throw new Exception('You cannot decrypt an unencrypted string', 422);
+        }
+        throw $th;
+      }
+
+      // if we pass and unbfuscated string without a padding and a chunk factor, just return the string
+      if ( ! collect([$chunks, $padding])->every(fn ($v) => is_numeric($v))) {
+        return $val;
+      }
+
+      // Remove the chunk and padding key and the trim out the last padded characters (to prevent characters overflowing into our desired result)
+      $val = mb_substr(Str::before($val, $salt_limiter), $padding);
+
+      $val = mb_str_split($val);
+
+      //Retrieve the original string
+      while (count($val) > 0) {
+        for ($i = 0; $i < $chunks; $i++) {
+          $unhashed .= array_pop($val);
+        }
+        for ($i = 0; $i < $padding; $i++) {
+          $salt .= array_pop($val);
+        }
+      }
+
+      return $unhashed;
+    }
+
+    $hash = '';
+    $salter = md5($val); //use md5 to get the same salt for the same value
+
+    foreach (mb_str_split($val, $chunks) as $key => $value) {
+      $hash .= $value . Str::substr($salter, $key * $chunks, $padding);
+    }
+
+    //Reverse the string to make unhashing it more efficient using array_pop instead of array_shift and then save the chunk and padding factor so that we can unhash the result without remembering them
+    return strrev($hash) . $salt_limiter . $chunks . $salt_limiter . $padding;
   }
 }
