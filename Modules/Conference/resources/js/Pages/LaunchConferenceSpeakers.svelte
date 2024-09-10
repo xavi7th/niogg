@@ -20,7 +20,7 @@
     <div class="project__content">
       <h4 class="project__title"><a href="#">Neil McCluskey</a></h4>
       <div class="project__cat">
-        <a href="#">Chemicals</a><a href="#">Oil & Gas</a>
+        <!-- <a href="#">Chemicals</a><a href="#">Oil & Gas</a> -->
       </div>
     </div>
   </div>
