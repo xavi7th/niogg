@@ -8,6 +8,7 @@
   import { page } from "@inertiajs/svelte";
   import LaunchPageAside from './LaunchPageAside.svelte';
   import PageTitle from '@publicpage-partials/PageTitle.svelte';
+  import ConferenceSpeakers from './LaunchConferenceSpeakers.svelte';
   import LaunchConferenceRegistrationForm from './Partials/LaunchConferenceRegistrationForm.svelte';
 
   $: ({ app } = $page.props);
@@ -160,56 +161,7 @@
           </div>
         </div>
 
-        <h2 class="text-4xl text-gray-800">Our Esteemed Speakers</h2>
-        <div class="projects-carousel-2 carousel owl-carousel carousel-arrows" data-slide="3" data-slide-md="2"
-          data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="30" data-loop="true"
-          data-speed="800">
-          <div class="project-item">
-            <div class="project__img">
-              <enhanced:img src="@publicpage-assets/images/src/placeholders/1.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
-            </div>
-            <div class="project__content">
-              <h4 class="project__title"><a href="#">John Doe</a></h4>
-              <div class="project__cat">
-                <a href="#">Chemicals</a><a href="#">Oil & Gas</a>
-              </div>
-            </div>
-          </div>
-          <div class="project-item">
-            <div class="project__img">
-              <enhanced:img src="@publicpage-assets/images/src/placeholders/2.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
-            </div>
-            <div class="project__content">
-              <h4 class="project__title"><a href="#">Sarah Pinkett</a></h4>
-              <div class="project__cat">
-                <a href="#">Analystics</a><a href="#">Optimization</a>
-              </div>
-            </div>
-          </div>
-          <div class="project-item">
-            <div class="project__img">
-              <enhanced:img src="@publicpage-assets/images/src/placeholders/3.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
-            </div>
-            <div class="project__content">
-              <h4 class="project__title"><a href="#">Allen Poe</a></h4>
-              <div class="project__cat">
-                <a href="#">Solar</a><a href="#">Energy Initiatives</a>
-              </div>
-            </div>
-          </div>
-          <div class="project-item">
-            <div class="project__img">
-              <enhanced:img src="@publicpage-assets/images/src/placeholders/4.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
-              <a href="#" class="zoom__icon"></a>
-            </div>
-            <div class="project__content">
-              <h4 class="project__title"><a href="#">Winston Burklin</a></h4>
-              <div class="project__cat">
-                <a href="#">Analystics</a><a href="#">Optimization</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ConferenceSpeakers />
       </div>
     </div>
   </div>
@@ -217,16 +169,6 @@
 
 <style lang="scss">
   :global{
-    .project-item{
-
-      .project__img{
-
-        &:after{
-          border-radius: 1.5rem;
-        }
-      }
-    }
-
     .collapse{
       visibility: inherit !important;
     }
