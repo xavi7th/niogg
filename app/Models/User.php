@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Modules\UserAuth\Notifications\VerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\UserAuth\Notifications\SendPasswordResetNotification;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable // implements MustVerifyEmail
 {
-  use HasApiTokens, HasFactory, Notifiable;
+  use HasFactory, Notifiable;
 
   protected $fillable = [
     'name',
@@ -30,9 +30,11 @@ class User extends Authenticatable implements MustVerifyEmail
     'password' => 'hashed',
   ];
 
-  public function getFirstNameAttribute(): string
+  public function firstName(): Attribute
   {
-    return explode(' ', $this->full_name)[0];
+    return Attribute::make(
+        get: fn () => explode(' ', $this->full_name)[0],
+    );
   }
 
   /**

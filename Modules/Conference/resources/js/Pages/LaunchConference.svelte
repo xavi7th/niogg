@@ -4,9 +4,10 @@
 </script>
 
 <script>
+  import { getImgUrl } from '@/helpers';
   import { page } from "@inertiajs/svelte";
   import PageTitle from '@publicpage-partials/PageTitle.svelte';
-  import { getImgUrl } from '@/helpers';
+  import LaunchConferenceRegistrationForm from './Partials/LaunchConferenceRegistrationForm.svelte';
 
   $: ({ app } = $page.props);
 </script>
@@ -101,66 +102,9 @@
           <p class="text__block-desc">Connect with a diverse group of industry leaders, policymakers, and innovators who share your passion for driving economic growth and accountability. Build relationships that can foster future collaborations and opportunities for both personal and national development.</p>
         </div>
 
-        <div class="row relative bg-overla bg-overlay-them bg-gray-100 px-2 py-16 !mb-20">
-          <div class="col-sm-12 col-lg-4 md:flex lg:flex-col">
-            <div class="contact-panel mb-40 w-full md:w-2/5 lg:w-full">
-              <h6 class="contact__panel-title">Bank Details for Manual Registration</h6>
-              <ul class="contact__panel-list list-unstyled">
-                <li class="capitalize"><i class="fa fa-bank"></i><span>2045475254</span></li>
-                <li class="capitalize"><i class="fa fa-user"></i><span>Nigeria insight on good governance</span></li>
-                <li class="capitalize"><i class="fa fa-bank"></i><span>First Bank Nigeria</span></li>
-              </ul>
-            </div>
-            <div class="contact-panel md:mt-6 lg:mt-0 mb-40 w-full md:w-3/5 lg:w-full">
-              <ul class="contact__panel-list contact__panel-list-2 list-unstyled">
-                <li>
-                  <span class="text__link">
-                    Send us your payment receipt on <span class="font-bold color-theme">{app.phone}</span> and we will get back to you within 24 hours
-                    with your event registration details or you can register automatically using the form<span class="lg:hidden">&nbsp; below</span>.
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-sm-12 col-lg-8" id="become-a-sponsor">
-            <div class="request-quote-panel">
-              <div class="request__form mb-0 !basis-full">
-                <div class="request__form-body">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-12">
-                      <h4 class="request__form-title">Book Your Reservation</h4>
-                      <p class="request__form-desc">Fill the form below and follow the steps to complete your registration automatically.</p>
-                    </div>
-                    <div class="col-sm-12">
-                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Name">
-                      </div>
-                    </div>
-                    <div class="col-sm-12">
-                      <div class="form-group">
-                        <input type="email" class="form-control" placeholder="We will send your registration details via mail to you">
-                      </div>
-                    </div>
-                    <div class="col-sm-12">
-                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Phone">
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-12 text-right">
-                      <button class="btn btn__secondary">Register Now</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
+        <LaunchConferenceRegistrationForm />
 
         <!-- <img src="assets/images/charts/1.png" alt="chart" class="img-fluid mb-50"> -->
-
 
         <!-- <div class="testimonial-wrap-panel mb-60">
           <div class="carousel owl-carousel carousel-dots crousel-dots-center" data-slide="1" data-slide-md="1"
@@ -212,7 +156,6 @@
             </div>
           </div>
         </div> -->
-
 
         <h2 class="text-4xl text-gray-800">Key Benefits</h2>
         <div id="accordion" class="mb-60 testimonial-wrap-panel !p-4 md:!p-16">
@@ -318,18 +261,6 @@
 
     .collapse{
       visibility: inherit !important;
-    }
-  }
-
-  #become-a-sponsor{
-    scroll-margin-top: 150px;
-
-    @media (max-width: 991px) {
-      scroll-margin-top: 250px;
-    }
-
-    @media (max-width: 540px) {
-      scroll-margin-top: 400px;
     }
   }
 </style>
