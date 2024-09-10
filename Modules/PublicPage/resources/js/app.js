@@ -26,7 +26,7 @@ window.ToastLarge = swl.mixin({
   icon: "success",
   title: 'To be implemented!',
   html: 'I will close in <b></b> milliseconds.',
-  timer: 3000,
+  timer: 10000,
   timerProgressBar: true,
   showConfirmButton: false,
   allowEscapeKey: true,
@@ -183,6 +183,46 @@ createInertiaApp({
   },
 
   setup({ el, App, props }) {
+    let pageProps = props.initialPage.props;
+
+    if (Object.entries(pageProps.errors).length) {
+      ToastLarge.fire({
+          title: "Error",
+          html: getErrorString(pageProps.errors),
+          icon: "error",
+          timer:10000, //milliseconds
+          footer:
+          `<span class="fw-light fs-7 lh-1">
+            Are you having issues here? Contact us via our support email: &nbsp;&nbsp; <a target="_blank" rel="noopener noreferrer" href="mailto:contact@enski.net">contact@enski.net</a>
+          </span>`,
+      });
+    } else if (pageProps.flash.warning) {
+      ToastLarge.fire({
+        title: "Note!!",
+        html: pageProps.flash.warning,
+        icon: "warning",
+        timer: 15000,
+        allowEscapeKey: true
+      });
+    } else if (pageProps.flash.success) {
+      ToastLarge.fire({
+        title: "Success",
+        html: pageProps.flash.success,
+        icon: "success",
+        timer: 10000,
+        allowEscapeKey: true
+      });
+    } else if ( pageProps.flash.toast_info ) {
+      Toast.fire({
+        title: "",
+        html: pageProps.flash.toast_info,
+        icon: "info",
+        position: 'center',
+        timer: 7000,
+        allowEscapeKey: true
+      });
+    }
+
     new App({ target: el, props })
   },
 
