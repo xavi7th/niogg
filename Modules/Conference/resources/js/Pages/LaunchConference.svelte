@@ -6,6 +6,7 @@
 <script>
   import { getImgUrl } from '@/helpers';
   import { page } from "@inertiajs/svelte";
+  import LaunchPageAside from './LaunchPageAside.svelte';
   import PageTitle from '@publicpage-partials/PageTitle.svelte';
   import LaunchConferenceRegistrationForm from './Partials/LaunchConferenceRegistrationForm.svelte';
 
@@ -19,40 +20,7 @@
 <section id="textContentSection" class="text-content-section pt-0 xl:pt-50">
   <div class="container max-w-screen-xl">
     <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-4 relative">
-        <aside class="sidebar mb-30 mr-0 lg:!mr-5">
-
-          <div class="widget widget-help bg-overlay bg-overlay-theme !p-5 !mb-2">
-            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/images/src/sidebar/1.jpg')}" alt="background"></div>
-            <div class="widget__content">
-              <h3  class="text-white font-bold text-2xl text-center uppercase mb-0">{app.alt_name} Presents</h3>
-            </div>
-          </div>
-
-          <div class="sponsor-imgs mb-50">
-            <!-- <img src="{getImgUrl('Modules/PublicPage/resources/images/src/sidebar/1.jpg')}" alt="background"> -->
-
-            <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer.jpg?enhanced" class="w-full" alt="background">
-          </div>
-
-          <div class="widget">
-            <h5 class="widget__title capitalize">Key Sponsors</h5>
-            <div class="widget__content">
-              <a href="#" class="btn btn__block btn__hover3 mb-20">
-                <enhanced:img src="@publicpage-assets/images/src/logo/logo-dark.png?enhanced" alt="pdf" />
-              </a>
-            </div>
-          </div>
-
-          <div class="widget widget-download">
-            <div class="widget__content">
-              <a href="#become-a-sponsor" class="btn btn__primary btn__block btn__hover3 text-center">
-                <span class="grow text-xl font-bold uppercase">Become a Sponsor</span>
-              </a>
-            </div>
-          </div>
-        </aside>
-      </div>
+      <LaunchPageAside />
 
       <div class="col-sm-12 col-md-12 col-lg-8">
         <div class="text__block">
