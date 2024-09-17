@@ -71,6 +71,10 @@ class HandleInertiaRequests extends Middleware
 
   public function rootView(Request $request): string
   {
+    if (Str::startsWith(Route::currentRouteName(), 'app.conferences')) {
+      return 'conference::app';
+    }
+
     if (is_null(Route::currentRouteName()) || Str::startsWith(Route::currentRouteName(), 'app.')) {
       return $this->rootView;
     }
