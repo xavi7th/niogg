@@ -118,11 +118,13 @@ return [
   */
   'collectors' => [
     EntryType::REQUEST => [
-      'telescope-toolbar::collectors.request',
+      'miscellaneous::telescope-toolbar-collectors.request',
+      // 'telescope-toolbar::collectors.request',
       'telescope-toolbar::collectors.time',
       'telescope-toolbar::collectors.memory',
       'telescope-toolbar::collectors.session',
       'telescope-toolbar::collectors.user',
+      'miscellaneous::telescope-toolbar-collectors.inertia',
     ],
     EntryType::EXCEPTION => [
       'telescope-toolbar::collectors.exceptions',
