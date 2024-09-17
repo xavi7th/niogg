@@ -15,18 +15,18 @@
   data-speed="800">
   <div class="project-item">
     <div class="project__img">
-      <enhanced:img src="@publicpage-assets/images/src/speakers/neil-mccluskey.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="project-img" />
+      <enhanced:img src="@publicpage-assets/images/src/speakers/neil-mccluskey.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="neil-mccluskey-thumb" />
     </div>
     <div class="project__content">
       <h4 class="project__title"><a href="#">Neil McCluskey</a></h4>
       <div class="project__cat">
-        <!-- <a href="#">Chemicals</a><a href="#">Oil & Gas</a> -->
+        <a href="#">HR Professional</a><a href="#">United Kingdom</a>
       </div>
     </div>
   </div>
   <div class="project-item">
     <div class="project__img">
-      <enhanced:img src="@publicpage-assets/images/src/speakers/sania-ansari.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="project-img" />
+      <enhanced:img src="@publicpage-assets/images/src/speakers/sania-ansari.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="sania-ansari-thumb" />
     </div>
     <div class="project__content">
       <h4 class="project__title"><a href="https://ae.linkedin.com/in/he-dr-sania-a-ansari" target="_blank">H.E. Dr. Sania A Ansari</a></h4>
@@ -37,7 +37,7 @@
   </div>
   <div class="project-item">
     <div class="project__img">
-      <enhanced:img src="@publicpage-assets/images/src/speakers/allen-onyema.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="project-img" />
+      <enhanced:img src="@publicpage-assets/images/src/speakers/allen-onyema.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="allen-onyema-thumb" />
     </div>
     <div class="project__content">
       <h4 class="project__title"><a href="https://en.wikipedia.org/wiki/Allen_Onyema" target="_blank">Barr. Allen I. Onyema</a></h4>
@@ -48,12 +48,23 @@
   </div>
   <div class="project-item">
     <div class="project__img">
-      <enhanced:img src="@publicpage-assets/images/src/speakers/hassan-imam-2.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="project-img" />
+      <enhanced:img src="@publicpage-assets/images/src/speakers/hassan-imam-2.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="hassan-imam-thumb" />
     </div>
     <div class="project__content">
       <h4 class="project__title"><a href="https://www.keystonebankng.com/staff-member/hassan-imam/" target="_blank">Hassan Imam</a></h4>
       <div class="project__cat">
         <a href="#/">Managing Director</a><a href="https://www.keystonebankng.com" target="_blank">Keystone Bank</a>
+      </div>
+    </div>
+  </div>
+  <div class="project-item">
+    <div class="project__img">
+      <enhanced:img src="@publicpage-assets/images/src/speakers/kafilat-araoye.jpg?enhanced&h=250&w=250fit=crop" class="w-full !rounded-3xl" alt="kafilat-araoye-thumb" />
+    </div>
+    <div class="project__content">
+      <h4 class="project__title"><a href="https://www.lotusbank.com/team-details?a=Kafilat-Araoye" target="_blank">Mrs Kafiat Araroye</a></h4>
+      <div class="project__cat">
+        <a href="#/">Managing Director</a><a href="https://www.lotusbank.com/" target="_blank">LOTUS Bank</a>
       </div>
     </div>
   </div>
