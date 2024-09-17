@@ -11,7 +11,7 @@
 
     <meta name="author" content="{{ $author ?? '' }}">
     <meta name="keywords" content="{{ $keywords ?? '' }}">
-    <meta name="description" content="{{ $description ?? '' }}">
+    <meta name="description" content="{{ $metaDesc ?? '' }}">
 
     <meta name="robots" content="index,follow" />
     <meta name="format-detection" content="telephone=yes">
