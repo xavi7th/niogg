@@ -15,8 +15,8 @@
   $: ({ app } = $page.props);
 </script>
 
-<PageTitle appName={app.name} pageTitle='Nigeria leadership quest for economy growth Conference'>
-  <li class="breadcrumb-item active" aria-current="page">Nigeria leadership quest for economy growth Conference</li>
+<PageTitle appName={app.name} pageTitle='Nigeria Leadership Quest for Economic Growth/ Business Summit Gala Night Award'>
+  <li class="breadcrumb-item active capitalize" aria-current="page">Nigeria leadership quest for economic growth Conference</li>
 </PageTitle>
 
 <section id="textContentSection" class="text-content-section pt-0 xl:pt-50">
@@ -32,8 +32,8 @@
           <p class="text__block-desc">This high-profile gathering will delve into innovative solutions to Nigeria’s economic challenges, spotlighting the importance of accountable governance and youth leadership in national development. The conference provides a unique platform for stakeholders across sectors—governmental bodies, private industries, civil society, and financial institutions—to exchange ideas and strategies that can catalyze economic growth and ensure a prosperous future for all Nigerians.</p>
           <p class="text__block-desc">With keynote speakers, insightful panels, and interactive discussions, approximately 250 attendees, including key stakeholders from government, the private sector, civil society, and the media, will gain valuable insights into emerging opportunities in governance, leadership, and economic policy. NIOGG invites public and private organizations to sponsor this impactful event, contributing to the shared goal of fostering good governance and economic development in Nigeria.</p>
           <p class="text__block-desc">Join us at the Nigeria Leadership Quest for Economic Growth Conference and be part of the movement shaping the future of Nigeria. Your sponsorship and participation will not only help propel the event’s success but also support NIOGG's mission to build a more accountable, transparent, and economically thriving Nigeria.</p>
-          <div class="video-1 bg-overlay mb-25">
-            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/images/src/video/1.jpg')}" alt="background"></div>
+          <div class="video-1 bg-overlay mb-25 ring-2 ring-offset-4 ring-slate-200 hover:ring-slate-300 hover:ring-offset-8 scale-95 hover:scale-100 transition-all duration-700 ease-in-out">
+            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/images/src/video/conference-flyer.jpg')}" alt="background"></div>
             <div class="video__btn text-center">
               <a class="popup-video" href="https://youtu.be/5h2SAVvhcDc?si=TeN3o7BpBAFedM_C">
                 <span class="video__player-animation"></span>
@@ -154,6 +154,28 @@
   :global{
     .collapse{
       visibility: inherit !important;
+    }
+
+    .video-1.bg-overlay{
+      width: 700px;
+      height: 700px;
+      margin: auto;
+      border-radius: 1rem;
+
+      &::before{
+        border-radius: 1rem;
+        transition: background-color ease-out 500ms;
+      }
+
+      &:hover{
+        &::before{
+          background-color: rgba(27, 26, 26, 0.85);
+        }
+      }
+
+      .video__btn{
+        top: calc(50% - 37.5px);
+      }
     }
   }
 </style>

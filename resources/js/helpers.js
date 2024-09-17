@@ -118,12 +118,12 @@ export const shuffle = arr => {
 /** @type Record<string, string> */
 export const imgUrls = import.meta.glob('../../Modules/PublicPage/resources/images/src/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { eager: true, query: { url: true }, import: 'default' });
 /** @type Record<string, CallableFunction> */
-export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/images/src/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { query: { enhanced: true } });
+// export const imgObjs = import.meta.glob('../../Modules/PublicPage/resources/images/src/**/*.{jpg,jpeg,png,gif,svg,avif,webp}', { query: { enhanced: true } });
 
 export const getImgModule = (url, params) => import(/* @vite-ignore */ '../../' + url + '?enhanced&' + params);
 
 export const getImgUrl = (key) => imgUrls['../../' + key]
-export const  getImgObj = (key) => imgObjs['../../' + key]()
+// export const  getImgObj = (key) => imgObjs['../../' + key]()
 
 /**
   <img src="{ getImgUrl('Modules/PublicPage/resources/images/src/logo-light.png') }" class="logo-light" alt="logo" />
