@@ -5,7 +5,7 @@ parameters:
 
   paths:
     - app/
-    - Module/
+    - Modules/
 
   # Level 9 is the highest level
   level: 5
@@ -15,5 +15,3 @@ parameters:
 
   excludePaths:
     - ./*/*/FileToBeExcluded.php
-
-  checkMissingIterableValueType: false

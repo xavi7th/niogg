@@ -230,6 +230,41 @@ if ( ! function_exists('unique_random')) {
   }
 }
 
+if ( ! function_exists('unique_random2')) {
+  /**
+   * Generate a unique random string of characters
+   * uses str_random() helper for generating the random string
+   *
+   * @param  string  $prefix  Any prefix you want to add to generated string
+   * @param  int  $chars  - length of the random string
+   * @param  bool  $numeric  Whether or not the generated characters should be numeric
+   */
+  function unique_random2(?string $prefix = NULL, int $chars = 32, bool $numeric = FALSE, $salt_length = 3): string
+  {
+    $seed = hash('sha256', now()->timestamp);
+    $count_chars = mb_strlen($seed);
+
+    if ($numeric) {
+      $seed = Str::replaceMatches(pattern: '/[^0-9]++/', replace: '', subject: $seed);
+      $count_chars = mb_strlen($seed);
+
+      if ($count_chars < $chars) {
+        return $prefix . $seed . rand(str()->repeat(1, $chars - $count_chars), str()->repeat(9, $chars - $count_chars));
+      }
+
+      //Randomize the tail of the generated string with 3 characters to prevent micro-second collisions possibilities
+      return $prefix . mb_substr($seed, 0, $chars - $salt_length) . rand(str()->repeat(1, $salt_length), str()->repeat(9, $salt_length));
+    }
+
+    if ($count_chars < $chars) {
+      return $prefix . $seed . rand(str()->repeat(1, $chars - $count_chars), str()->repeat(9, $chars - $count_chars));
+    }
+
+    //Randomize the tail of the generated string with $salt_length characters to prevent micro-second collisions possibilities
+    return $prefix . mb_substr($seed, 0, $chars - $salt_length) . Str::random($salt_length);
+  }
+}
+
 if ( ! function_exists('str_obfuscate')) {
   function str_obfuscate(?string $val, $decrypt = FALSE, $chunks = 2, $padding = 2, $salt_limiter = '-'): ?string
   {
