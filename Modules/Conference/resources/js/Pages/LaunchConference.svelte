@@ -6,6 +6,7 @@
 <script>
   import { getImgUrl } from '@/helpers';
   import { page } from "@inertiajs/svelte";
+  import BecomeAPartner from './BecomeAPartner.svelte';
   import LaunchPageAside from './LaunchPageAside.svelte';
   import PageTitle from '@publicpage-partials/PageTitle.svelte';
   import ConferenceSpeakers from './LaunchConferenceSpeakers.svelte';
@@ -27,8 +28,9 @@
         <div class="text__block">
           <h2 class="text__block-title text-2xl md:text-3xl lg:text-4xl text-gray-800">Be part of the conversation</h2>
           <p class="text__block-desc">Nigeria Insight on Good Governance (NIOGG) is proud to announce the <b>The Nigeria Leadership Quest For For Economic Growth & Business Summit / Gala Night Award</b>, a groundbreaking event aimed at exploring the pivotal role of leadership in driving sustainable economic growth. Set to bring together visionary leaders, policymakers, industry experts, and youth advocates, this conference is poised to be a game-changer in shaping Nigeria’s future.</p>
+          <p class="text__block-desc">This event scheduled for 6th November, 2024 at Eko Hotels and Suites, Lagos, Nigeria, time for the morning session 9:00am to 1:00pm and for the evening session BUSINESS SUMMIT GALA NIGHT AWARD 6:00pm to 10:00pm. By partnering with us, your Company/Brand can play a significant role in advancing transparency, accountability, and effective leadership in our nation.</p>
           <p class="text__block-desc">This high-profile gathering will delve into innovative solutions to Nigeria’s economic challenges, spotlighting the importance of accountable governance and youth leadership in national development. The conference provides a unique platform for stakeholders across sectors—governmental bodies, private industries, civil society, and financial institutions—to exchange ideas and strategies that can catalyze economic growth and ensure a prosperous future for all Nigerians.</p>
-          <p class="text__block-desc">With keynote speakers, insightful panels, and interactive discussions, attendees will gain valuable insights into emerging opportunities in governance, leadership, and economic policy. NIOGG invites public and private organizations to sponsor this impactful event, contributing to the shared goal of fostering good governance and economic development in Nigeria.</p>
+          <p class="text__block-desc">With keynote speakers, insightful panels, and interactive discussions, approximately 250 attendees, including key stakeholders from government, the private sector, civil society, and the media, will gain valuable insights into emerging opportunities in governance, leadership, and economic policy. NIOGG invites public and private organizations to sponsor this impactful event, contributing to the shared goal of fostering good governance and economic development in Nigeria.</p>
           <p class="text__block-desc">Join us at the Nigeria Leadership Quest for Economic Growth Conference and be part of the movement shaping the future of Nigeria. Your sponsorship and participation will not only help propel the event’s success but also support NIOGG's mission to build a more accountable, transparent, and economically thriving Nigeria.</p>
           <div class="video-1 bg-overlay mb-25">
             <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/images/src/video/1.jpg')}" alt="background"></div>
@@ -70,6 +72,22 @@
           <h5 class="text__block-title">GROW</h5>
           <p class="text__block-desc">Connect with a diverse group of industry leaders, policymakers, and innovators who share your passion for driving economic growth and accountability. Build relationships that can foster future collaborations and opportunities for both personal and national development.</p>
         </div>
+
+        <div class="text__block !my-20">
+          <h2 class="text__block-title text-2xl md:text-3xl lg:text-4xl text-gray-800">Event Highlights:</h2>
+          <p class="text__block-desc mb-0 ml-10"> •	Opening remarks </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Keynote Speeches by prominent figures in governance and public policy. </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Networking Sessions allowing participants to connect and collaborate. </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Refreshment for morning section </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Red Carpet Reception </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Dinner </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Award ceremony </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Entertainment </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Broad business review </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Refreshment for evening section </p>
+        </div>
+
+        <BecomeAPartner />
 
         <LaunchConferenceRegistrationForm />
 
@@ -125,41 +143,6 @@
             </div>
           </div>
         </div> -->
-
-        <h2 class="text-4xl text-gray-800">Key Benefits</h2>
-        <div id="accordion" class="mb-60 testimonial-wrap-panel !p-4 md:!p-16">
-          <div class="accordion-item opened">
-            <div class="accordion__item-heade" data-toggle="collapse" data-target="#collapse3">
-              <a class="accordion__item-title text-xl font-semibold uppercase" href="#">Become a sponsor</a>
-            </div>
-            <div id="collapse3" class="collapse show" data-parent="#accordion">
-              <div class="accordion__item-body">
-                <p>
-                  Support the Nigeria Leadership Quest for Economic Growth Conference by becoming a sponsor and align your brand with a movement dedicated to driving economic
-                  development and good governance in Nigeria. Sponsorship levels offer varying degrees of visibility, with benefits such as logo placement,
-                  speaking opportunities, and networking access. Whether you choose a tier that grants exhibitor privileges or prefer to make a quieter impact,
-                  your sponsorship will not only elevate your brand but also help NIOGG advance its mission of fostering accountability, transparency, and youth leadership in Nigeria.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <div class="accordion__item-heade" data-toggle="collapse" data-target="#collapse1">
-              <a class="accordion__item-title text-xl font-semibold uppercase" href="#">Become an exhibitor</a>
-            </div>
-            <div id="collapse1" class="collapse" data-parent="#accordion">
-              <div class="accordion__item-body">
-                <p>
-                  Showcase your brand, products, or services to a highly engaged audience of industry leaders, policymakers, and innovators by becoming an exhibitor at the
-                  Nigeria Leadership Quest for Economic Growth Conference. This exclusive opportunity allows you to directly interact with attendees, highlight your contributions to
-                  Nigeria’s economic and governance landscape, and forge valuable connections that can propel your business or organization forward. As an exhibitor,
-                  you’ll gain unparalleled visibility, position your brand as a leader in the space, and be at the forefront of the conversations shaping Nigeria's future.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <ConferenceSpeakers />
       </div>
