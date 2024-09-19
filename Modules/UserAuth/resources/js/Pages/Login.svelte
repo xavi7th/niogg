@@ -15,6 +15,7 @@
   import { router, page, inertia } from "@inertiajs/svelte";
   import LoaderCircle from "lucide-svelte/icons/loader-circle";
   import PrimaryButton from "@/Components/PrimaryButton.svelte";
+  import DarkModeToggle from "@/Components/DarkModeToggle.svelte";
 
   export let canResetPassword = false, title = '';
 
@@ -72,4 +73,8 @@
       {/if}
     </Button>
   </form>
+</div>
+
+<div class="flex items-center">
+  <DarkModeToggle />
 </div>
