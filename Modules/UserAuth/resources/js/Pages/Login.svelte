@@ -75,6 +75,7 @@
   </form>
 </div>
 
-<div class="flex items-center">
-  <DarkModeToggle />
+<div class="flex items-center mt-4">
+  <p class="mb-0 -ml-14">Switch to <span class="dark:hidden">Dark</span> <span class="hidden dark:inline-block">Light</span> Mode: </p>
+  <DarkModeToggle class="ml-8" />
 </div>

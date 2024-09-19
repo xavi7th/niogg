@@ -4,17 +4,14 @@
   import NavLink from "@/Components/NavLink.svelte";
   import Dropdown from "@/Components/Dropdown.svelte";
   import DropdownLink from "@/Components/DropdownLink.svelte";
+  import DarkModeToggle from "@/Components/DarkModeToggle.svelte";
   import ApplicationLogo from "@/Components/ApplicationLogo.svelte";
   import ResponsiveNavLink from "@/Components/ResponsiveNavLink.svelte";
-  import NotificationToast from '@/Components/NotificationToast.svelte';
 
   let showingNavigationDropdown = false;
 
   $: ({ auth } = $page.props);
 </script>
-
-<template>
-  <NotificationToast />
 
   <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
 
@@ -24,22 +21,20 @@
         <div class="flex justify-between h-16">
 
           <div class="flex">
-            <!-- Logo -->
             <div class="shrink-0 flex items-center">
               <Link href={window.route("app.index")}>
-                <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                <ApplicationLogo class="block h-10 w-auto fill-current text-gray-800 dark:text-gray-200" />
               </Link>
             </div>
 
-            <!-- Navigation Links -->
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
               <NavLink href={window.route("appuser.dashboard")} active={window.route().current("appuser.dashboard")}>Dashboard</NavLink>
             </div>
           </div>
 
           <div class="hidden sm:flex sm:items-center sm:ms-6">
-            <!-- Settings Dropdown -->
-            <div class="ms-3 relative">
+            <div class="ms-3 relative flex gap-x-4 items-center">
+              <DarkModeToggle class="inline-flex"/>
               <Dropdown align="right" widthClass="w-48">
                 <svelte:fragment slot="trigger">
                   <span class="inline-flex rounded-md">
@@ -111,4 +106,3 @@
     </main>
 
   </div>
-</template>

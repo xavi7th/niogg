@@ -6,7 +6,9 @@
 <script>
   import { pageTitle } from "@/stores";
 
-  pageTitle.update((title) => "User Dashboard");
+  export let title
+
+  pageTitle.update((t) => title || "User Dashboard");
 </script>
 
 <template>

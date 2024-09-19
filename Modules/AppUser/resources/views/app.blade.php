@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>AppUser Module - {{ config('app.name', 'Laravel') }}</title>
+    <title> {{ $pageTitle . ' - ' ?? '' }} {{ config('app.alt_name') }}</title>
 
     <meta name="author" content="{{ $author ?? '' }}">
     <meta name="keywords" content="{{ $keywords ?? '' }}">
@@ -50,6 +50,5 @@
 
   <body>
     @inertia
-    @vite(['resources/js/app.js', 'Modules/AppUser/resources/js/app.js'])
-    <script src="/build/assets/appuser-vendor.js"></script>
+    @vite(['Modules/AppUser/resources/js/app.js'])
   </body>

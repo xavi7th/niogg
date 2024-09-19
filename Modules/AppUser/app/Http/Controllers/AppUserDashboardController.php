@@ -10,13 +10,11 @@ class AppUserDashboardController extends Controller
 {
   public function __invoke(): Response
   {
-    // $this->authorize('index', AppUser::class);
-
     return Inertia::render('AppUser::Dashboard', [
-      'phpVersion' => PHP_VERSION,
+      'title' => 'Staff Dashboard',
     ])->withViewData([
-      'pageTitle' => 'User Dashboard',
-      'metaDesc' => 'Welsome to your user dashboard area.',
+      'pageTitle' => 'Staff Dashboard',
+      'metaDesc' => 'This is where you can manage the site contenet and the conference registrants.',
       'ogUrl' => route('auth.login'),
       'canonical' => route('auth.login'),
     ]);
