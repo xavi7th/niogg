@@ -5,7 +5,7 @@
 <header id="header" class="header header-transparent">
   <nav class="navbar navbar-expand-lg sticky-navbar">
     <div class="container">
-      <a class="navbar-brand" href="index.html">
+      <a class="navbar-brand" href="/">
         <enhanced:img src="@publicpage-assets/images/src/logo/niogg-logo-light.png?enhanced&w=80" class="logo-light" alt="logo"/>
         <enhanced:img src="@publicpage-assets/images/src/logo/niogg-logo-dark.png?enhanced&w=70" class="logo-dark" alt="logo"/>
       </a>
