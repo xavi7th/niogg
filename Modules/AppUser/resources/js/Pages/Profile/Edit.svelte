@@ -12,7 +12,7 @@
   export let must_verify_email = false;
 
   pageTitle.update((title) => "Profile");
-  pageHeader.update((header) => '<h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Profile</h2>');
+  pageHeader.update((header) => '<h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Manage Your Profile</h2>');
 </script>
 
 <template>

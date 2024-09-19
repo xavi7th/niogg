@@ -7,15 +7,11 @@
   import { pageTitle } from "@/stores";
   import Checkbox from "@/Components/Checkbox.svelte";
   import TextInput from "@/Components/TextInput.svelte";
-  import { Input } from "@/Components/ui/input/index.js";
-  import { Label } from "@/Components/ui/label/index.js";
   import InputError from "@/Components/InputError.svelte";
   import InputLabel from "@/Components/InputLabel.svelte";
   import { Button } from "@/Components/ui/button/index.js";
   import { router, page, inertia } from "@inertiajs/svelte";
   import LoaderCircle from "lucide-svelte/icons/loader-circle";
-  import PrimaryButton from "@/Components/PrimaryButton.svelte";
-  import DarkModeToggle from "@/Components/DarkModeToggle.svelte";
 
   export let canResetPassword = false, title = '';
 
@@ -66,16 +62,11 @@
       </div>
     </div>
 
-    <Button type="submit" class="w-full dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-neutral-400  {isLoading ? 'opacity-25' : ''}" disabled={isLoading}>
+    <Button type="submit" class="w-full dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-neutral-200" disabled={isLoading}>
       Login
       {#if isLoading}
         <LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
       {/if}
     </Button>
   </form>
-</div>
-
-<div class="flex items-center mt-4">
-  <p class="mb-0 -ml-14">Switch to <span class="dark:hidden">Dark</span> <span class="hidden dark:inline-block">Light</span> Mode: </p>
-  <DarkModeToggle class="ml-8" />
 </div>

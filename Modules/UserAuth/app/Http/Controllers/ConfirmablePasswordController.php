@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Response as HTTPResponse;
 use Illuminate\Validation\ValidationException;
 
 class ConfirmablePasswordController extends Controller
@@ -23,7 +24,7 @@ class ConfirmablePasswordController extends Controller
     ]);
   }
 
-  public function store(Request $request): RedirectResponse
+  public function store(Request $request): RedirectResponse|HTTPResponse
   {
     if ( ! Auth::guard('web')->validate(['email' => $request->user()->email, 'password' => $request->password])) {
       throw ValidationException::withMessages([
@@ -33,6 +34,6 @@ class ConfirmablePasswordController extends Controller
 
     $request->session()->put('auth.password_confirmed_at', time());
 
-    return redirect()->intended(RouteServiceProvider::home());
+    return request()->header('X-Inertia') ? Inertia::location(redirect()->intended(RouteServiceProvider::home())) : redirect()->intended(RouteServiceProvider::home());
   }
 }

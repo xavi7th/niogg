@@ -13,7 +13,7 @@
 
 <template>
   {#if asBtn}
-    <button use:inertia={{ href, method }} type="button" on:focus on:blur on:click on:dblclick on:mousedown on:mousemove on:mouseout on:mouseover on:mouseup>
+    <button class={classes} use:inertia={{ href, method }} type="button" on:focus on:blur on:click on:dblclick on:mousedown on:mousemove on:mouseout on:mouseover on:mouseup>
       <slot />
     </button>
   {:else}
