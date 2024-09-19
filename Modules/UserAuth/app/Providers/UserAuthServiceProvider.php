@@ -4,6 +4,7 @@ namespace Modules\UserAuth\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\UserAuth\Console\CreateStaffAccount;
 
 class UserAuthServiceProvider extends ServiceProvider
 {
@@ -32,7 +33,9 @@ class UserAuthServiceProvider extends ServiceProvider
    */
   protected function registerCommands(): void
   {
-    // $this->commands([]);
+    $this->commands([
+      CreateStaffAccount::class,
+    ]);
   }
 
   /**
