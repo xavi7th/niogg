@@ -19,7 +19,7 @@ class RegisteredUserController extends Controller
   public function create(): Response
   {
     return Inertia::render('UserAuth::Register')->withViewData([
-      'title' => 'Register',
+      'pageTitle' => 'Register',
       'metaDesc' => 'Create an account to access your dashbopard',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),

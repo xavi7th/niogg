@@ -1,5 +1,5 @@
 <script context="module">
-  import PageLayout from "@userauth-pages/Layouts/GuestLayout.svelte";
+  import PageLayout from "@userauth-pages/Layouts/AuthLayout.svelte";
   export const layout = PageLayout;
 </script>
 

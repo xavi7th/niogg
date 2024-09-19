@@ -25,7 +25,7 @@ class NewPasswordController extends Controller
       'email' => $request->email,
       'token' => $request->route('token'),
     ])->withViewData([
-      'title' => 'Reset Your Password',
+      'pageTitle' => 'Reset Your Password',
       'metaDesc' => 'Create a new password for your account.',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),

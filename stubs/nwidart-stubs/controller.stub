@@ -17,8 +17,9 @@ class $CLASS$ extends Controller
 
     return Inertia::render('$STUDLY_NAME$::Index', [
       'phpVersion' => PHP_VERSION,
+      'title' => 'Svelte Page title prop',
     ])->withViewData([
-      'title' => 'Page title',
+      'pageTitle' => 'Page title',
       'metaDesc' => 'Description of this page',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),

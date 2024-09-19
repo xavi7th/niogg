@@ -19,7 +19,7 @@ const config = {
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
-    './resources/js/**/*.svelte',
+    './resources/js/**/*.{html,js,svelte,ts}',
     './Modules/**/*.{blade,js,svelte,ts}',
   ],
 	theme: {
@@ -36,7 +36,7 @@ const config = {
 			}
 		},
 		extend: {
-			colors: {
+			colors: { //ShadCN
 				border: "hsl(var(--border) / <alpha-value>)",
 				input: "hsl(var(--input) / <alpha-value>)",
 				ring: "hsl(var(--ring) / <alpha-value>)",

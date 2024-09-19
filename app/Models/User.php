@@ -14,6 +14,8 @@ class User extends Authenticatable // implements MustVerifyEmail
 {
   use HasFactory, Notifiable;
 
+  public const DASHBOARD_ROUTE = 'appuser.dashboard';
+
   protected $fillable = [
     'name',
     'email',
@@ -29,6 +31,11 @@ class User extends Authenticatable // implements MustVerifyEmail
     'email_verified_at' => 'datetime',
     'password' => 'hashed',
   ];
+
+  public function getType(): string
+  {
+    return 'appuser';
+  }
 
   public function firstName(): Attribute
   {

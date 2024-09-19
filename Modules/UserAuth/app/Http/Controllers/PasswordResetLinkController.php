@@ -20,7 +20,7 @@ class PasswordResetLinkController extends Controller
     return Inertia::render('UserAuth::ForgotPassword', [
       'status' => session('status'),
     ])->withViewData([
-      'title' => 'Password Reset',
+      'pageTitle' => 'Password Reset',
       'metaDesc' => 'Request a password reset link',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),

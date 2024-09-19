@@ -18,9 +18,10 @@ class AuthenticatedSessionController extends Controller
   {
     return Inertia::render('UserAuth::Login', [
       'canResetPassword' => Route::has('auth.password.request'),
+      'title' => 'Login to ' . config('app.name') . ' Admin Area',
     ])->withViewData([
-      'title' => 'Login',
-      'metaDesc' => 'Login to access dashboard',
+      'pageTitle' => 'Login to ' . config('app.name') . ' Admin Area',
+      'metaDesc' => 'Login to access Admin dashboard and manage conference registrants',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),
     ]);

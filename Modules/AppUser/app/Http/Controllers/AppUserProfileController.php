@@ -22,7 +22,7 @@ class AppUserProfileController extends Controller
     return Inertia::render('AppUser::Profile/Edit', [
       'must_verify_email' => $user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail(),
     ])->withViewData([
-      'title' => 'Profile',
+      'pageTitle' => 'Profile',
       'metaDesc' => 'View your profile page',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),

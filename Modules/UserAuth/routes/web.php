@@ -11,7 +11,7 @@ use Modules\UserAuth\Http\Controllers\AuthenticatedSessionController;
 use Modules\UserAuth\Http\Controllers\EmailVerificationPromptController;
 use Modules\UserAuth\Http\Controllers\EmailVerificationNotificationController;
 
-Route::name('auth.')->group(function (): void {
+Route::name('auth.')->prefix('auth/v1')->group(function (): void {
   Route::middleware('guest')->group(function (): void {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);

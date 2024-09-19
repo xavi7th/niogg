@@ -16,7 +16,7 @@ class ConfirmablePasswordController extends Controller
   public function show(): Response
   {
     return Inertia::render('UserAuth::ConfirmPassword')->withViewData([
-      'title' => 'Confirm Password',
+      'pageTitle' => 'Confirm Password',
       'metaDesc' => 'Confirm your password to authorize this action',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),

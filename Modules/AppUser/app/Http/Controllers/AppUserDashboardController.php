@@ -15,7 +15,7 @@ class AppUserDashboardController extends Controller
     return Inertia::render('AppUser::Dashboard', [
       'phpVersion' => PHP_VERSION,
     ])->withViewData([
-      'title' => 'User Dashboard',
+      'pageTitle' => 'User Dashboard',
       'metaDesc' => 'Welsome to your user dashboard area.',
       'ogUrl' => route('auth.login'),
       'canonical' => route('auth.login'),
