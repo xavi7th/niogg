@@ -62,8 +62,12 @@
                     <textarea class="form-control" placeholder="Additional Details!"></textarea>
                   </div>
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-12 col-md-12 col-lg-12 flex justify-between">
                   <button class="btn btn__secondary">Submit Request</button>
+
+                  <a href={ window.route('app.conferences.launch.index') } class="btn btn__primary popup-video !w-64">
+                    <span class="mr-2">Join our Conference</span><i class="fa fa-play"></i>
+                  </a>
                 </div>
               </div>
             </div>
