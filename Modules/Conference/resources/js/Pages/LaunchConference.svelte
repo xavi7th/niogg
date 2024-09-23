@@ -4,8 +4,8 @@
 </script>
 
 <script>
-  import { getImgUrl } from '@/helpers';
   import { page } from "@inertiajs/svelte";
+  import LaunchVideo from './LaunchVideo.svelte';
   import BecomeAPartner from './BecomeAPartner.svelte';
   import LaunchPageAside from './LaunchPageAside.svelte';
   import PageTitle from '@publicpage-partials/PageTitle.svelte';
@@ -32,19 +32,9 @@
           <p class="text__block-desc">This high-profile gathering will delve into innovative solutions to Nigeria’s economic challenges, spotlighting the importance of accountable governance and youth leadership in national development. The conference provides a unique platform for stakeholders across sectors—governmental bodies, private industries, civil society, and financial institutions—to exchange ideas and strategies that can catalyze economic growth and ensure a prosperous future for all Nigerians.</p>
           <p class="text__block-desc">With keynote speakers, insightful panels, and interactive discussions, approximately 250 attendees, including key stakeholders from government, the private sector, civil society, and the media, will gain valuable insights into emerging opportunities in governance, leadership, and economic policy. NIOGG invites public and private organizations to sponsor this impactful event, contributing to the shared goal of fostering good governance and economic development in Nigeria.</p>
           <p class="text__block-desc">Join us at the Nigeria Leadership Quest for Economic Growth Conference and be part of the movement shaping the future of Nigeria. Your sponsorship and participation will not only help propel the event’s success but also support NIOGG's mission to build a more accountable, transparent, and economically thriving Nigeria.</p>
-          <div class="video-1 bg-overlay mb-25 ring-2 ring-offset-4 ring-slate-200 hover:ring-slate-300 hover:ring-offset-8 scale-95 hover:scale-100 transition-all duration-700 ease-in-out">
-            <div class="bg-img"><img src="{getImgUrl('Modules/PublicPage/resources/images/src/video/conference-flyer.jpg')}" alt="background"></div>
-            <div class="video__btn text-center">
-              <a class="popup-video" href="https://youtu.be/5h2SAVvhcDc?si=TeN3o7BpBAFedM_C">
-                <span class="video__player-animation"></span>
-                <span class="video__player-animation video__player-animation-2"></span>
-                <span class="video__player-animation video__player-animation-3"></span>
-                <div class="video__player">
-                  <i class="fa fa-play"></i>
-                </div>
-              </a>
-            </div>
-          </div>
+
+          <LaunchVideo />
+
           <p class="text__block-desc">We aim at the Nigeria Leadership Quest for Economic Growth Conference, to provide an atmosphere where you’ll engage, learn, inspire, experience, and network with leaders committed to shaping a prosperous future for Nigeria.</p>
         </div>
 
@@ -154,28 +144,6 @@
   :global{
     .collapse{
       visibility: inherit !important;
-    }
-
-    .video-1.bg-overlay{
-      width: 700px;
-      height: 700px;
-      margin: auto;
-      border-radius: 1rem;
-
-      &::before{
-        border-radius: 1rem;
-        transition: background-color ease-out 500ms;
-      }
-
-      &:hover{
-        &::before{
-          background-color: rgba(27, 26, 26, 0.85);
-        }
-      }
-
-      .video__btn{
-        top: calc(50% - 37.5px);
-      }
     }
   }
 </style>

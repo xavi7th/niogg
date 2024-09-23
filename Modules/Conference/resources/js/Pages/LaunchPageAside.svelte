@@ -28,6 +28,15 @@
             <div class="widget__post-img mb-0">
               <a href="#/">
                 <!-- <img src="{getImgUrl('Modules/PublicPage/resources/images/src/sidebar/1.jpg')}" alt="background"> -->
+                <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer-invitation.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
+              </a>
+            </div>
+          </div>
+
+          <div class="widget-post-item">
+            <div class="widget__post-img mb-0">
+              <a href="#/">
+                <!-- <img src="{getImgUrl('Modules/PublicPage/resources/images/src/sidebar/1.jpg')}" alt="background"> -->
                 <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer-neil-mccluskey.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
               </a>
             </div>

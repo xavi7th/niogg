@@ -15,6 +15,7 @@ export const concatFiles = [
     files: [
       'Modules/PublicPage/resources/template/assets/js/jquery-3.3.1.min.js',
       'Modules/PublicPage/resources/template/assets/js/plugins.js',
+      'Modules/PublicPage/resources/js/vendor/videojs/video-js.min.js'
     ],
     outputFile: 'public/build/assets/app.js',
   },
