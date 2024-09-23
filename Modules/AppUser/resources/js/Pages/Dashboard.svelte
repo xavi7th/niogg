@@ -6,12 +6,10 @@
 <script>
   import { pageTitle } from "@/stores";
   import Users from "lucide-svelte/icons/users";
-  import Activity from "lucide-svelte/icons/activity";
   import * as Card from "@/Components/ui/card/index.js";
   import { Badge } from "@/Components/ui/badge/index.js";
   import * as Table from "@/Components/ui/table/index.js";
   import { Button } from "@/Components/ui/button/index.js";
-  import CreditCard from "lucide-svelte/icons/credit-card";
   import DollarSign from "lucide-svelte/icons/dollar-sign";
   import * as Avatar from "@/Components/ui/avatar/index.js";
   import ArrowUpRight from "lucide-svelte/icons/arrow-up-right";
@@ -55,7 +53,7 @@
                   <Card.Title>Transactions</Card.Title>
                   <Card.Description>Recent transactions from your registrations.</Card.Description>
                 </div>
-                <Button href="##" size="sm" class="ml-auto gap-1">
+                <Button href="{window.route('conferences.registration.index')}" size="sm" class="ml-auto gap-1">
                   View All
                   <ArrowUpRight class="h-4 w-4" />
                 </Button>

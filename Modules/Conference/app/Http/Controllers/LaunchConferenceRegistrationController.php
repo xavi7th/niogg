@@ -2,15 +2,34 @@
 
 namespace Modules\Conference\Http\Controllers;
 
+use Inertia\Inertia;
+use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Modules\Conference\Models\PaymentTransaction;
 use Modules\Miscellaneous\Services\PaymentService;
+use Modules\Conference\Models\ConferenceRegistrant;
 use Modules\Conference\Exceptions\ConferenceRegistrationException;
 use Modules\Conference\Services\LaunchConferenceRegistrationService;
 use Modules\Conference\Http\Requests\LaunchConferenceRegistrationRequest;
 
 class LaunchConferenceRegistrationController extends Controller
 {
+  public function index(): Response
+  {
+    return Inertia::render('Conference::LaunchConference/Registrations', [
+      'title' => 'Conference Registrations',
+      'registrants' => ConferenceRegistrant::with('payment_transactions')->select('id', 'registration_id', 'full_name', 'email', 'phone')->latest()->paginate(),
+      'payment_transactions' => PaymentTransaction::with('purchased_item:id,registration_id,full_name,email,phone,created_at')
+          ->select('id', 'amount', 'description', 'transaction_reference', 'payment_provider', 'processed_at', 'purchased_item_id', 'purchased_item_type')->paginate(),
+    ])->withViewData([
+      'pageTitle' => 'Conference Registrations',
+      'metaDesc' => 'This is where you can manage the conference registrations.',
+      'ogUrl' => route('auth.login'),
+      'canonical' => route('auth.login'),
+    ]);
+  }
+
   public function store(LaunchConferenceRegistrationRequest $request)
   {
     $registrant = $request->registrant();
@@ -60,7 +79,7 @@ class LaunchConferenceRegistrationController extends Controller
     return PaymentService::initializePaystackTransaction($registrant, $subscriptionData, $payment_transaction);
   }
 
-  public function update(Request $request)
+  public function update(Request $request, ConferenceRegistrant $reg)
   {
     $rsp = PaymentService::verifyPaystackTransaction($request->trxref, returnResponse: TRUE);
 

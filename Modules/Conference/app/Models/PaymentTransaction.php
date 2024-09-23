@@ -31,7 +31,7 @@ class PaymentTransaction extends BaseModel
     return self::where('transaction_reference', $trxrf)->sole();
   }
 
-  public function firstName(): Attribute
+  public function isProcessed(): Attribute
   {
     return Attribute::make(
         get: fn () => ! is_null($this->processed_at),

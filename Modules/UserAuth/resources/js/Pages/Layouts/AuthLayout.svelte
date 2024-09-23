@@ -28,7 +28,7 @@
 
   </div>
 
-  <div class="bg-muted hidden lg:block">
-    <enhanced:img src="@publicpage-assets/images/src/banners/nigeria-region.jpg?enhanced&w=1920" class="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" alt="banner thumb"  width="1920" height="1080"/>
+  <div class="bg-muted hidden lg:block min-h-full">
+    <enhanced:img src="@publicpage-assets/images/src/banners/nigeria-region.jpg?enhanced&h=1080" class="h-dvh w-full object-cover dark:brightness-[0.2] dark:grayscale" alt="banner thumb"  width="1920" height="1080"/>
   </div>
 </div>

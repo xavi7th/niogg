@@ -29,6 +29,7 @@
 
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
               <NavLink href={window.route("appuser.dashboard")} active={window.route().current("appuser.dashboard")}>Dashboard</NavLink>
+              <NavLink href={window.route("conferences.registration.index")} active={window.route().current("conferences.*")}>Registrations</NavLink>
             </div>
           </div>
 

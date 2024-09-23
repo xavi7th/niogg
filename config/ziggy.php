@@ -15,6 +15,7 @@ return [
     ],
     'user' => [
       'appuser.*',
+      'conferences.*',
     ],
     'auth' => [
       'auth.*',
