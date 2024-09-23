@@ -38,7 +38,8 @@
     "lucide-svelte": "^0.439.0",
     "sweetalert2": "^11.14.0",
     "tailwind-merge": "^2.5.2",
-    "tailwind-variants": "^0.2.1"
+    "tailwind-variants": "^0.2.1",
+    "vaul-svelte": "^0.3.2"
   },
   "trustedDependencies": [
     "esbuild",
