@@ -15,8 +15,8 @@
   $: ({ app } = $page.props);
 </script>
 
-<PageTitle appName={app.name} pageTitle='Nigeria Leadership Quest for Economic Growth/ Business Summit Gala Night Award'>
-  <li class="breadcrumb-item active capitalize" aria-current="page">Nigeria leadership quest for economic growth Conference</li>
+<PageTitle appName={app.name} pageTitle='Nigeria Insight on Good Governance Achievers Icon/Merit Awards 2024'>
+  <li class="breadcrumb-item active capitalize" aria-current="page">Nigeria Insight on Good Governance Achievers Icon/Merit Awards 2024</li>
 </PageTitle>
 
 <section id="textContentSection" class="text-content-section pt-0 xl:pt-50">
@@ -26,16 +26,22 @@
 
       <div class="col-sm-12 col-md-12 col-lg-8">
         <div class="text__block">
-          <h2 class="text__block-title text-2xl md:text-3xl lg:text-4xl text-gray-800">Be part of the conversation</h2>
-          <p class="text__block-desc">Nigeria Insight on Good Governance (NIOGG) is proud to announce the <b>The Nigeria Leadership Quest For For Economic Growth & Business Summit / Gala Night Award</b>, a groundbreaking event aimed at exploring the pivotal role of leadership in driving sustainable economic growth. Set to bring together visionary leaders, policymakers, industry experts, and youth advocates, this conference is poised to be a game-changer in shaping Nigeria’s future.</p>
-          <p class="text__block-desc">This event scheduled for 6th November, 2024 at Eko Hotels and Suites, Lagos, Nigeria, time for the morning session 9:00am to 1:00pm and for the evening session BUSINESS SUMMIT GALA NIGHT AWARD 6:00pm to 10:00pm. By partnering with us, your Company/Brand can play a significant role in advancing transparency, accountability, and effective leadership in our nation.</p>
-          <p class="text__block-desc">This high-profile gathering will delve into innovative solutions to Nigeria’s economic challenges, spotlighting the importance of accountable governance and youth leadership in national development. The conference provides a unique platform for stakeholders across sectors—governmental bodies, private industries, civil society, and financial institutions—to exchange ideas and strategies that can catalyze economic growth and ensure a prosperous future for all Nigerians.</p>
-          <p class="text__block-desc">With keynote speakers, insightful panels, and interactive discussions, approximately 250 attendees, including key stakeholders from government, the private sector, civil society, and the media, will gain valuable insights into emerging opportunities in governance, leadership, and economic policy. NIOGG invites public and private organizations to sponsor this impactful event, contributing to the shared goal of fostering good governance and economic development in Nigeria.</p>
-          <p class="text__block-desc">Join us at the Nigeria Leadership Quest for Economic Growth Conference and be part of the movement shaping the future of Nigeria. Your sponsorship and participation will not only help propel the event’s success but also support NIOGG's mission to build a more accountable, transparent, and economically thriving Nigeria.</p>
+          <h2 class="text__block-title text-2xl md:text-3xl lg:text-4xl text-gray-800">Celebrating Icons of Integrity and Leadership</h2>
+          <p class="text__block-desc">As part of its continued commitment to promoting accountability, transparency, and impactful leadership in Nigeria, the Nigeria Insight on Good Governance Civil Society Group (NIOGG) is set to host the much-anticipated <b>Nigeria Insight on Good Governance Achievers Icon/Merit Awards 2024</b> on May 23, 2025.</p>
+          <p class="text__block-desc">This prestigious award ceremony is designed to honor individuals, institutions, and stakeholders who have demonstrated exceptional dedication to good governance, youth empowerment, ethical leadership, and the advancement of democratic values in Nigeria.</p>
+          <h6>About the Awards</h6>
+          <p class="text__block-desc">
+            The Nigeria Insight on Good Governance Achievers Icon/Merit Awards is a hallmark event that celebrates excellence and commitment to nation-building. The 2024 edition will spotlight notable achievers from various sectors including public service, education, health, community development, civil society, business, media, and more.
+            Each award recipient has been carefully selected based on their tangible contributions to governance and their unwavering commitment to ethical leadership and public accountability.
+          </p>
+          <h6>Why it Matters</h6>
+          <p class="text__block-desc">In a time where the need for credible leadership and active civic engagement is more crucial than ever, this event serves as both recognition and motivation. It reinforces the importance of upholding democratic principles and encourages more citizens to contribute meaningfully to Nigeria’s growth and development.</p>
+          <h6>Looking Ahead</h6>
+          <p class="text__block-desc">As NIOGG continues its advocacy and developmental work, the Nigeria Insight on Good Governance Achievers Icon/Merit Awards 2024 will not only serve as a platform for recognition but also as a rallying point for continued progress, unity, and shared vision for a better Nigeria.</p>
 
-          <LaunchVideo />
+          <!-- <LaunchVideo /> -->
 
-          <p class="text__block-desc">We aim at the Nigeria Leadership Quest for Economic Growth Conference, to provide an atmosphere where you’ll engage, learn, inspire, experience, and network with leaders committed to shaping a prosperous future for Nigeria.</p>
+          <p class="text__block-desc">We aim at the Nigeria Insight on Good Governance Achievers Icon/Merit Awards 2024 conference, to provide an atmosphere where you’ll engage, learn, inspire, experience, and network with leaders committed to shaping a prosperous future for Nigeria.</p>
         </div>
 
         <div class="text__block-2">
@@ -74,67 +80,20 @@
           <p class="text__block-desc mb-2 ml-10"> •	Award ceremony </p>
           <p class="text__block-desc mb-2 ml-10"> •	Entertainment </p>
           <p class="text__block-desc mb-2 ml-10"> •	Broad business review </p>
-          <p class="text__block-desc mb-2 ml-10"> •	Refreshment for evening section </p>
+          <p class="text__block-desc mb-2 ml-10"> •	Refreshment for evening session </p>
+        </div>
+
+        <div class="widget widget-download">
+          <div class="widget__content">
+            <a href="{ window.route('app.conferences.award.awardees') }" class="btn btn__primary btn__block btn__hover3 text-center"><span class="grow text-xl font-bold uppercase">View Awardees</span></a>
+          </div>
         </div>
 
         <BecomeAPartner />
 
-        <LaunchConferenceRegistrationForm />
+        <!-- <LaunchConferenceRegistrationForm /> -->
 
-        <!-- <img src="assets/images/charts/1.png" alt="chart" class="img-fluid mb-50"> -->
-
-        <!-- <div class="testimonial-wrap-panel mb-60">
-          <div class="carousel owl-carousel carousel-dots crousel-dots-center" data-slide="1" data-slide-md="1"
-            data-slide-sm="1" data-autoplay="false" data-nav="false" data-dots="true" data-space="0"
-            data-loop="true" data-speed="800">
-
-            <div class=" testimonial-item">
-              <div class="testimonial__meta">
-                <div class="testimonial__thumb">
-                  <img src="assets/images/testimonials/thumbs/3.jpg" alt="author thumb">
-                </div>
-                <h5 class="testimonial__meta-title">Martin Hope</h5>
-                <p class="testimonial__meta-desc">Pro Dust</p>
-              </div>
-              <div class="testimonial__content">
-                <p class="testimonial__desc">I’ve seen great companies serving industry solutions in my career.
-                  But
-                  not to the point where you feel that comfort and trust that we get with Industic Company.</p>
-                <div class="testimonial__rating">
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                </div>
-              </div>
-            </div>
-
-            <div class=" testimonial-item">
-              <div class="testimonial__meta">
-                <div class="testimonial__thumb">
-                  <img src="assets/images/testimonials/thumbs/1.jpg" alt="author thumb">
-                </div>
-                <h5 class="testimonial__meta-title">John Peter</h5>
-                <p class="testimonial__meta-desc">Dustic</p>
-              </div>
-              <div class="testimonial__content">
-                <p class="testimonial__desc">Expertly trained team members who take the extra step and go the
-                  extra
-                  mile, all to fulfill our promise, deliver innovative and dynamic solutions to our customers!</p>
-                <div class="testimonial__rating">
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <ConferenceSpeakers />
+        <!-- <ConferenceSpeakers /> -->
       </div>
     </div>
   </div>

@@ -28,7 +28,6 @@
 <SummarizedAbout appName={app.name} appAltName={app.alt_name}/>
 <SummarizedWhatWeDo appAltName={app.alt_name}/>
 <ConferenceTeaser appAltName={app.alt_name}/>
-<!-- DELETED <SummarizedProjects /> -->
 <Testimonials {testimonials}/>
 <NIOGGInitiatives appAltName={app.alt_name} />
 <ContactForm appPhone={app.phone} appAltName={app.alt_name} />

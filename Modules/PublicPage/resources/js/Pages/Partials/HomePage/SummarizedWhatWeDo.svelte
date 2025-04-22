@@ -29,10 +29,6 @@
             <p class="service__desc">
               We promote good governance by advocating for transparency in government processes and ensuring public access to critical information. We also hold leaders accountable by encouraging active citizen oversight and institutional integrity.
             </p>
-            <a href="#" class="btn btn__secondary btn__link">
-              <span>Read More</span>
-              <i class="icon-arrow-right2"></i>
-            </a>
           </div>
           <div class="service__img">
             <enhanced:img src="@publicpage-assets/images/src/services/judiciary.webp?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>
@@ -48,10 +44,6 @@
             <p class="service__desc">
               We promote good governance by advocating for free, fair, and transparent elections that truly reflect the will of the people. We also support electoral reforms and civic engagement to strengthen public confidence in the democratic process.
             </p>
-            <a href="#" class="btn btn__secondary btn__link">
-              <span>Read More</span>
-              <i class="icon-arrow-right2"></i>
-            </a>
           </div>
           <div class="service__img">
             <enhanced:img src="@publicpage-assets/images/src/services/inec.png?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>
@@ -67,10 +59,6 @@
             <p class="service__desc">
               We promote good governance by investing in citizen education that fosters awareness of democratic rights and responsibilities. We also equip individuals with the knowledge and tools needed to actively participate in governance and demand accountability from public officials.
             </p>
-            <a href="#" class="btn btn__secondary btn__link">
-              <span>Read More</span>
-              <i class="icon-arrow-right2"></i>
-            </a>
           </div>
           <div class="service__img">
             <enhanced:img src="@publicpage-assets/images/src/services/youth.png?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>
@@ -86,10 +74,6 @@
             <p class="service__desc">
               We promote good governance by advocating for strict adherence to the Nigerian Constitution as the supreme guiding framework for leadership and law. We also educate citizens and institutions on constitutional rights and duties to ensure justice, equity, and the rule of law prevail.
             </p>
-            <a href="#" class="btn btn__secondary btn__link">
-              <span>Read More</span>
-              <i class="icon-arrow-right2"></i>
-            </a>
           </div>
           <div class="service__img">
             <enhanced:img src="@publicpage-assets/images/src/services/constitution.webp?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>

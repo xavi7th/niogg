@@ -52,11 +52,10 @@
       </div>
     </div>
 
-    <div class="widget mb-50">
-      <h5 class="widget__title capitalize">Key Sponsors</h5>
+    <div class="widget widget-download">
       <div class="widget__content">
-        <a href="#/" class="btn btn__block btn__hover3 mb-20">
-          <enhanced:img src="@publicpage-assets/images/src/logo/logo-dark.png?enhanced" alt="pdf" />
+        <a href="{ window.route('app.about') }" class="btn btn__primary btn__block btn__hover3 text-center">
+          <span class="grow text-xl font-bold uppercase">About NIOGG</span>
         </a>
       </div>
     </div>
