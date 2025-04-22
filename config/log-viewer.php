@@ -1,5 +1,7 @@
 <?php
 
+use Modules\Miscellaneous\Http\Middleware\AuthorizeLogViewer;
+
 return [
 
   /*
@@ -71,7 +73,7 @@ return [
 
   'middleware' => [
     'web',
-    Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+    AuthorizeLogViewer::class,
   ],
 
   /*
@@ -85,7 +87,7 @@ return [
 
   'api_middleware' => [
     Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-    Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer::class,
+    AuthorizeLogViewer::class,
   ],
 
   /*

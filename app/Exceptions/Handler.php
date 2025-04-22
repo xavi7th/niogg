@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Throwable;
+use TypeError;
 use Illuminate\Support\Str;
 use Illuminate\Http\Response;
 use InvalidArgumentException;
@@ -48,6 +49,12 @@ class Handler extends ExceptionHandler
     $response = parent::render($request, $exception);
 
     if (in_array($response->status(), [500, 503, 404, 403, 429]) && $request->header('X-Inertia')) {
+      if ($exception instanceof TypeError) {
+        logger()->error($exception);
+
+        return back()->withFlash(['error' => 'There was an issue on our end. Try again.']);
+      }
+
       return back()->withFlash(['error' => $exception->getMessage()]);
     }
 
