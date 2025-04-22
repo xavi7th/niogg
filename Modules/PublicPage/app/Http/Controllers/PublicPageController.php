@@ -3,11 +3,7 @@
 namespace Modules\PublicPage\Http\Controllers;
 
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
-use Modules\PublicPage\DTOs\ContactFormMessageDTO;
-use Modules\PublicPage\Emails\NewContactFormMessage;
 
 class PublicPageController extends Controller
 {
@@ -168,25 +164,5 @@ class PublicPageController extends Controller
       'ogUrl' => route('app.careers'),
       'canonical' => route('app.careers'),
     ]);
-  }
-
-  public function contact()
-  {
-    return Inertia::render('PublicPage::ContactUs', [
-      'pageTitle' => 'Contact us for further information about any of our conferences or upcoming events',
-    ])->withViewData([
-      'pageTitle' => 'Contact us for further information about any of our conferences or upcoming events',
-      'metaDesc' => 'Contact us for further information about any of our conferences or upcoming events',
-      'canonical' => route('app.contact'),
-    ]);
-  }
-
-  public function contactUs(Request $request)
-  {
-    $message = ContactFormMessageDTO::fromRequest($request);
-
-    Mail::to([config('app.name') => config('app.email')])->send(new NewContactFormMessage($message));
-
-    return back()->withFlash(['success' => 'Thank you for reaching out to us. We will get back to you shortly.']);
   }
 }

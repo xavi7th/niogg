@@ -27,7 +27,7 @@ class NewContactFormMessage extends Mailable implements ShouldBeUnique, ShouldQu
         replyTo: [
           new Address($this->message->email, $this->message->name),
         ],
-        subject: 'New Contact Form Message',
+        subject: 'You\'ve got mail from ' . config('app.name') . ' website',
     );
   }
 

@@ -283,11 +283,18 @@
                         </td>
                       </tr>
                       <tr>
+                        <td align="left" style="font-size:0px;padding:0 0 60px 40px;word-break:break-word;">
+                          <div style="font-family:Montserrat, Helvetica, Arial, sans-serif;font-size:16px;font-weight:300;line-height:24px;text-align:left;color:#000000;">
+                            <span style="font-weight: 500;">How did you hear about us?:</span> {{ $msg->how_did_you_hear_about_us }}
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
                         <td align="center" vertical-align="middle" style="font-size:0px;padding:10px 25px;padding-top:20px;padding-bottom:100px;word-break:break-word;">
                           <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                             <tr>
                               <td align="center" bgcolor="#a18802" role="presentation" style="border:none;border-radius:2px;cursor:auto;mso-padding-alt:15px 30px;background:#a18802;" valign="middle">
-                                <a href="{{ route('app.contact') }}" style="display:inline-block;background:#a18802;color:#FFFFFF;font-family:Montserrat, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:15px 30px;mso-padding-alt:0px;border-radius:2px;" target="_blank"> LOGIN </a>
+                                {{-- <a href="{{ route('app.contact') }}" style="display:inline-block;background:#a18802;color:#FFFFFF;font-family:Montserrat, Helvetica, Arial, sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:15px 30px;mso-padding-alt:0px;border-radius:2px;" target="_blank"> LOGIN </a> --}}
                               </td>
                             </tr>
                           </table>

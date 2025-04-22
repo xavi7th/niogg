@@ -1,20 +1,7 @@
 <script>
   import { getImgUrl } from '@/helpers';
-  import { router } from '@inertiajs/svelte';
 
   export let appPhone, appAltName;
-
-  let details = {};
-
-  let contactUs = () => {
-    router.post(window.route('app.contact.store'), details, {
-      preserveScroll: true,
-      preserveState: true,
-      replace: true,
-
-      onSuccess: () => details = {},
-    });
-  }
 </script>
 
 <section id="requestQuote" class="request-quote-2 pt-0 pb-30">
@@ -37,53 +24,52 @@
           </div>
           <div class="request__form mb-0">
             <div class="request__form-body">
-              <form class="row" on:submit|preventDefault={contactUs}>
+              <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                   <h4 class="request__form-title">Join us Today</h4>
                   <p class="request__form-desc">Fill the form below and one of our reps will get in touch with you.</p>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
-                    <input required type="text" class="form-control" placeholder="Name" bind:value={details.name}>
+                    <input type="text" class="form-control" placeholder="Name">
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
-                    <input required type="email" class="form-control" placeholder="Email" bind:value={details.email}>
+                    <input type="email" class="form-control" placeholder="Email">
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group">
-                    <input required type="text" class="form-control" placeholder="Phone" bind:value={details.phone}>
+                    <input type="text" class="form-control" placeholder="Phone">
                   </div>
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <div class="form-group form-group-select">
-                    <select required class="form-control" bind:value={details.how_did_you_hear_about_us}>
-                      <option value={undefined}>How did you hear about us?</option>
+                    <select class="form-control">
+                      <option>How did you hear about us?</option>
                       <option>Facebook</option>
                       <option>Instagram</option>
                       <option>Twitter</option>
                       <option>LinkedIn</option>
                       <option>A Friend</option>
                       <option>Our Outreach Programme</option>
-                      <option>Other</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12">
                   <div class="form-group">
-                    <textarea required class="form-control" placeholder="Additional Details!" bind:value={details.message}></textarea>
+                    <textarea class="form-control" placeholder="Additional Details!"></textarea>
                   </div>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-12 flex justify-between">
-                  <button type="submit" class="btn btn__secondary">Submit Request</button>
+                  <button class="btn btn__secondary">Submit Request</button>
 
-                  <a href={ window.route('app.conferences.award.index') } class="btn btn__primary popup-video !w-64">
+                  <a href={ window.route('app.conferences.launch.index') } class="btn btn__primary popup-video !w-64">
                     <span class="mr-2">Join our Conference</span><i class="fa fa-play"></i>
                   </a>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@ class ContactFormMessageDTO
       public readonly string $email,
       public readonly string $phone,
       public readonly string $message,
+      public readonly string $how_did_you_hear_about_us,
   ) {
   }
 
@@ -24,6 +25,7 @@ class ContactFormMessageDTO
         $request->input('email'),
         $request->input('phone'),
         $request->input('message'),
+        $request->input('how_did_you_hear_about_us'),
     );
   }
 
@@ -34,6 +36,7 @@ class ContactFormMessageDTO
       'email' => $this->email,
       'phone' => $this->phone,
       'message' => $this->message,
+      'how_did_you_hear_about_us' => $this->how_did_you_hear_about_us,
     ];
   }
 
