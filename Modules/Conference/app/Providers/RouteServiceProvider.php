@@ -20,5 +20,6 @@ class RouteServiceProvider extends ServiceProvider
   protected function mapWebRoutes(): void
   {
     Route::middleware('web')->group(module_path('Conference', '/routes/launch-conference-routes.php'));
+    Route::middleware('web')->group(module_path('Conference', '/routes/award-conference-routes.php'));
   }
 }

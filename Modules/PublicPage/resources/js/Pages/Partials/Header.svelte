@@ -30,9 +30,9 @@
             <a href="{ window.route('app.awards') }" class="dropdown-toggle nav__item-link">News & Media</a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
-              <li class="nav__item"><a href="{ window.route('app.awards') }" class="nav__item-link">Awards and Recognitions</a></li>
+              <li class="nav__item"><a href="{ window.route('app.conferences.award.awardees') }" class="nav__item-link">Awardees and Recognitions</a></li>
               <!-- <li class="nav__item"><a href="{ window.route('app.gallery') }" class="nav__item-link">Gallery</a></li> -->
-              <li class="nav__item"><a href="{ window.route('app.conferences.launch.index') }" class="nav__item-link">Upcoming Conference</a></li>
+              <li class="nav__item"><a href="{ window.route('app.conferences.award.index') }" class="nav__item-link">Upcoming Conference</a></li>
               <li class="nav__item"><a href="{ window.route('app.blog.index') }" class="nav__item-link">News & Articles</a></li>
             </ul>
           </li>

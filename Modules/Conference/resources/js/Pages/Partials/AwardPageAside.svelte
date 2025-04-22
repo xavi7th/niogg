@@ -27,7 +27,7 @@
           <div class="widget-post-item">
             <div class="widget__post-img mb-0">
               <a href="#/">
-                <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer-invitation.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
+                <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer-achievers-invitation.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
               </a>
             </div>
           </div>
@@ -35,23 +35,7 @@
           <div class="widget-post-item">
             <div class="widget__post-img mb-0">
               <a href="#/">
-                <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer-neil-mccluskey.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
-              </a>
-            </div>
-          </div>
-
-          <div class="widget-post-item">
-            <div class="widget__post-img mb-0">
-              <a href="#/">
-                <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
-              </a>
-            </div>
-          </div>
-
-          <div class="widget-post-item">
-            <div class="widget__post-img mb-0">
-              <a href="#/">
-                <enhanced:img src="@publicpage-assets/images/src/sidebar/host-ushbebe.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
+                <enhanced:img src="@publicpage-assets/images/src/sidebar/niogg-flyer-sherif-francis.jpg?enhanced&w=600" class="w-full" alt="flyer thumb" />
               </a>
             </div>
           </div>
