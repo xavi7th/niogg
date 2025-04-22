@@ -15,8 +15,12 @@
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-6">
         <div class="about__text mt-30">
-             <p>Nigeria Insight on Good Governance Ltd/GTE ({appAltName}) is a dynamic, non-governmental civil society organization championing the cause of economic development and responsible governance in Nigeria. </p>
-             <p>The organization is deeply rooted in promoting youth leadership development, with a clear mission to empower young Nigerians to become active and constructive participants in the governance space.</p>
+          <p>{appAltName} is a voice and accountability CSOS dedicated to promoting good governance in Nigeria.</p>
+          <p>Nigeria Insight on Governance Ltd/GTE ({appAltName}) focuses on youth leadership development,
+            aiming to empower young Nigerians to take active roles in governance. {appAltName} is committed to fostering accountability and transparency in both
+            government and public institutions. It also seeks to ensure an effective and credible electoral system in Nigeria. Additionally, {appAltName} emphasizes
+             the importance of citizen education, guiding them to actively participate in governance processes. The organization upholds the constitution and advocates
+             for its principles. Ultimately, {appAltName} contributes to the overall societal development of Nigeria through its initiatives.</p>
         </div>
         <div class="signature mb-30">
           <enhanced:img src="@publicpage-assets/images/src/about/singnture.png?enhanced" class="signature" alt="signature"/>
