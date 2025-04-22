@@ -1,1 +1,1 @@
-console.log('From two.js vendor file');
+console.log("From two.js vendor file");

@@ -62,7 +62,7 @@ class PaymentService
               'purchased_item_id' => $purchased_item_id,
               'purchased_item_type' => $purchased_item_type,
               'payment_provider' => 'PAYSTACK',
-              'api_response' => collect(['rsp' => json_decode($response->body())])->merge(['subscriptionData' => $subscriptionData]), //NOTE: Indicates issues from paystack's end generating the payment url.
+              'api_response' => collect(['rsp' => json_decode($response->body())])->merge(['subscriptionData' => $subscriptionData]), // NOTE: Indicates issues from paystack's end generating the payment url.
             ],
         );
 
@@ -80,7 +80,7 @@ class PaymentService
               'purchased_item_id' => $purchased_item_id,
               'purchased_item_type' => $purchased_item_type,
               'payment_provider' => 'PAYSTACK',
-              'api_response' => collect(['rsp' => json_decode($response->body())])->merge(['subscriptionData' => $subscriptionData]), //NOTE: Indicates success from paystack's end generating the payment url.
+              'api_response' => collect(['rsp' => json_decode($response->body())])->merge(['subscriptionData' => $subscriptionData]), // NOTE: Indicates success from paystack's end generating the payment url.
             ],
         );
 
@@ -253,7 +253,7 @@ class PaymentService
     }
 
     if (is_null($registrant)) { // This is probably an unknown user conference registration (therefore no $request->user() available)
-      $registrant = $savedTransaction->purchased_item?->registrant ?? $savedTransaction->purchased_item; //NOTE: The purchased_item is most likely the registrant itself.
+      $registrant = $savedTransaction->purchased_item?->registrant ?? $savedTransaction->purchased_item; // NOTE: The purchased_item is most likely the registrant itself.
     }
 
     if ($response->failed()) {
@@ -265,7 +265,7 @@ class PaymentService
     if ( ! $paystackRsp['status']) {
       self::reportTransactionIssue('Paystack Verification Failed for ' . $registrant->email, ['paystackRsp' => $paystackRsp, 'transactionRef' => $trxrf, 'affectedUser' => $registrant]);
 
-      //Peradventure Paystack will attempt to notify us again later so we are not deleting the subscription reference yet. We may set a number of tries thingy to delete after certain tries
+      // Peradventure Paystack will attempt to notify us again later so we are not deleting the subscription reference yet. We may set a number of tries thingy to delete after certain tries
       return self::failedResponse($savedTransaction, $subscriptionData, $paystackRsp, FALSE);
     }
 
@@ -279,7 +279,7 @@ class PaymentService
       return self::failedResponse($savedTransaction, $subscriptionData, $paystackRsp, FALSE);
     }
 
-    $savedTransaction->api_response = $paystackRsp; //INFO: Overwrite the previous Initialisation response with this new successful transaction response.
+    $savedTransaction->api_response = $paystackRsp; // INFO: Overwrite the previous Initialisation response with this new successful transaction response.
     $savedTransaction->processed_at = now();
     $savedTransaction->save();
 

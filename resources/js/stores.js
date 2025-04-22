@@ -1,47 +1,47 @@
 // EXAMPLE USABE
 // import { pageHeader } from "@/stores";
 
-import { writable } from 'svelte/store';
+import { writable } from "svelte/store";
 
-export const pageTitle = writable('NIOGG');
-export const pageHeader = writable('');
-export const pageDescription = writable('');
+export const pageTitle = writable("NIOGG");
+export const pageHeader = writable("");
+export const pageDescription = writable("");
 
-export const isMobileScreen = writable(window.matchMedia('(max-width: 1023.5px)').matches)
+export const isMobileScreen = writable(window.matchMedia("(max-width: 1023.5px)").matches);
 
-window.matchMedia('(min-width: 1023.5px)').addEventListener("change", () => {
-  if ( window.matchMedia('(max-width: 1023.5px)').matches ) {
-    isMobileScreen.update(n => true);
+window.matchMedia("(min-width: 1023.5px)").addEventListener("change", () => {
+  if (window.matchMedia("(max-width: 1023.5px)").matches) {
+    isMobileScreen.update((n) => true);
   } else {
-    isMobileScreen.update(n => false);
+    isMobileScreen.update((n) => false);
   }
-})
+});
 
 export const isOnline = writable(navigator.onLine);
 
-let updateOnlineStatus = ( e ) => {
+let updateOnlineStatus = (e) => {
   const { type } = e;
 
-  isOnline.update(n => type === 'online');
+  isOnline.update((n) => type === "online");
 
-  if ( navigator.onLine ) {
+  if (navigator.onLine) {
     Toast.fire({
-      html: 'Great! Network connection restored.',
+      html: "Great! Network connection restored.",
       timer: 2000,
       icon: "success",
-      position: 'center'
-    })
+      position: "center",
+    });
   } else {
     BlockToast.fire({
-      title: 'Oops',
-      html: 'Network connection lost! Try checking the network cables, modem, and router, reconnecting to Wi-Fi or moving closer to your router',
+      title: "Oops",
+      html: "Network connection lost! Try checking the network cables, modem, and router, reconnecting to Wi-Fi or moving closer to your router",
       timer: 200000,
       icon: "warning",
-    })
+    });
   }
-}
+};
 
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
+window.addEventListener("online", updateOnlineStatus);
+window.addEventListener("offline", updateOnlineStatus);
 
-console.log('---====== network-status-checker activated =====---');
+console.log("---====== network-status-checker activated =====---");

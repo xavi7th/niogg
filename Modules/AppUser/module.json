@@ -4,8 +4,6 @@
   "description": "AppUser for this project",
   "keywords": [],
   "priority": 0,
-  "providers": [
-    "Modules\\AppUser\\Providers\\AppUserServiceProvider"
-  ],
+  "providers": ["Modules\\AppUser\\Providers\\AppUserServiceProvider"],
   "files": []
 }

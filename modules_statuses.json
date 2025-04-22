@@ -1,7 +1,7 @@
 {
-    "UserAuth": true,
-    "AppUser": true,
-    "PublicPage": true,
-    "Conference": true,
-    "Miscellaneous": true
+  "UserAuth": true,
+  "AppUser": true,
+  "PublicPage": true,
+  "Conference": true,
+  "Miscellaneous": true
 }

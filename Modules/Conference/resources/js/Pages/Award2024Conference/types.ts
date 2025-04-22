@@ -5,5 +5,5 @@ export interface Award {
   category: string;
 }
 
-export type SortOption = 'default' | 'recipient' | 'category';
+export type SortOption = "default" | "recipient" | "category";
 export type FilterCategory = string | null;

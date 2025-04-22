@@ -42,7 +42,7 @@ class PublicPageServiceProvider extends ServiceProvider
     $componentNamespace = str_replace(
         '/',
         '\\',
-        config('modules.namespace') . '\\' . $this->moduleName . '\\' . ltrim(config('modules.paths.generator.component-class.path'), config('modules.paths.app_folder', ''))
+        config('modules.namespace') . '\\' . $this->moduleName . '\\' . mb_ltrim(config('modules.paths.generator.component-class.path'), config('modules.paths.app_folder', ''))
     );
 
     Blade::componentNamespace($componentNamespace, $this->moduleNameLower);

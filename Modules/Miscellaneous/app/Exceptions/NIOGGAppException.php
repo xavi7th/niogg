@@ -18,7 +18,7 @@ class NIOGGAppException extends Exception
       'LOGGED_IN_USER_EMAIL' => request()->user()?->email,
       'LOGGED_IN_USER_ROLE' => request()->user()?->getType(),
       'CURRENT_URL' => request()->url(),
-      'TRACE' => $this->getTrace(), //NOTE: JSONLite extension can format this part of the log file for better clarity.
+      'TRACE' => $this->getTrace(), // NOTE: JSONLite extension can format this part of the log file for better clarity.
     ]);
   }
 

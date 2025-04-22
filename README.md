@@ -28,16 +28,15 @@ You can learn more at their [home page](https://inertiajs.com/)
 
 Svelte is a front-end, open-source JavaScript framework for making interactive webpages. The general concept behind Svelte is similar to pre-existing frameworks like React and Vue in that it enables developers to make web apps. However, Svelte brings several features to the table that provides developers with a unique experience, such as:
 
-  - Less code
-  - No virtual DOM
-  - Truly Reactive
+- Less code
+- No virtual DOM
+- Truly Reactive
 
 Svelte provides a different approach to building web apps than some of the other frameworks covered in this module. While frameworks like React and Vue do the bulk of their work in the user's browser while the app is running, Svelte shifts that work into a compile step that happens only when you build your app, producing highly optimized vanilla JavaScript.
 
 The outcome of this approach is not only smaller application bundles and better performance, but also a developer experience that is more approachable for people that have limited experience of the modern tooling ecosystem.
 
 You can read more at [their website](https://svelte.dev) or give it a spin at their [playground](https://learn.svelte.dev/tutorial/welcome-to-svelte)
-
 
 ## Features of this template
 
@@ -48,14 +47,14 @@ This template has the following integrated already:
 - Tailwind CSS
 - Hot Module reloading using vite
 - Authentication scafolded using Laravel Breeze, InertiaJS and SvelteJS components
-- Modules Scafolded using the popular Laravel [Nwidart Modules](https://laravelmodules.com/). generate a module using ```php artisan module:create [ModuleName}``` and you are good to go
-- An opinionated code linting standard using Laravel Pint and PHPCS configurable by editing the included ```pint.json``` and ```phpcs.xml``` files. To lint run the ```vendor/bin/pint```, ```vendor/bin/phpcs``` and ```vendor/bin/phpcbf``` commands from your terminal at the project root. Or you can use the preconfigured lints via ```composer lint-check``` and ```composer lint``` commands.
-- Docker (Laravel Sail) setup and configured. Run ```sail up``` to use docker
-- Docker Sync for faster docker development. (Uncomment the relevant line in the docker-compose file and then run ```make start_dev``` at project root to use docker-sync).
+- Modules Scafolded using the popular Laravel [Nwidart Modules](https://laravelmodules.com/). generate a module using `php artisan module:create [ModuleName}` and you are good to go
+- An opinionated code linting standard using Laravel Pint and PHPCS configurable by editing the included `pint.json` and `phpcs.xml` files. To lint run the `vendor/bin/pint`, `vendor/bin/phpcs` and `vendor/bin/phpcbf` commands from your terminal at the project root. Or you can use the preconfigured lints via `composer lint-check` and `composer lint` commands.
+- Docker (Laravel Sail) setup and configured. Run `sail up` to use docker
+- Docker Sync for faster docker development. (Uncomment the relevant line in the docker-compose file and then run `make start_dev` at project root to use docker-sync).
   - See [Docker Sync Website](http://docker-sync.io/) and [this article by Rohit Lingayat](https://betterprogramming.pub/improve-performance-of-docker-on-macos-by-using-docker-sync-4f46edbde570)
-- Pre commit linting (Run ```npm run dev``` to set this up). You can edit the configiration for this in package.json's predev script.
+- Pre commit linting (Run `npm run dev` to set this up). You can edit the configiration for this in package.json's predev script.
 - Sample package.json script to push production build to git remote server. Checkout package.json's push script.
-- Laravel Telescope and Laravel Telescope toolar for local development. This can be disabled or enabled via env option ```TELESCOPE_ENABLED=true```
+- Laravel Telescope and Laravel Telescope toolar for local development. This can be disabled or enabled via env option `TELESCOPE_ENABLED=true`
 
 ## Getting Started
 

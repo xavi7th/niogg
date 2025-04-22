@@ -4,8 +4,6 @@
   "description": "Miscellaneous for this project",
   "keywords": [],
   "priority": 0,
-  "providers": [
-    "Modules\\Miscellaneous\\Providers\\MiscellaneousServiceProvider"
-  ],
+  "providers": ["Modules\\Miscellaneous\\Providers\\MiscellaneousServiceProvider"],
   "files": []
 }

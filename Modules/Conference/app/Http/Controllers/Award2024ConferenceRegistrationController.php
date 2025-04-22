@@ -57,13 +57,13 @@ class Award2024ConferenceRegistrationController extends Controller
       ]);
     }
 
-    //redirect to paystack so that they can pay
+    // redirect to paystack so that they can pay
     $subscriptionData = [
       'label' => $registrant->full_name . ' ' . $conference_description,
       'email' => $registrant->email,
       'amount' => $amount * 100,
       'customer_name' => $registrant->full_name,
-      'callback_url' => route('app.conferences.launch.payment.verify'), //NOTE: This is the url where we are supposed verify the transaction.
+      'callback_url' => route('app.conferences.launch.payment.verify'), // NOTE: This is the url where we are supposed verify the transaction.
       'metadata' => [
         'user_name' => $registrant->full_name,
         'user_email' => $registrant->email,

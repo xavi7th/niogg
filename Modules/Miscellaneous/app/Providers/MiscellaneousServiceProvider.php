@@ -58,7 +58,7 @@ class MiscellaneousServiceProvider extends ServiceProvider
 
     $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->moduleNameLower);
 
-    $componentNamespace = str_replace('/', '\\', config('modules.namespace') . '\\' . $this->moduleName . '\\' . ltrim(config('modules.paths.generator.component-class.path'), config('modules.paths.app_folder', '')));
+    $componentNamespace = str_replace('/', '\\', config('modules.namespace') . '\\' . $this->moduleName . '\\' . mb_ltrim(config('modules.paths.generator.component-class.path'), config('modules.paths.app_folder', '')));
     Blade::componentNamespace($componentNamespace, $this->moduleNameLower);
   }
 

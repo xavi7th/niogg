@@ -88,13 +88,13 @@ DB_PASSWORD=your_database_password
 
 ### Customize Other Settings
 
-You can customize various aspects of the template by editing configuration files located in the `config` directory, or by modifying the stub files located in the ```stubs``` directory.
+You can customize various aspects of the template by editing configuration files located in the `config` directory, or by modifying the stub files located in the `stubs` directory.
 
-To configure the build options edit the ```vite.config.js```, ```svelte.config.js```, ```postcss.config.js```, ```tailwind.config.css```, ```vite-module-loader.js```, or the ```jsonconfig.json``` file.
+To configure the build options edit the `vite.config.js`, `svelte.config.js`, `postcss.config.js`, `tailwind.config.css`, `vite-module-loader.js`, or the `jsonconfig.json` file.
 
-To configure Docker settings (or sail) edit the ```docker-compose.yml``` file or any of the relevant files in the ```docker``` folder.
+To configure Docker settings (or sail) edit the `docker-compose.yml` file or any of the relevant files in the `docker` folder.
 
-To configure code linting, edit the ```pint.json``` or the  ```phpcs.xml``` files.
+To configure code linting, edit the `pint.json` or the `phpcs.xml` files.
 
 ## Usage
 

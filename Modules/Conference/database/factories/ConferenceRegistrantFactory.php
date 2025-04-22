@@ -16,7 +16,7 @@ class ConferenceRegistrantFactory extends Factory
       'email' => $this->faker->email(),
       'phone' => $this->faker->phoneNumber(),
       'conference_tag' => 'launch_conference',
-      'password' => '$2y$12$x5Nvli.fe..7PXUgACxFEeVaXTn3ewioX/vP1OlEn1jXDogHcoxwq', //pass
+      'password' => '$2y$12$x5Nvli.fe..7PXUgACxFEeVaXTn3ewioX/vP1OlEn1jXDogHcoxwq', // pass
       'registration_id' => $this->faker->bothify('???-##############'),
     ];
   }

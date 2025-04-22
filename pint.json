@@ -1,14 +1,8 @@
 {
   "preset": "laravel",
-  "notPath": [
-    "./app/helpers.php"
-  ],
-  "exclude": [
-    "my-specific/folder"
-  ],
-  "notName": [
-    "*-my-file.php"
-  ],
+  "notPath": ["./app/helpers.php"],
+  "exclude": ["my-specific/folder"],
+  "notName": ["*-my-file.php"],
   "rules": {
     "align_multiline_comment": true,
     "array_indentation": false,
@@ -46,7 +40,7 @@
     "modernize_strpos": true,
     "modernize_types_casting": true,
     "new_with_parentheses": {
-      "named_class" : true,
+      "named_class": true,
       "anonymous_class": false
     },
     "no_empty_comment": true,

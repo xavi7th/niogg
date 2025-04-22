@@ -100,7 +100,7 @@ if ( ! function_exists('is_identical')) {
       case in_array($type1, ['boolean', 'integer', 'double', 'string']):
         if ($v1 !== $v2) {
           return FALSE;
-        } //Strict comparison here.
+        } // Strict comparison here.
         break;
 
       case $type1 === 'array':
@@ -109,13 +109,13 @@ if ( ! function_exists('is_identical')) {
           return FALSE;
         }
 
-        //Check same keys.
+        // Check same keys.
         $arrKeysInCommon = array_intersect_key($v1, $v2);
         if (count($arrKeysInCommon) !== $count) {
           return FALSE;
         }
 
-        //Require that their keys be in the same order.
+        // Require that their keys be in the same order.
         $arrKeys1 = array_keys($v1);
         $arrKeys2 = array_keys($v2);
         foreach ($arrKeys1 as $key => $val) {
@@ -124,7 +124,7 @@ if ( ! function_exists('is_identical')) {
           }
         }
 
-        //Check same keys in same order.
+        // Check same keys in same order.
         foreach ($v1 as $key => $val) {
           if (is_identical($v1[$key], $v2[$key]) === FALSE) {
             return FALSE;
@@ -135,9 +135,9 @@ if ( ! function_exists('is_identical')) {
       case $type1 === 'object':
         if ($v1 !== $v2) {
           return FALSE;
-        } //See if loose comparison fails.
+        } // See if loose comparison fails.
 
-        //Now do strict(er) comparison.
+        // Now do strict(er) comparison.
         $objReflection1 = new ReflectionObject($v1);
         $objReflection2 = new ReflectionObject($v2);
 
@@ -155,14 +155,14 @@ if ( ! function_exists('is_identical')) {
         }
         break;
 
-      //Since both types are same, consider their "values" equal.
+      // Since both types are same, consider their "values" equal.
       case $type1 === 'NULL':
       case $type1 === 'resource':
       case $type1 === 'unknown type':
         break;
     }
 
-    return TRUE; //All tests passed.
+    return TRUE; // All tests passed.
   }
 }
 
@@ -252,7 +252,7 @@ if ( ! function_exists('unique_random2')) {
         return $prefix . $seed . rand(str()->repeat(1, $chars - $count_chars), str()->repeat(9, $chars - $count_chars));
       }
 
-      //Randomize the tail of the generated string with 3 characters to prevent micro-second collisions possibilities
+      // Randomize the tail of the generated string with 3 characters to prevent micro-second collisions possibilities
       return $prefix . mb_substr($seed, 0, $chars - $salt_length) . rand(str()->repeat(1, $salt_length), str()->repeat(9, $salt_length));
     }
 
@@ -260,7 +260,7 @@ if ( ! function_exists('unique_random2')) {
       return $prefix . $seed . rand(str()->repeat(1, $chars - $count_chars), str()->repeat(9, $chars - $count_chars));
     }
 
-    //Randomize the tail of the generated string with $salt_length characters to prevent micro-second collisions possibilities
+    // Randomize the tail of the generated string with $salt_length characters to prevent micro-second collisions possibilities
     return $prefix . mb_substr($seed, 0, $chars - $salt_length) . Str::random($salt_length);
   }
 }
@@ -293,7 +293,7 @@ if ( ! function_exists('str_obfuscate')) {
 
       $val = mb_str_split($val);
 
-      //Retrieve the original string
+      // Retrieve the original string
       while (count($val) > 0) {
         for ($i = 0; $i < $chunks; $i++) {
           $unhashed .= array_pop($val);
@@ -307,13 +307,13 @@ if ( ! function_exists('str_obfuscate')) {
     }
 
     $hash = '';
-    $salter = md5($val); //use md5 to get the same salt for the same value
+    $salter = md5($val); // use md5 to get the same salt for the same value
 
     foreach (mb_str_split($val, $chunks) as $key => $value) {
       $hash .= $value . Str::substr($salter, $key * $chunks, $padding);
     }
 
-    //Reverse the string to make unhashing it more efficient using array_pop instead of array_shift and then save the chunk and padding factor so that we can unhash the result without remembering them
+    // Reverse the string to make unhashing it more efficient using array_pop instead of array_shift and then save the chunk and padding factor so that we can unhash the result without remembering them
     return strrev($hash) . $salt_limiter . $chunks . $salt_limiter . $padding;
   }
 }
