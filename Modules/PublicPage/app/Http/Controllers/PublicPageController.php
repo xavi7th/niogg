@@ -109,7 +109,9 @@ class PublicPageController extends Controller
       'teams' => $teams,
     ])->withViewData([
       'pageTitle' => 'About ' . config('app.name'),
-      'metaDesc' => 'At ' . config('app.name') . ' we envision a society where the government is transparent and accountable to her citizens.',
+      'metaDesc' => config('app.name') . ' (NIOGG) is a vibrant civil society organization promoting economic development, youth leadership, and responsible governance in Nigeria. ' .
+                    'Through initiatives like entrepreneurship training, free medical outreach, charity donations, and civic education, NIOGG empowers citizens and advocates for ' .
+                    'transparency, accountability, and adherence to the Nigerian Constitution.',
       'ogUrl' => route('app.about'),
       'canonical' => route('app.about'),
     ]);
@@ -142,12 +144,14 @@ class PublicPageController extends Controller
 
   public function awards()
   {
-    return Inertia::render('PublicPage::Awards', [
-      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+    return Inertia::render('PublicPage::Awardees', [
+      'pageTitle' => 'NIOGG Achievers Icon/Merit Awards 2024 – Celebrating Champions of Good Governance',
     ])->withViewData([
-      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
-      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
-            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
+      'pageTitle' => 'NIOGG Achievers Icon/Merit Awards 2024 – Celebrating Champions of Good Governance',
+      'metaDesc' => 'Get full details on the ' . config('app.name') . ' (NIOGG) Achievers Icon/Merit Awards 2024 — a prestigious conference celebrating individuals ' .
+                    'and organizations driving positive change, good governance, and community development across Nigeria. This event is scheduled for May 23rd, 2025 ' .
+                    'and is a brilliant opportunity to connect with visionary leaders, policymakers, industry experts, and youth advocates. By partnering with us, your ' .
+                    'company/brand can play a significant role in advancing transparency, accountability, and effective leadership in our nation.',
       'ogUrl' => route('app.careers'),
       'canonical' => route('app.careers'),
     ]);
@@ -156,11 +160,11 @@ class PublicPageController extends Controller
   public function gallery()
   {
     return Inertia::render('PublicPage::Gallery', [
-      'pageTitle' => 'Images speeaks thousand words',
+      'pageTitle' => 'Images speaks thousand words',
     ])->withViewData([
-      'pageTitle' => 'Images speeaks thousand words',
-      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
-            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
+      'pageTitle' => 'Images speaks thousand words',
+      'metaDesc' => 'Explore the impact of ' . config('app.name') . ' (NIOGG) through our gallery — featuring highlights from our entrepreneurship trainings, ' .
+                    'medical outreaches, charity events, youth leadership programs, and community development awards.',
       'ogUrl' => route('app.careers'),
       'canonical' => route('app.careers'),
     ]);
@@ -169,13 +173,11 @@ class PublicPageController extends Controller
   public function contact()
   {
     return Inertia::render('PublicPage::ContactUs', [
-      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+      'pageTitle' => 'Contact us for further information about any of our conferences or upcoming events',
     ])->withViewData([
-      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
-      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
-            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
-      'ogUrl' => route('app.careers'),
-      'canonical' => route('app.careers'),
+      'pageTitle' => 'Contact us for further information about any of our conferences or upcoming events',
+      'metaDesc' => 'Contact us for further information about any of our conferences or upcoming events',
+      'canonical' => route('app.contact'),
     ]);
   }
 
