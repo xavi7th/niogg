@@ -12,6 +12,8 @@
   };
 </script>
 
+import LazyThumbnail from './LazyThumbnail.svelte';
+
 <div class="supporting-grid">
   {#each videos as video (video.id)}
     <div
@@ -23,7 +25,12 @@
       on:keydown={(e) => e.key === 'Enter' && onVideoSelect(video)}
     >
       <div class="card-image-container">
-        <img src={video.thumbnail_url} alt={video.title} loading="lazy" class="card-image" />
+        <LazyThumbnail
+          src={video.thumbnail_url}
+          alt={video.title}
+          placeholder="/images/video-placeholder-default.jpg"
+          class="card-thumbnail"
+        />
 
         <div class="play-button">
           <svg width="50" height="50" viewBox="0 0 100 100" fill="currentColor">
@@ -84,7 +91,7 @@
     overflow: hidden;
   }
 
-  .card-image {
+  .card-thumbnail {
     position: absolute;
     top: 0;
     left: 0;
@@ -92,6 +99,8 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s ease;
+    will-change: transform;
+    transform: translateZ(0);
   }
 
   .video-card:hover .card-image {
