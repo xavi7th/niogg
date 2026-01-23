@@ -1,36 +1,59 @@
 <script>
+  let isPlaying = false;
+  let videoElement;
+
   export let video = {};
   export let size = 'large';
 
   const isBig = size === 'large';
   const playButtonSize = isBig ? 100 : 50;
   const titleSize = isBig ? '1.75rem' : '1.125rem';
+
+  function handlePlayClick() {
+    if (videoElement) {
+      videoElement.play();
+    }
+  }
+
+  function handlePlay() {
+    isPlaying = true;
+  }
+
+  function handlePause() {
+    isPlaying = false;
+  }
 </script>
 
 <div class="video-player" class:large={isBig} class:small={!isBig}>
   <div class="video-container">
     <video
+      bind:this={videoElement}
       poster={video.thumbnail_url}
       controls
       class="video-element"
       preload="metadata"
+      on:play={handlePlay}
+      on:pause={handlePause}
     >
       <source src={video.video_url} type="video/mp4" />
       <p>Your browser does not support HTML5 video.</p>
     </video>
 
-    <div class="play-button-overlay">
-      <svg
-        width={playButtonSize}
-        height={playButtonSize}
-        viewBox="0 0 100 100"
-        fill="#ff7607"
-        class="play-icon"
-      >
-        <circle cx="50" cy="50" r="48" fill="none" stroke="#ff7607" stroke-width="2" />
-        <polygon points="35,20 35,80 80,50" fill="#ff7607" />
-      </svg>
-    </div>
+    {#if !isPlaying}
+      <div class="play-button-overlay" on:click={handlePlayClick} role="button" tabindex="0">
+        <svg
+          width={playButtonSize}
+          height={playButtonSize}
+          viewBox="0 0 100 100"
+          fill="#ff7607"
+          class="play-icon"
+          aria-hidden="true"
+        >
+          <circle cx="50" cy="50" r="48" fill="none" stroke="#ff7607" stroke-width="2" />
+          <polygon points="35,20 35,80 80,50" fill="#ff7607" />
+        </svg>
+      </div>
+    {/if}
 
     <div class="metadata-overlay">
       {#if video.is_featured}
@@ -73,13 +96,17 @@
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    pointer-events: none;
     z-index: 2;
     transition: transform 0.2s ease;
   }
 
+  .play-button-overlay:hover .play-icon {
+    transform: scale(1.1);
+  }
+
   .play-icon {
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease;
   }
 
   .video-element::-webkit-media-controls-play-button {
