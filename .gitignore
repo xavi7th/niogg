@@ -40,3 +40,7 @@ _ide_helper_models.php
 failure-Tests_Browser_*.png
 Tests_Browser_*.log
 tests/Coverage/*
+tasks/*
+.claude/mockups/*
+.ralph/archive/*
+.ralph/.last-branch
