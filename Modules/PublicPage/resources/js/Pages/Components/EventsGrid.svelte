@@ -5,16 +5,20 @@
   let selectedCategory = 'all';
 
   const categories = Array.from(
-    new Set(events.flatMap((e) => e.videos?.map((v) => v.category || e.category) || []))
-  ).filter(Boolean);
+    new Set(events.map((e) => e.category).filter(Boolean))
+  );
 
   const getFilteredVideos = () => {
     if (selectedCategory === 'all') {
-      return events.flatMap((e) => e.videos || []);
+      return events.flatMap((e) =>
+        (e.videos || []).map((v) => ({ ...v, eventCategory: e.category }))
+      );
     }
-    return events.flatMap((e) =>
-      (e.videos || []).filter((v) => (v.category || e.category) === selectedCategory)
-    );
+    return events
+      .filter((e) => e.category === selectedCategory)
+      .flatMap((e) =>
+        (e.videos || []).map((v) => ({ ...v, eventCategory: e.category }))
+      );
   };
 
   const getCategoryLabel = (category) => {
@@ -71,8 +75,8 @@
             {#if video.formatDuration}
               <span class="duration">{video.formatDuration}</span>
             {/if}
-            {#if video.category}
-              <span class="category">{getCategoryLabel(video.category)}</span>
+            {#if video.eventCategory}
+              <span class="category">{getCategoryLabel(video.eventCategory)}</span>
             {/if}
           </div>
         </div>
