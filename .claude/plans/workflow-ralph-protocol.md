@@ -37,12 +37,20 @@ Read these files first (in order):
 
 The Codebase Patterns section consolidates reusable knowledge you must know before implementing.
 
-### Step 2: Identify Story Group to Implement
+### Step 2: Identify THE NEXT Story or Story Group
+
+**CRITICAL: Implement ONLY ONE story or story group per iteration.**
 
 - Find the **highest priority** user story where `passes: false`
-- **CRITICAL**: If story is **US-XXX-01**, you MUST also implement **US-XXX-02** and **US-XXX-03** in the same session
-- If story is **US-XXX-02** or **US-XXX-03**, this indicates incomplete work from a previous iteration - complete the remaining stories in that group
-- If **ALL stories have `passes: true`**, stop and reply: `<promise>COMPLETE</promise>`
+- **If story is US-XXX-01**: You MUST implement US-XXX-01, US-XXX-02, and US-XXX-03 together as a single group
+- **If story is standalone** (no -02/-03 variants): Implement ONLY this one story
+- **If story is US-XXX-02 or US-XXX-03**: Complete the remaining stories in that group only
+- **If ALL stories have `passes: true`**: Reply with `<promise>COMPLETE</promise>` and exit
+
+**After identifying the story/group:**
+- Implement ONLY this story or story group
+- Do NOT continue to the next story after completion
+- The iteration ends after Step 7
 
 ### Step 3: Implement Complete Story Group
 
@@ -147,14 +155,20 @@ Create ONE single commit containing:
 - Add learnings that FUTURE iterations should know
 - Example: "When modifying EventVideo model, also update EventVideoTransformer to keep serialization in sync"
 
-### Step 7: Check Completion
+### Step 7: End Iteration
 
-After updating records:
+**After updating records, the iteration MUST end.**
 
-- If there are still stories with `passes: false`: end normally (next iteration will continue)
-- If ALL stories now have `passes: true`: reply with: `<promise>COMPLETE</promise>`
+- **If there are still stories with `passes: false`**:
+  - Reply normally (no special signal)
+  - Next iteration will pick up the next `passes: false` story
+  - **Do NOT continue to implement more stories**
 
-Do NOT add anything after the completion signal.
+- **If ALL stories now have `passes: true`**:
+  - Reply with: `<promise>COMPLETE</promise>`
+  - Do NOT add anything after the completion signal
+
+**One story/group per iteration - this is mandatory.**
 
 ---
 
@@ -252,6 +266,14 @@ All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise
 - Include User Story IDs in commit messages
 - Commit files in tasks/ directory
 - Skip verification for UI changes
+
+**ITERATION SCOPE:**
+
+- **ONE story or story group per iteration** - this is the most critical rule
+- Standalone stories (US-001, US-002, etc.) = one iteration each
+- Story groups (US-XXX-01/02/03) = one iteration for all three together
+- Do NOT implement multiple stories/groups in a single iteration
+- After Step 7, the iteration ends - period
 
 ---
 
