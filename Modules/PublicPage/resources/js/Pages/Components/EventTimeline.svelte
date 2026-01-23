@@ -62,6 +62,7 @@
 <style>
   .event-timeline {
     width: 100%;
+    display: block;
   }
 
   .event-section {
@@ -100,6 +101,10 @@
   }
 
   @media (max-width: 768px) {
+    .event-timeline {
+      display: none;
+    }
+
     .event-section {
       padding: 1.5rem 0;
     }
