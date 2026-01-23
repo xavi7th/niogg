@@ -234,7 +234,110 @@ npm run lint          # Check JS/Svelte
 php artisan module:make ModuleName
 ```
 
-## Contributing
+## Deployment
+
+### Overview
+
+Two deployment strategies are available:
+
+#### 1. Rsync Strategy (Recommended)
+
+Uses `rsync` with atomic symlink switching for production deployments. **Recommended for robustness and safety.**
+
+**Advantages:**
+- Separates deployment from VCS concerns
+- Efficient incremental transfers (only changed files synced)
+- Atomic release switching via symlinks (zero-downtime)
+- Easy rollbacks (previous releases remain on disk)
+- Supports dry-run mode for safe testing
+- Proper release lifecycle management (automatic cleanup)
+- Health check validation post-deployment
+- No git state manipulation
+
+**Disadvantages:**
+- Requires rsync on both local and remote machines
+- Needs SSH access and rsync installed on server
+
+**Setup:**
+
+1. Configure your server details in `deploy.sh`:
+```bash
+# Edit deploy.sh and update:
+SSH_ALIAS="niogg-server"           # Your SSH alias/host
+BASE="/home/user/niogg.org"        # Base directory on server
+HEALTH_CHECK_URL="https://niogg.org"
+```
+
+2. Ensure server directory structure exists:
+```bash
+ssh niogg-server mkdir -p /home/user/niogg.org/shared/{env,storage,vendor}
+ssh niogg-server mkdir -p /home/user/niogg.org/releases
+```
+
+3. Place `.env` file in shared location:
+```bash
+scp .env.production niogg-server:/home/user/niogg.org/shared/env/.env
+```
+
+**Deploy:**
+```bash
+# Standard deployment (staging or production)
+./deploy.sh staging
+./deploy.sh production
+
+# Dry-run mode (test without making changes)
+DEPLOY_DRY_RUN=1 ./deploy.sh production
+
+# Skip build (if already built locally)
+SKIP_BUILD=1 ./deploy.sh production
+
+# Customize release retention
+KEEP_RELEASES=10 ./deploy.sh production
+```
+
+**Rollback:**
+```bash
+ssh niogg-server
+cd /home/user/niogg.org
+ln -sfn releases/<previous-release-date> current
+ln -sfn current/public public
+```
+
+#### 2. Git Push Strategy (Legacy)
+
+Uses `deploy.js` to commit build artifacts to git and force-push to a production remote.
+
+**Advantages:**
+- Build history tracked in git
+- Simple conceptually
+
+**Disadvantages:**
+- Pollutes git history with build commits
+- Requires force-push to production remote (risky)
+- Modifies .gitignore dynamically (potential corruption)
+- No rollback mechanism (need to revert commits)
+- Complex stash/pop logic for local changes
+- Build output mixed with source code in VCS
+- No zero-downtime capability
+
+**Deploy:**
+```bash
+npm run push -- production
+npm run push -- staging
+```
+
+**Note:** This approach is less robust and should only be used if rsync setup isn't feasible.
+
+### Pre-Deployment Checklist
+
+- [ ] All tests pass: `./vendor/bin/sail test`
+- [ ] Code linting passes: `composer lint-check && npm run lint`
+- [ ] Build succeeds: `npm run build && composer recompile`
+- [ ] `.env` file configured for target environment
+- [ ] Database backups are recent
+- [ ] No uncommitted changes on deployment branch
+
+### Contributing
 
 To contribute to NIOGG's website and platform, please follow the development guidelines in [CLAUDE.md](CLAUDE.md). Ensure all code passes linting and tests before submitting pull requests.
 
