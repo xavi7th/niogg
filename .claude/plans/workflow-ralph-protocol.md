@@ -48,6 +48,7 @@ The Codebase Patterns section consolidates reusable knowledge you must know befo
 - **If ALL stories have `passes: true`**: Reply with `<promise>COMPLETE</promise>` and exit
 
 **After identifying the story/group:**
+
 - Implement ONLY this story or story group
 - Do NOT continue to the next story after completion
 - The iteration ends after Step 7

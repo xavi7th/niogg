@@ -11,20 +11,20 @@ class Video extends Model
     use HasFactory;
 
     protected $fillable = [
-    'event_id',
-    'title',
-    'description',
-    'video_url',
-    'thumbnail_url',
-    'duration_seconds',
-    'is_featured',
-    'sort_order',
+      'event_id',
+      'title',
+      'description',
+      'video_url',
+      'thumbnail_url',
+      'duration_seconds',
+      'is_featured',
+      'sort_order',
     ];
 
     protected $casts = [
-    'is_featured' => 'boolean',
-    'duration_seconds' => 'integer',
-    'sort_order' => 'integer',
+      'is_featured' => 'boolean',
+      'duration_seconds' => 'integer',
+      'sort_order' => 'integer',
     ];
 
     /**
@@ -52,13 +52,13 @@ class Video extends Model
     }
 
     /**
-     * Format duration from seconds to MM:SS
+     * Format duration from seconds to MM:SS (Accessor)
      */
-    public function formatDurationAttribute(): string
+    public function getFormatDurationAttribute(): string
     {
         $minutes = (int) ($this->duration_seconds / 60);
         $seconds = $this->duration_seconds % 60;
 
-        return sprintf('%02d:%02d', $minutes, $seconds);
+        return sprintf('%d:%02d', $minutes, $seconds);
     }
 }

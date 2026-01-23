@@ -29,6 +29,7 @@ class HandleInertiaRequests extends Middleware
   {
     return [
       ...parent::share($request),
+      'pageTitle' => '',
       'app' => fn () => [
         'name' => config('app.name'),
         'email' => config('app.email'),
@@ -77,6 +78,10 @@ class HandleInertiaRequests extends Middleware
 
     if (Str::startsWith(Route::currentRouteName(), 'auth.')) {
       return 'userauth::app';
+    }
+
+    if (Str::startsWith(Route::currentRouteName(), 'events.')) {
+      return 'publicpage::app';
     }
 
     if ($request->user()) {
