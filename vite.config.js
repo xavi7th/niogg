@@ -1,3 +1,4 @@
+import path from "path";
 import fs from "node:fs";
 import { defineConfig } from 'vite';
 import concat from 'rollup-plugin-concat';
@@ -56,6 +57,7 @@ async function getConfig () {
     resolve: {
       alias: {
         '@': '/resources/js',
+        'sweetalert2': path.resolve(__dirname, 'node_modules/sweetalert2'),
         ...modulesConfig.aliases
       },
     },
