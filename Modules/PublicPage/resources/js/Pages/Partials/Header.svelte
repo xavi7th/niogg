@@ -27,6 +27,13 @@
             </ul>
           </li>
           <li class="nav__item with-dropdown">
+            <a href="{ window.route('events.media-showcase') }" class="dropdown-toggle nav__item-link">Events</a>
+            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+            <ul class="dropdown-menu">
+              <li class="nav__item"><a href="{ window.route('events.media-showcase') }" class="nav__item-link">Media Showcase</a></li>
+            </ul>
+          </li>
+          <li class="nav__item with-dropdown">
             <a href="{ window.route('app.gallery') }" class="dropdown-toggle nav__item-link">News & Media</a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
