@@ -149,6 +149,7 @@ For each UI story, add a corresponding e2e test story:
 ```
 
 **Debugging Note:** If e2e tests fail repeatedly, use the dev-browser skill for debugging:
+
 - Start server: `~/.claude/skills/dev-browser/server.sh &`
 - Use `getAISnapshot()` to inspect page structure
 - Take debug screenshots to understand failures
@@ -185,6 +186,7 @@ For each UI-related fix or feature, the story sequence should be:
 3. **US-XXX-03**: Dev-browser visual verification
 
 This ensures:
+
 - Automated regression testing via e2e tests
 - Visual confirmation via dev-browser
 - Complete verification coverage
@@ -332,19 +334,25 @@ This preserves previous work while allowing new features to be converted.
 ### Mode 1: Convert from File
 
 ```
+
 "Convert tasks/prd-authentication.md to prd.json"
+
 ```
 
 ### Mode 2: Convert from Text/Clipboard
 
 ```
+
 "Convert this PRD to prd.json: [paste PRD content]"
+
 ```
 
 ### Mode 3: Convert with Splitting
 
 ```
+
 "Convert tasks/prd-dashboard.md to prd.json and split large stories"
+
 ```
 
 ---
@@ -424,21 +432,27 @@ Perfect for converting PRDs to executable format economically.
 ## Example Workflow
 
 ```
+
 # Step 1: Create PRD
+
 "Create a PRD for user authentication"
 → Saved to tasks/prd-user-authentication.md
 
 # Step 2: Convert to JSON
+
 "Convert tasks/prd-user-authentication.md to prd.json"
 → Saved to tasks/prd.json
 
 # Step 3: Execute
+
 "Execute user story US-001 from prd.json"
 → Implements first story
 
 # Step 4: Verify
+
 "Mark US-001 as complete in prd.json"
 → Updates passes: true
+
 ```
 
 ---
@@ -468,21 +482,27 @@ Mark stories as complete (`passes: true`) and add notes about learnings.
 ### Pattern 1: Full Workflow
 
 ```
+
 1. Create PRD with ralph-prd-generator
 2. Convert with ralph-json-generator
 3. Execute systematically
+
 ```
 
 ### Pattern 2: Quick Conversion
 
 ```
+
 "Convert this quick feature spec to prd.json: [paste text]"
+
 ```
 
 ### Pattern 3: Story Splitting
 
 ```
+
 "This PRD has large stories - convert and split them appropriately"
+
 ```
 
 ---
@@ -498,3 +518,4 @@ Mark stories as complete (`passes: true`) and add notes about learnings.
 | Opus      | ~$0.30 | Slowest |
 
 Haiku is ideal for this structured transformation task!
+```

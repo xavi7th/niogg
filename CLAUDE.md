@@ -14,12 +14,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is NOT a standard Laravel app. Uses **Nwidart Laravel Modules** for modularization. Each module is self-contained with routes, controllers, models, migrations, Svelte components, and tests.
 
 **Active modules** (controlled via `/modules_statuses.json`):
+
 - `UserAuth` - Authentication
 - `AppUser` - User management
 - `PublicPage` - Public pages (homepage, about, blog)
 - `Conference` - Conference management
 
 Module structure:
+
 ```
 Modules/{ModuleName}/
 ├── app/Http/Controllers/
@@ -34,6 +36,7 @@ Modules/{ModuleName}/
 ## Common Commands
 
 **Development:**
+
 ```bash
 # Docker (MacOS with docker-sync optimization)
 make start_dev   # Start docker-sync + Sail
@@ -53,6 +56,7 @@ composer recompile   # Clear caches, optimize Laravel
 ```
 
 **Testing:**
+
 ```bash
 ./vendor/bin/sail test                    # All tests
 ./vendor/bin/sail test --filter=TestName  # Single test
@@ -60,6 +64,7 @@ composer recompile   # Clear caches, optimize Laravel
 ```
 
 **Linting:**
+
 ```bash
 # PHP
 composer lint-check   # Run Pint + PHPCS
@@ -73,6 +78,7 @@ npm run format        # Fix with Prettier
 ```
 
 **Module management:**
+
 ```bash
 php artisan module:make ModuleName        # Create new module
 php artisan module:enable ModuleName      # Enable module
@@ -84,14 +90,19 @@ php artisan module:disable ModuleName     # Disable module
 **Module-aware asset loading:** `/vite-module-loader.js` dynamically discovers enabled modules via `modules_statuses.json` and merges their Vite configs at build time.
 
 Each module's `vite.config.js` exports:
+
 ```js
-export const paths = ['Modules/ModuleName/resources/js/app.js'];
+export const paths = ["Modules/ModuleName/resources/js/app.js"];
 export const aliases = {
-  '@modulename-pages': '/Modules/ModuleName/resources/js/Pages',
-  '@modulename-components': '/Modules/ModuleName/resources/js/Components'
+  "@modulename-pages": "/Modules/ModuleName/resources/js/Pages",
+  "@modulename-components": "/Modules/ModuleName/resources/js/Components",
 };
-export const concatFiles = [/* legacy jQuery files */];
-export const publicFiles = [/* static assets to copy */];
+export const concatFiles = [
+  /* legacy jQuery files */
+];
+export const publicFiles = [
+  /* static assets to copy */
+];
 ```
 
 **Inertia page resolution:** Supports module namespacing: `PublicPage::Index` → `/Modules/PublicPage/resources/js/Pages/Index.svelte`
@@ -109,6 +120,7 @@ return redirect()->back()->with('success', 'Message here');
 ## Custom Helpers
 
 `/app/helpers.php` provides:
+
 - `slug_to_string()` - Convert slug to readable string
 - `str_ordinal()` - Add ordinal suffix (1st, 2nd, 3rd)
 - `is_identical()` - Strict comparison helper
@@ -126,6 +138,5 @@ Pre-commit hooks auto-installed via `npm run dev`. Includes linting and formatti
 ## Development Notes
 
 - **Docker-sync (MacOS only):** Improves volume mount performance. Line must be uncommented in `docker-compose.yml` to use.
-- **Laravel Telescope:** Available for debugging. Enable via `TELESCOPE_ENABLED=true` in `.env`
 - **Modules testing:** Each module has isolated test suites. Main phpunit.xml only covers `/app` directory.
 - **Asset concatenation:** Legacy jQuery/plugins concatenated via Rollup plugin to `public/build/assets/` for backward compatibility with existing templates.

@@ -1,14 +1,8 @@
 {
   "preset": "laravel",
-  "notPath": [
-    "./app/helpers.php"
-  ],
-  "exclude": [
-    "my-specific/folder"
-  ],
-  "notName": [
-    "*-my-file.php"
-  ],
+  "notPath": ["./app/helpers.php"],
+  "exclude": ["my-specific/folder"],
+  "notName": ["*-my-file.php"],
   "rules": {
     "align_multiline_comment": true,
     "array_indentation": false,

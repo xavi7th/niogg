@@ -2,36 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-@import '../template/assets/css/libraries.css';
-@import '../template/assets/scss/style';
+@import "../template/assets/css/libraries.css";
+@import "../template/assets/scss/style";
 
-@import '@sweetalert2/theme-bootstrap-4/bootstrap-4.scss';
+@import "@sweetalert2/theme-bootstrap-4/bootstrap-4.scss";
 
 html {
   scroll-behavior: smooth;
 }
 
 .slider {
-
-  .slide__title{
+  .slide__title {
     font-weight: 400;
     font-size: max(5vw, 2.6rem);
     line-height: max(5vw, 1.5rem);
     margin-bottom: 30px;
 
     @media (max-width: 767px) {
-      font-weight: 500
+      font-weight: 500;
     }
   }
 }
 
-.navbar-collapse{
-  &.collapse{
+.navbar-collapse {
+  &.collapse {
     visibility: visible;
   }
 }
 
-.page-title{
+.page-title {
   padding: 120px 0 60px;
 
   @media (max-width: 991px) {

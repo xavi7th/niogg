@@ -26,6 +26,7 @@ If you have an idea for an enhancement or a new feature, feel free to [open an i
 6. Submit a pull request (PR) from your branch to the `main` branch of the original repository.
 
 Please ensure that your PR adheres to the following guidelines:
+
 - Follow the existing code style and conventions.
 - Write clear and concise commit messages.
 - Test your changes thoroughly before submitting the PR.

@@ -4,22 +4,22 @@ services:
       context: ./docker/8.3
       dockerfile: Dockerfile
       args:
-        WWWGROUP: '${WWWGROUP}'
+        WWWGROUP: "${WWWGROUP}"
     image: niogg/app
     container_name: niogg-app
     extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - "host.docker.internal:host-gateway"
     ports:
-      - '${APP_PORT:-80}:80'
-      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+      - "${APP_PORT:-80}:80"
+      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
     environment:
-      WWWUSER: '${WWWUSER}'
+      WWWUSER: "${WWWUSER}"
       LARAVEL_SAIL: 1
-      XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-      XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-      IGNITION_LOCAL_SITES_PATH: '${PWD}'
+      XDEBUG_MODE: "${SAIL_XDEBUG_MODE:-off}"
+      XDEBUG_CONFIG: "${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}"
+      IGNITION_LOCAL_SITES_PATH: "${PWD}"
     volumes:
-      - 'niogg-app-sync:/var/www/html:nocopy'
+      - "niogg-app-sync:/var/www/html:nocopy"
       # - '.:/var/www/html'
     networks:
       - niogg-dev-network
@@ -29,20 +29,20 @@ services:
       - mailpit
       - soketi
   mariadb:
-    image: 'mariadb:10'
+    image: "mariadb:10"
     container_name: niogg-mariadb
     ports:
-      - '${FORWARD_DB_PORT:-3306}:3306'
+      - "${FORWARD_DB_PORT:-3306}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
-      - 'niogg-mariadb:/var/lib/mysql'
-      - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+      - "niogg-mariadb:/var/lib/mysql"
+      - "./docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh"
     networks:
       - niogg-dev-network
     healthcheck:
@@ -50,16 +50,16 @@ services:
         - CMD
         - mysqladmin
         - ping
-        - '-p${DB_PASSWORD}'
+        - "-p${DB_PASSWORD}"
       retries: 3
       timeout: 5s
   redis:
-    image: 'redis:alpine'
+    image: "redis:alpine"
     container_name: niogg-redis
     ports:
-      - '${FORWARD_REDIS_PORT:-6379}:6379'
+      - "${FORWARD_REDIS_PORT:-6379}:6379"
     volumes:
-      - 'niogg-redis:/data'
+      - "niogg-redis:/data"
     networks:
       - niogg-dev-network
     healthcheck:
@@ -70,25 +70,25 @@ services:
       retries: 3
       timeout: 5s
   mailpit:
-    image: 'axllent/mailpit:latest'
+    image: "axllent/mailpit:latest"
     container_name: niogg-mailpit
     ports:
-      - '${FORWARD_MAILPIT_PORT:-1025}:1025'
-      - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+      - "${FORWARD_MAILPIT_PORT:-1025}:1025"
+      - "${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025"
     networks:
       - niogg-dev-network
   soketi:
-    image: 'quay.io/soketi/soketi:latest-16-alpine'
+    image: "quay.io/soketi/soketi:latest-16-alpine"
     container_name: niogg-socketi
     environment:
-      SOKETI_DEBUG: '${SOKETI_DEBUG:-1}'
-      SOKETI_METRICS_SERVER_PORT: '9601'
-      SOKETI_DEFAULT_APP_ID: '${PUSHER_APP_ID}'
-      SOKETI_DEFAULT_APP_KEY: '${PUSHER_APP_KEY}'
-      SOKETI_DEFAULT_APP_SECRET: '${PUSHER_APP_SECRET}'
+      SOKETI_DEBUG: "${SOKETI_DEBUG:-1}"
+      SOKETI_METRICS_SERVER_PORT: "9601"
+      SOKETI_DEFAULT_APP_ID: "${PUSHER_APP_ID}"
+      SOKETI_DEFAULT_APP_KEY: "${PUSHER_APP_KEY}"
+      SOKETI_DEFAULT_APP_SECRET: "${PUSHER_APP_SECRET}"
     ports:
-      - '${PUSHER_PORT:-6001}:6001'
-      - '${PUSHER_METRICS_PORT:-9601}:9601'
+      - "${PUSHER_PORT:-6001}:6001"
+      - "${PUSHER_METRICS_PORT:-9601}:9601"
     networks:
       - niogg-dev-network
 networks:

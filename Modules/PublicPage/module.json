@@ -4,8 +4,6 @@
   "description": "Public Pages for this project",
   "keywords": [],
   "priority": 0,
-  "providers": [
-    "Modules\\PublicPage\\Providers\\PublicPageServiceProvider"
-  ],
+  "providers": ["Modules\\PublicPage\\Providers\\PublicPageServiceProvider"],
   "files": []
 }

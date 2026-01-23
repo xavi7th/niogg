@@ -174,6 +174,7 @@ After each UI story, add a corresponding e2e test story:
 ```
 
 **Debugging Note:** If e2e tests fail repeatedly, use the dev-browser skill for debugging:
+
 - Start server: `~/.claude/skills/dev-browser/server.sh &`
 - Use `getAISnapshot()` to inspect page structure
 - Take debug screenshots to understand failures
@@ -206,6 +207,7 @@ For each UI-related fix or feature, the story sequence should be:
 3. **US-XXX-03**: Dev-browser visual verification
 
 This ensures:
+
 - Automated regression testing via e2e tests
 - Visual confirmation via dev-browser
 - Complete verification coverage

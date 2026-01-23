@@ -4,8 +4,6 @@
   "description": "Conference for this project",
   "keywords": [],
   "priority": 0,
-  "providers": [
-    "Modules\\Conference\\Providers\\ConferenceServiceProvider"
-  ],
+  "providers": ["Modules\\Conference\\Providers\\ConferenceServiceProvider"],
   "files": []
 }

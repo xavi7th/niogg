@@ -14,6 +14,7 @@ NIOGG is committed to advancing good governance in Nigeria through:
 ### Core Activities
 
 NIOGG demonstrates the benefits of good governance through:
+
 - **Entrepreneurship Training** - Practical workshops and mentorship for business creation
 - **Free Medical Treatments** - Healthcare services for underserved communities
 - **Charity Initiatives** - Direct support for vulnerable populations
@@ -44,6 +45,7 @@ NIOGG demonstrates the benefits of good governance through:
 ### 1. Project Type and Tech Stack
 
 **Backend:**
+
 - Laravel 10 (PHP 8.1+)
 - MariaDB 10
 - Redis (caching/sessions)
@@ -52,6 +54,7 @@ NIOGG demonstrates the benefits of good governance through:
 - Ziggy (route helper)
 
 **Frontend:**
+
 - Svelte (not SvelteKit - using Inertia adapter)
 - Vite 5.4.6 (build tool)
 - Tailwind CSS 3.4.11
@@ -60,6 +63,7 @@ NIOGG demonstrates the benefits of good governance through:
 - Bits-ui, Vaul-svelte (UI components)
 
 **Development Tools:**
+
 - Docker/Laravel Sail (containerization)
 - Docker-sync (MacOS performance optimization)
 - PHPUnit (testing)
@@ -73,6 +77,7 @@ NIOGG demonstrates the benefits of good governance through:
 **Type: Modular Monolith**
 
 Uses Nwidart Laravel Modules package for modularization. Each module is self-contained with:
+
 - Controllers, Models, Policies
 - Routes (web/api)
 - Migrations, Factories, Seeders
@@ -81,6 +86,7 @@ Uses Nwidart Laravel Modules package for modularization. Each module is self-con
 - Tests
 
 **Active Modules:**
+
 1. **UserAuth** - Authentication system
 2. **AppUser** - User management/profiles
 3. **PublicPage** - Public-facing pages (homepage, about, contact, blog)
@@ -91,6 +97,7 @@ Module activation controlled via `/modules_statuses.json`.
 ### 3. Key Directories and Purposes
 
 **Core Laravel:**
+
 - `/app` - Core application logic (minimal, most logic in modules)
 - `/config` - Laravel configuration
 - `/database/migrations` - Shared migrations
@@ -98,6 +105,7 @@ Module activation controlled via `/modules_statuses.json`.
 - `/resources` - Minimal (assets in modules)
 
 **Modules Structure:**
+
 ```
 /Modules/{ModuleName}/
 ├── app/
@@ -122,6 +130,7 @@ Module activation controlled via `/modules_statuses.json`.
 ```
 
 **Docker:**
+
 - `/docker/` - Multiple PHP versions (8.0-8.3), MySQL, PostgreSQL configs
 - `docker-compose.yml` - MariaDB, Redis, Mailpit, Soketi (websockets)
 - `docker-sync.yml` - Volume sync for MacOS
@@ -129,6 +138,7 @@ Module activation controlled via `/modules_statuses.json`.
 ### 4. Build System and Tooling
 
 **Custom Module-Aware Vite Setup:**
+
 - `/vite-module-loader.js` - Dynamically loads enabled modules' Vite configs
 - Each module exports: paths, aliases, concatFiles, publicFiles
 - Main Vite config merges all module configs
@@ -139,10 +149,12 @@ Module activation controlled via `/modules_statuses.json`.
   - Static file copying (images, fonts)
 
 **Inertia Page Resolution:**
+
 - Custom resolver supports module namespacing: `ModuleName::PagePath`
 - Example: `PublicPage::Index` resolves to `/Modules/PublicPage/resources/js/Pages/Index.svelte`
 
 **Scripts:**
+
 - `npm run dev` - Vite dev server + git hooks setup
 - `npm run build` - Production build
 - `composer recompile` - Clear caches, optimize Laravel
@@ -151,12 +163,13 @@ Module activation controlled via `/modules_statuses.json`.
 ### 5. Testing Setup
 
 **PHPUnit Configuration:**
+
 - Test suites: Unit, Feature
 - Coverage: `/app` directory only (modules tested separately)
 - Test database: separate `testing` database
-- Telescope disabled in tests
 
 **Per-Module Testing:**
+
 - Each module has `/tests/Unit` and `/tests/Feature`
 - Isolated test environments per module
 
@@ -184,11 +197,12 @@ Module activation controlled via `/modules_statuses.json`.
 
 This is a well-architected Laravel application using a modular monolith pattern with modern frontend tooling (Vite + Svelte) integrated via Inertia.js, designed for both containerized and traditional development environments.
 
-
 ## Getting Started
 
 See [CLAUDE.md](CLAUDE.md) for development guidance.
+
 ### Prerequisites
+
 - Docker & Docker Compose (or PHP 8.1+, Node.js, MariaDB)
 - Composer
 - npm or bun
@@ -245,6 +259,7 @@ Two deployment strategies are available:
 Uses `rsync` with atomic symlink switching for production deployments. **Recommended for robustness and safety.**
 
 **Advantages:**
+
 - Separates deployment from VCS concerns
 - Efficient incremental transfers (only changed files synced)
 - Atomic release switching via symlinks (zero-downtime)
@@ -255,12 +270,14 @@ Uses `rsync` with atomic symlink switching for production deployments. **Recomme
 - No git state manipulation
 
 **Disadvantages:**
+
 - Requires rsync on both local and remote machines
 - Needs SSH access and rsync installed on server
 
 **Setup:**
 
 1. Configure your server details in `deploy.sh`:
+
 ```bash
 # Edit deploy.sh and update:
 SSH_ALIAS="niogg-server"           # Your SSH alias/host
@@ -269,17 +286,20 @@ HEALTH_CHECK_URL="https://niogg.org"
 ```
 
 2. Ensure server directory structure exists:
+
 ```bash
 ssh niogg-server mkdir -p /home/user/niogg.org/shared/{env,storage,vendor}
 ssh niogg-server mkdir -p /home/user/niogg.org/releases
 ```
 
 3. Place `.env` file in shared location:
+
 ```bash
 scp .env.production niogg-server:/home/user/niogg.org/shared/env/.env
 ```
 
 **Deploy:**
+
 ```bash
 # Standard deployment (staging or production)
 ./deploy.sh staging
@@ -296,6 +316,7 @@ KEEP_RELEASES=10 ./deploy.sh production
 ```
 
 **Rollback:**
+
 ```bash
 ssh niogg-server
 cd /home/user/niogg.org
@@ -308,10 +329,12 @@ ln -sfn current/public public
 Uses `deploy.js` to commit build artifacts to git and force-push to a production remote.
 
 **Advantages:**
+
 - Build history tracked in git
 - Simple conceptually
 
 **Disadvantages:**
+
 - Pollutes git history with build commits
 - Requires force-push to production remote (risky)
 - Modifies .gitignore dynamically (potential corruption)
@@ -321,6 +344,7 @@ Uses `deploy.js` to commit build artifacts to git and force-push to a production
 - No zero-downtime capability
 
 **Deploy:**
+
 ```bash
 npm run push -- production
 npm run push -- staging

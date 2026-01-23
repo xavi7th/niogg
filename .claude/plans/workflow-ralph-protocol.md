@@ -11,11 +11,13 @@ Definitive protocol for the Ralph agent autonomous loop. Processes `tasks/prd.js
 - **US-XXX-03**: E2E Test (automated test)
 
 **CRITICAL**: ALL THREE stories in a group MUST be implemented and committed together in a SINGLE commit. This ensures:
+
 - Tests are always available for code they verify
 - Atomic, self-contained changes in git history
 - Easier code review and rollback if needed
 
 **Implementation order within single session:**
+
 1. US-XXX-01 → Code changes
 2. US-XXX-02 → Visual verification (BEFORE E2E test)
 3. US-XXX-03 → E2E test (based on observations from US-XXX-02)
@@ -29,6 +31,7 @@ After each invocation, follow these steps:
 ### Step 1: Read Context
 
 Read these files first (in order):
+
 - **`tasks/prd.json`** - Understand current project state and all user stories
 - **`tasks/progress.txt`** - Read the **Codebase Patterns** section at the TOP for critical learnings from previous iterations
 
@@ -46,6 +49,7 @@ The Codebase Patterns section consolidates reusable knowledge you must know befo
 Implement in this exact order:
 
 #### **US-XXX-01: Implementation**
+
 - Make code changes per acceptance criteria
 - Follow project patterns found in progress.txt
 - Focus on correctness and consistency
@@ -53,6 +57,7 @@ Implement in this exact order:
 - No commits yet
 
 #### **US-XXX-02: agent-browser Verification**
+
 - **CRITICAL**: Before any browser testing, run: `sail shell -c "bun run build"`
   - This builds assets INSIDE the Docker container
   - Local builds will NOT reflect in the browser
@@ -65,6 +70,7 @@ Implement in this exact order:
 - Do NOT write E2E test yet - observations from visual verification inform E2E selector choices
 
 #### **US-XXX-03: E2E Test** (if applicable)
+
 - Write E2E test based on actual structure observed during US-XXX-02
 - Use selectors and elements discovered during visual verification
 - Follow project's E2E testing patterns
@@ -93,11 +99,13 @@ Do NOT proceed if any checks fail. Fix issues and re-run checks until all pass.
 ### Step 5: Commit Atomically
 
 Create ONE single commit containing:
+
 - Code changes (US-XXX-01)
 - Screenshots/verification evidence (US-XXX-02)
 - E2E test file (US-XXX-03) if created
 
 **Commit message format:**
+
 - Use conventional commits: `feat: add dropdown filter`, `fix: resolve sidebar positioning`
 - Describe the FEATURE/FIX, not the stories
 - **DO NOT** include User Story IDs (no `US-005-01:` prefix)
@@ -107,12 +115,14 @@ Create ONE single commit containing:
   - `refactor: consolidate video player logic`
 
 **Files to exclude from commit:**
+
 - Nothing in `tasks/` directory (not even screenshots - keep separately for documentation)
 - Keep `tasks/progress.txt` and `tasks/prd.json` out of git (update them but don't commit)
 
 ### Step 6: Update Records
 
 **Update `tasks/prd.json`:**
+
 - Set `passes: true` for ALL THREE stories in the group
 - Add detailed notes to each story (optional but recommended):
   - Implementation notes
@@ -121,6 +131,7 @@ Create ONE single commit containing:
   - Example: `"notes": "Implemented hero video with fade animation. Desktop/tablet show featured; mobile shows featured-only with 'See More'. See /tasks/progress.txt for details."`
 
 **Append to `tasks/progress.txt`:**
+
 ```
 ## [YYYY-MM-DD HH:MM] - US-XXX (Story Group)
 - Implemented: [1-2 sentence description of what was built]
@@ -130,6 +141,7 @@ Create ONE single commit containing:
 ```
 
 **Update CLAUDE.md files** (if applicable):
+
 - Check if you discovered reusable patterns in edited files' directories
 - Look for existing CLAUDE.md in that directory or parents
 - Add learnings that FUTURE iterations should know
@@ -138,6 +150,7 @@ Create ONE single commit containing:
 ### Step 7: Check Completion
 
 After updating records:
+
 - If there are still stories with `passes: false`: end normally (next iteration will continue)
 - If ALL stories now have `passes: true`: reply with: `<promise>COMPLETE</promise>`
 
@@ -150,22 +163,26 @@ Do NOT add anything after the completion signal.
 Follow these standards (detailed in project CLAUDE.md):
 
 **Code Style:**
+
 - Import sorting: by length (shortest first)
 - Use `str_obfuscate()` helper for sensitive IDs in views
 - Modular architecture: code lives in Modules/, not /app directory
 - Model relationships: use standard Laravel Eloquent patterns
 
 **Commit Format:**
+
 - Conventional commits (feat:, fix:, refactor:, test:, docs:, chore:)
 - Concise messages (under 50 characters when possible)
 - Focus on "why" not "what"
 
 **Testing:**
+
 - All UI changes require E2E test (US-XXX-03)
 - Backend changes should have feature/unit tests
 - Never commit failing tests
 
 **Browser Verification:**
+
 - ALWAYS run `sail shell -c "bun run build"` before browser testing
 - Use agent-browser skill, not manual browser (for consistency)
 - Take screenshots as evidence in progress.txt
@@ -185,6 +202,7 @@ The `scripts/ralph/ralph.sh` script orchestrates this protocol:
    - If no, continue to next iteration
 
 **Run with:**
+
 ```bash
 ./scripts/ralph/ralph.sh 10  # Max 10 iterations
 ```
@@ -194,9 +212,11 @@ The `scripts/ralph/ralph.sh` script orchestrates this protocol:
 ## Stop Conditions
 
 ### Success (Completion)
+
 All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise>`
 
 ### Iteration End (Continue)
+
 - Story group implemented successfully
 - All quality checks pass
 - Records updated
@@ -204,6 +224,7 @@ All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise
 - Next iteration picks up next `passes: false` story
 
 ### Failure State (Do Not Commit)
+
 - Quality check failed (lint, test, build error)
 - Fix the issue and re-run checks
 - Do NOT commit broken code
@@ -213,6 +234,7 @@ All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise
 ## Important Rules Summary
 
 ✅ **DO:**
+
 - Work on complete story groups (US-XXX-01/02/03 together)
 - Run asset build before browser verification
 - Use actual selectors from visual verification for E2E tests
@@ -222,6 +244,7 @@ All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise
 - Run quality checks before committing
 
 ❌ **DO NOT:**
+
 - Commit individual stories from a group separately
 - Forget to build assets before browser testing
 - Skip quality checks
@@ -237,11 +260,13 @@ All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise
 ### Example: Implementing US-005 Story Group (Events Gallery Filter)
 
 **US-005-01:** Add event category filter to gallery
+
 - Modify EventGallery.svelte component
 - Add dropdown filter logic
 - No screenshots, no tests yet
 
 **US-005-02:** Visual verification
+
 - Build: `sail shell -c "bun run build"`
 - Navigate to events gallery page
 - Click dropdown, select categories
@@ -249,17 +274,19 @@ All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise
 - Document dropdown selector (e.g., `[data-testid="category-filter"]`)
 
 **US-005-03:** E2E test
+
 ```javascript
 // Based on selectors from US-005-02
-test('filter events by category', async ({ page }) => {
-  await page.goto('/events');
+test("filter events by category", async ({ page }) => {
+  await page.goto("/events");
   await page.click('[data-testid="category-filter"]');
-  await page.selectOption('select', 'charity');
+  await page.selectOption("select", "charity");
   await expect(page.locator('[data-testid="event-item"]')).toHaveCount(3);
 });
 ```
 
 **Single commit:**
+
 ```
 feat: add event category filter to gallery
 
@@ -273,6 +300,7 @@ feat: add event category filter to gallery
 ## Questions & Clarifications
 
 If unclear on any acceptance criteria:
+
 - Re-read the story requirements in prd.json
 - Check progress.txt Codebase Patterns for related learnings
 - Follow existing code patterns in the project

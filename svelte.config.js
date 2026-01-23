@@ -1,10 +1,10 @@
-import sveltePreprocess from 'svelte-preprocess';
+import sveltePreprocess from "svelte-preprocess";
 // import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/vite-plugin-svelte').SvelteConfig} */
 export default {
   // svelte options
-  extensions: ['.svelte'],
+  extensions: [".svelte"],
 
   compilerOptions: {},
 
@@ -14,21 +14,21 @@ export default {
   // This also has no need for npm install -D sass
   // preprocess: [vitePreprocess()],
 
-
   // must have npm install -D sass
   preprocess: [sveltePreprocess({ typescript: true })],
 
   onwarn(warning, defaultHandler) {
     if (
-      warning.code === 'a11y-distracting-elements' ||
-      warning.code === 'anchor-is-valid' ||
-      warning.code === 'a11y-invalid-attribute' ||
-      warning.code === 'a11y-media-has-caption' ||
-      warning.code === 'a11y-missing-attribute' ||
-      warning.code === 'a11y-missing-content' ||
-      warning.code === 'a11y-no-static-element-interactions' ||
-      (warning. code === 'missing-declaration' && warning.frame.includes( 'route' ) )
-    ) return;
+      warning.code === "a11y-distracting-elements" ||
+      warning.code === "anchor-is-valid" ||
+      warning.code === "a11y-invalid-attribute" ||
+      warning.code === "a11y-media-has-caption" ||
+      warning.code === "a11y-missing-attribute" ||
+      warning.code === "a11y-missing-content" ||
+      warning.code === "a11y-no-static-element-interactions" ||
+      (warning.code === "missing-declaration" && warning.frame.includes("route"))
+    )
+      return;
 
     // handle all other warnings normally
     defaultHandler(warning);
@@ -36,12 +36,11 @@ export default {
 
   // plugin options
   vitePlugin: {
-
     inspector: true,
 
     exclude: [],
 
     // experimental options
-    experimental: {}
-  }
+    experimental: {},
+  },
 };

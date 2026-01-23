@@ -1,1 +1,1 @@
-import '@appuser-assets/sass/app.scss'
+import "@appuser-assets/sass/app.scss";

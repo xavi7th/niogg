@@ -79,7 +79,6 @@
   "extra": {
     "laravel": {
       "dont-discover": [
-        "laravel/telescope"
       ]
     },
     "merge-plugin": {

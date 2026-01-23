@@ -98,7 +98,7 @@ if ( ! function_exists('is_identical')) {
       case in_array($type1, ['boolean', 'integer', 'double', 'string']):
         if ($v1 !== $v2) {
           return FALSE;
-        } //Strict comparison here.
+        } // Strict comparison here.
         break;
 
       case $type1 === 'array':
@@ -107,13 +107,13 @@ if ( ! function_exists('is_identical')) {
           return FALSE;
         }
 
-        //Check same keys.
+        // Check same keys.
         $arrKeysInCommon = array_intersect_key($v1, $v2);
         if (count($arrKeysInCommon) !== $count) {
           return FALSE;
         }
 
-        //Require that their keys be in the same order.
+        // Require that their keys be in the same order.
         $arrKeys1 = array_keys($v1);
         $arrKeys2 = array_keys($v2);
         foreach ($arrKeys1 as $key => $val) {
@@ -122,7 +122,7 @@ if ( ! function_exists('is_identical')) {
           }
         }
 
-        //Check same keys in same order.
+        // Check same keys in same order.
         foreach ($v1 as $key => $val) {
           if (is_identical($v1[$key], $v2[$key]) === FALSE) {
             return FALSE;
@@ -133,9 +133,9 @@ if ( ! function_exists('is_identical')) {
       case $type1 === 'object':
         if ($v1 !== $v2) {
           return FALSE;
-        } //See if loose comparison fails.
+        } // See if loose comparison fails.
 
-        //Now do strict(er) comparison.
+        // Now do strict(er) comparison.
         $objReflection1 = new ReflectionObject($v1);
         $objReflection2 = new ReflectionObject($v2);
 
@@ -153,13 +153,13 @@ if ( ! function_exists('is_identical')) {
         }
         break;
 
-      //Since both types are same, consider their "values" equal.
+      // Since both types are same, consider their "values" equal.
       case $type1 === 'NULL':
       case $type1 === 'resource':
       case $type1 === 'unknown type':
         break;
     }
 
-    return TRUE; //All tests passed.
+    return TRUE; // All tests passed.
   }
 }
