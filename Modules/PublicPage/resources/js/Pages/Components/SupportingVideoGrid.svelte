@@ -1,4 +1,6 @@
 <script>
+  import LazyThumbnail from './LazyThumbnail.svelte';
+
   export let videos = [];
   export let currentlyPlaying = null;
   export let onVideoSelect = () => {};
@@ -11,8 +13,6 @@
       .join(' ');
   };
 </script>
-
-import LazyThumbnail from './LazyThumbnail.svelte';
 
 <div class="supporting-grid">
   {#each videos as video (video.id)}

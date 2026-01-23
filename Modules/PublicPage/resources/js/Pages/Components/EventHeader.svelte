@@ -60,7 +60,7 @@
   }
 
   .event-title {
-    font-size: 2.25rem;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: 700;
     color: #1b1a1a;
     margin: 0 0 1rem 0;
@@ -79,7 +79,7 @@
   }
 
   .event-description {
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     color: #9b9b9b;
     line-height: 1.6;
     max-width: 800px;
@@ -87,14 +87,10 @@
   }
 
   @media (max-width: 768px) {
-    .event-title {
-      font-size: 1.5rem;
-    }
-
     .icon {
-      width: 60px;
-      height: 60px;
-      font-size: 36px;
+      width: clamp(60px, 15vw, 80px);
+      height: clamp(60px, 15vw, 80px);
+      font-size: clamp(36px, 10vw, 48px);
     }
 
     .event-header {

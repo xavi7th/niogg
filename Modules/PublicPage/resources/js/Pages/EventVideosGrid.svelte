@@ -90,8 +90,9 @@
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
     color: #9b9b9b;
+    flex-wrap: wrap;
   }
 
   .breadcrumb a {
@@ -109,22 +110,25 @@
   }
 
   .page-title {
-    font-size: 2.25rem;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: 700;
     color: #1b1a1a;
     margin: 1rem 0;
   }
 
   .btn-back {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     background-color: transparent;
     color: #ff7607;
     border: none;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     cursor: pointer;
     padding: 0.5rem 1rem;
     transition: color 0.2s ease;
     text-decoration: none;
+    min-height: 48px;
+    min-width: 48px;
   }
 
   .btn-back:hover {
@@ -204,16 +208,17 @@
 
   .card-title {
     margin: 0 0 0.5rem 0;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     font-weight: 700;
     color: #1b1a1a;
   }
 
   .card-info {
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
     color: #9b9b9b;
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .load-more {
@@ -227,9 +232,14 @@
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 0.25rem;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     cursor: pointer;
     transition: background-color 0.2s ease;
+    min-height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-load-more:hover {

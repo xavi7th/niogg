@@ -73,10 +73,11 @@
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 0.25rem;
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
     cursor: pointer;
     transition: background-color 0.2s ease;
     min-height: 48px;
+    min-width: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -102,10 +103,11 @@
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 0.25rem;
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
     cursor: pointer;
     transition: background-color 0.2s ease;
     min-height: 48px;
+    min-width: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,9 +121,41 @@
     background-color: #d55b04;
   }
 
+  .btn-primary {
+    will-change: transform, background-color;
+    transform: translateZ(0);
+  }
+
   @media (max-width: 768px) {
     .events-featured-only {
       display: block;
+      will-change: transform;
+    }
+
+    /* Touch device optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .btn-primary:active {
+        transform: scale(0.95);
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .btn-primary {
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+    }
+
+    /* Enhanced touch targets for mobile */
+    .btn-primary {
+      min-height: 56px;
+      min-width: 56px;
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .btn-primary {
+        transition: none !important;
+      }
     }
   }
 </style>

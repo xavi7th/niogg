@@ -1,4 +1,6 @@
 <script>
+  import { onMount, onDestroy } from 'svelte';
+
   let imageElement;
   let isVisible = false;
   let observer;

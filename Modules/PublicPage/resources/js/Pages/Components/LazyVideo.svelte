@@ -1,4 +1,6 @@
 <script>
+  import { onMount, onDestroy } from 'svelte';
+
   let videoElement;
   let isVisible = false;
   let observer;

@@ -110,10 +110,14 @@
     background-color: transparent;
     color: #ff7607;
     border: none;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     cursor: pointer;
     padding: 0.5rem 1rem;
     transition: color 0.2s ease;
+    min-height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
   }
 
   .btn-back:hover {
@@ -133,10 +137,13 @@
     border: none;
     border-bottom: 3px solid transparent;
     padding: 0.75rem 1rem;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
   }
 
   .tab-btn.active {
@@ -209,13 +216,13 @@
 
   .card-title {
     margin: 0 0 0.5rem 0;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     font-weight: 700;
     color: #1b1a1a;
   }
 
   .card-info {
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
     color: #9b9b9b;
     display: flex;
     gap: 1rem;
@@ -238,9 +245,14 @@
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 0.25rem;
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     cursor: pointer;
     transition: background-color 0.2s ease;
+    min-height: 48px;
+    min-width: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-load-more:hover {
@@ -251,6 +263,11 @@
     .video-grid {
       grid-template-columns: repeat(2, 1fr);
     }
+
+    .video-card {
+      will-change: transform;
+      transform: translateZ(0);
+    }
   }
 
   @media (max-width: 768px) {
@@ -260,6 +277,50 @@
 
     .events-grid-view {
       padding: 1rem 0.75rem;
+    }
+
+    .video-card {
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    /* Touch device optimizations */
+    @media (hover: none) and (pointer: coarse) {
+      .video-card:active {
+        transform: translateY(-2px) scale(0.98);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .video-card {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .play-button {
+        -webkit-tap-highlight-color: transparent;
+      }
+    }
+
+    /* Enhanced touch targets */
+    .play-button {
+      min-height: 60px;
+      min-width: 60px;
+      width: 60px !important;
+      height: 60px !important;
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .video-card:hover {
+        transform: none !important;
+      }
+
+      .video-card:active {
+        transform: none !important;
+      }
+
+      .play-button {
+        transition: none !important;
+      }
     }
   }
 </style>
