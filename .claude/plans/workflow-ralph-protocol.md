@@ -84,6 +84,7 @@ Implement in this exact order:
 - Use selectors and elements discovered during visual verification
 - Follow project's E2E testing patterns
 - Run: `composer e2e <test-file>` to verify test works
+- If you fail the same quality check 3 times in one iteration, stop and ask the user for help instead of continuing.
 
 ### Step 4: Run Quality Checks
 
@@ -103,7 +104,7 @@ composer test
 composer e2e <test-file>
 ```
 
-Do NOT proceed if any checks fail. Fix issues and re-run checks until all pass.
+Do NOT proceed if any checks fail. Fix issues and re-run checks until all pass BUT if you fail the same quality check 3 times in one iteration, stop and ask the user for help instead of continuing.
 
 ### Step 5: Commit Atomically
 
@@ -170,6 +171,10 @@ Create ONE single commit containing:
   - Do NOT add anything after the completion signal
 
 **One story/group per iteration - this is mandatory.**
+
+- **Terminal Exit Strategy**: Once you have provided your final summary (and the `<promise>COMPLETE</promise>` tag if finished), you **MUST** immediately type `/exit` or `exit`.
+- This is critical so the `ralph.sh` orchestration script can proceed to the next iteration.
+- **Do NOT** wait for further user input after your final summary.
 
 ---
 
@@ -243,6 +248,7 @@ All user stories have `passes: true`. Agent replies: `<promise>COMPLETE</promise
 - Quality check failed (lint, test, build error)
 - Fix the issue and re-run checks
 - Do NOT commit broken code
+- If you fail the same quality check 3 times in one iteration, stop and ask the user for help instead of continuing.
 
 ---
 
