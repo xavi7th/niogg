@@ -1,78 +1,245 @@
-# Laravel / InertiaJS / SvelteJS Starter Template
+# NIOGG Website & Conference Platform
 
-This is a starter template for building applications using Laravel, InertiaJS, SvelteJS, and Docker (or Laravel Sail).
+This is the official website and conference management platform for **NIOGG (Nigeria Initiative for Good Governance)**, a nonprofit civic organization dedicated to promoting good governance in Nigeria.
 
-## About Laravel
+## About NIOGG
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+NIOGG is committed to advancing good governance in Nigeria through:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Youth Empowerment** - Leadership training and development programs for Nigerian youth
+- **Judicial Independence** - Advocating for transparent, independent judicial systems and anti-corruption efforts
+- **Poverty Eradication** - Skills training and economic empowerment initiatives for marginalized communities
+- **Resource Management** - Promoting sustainable practices and transparent policies for natural resource stewardship
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Core Activities
 
-## About InertiaJS
+NIOGG demonstrates the benefits of good governance through:
+- **Entrepreneurship Training** - Practical workshops and mentorship for business creation
+- **Free Medical Treatments** - Healthcare services for underserved communities
+- **Charity Initiatives** - Direct support for vulnerable populations
+- **Awards & Recognition Programs** - Honoring individuals with outstanding contributions to community development
 
-Inertia is a new approach to building classic server-driven web apps. We call it the modern monolith. InertiaJS allows you to create fully client-side rendered, single-page apps, without the complexity that comes with modern SPAs. It does this by leveraging existing server-side patterns that you already love.
+## Website Features
 
-Inertia has no client-side routing, nor does it require an API. Simply build controllers and page views like you've always done! Inertia works great with any backend framework, but it's fine-tuned for Laravel.
+- **Public Information** - Homepage, About Us, Team profiles, Vision & Values
+- **Blog** - Articles and updates on governance, civic engagement, and initiatives
+- **Conference Platform** - Conference registration and event management
+- **Community Engagement** - Contact forms, testimonials, partner showcases
+- **Job Opportunities** - Careers page for organizational roles
+- **Media Gallery** - Photos and visual documentation of events and initiatives
 
-You can learn more at their [home page](https://inertiajs.com/)
+## Tech Stack
 
-## About SvelteJS
+- **Backend:** Laravel 10 with modular architecture (Nwidart Laravel Modules)
+- **Frontend:** Svelte + Inertia.js for dynamic page rendering
+- **Build Tool:** Vite 5
+- **Styling:** Tailwind CSS
+- **Database:** MariaDB
+- **Caching:** Redis
+- **Containerization:** Docker + Laravel Sail
+- **Authentication:** Laravel Sanctum
 
-Svelte is a front-end, open-source JavaScript framework for making interactive webpages. The general concept behind Svelte is similar to pre-existing frameworks like React and Vue in that it enables developers to make web apps. However, Svelte brings several features to the table that provides developers with a unique experience, such as:
+## Project Structure
 
-  - Less code
-  - No virtual DOM
-  - Truly Reactive
+### 1. Project Type and Tech Stack
 
-Svelte provides a different approach to building web apps than some of the other frameworks covered in this module. While frameworks like React and Vue do the bulk of their work in the user's browser while the app is running, Svelte shifts that work into a compile step that happens only when you build your app, producing highly optimized vanilla JavaScript.
+**Backend:**
+- Laravel 10 (PHP 8.1+)
+- MariaDB 10
+- Redis (caching/sessions)
+- Inertia.js for server-client bridge
+- Laravel Sanctum (authentication)
+- Ziggy (route helper)
 
-The outcome of this approach is not only smaller application bundles and better performance, but also a developer experience that is more approachable for people that have limited experience of the modern tooling ecosystem.
+**Frontend:**
+- Svelte (not SvelteKit - using Inertia adapter)
+- Vite 5.4.6 (build tool)
+- Tailwind CSS 3.4.11
+- SweetAlert2 (notifications)
+- Lucide Svelte (icons)
+- Bits-ui, Vaul-svelte (UI components)
 
-You can read more at [their website](https://svelte.dev) or give it a spin at their [playground](https://learn.svelte.dev/tutorial/welcome-to-svelte)
+**Development Tools:**
+- Docker/Laravel Sail (containerization)
+- Docker-sync (MacOS performance optimization)
+- PHPUnit (testing)
+- Laravel Pint & PHPCS (PHP linting)
+- Prettier & ESLint (JS/Svelte linting)
+- Larastan (static analysis)
+- Laravel Log Viewer
 
+### 2. Overall Architecture
 
-## Features of this template
+**Type: Modular Monolith**
 
-This template has the following integrated already:
+Uses Nwidart Laravel Modules package for modularization. Each module is self-contained with:
+- Controllers, Models, Policies
+- Routes (web/api)
+- Migrations, Factories, Seeders
+- Svelte components
+- Module-specific Vite configs
+- Tests
 
-- Laravel 10
-- Vite asset bundling
-- Tailwind CSS
-- Hot Module reloading using vite
-- Authentication scafolded using Laravel Breeze, InertiaJS and SvelteJS components
-- Modules Scafolded using the popular Laravel [Nwidart Modules](https://laravelmodules.com/). generate a module using ```php artisan module:create [ModuleName}``` and you are good to go
-- An opinionated code linting standard using Laravel Pint and PHPCS configurable by editing the included ```pint.json``` and ```phpcs.xml``` files. To lint run the ```vendor/bin/pint```, ```vendor/bin/phpcs``` and ```vendor/bin/phpcbf``` commands from your terminal at the project root. Or you can use the preconfigured lints via ```composer lint-check``` and ```composer lint``` commands.
-- Docker (Laravel Sail) setup and configured. Run ```sail up``` to use docker
-- Docker Sync for faster docker development. (Uncomment the relevant line in the docker-compose file and then run ```make start_dev``` at project root to use docker-sync).
-  - See [Docker Sync Website](http://docker-sync.io/) and [this article by Rohit Lingayat](https://betterprogramming.pub/improve-performance-of-docker-on-macos-by-using-docker-sync-4f46edbde570)
-- Pre commit linting (Run ```npm run dev``` to set this up). You can edit the configiration for this in package.json's predev script.
-- Sample package.json script to push production build to git remote server. Checkout package.json's push script.
-- Laravel Telescope and Laravel Telescope toolar for local development. This can be disabled or enabled via env option ```TELESCOPE_ENABLED=true```
+**Active Modules:**
+1. **UserAuth** - Authentication system
+2. **AppUser** - User management/profiles
+3. **PublicPage** - Public-facing pages (homepage, about, contact, blog)
+4. **Conference** - Conference management
+
+Module activation controlled via `/modules_statuses.json`.
+
+### 3. Key Directories and Purposes
+
+**Core Laravel:**
+- `/app` - Core application logic (minimal, most logic in modules)
+- `/config` - Laravel configuration
+- `/database/migrations` - Shared migrations
+- `/routes` - Empty (routes in modules)
+- `/resources` - Minimal (assets in modules)
+
+**Modules Structure:**
+```
+/Modules/{ModuleName}/
+├── app/
+│   ├── Http/Controllers/
+│   ├── Models/
+│   ├── Policies/
+│   ├── Providers/
+│   ├── DTOs/
+│   └── Transformers/
+├── config/
+├── database/
+├── resources/
+│   ├── js/Pages/*.svelte
+│   ├── sass/
+│   ├── images/
+│   └── template/ (vendor templates)
+├── routes/
+├── tests/
+├── vite.config.js
+├── package.json
+└── module.json
+```
+
+**Docker:**
+- `/docker/` - Multiple PHP versions (8.0-8.3), MySQL, PostgreSQL configs
+- `docker-compose.yml` - MariaDB, Redis, Mailpit, Soketi (websockets)
+- `docker-sync.yml` - Volume sync for MacOS
+
+### 4. Build System and Tooling
+
+**Custom Module-Aware Vite Setup:**
+- `/vite-module-loader.js` - Dynamically loads enabled modules' Vite configs
+- Each module exports: paths, aliases, concatFiles, publicFiles
+- Main Vite config merges all module configs
+- Supports:
+  - Dynamic imports of Svelte components across modules
+  - Module-specific path aliases (e.g., `@publicpage-pages`)
+  - Asset concatenation (jQuery, plugins)
+  - Static file copying (images, fonts)
+
+**Inertia Page Resolution:**
+- Custom resolver supports module namespacing: `ModuleName::PagePath`
+- Example: `PublicPage::Index` resolves to `/Modules/PublicPage/resources/js/Pages/Index.svelte`
+
+**Scripts:**
+- `npm run dev` - Vite dev server + git hooks setup
+- `npm run build` - Production build
+- `composer recompile` - Clear caches, optimize Laravel
+- `make start_dev` - Docker-sync + Sail (MacOS optimized)
+
+### 5. Testing Setup
+
+**PHPUnit Configuration:**
+- Test suites: Unit, Feature
+- Coverage: `/app` directory only (modules tested separately)
+- Test database: separate `testing` database
+- Telescope disabled in tests
+
+**Per-Module Testing:**
+- Each module has `/tests/Unit` and `/tests/Feature`
+- Isolated test environments per module
+
+### Architecture Highlights
+
+**Non-Obvious Design Patterns:**
+
+1. **Module Discovery System:** Vite dynamically discovers and loads module assets at build time by reading `modules_statuses.json`
+
+2. **Hybrid Routing:** Routes defined in individual modules but registered globally through module service providers
+
+3. **Asset Pipeline:**
+   - Legacy jQuery templates concatenated via Rollup plugin
+   - Modern Svelte components bundled via Vite
+   - Static assets copied to public build directory
+
+4. **Flash Message System:** Global router event handlers in `/Modules/PublicPage/resources/js/app.js` intercept Inertia responses and display SweetAlert2 notifications
+
+5. **Development Workflow:**
+   - Pre-commit hooks auto-copy on `npm run dev`
+   - Docker-sync for MacOS to avoid volume mount performance issues
+   - Module hot-reloading via Vite HMR
+
+6. **Custom Helpers:** `/app/helpers.php` provides utility functions (slug_to_string, str_ordinal, is_identical, parse_size)
+
+This is a well-architected Laravel application using a modular monolith pattern with modern frontend tooling (Vite + Svelte) integrated via Inertia.js, designed for both containerized and traditional development environments.
+
 
 ## Getting Started
 
-To get started, view the [Getting Started guide](GETTING_STARTED.md)
+See [CLAUDE.md](CLAUDE.md) for development guidance.
+### Prerequisites
+- Docker & Docker Compose (or PHP 8.1+, Node.js, MariaDB)
+- Composer
+- npm or bun
+
+### Installation
+
+```bash
+# Install dependencies
+composer install
+npm install
+
+# Set up environment
+cp .env.example .env
+php artisan key:generate
+
+# Run migrations (with Docker)
+./vendor/bin/sail artisan migrate
+
+# Start development server (with Docker)
+make start_dev      # macOS with docker-sync
+# or
+./vendor/bin/sail up -d
+
+# Start frontend dev server
+npm run dev
+```
+
+### Development Commands
+
+```bash
+# Build for production
+npm run build
+composer recompile
+
+# Run tests
+./vendor/bin/sail test
+
+# Linting & formatting
+composer lint-check   # Check code style
+npm run lint          # Check JS/Svelte
+
+# Create new module
+php artisan module:make ModuleName
+```
 
 ## Contributing
 
-Thank you for considering contributing to this template! The contribution guide can be found in the [here](CONTRIBUTING.md).
+To contribute to NIOGG's website and platform, please follow the development guidelines in [CLAUDE.md](CLAUDE.md). Ensure all code passes linting and tests before submitting pull requests.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](CODE_OF_CONDUCT.md).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [xavi7th@gmail.com](mailto:xavi7th@gmail.com). All security vulnerabilities will be promptly addressed.
+Commit directly to `master` and `development` branches is protected. Work on feature branches and submit pull requests.
 
 ## License
 
-This template is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
