@@ -16,8 +16,8 @@ class AdminDashboardController extends Controller
     {
         $stats = [
             'total_events' => Event::count(),
-            'published_events' => Event::where('is_published', true)->count(),
-            'draft_events' => Event::where('is_published', false)->count(),
+            'published_events' => Event::where('is_published', TRUE)->count(),
+            'draft_events' => Event::where('is_published', FALSE)->count(),
             'total_videos' => Video::count(),
         ];
 

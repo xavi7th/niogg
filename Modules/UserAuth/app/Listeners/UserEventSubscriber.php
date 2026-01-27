@@ -27,7 +27,7 @@ class UserEventSubscriber implements ShouldQueue
 
   public static function onPasswordReset(PasswordReset $event): void
   {
-    $event->user->notify(new SendPasswordResetSuccessfulNotification);
+    $event->user->notify(new SendPasswordResetSuccessfulNotification());
   }
 
   public function subscribe()

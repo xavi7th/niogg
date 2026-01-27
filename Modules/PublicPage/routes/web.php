@@ -4,8 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Modules\PublicPage\Http\Controllers\PublicBlogController;
 use Modules\PublicPage\Http\Controllers\PublicPageController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminEventController;
-use Modules\PublicPage\Http\Controllers\Admin\AdminDashboardController;
 use Modules\PublicPage\Http\Controllers\EventsMediaShowcaseController;
+use Modules\PublicPage\Http\Controllers\Admin\AdminDashboardController;
 
 Route::get('/', [PublicPageController::class, 'index'])->name('app.index');
 Route::get('/about-us', [PublicPageController::class, 'about'])->name('app.about');

@@ -34,7 +34,7 @@ class SendPasswordResetNotification extends Notification implements ShouldQueue
       'email' => $user->getEmailForPasswordReset(),
     ]));
 
-    return (new MailMessage)
+    return (new MailMessage())
         ->subject(Lang::get('Reset Password Link'))
         ->greeting('Hello ' . $user->first_name . '.')
         ->line(Lang::get('You are receiving this email because we received a password reset request for your account.'))

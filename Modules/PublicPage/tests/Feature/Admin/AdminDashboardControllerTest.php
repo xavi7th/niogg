@@ -2,11 +2,11 @@
 
 namespace Modules\PublicPage\Tests\Feature\Admin;
 
+use Tests\TestCase;
+use App\Models\User;
 use Modules\PublicPage\Models\Event;
 use Modules\PublicPage\Models\Video;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 class AdminDashboardControllerTest extends TestCase
 {
@@ -18,7 +18,7 @@ class AdminDashboardControllerTest extends TestCase
 
         // Create admin user for testing
         User::factory()->create([
-            'is_admin' => true,
+            'is_admin' => TRUE,
         ]);
     }
 
@@ -31,7 +31,7 @@ class AdminDashboardControllerTest extends TestCase
 
     public function test_dashboard_requires_admin_role(): void
     {
-        $user = User::factory()->create(['is_admin' => false]);
+        $user = User::factory()->create(['is_admin' => FALSE]);
 
         $response = $this->actingAs($user)->get('/admin/dashboard');
 
@@ -40,7 +40,7 @@ class AdminDashboardControllerTest extends TestCase
 
     public function test_dashboard_accessible_by_admin(): void
     {
-        $admin = User::where('is_admin', true)->first();
+        $admin = User::where('is_admin', TRUE)->first();
 
         $response = $this->actingAs($admin)->get('/admin/dashboard');
 
@@ -50,8 +50,8 @@ class AdminDashboardControllerTest extends TestCase
     public function test_dashboard_accessible_by_super_admin(): void
     {
         $superAdmin = User::factory()->create([
-            'is_admin' => true,
-            'is_super_admin' => true,
+            'is_admin' => TRUE,
+            'is_super_admin' => TRUE,
         ]);
 
         $response = $this->actingAs($superAdmin)->get('/admin/dashboard');
@@ -67,7 +67,7 @@ class AdminDashboardControllerTest extends TestCase
         $events = Event::all();
         Video::factory()->for($events->first())->count(5)->create();
 
-        $admin = User::where('is_admin', true)->first();
+        $admin = User::where('is_admin', TRUE)->first();
 
         $response = $this->actingAs($admin)->get('/admin/dashboard');
 
@@ -86,7 +86,7 @@ class AdminDashboardControllerTest extends TestCase
     {
         Event::factory()->count(10)->create();
 
-        $admin = User::where('is_admin', true)->first();
+        $admin = User::where('is_admin', TRUE)->first();
 
         $response = $this->actingAs($admin)->get('/admin/dashboard');
 
@@ -102,7 +102,7 @@ class AdminDashboardControllerTest extends TestCase
     {
         $events = Event::factory()->count(5)->create();
 
-        $admin = User::where('is_admin', true)->first();
+        $admin = User::where('is_admin', TRUE)->first();
 
         $response = $this->actingAs($admin)->get('/admin/dashboard');
 
