@@ -44,3 +44,4 @@ tasks/*
 .claude/mockups/*
 .ralph/archive/*
 .ralph/.last-branch
+test-results/*
