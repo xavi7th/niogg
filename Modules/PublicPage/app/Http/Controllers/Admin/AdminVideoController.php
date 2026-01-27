@@ -2,14 +2,16 @@
 
 namespace Modules\PublicPage\Http\Controllers\Admin;
 
+use Exception;
 use Inertia\Inertia;
+use InvalidArgumentException;
 use App\Http\Controllers\Controller;
-use Modules\PublicPage\Models\Video;
 use Modules\PublicPage\Models\Event;
+use Modules\PublicPage\Models\Video;
 use Illuminate\Support\Facades\Redirect;
+use Modules\PublicPage\Services\VideoUploadService;
 use Modules\PublicPage\Http\Requests\Admin\VideoFormRequest;
 use Modules\PublicPage\Http\Requests\Admin\VideoUploadRequest;
-use Modules\PublicPage\Services\VideoUploadService;
 
 class AdminVideoController extends Controller
 {
@@ -19,6 +21,17 @@ class AdminVideoController extends Controller
     {
         $this->uploadService = $uploadService;
     }
+
+    /**
+     * Show the form for uploading videos to an event
+     */
+    public function create(Event $event): \Inertia\Response
+    {
+        return Inertia::render('Admin/Videos/Upload', [
+            'event' => $event,
+        ]);
+    }
+
     /**
      * Handle video file upload with chunked upload support
      */
@@ -51,21 +64,21 @@ class AdminVideoController extends Controller
                 'cancel' => response()->json(
                     tap(
                         ['message' => 'Upload cancelled successfully.'],
-                        fn() => $this->uploadService->cancelUpload($request->input('upload_id'))
+                        fn () => $this->uploadService->cancelUpload($request->input('upload_id'))
                     )
                 ),
                 default => response()->json([
                     'message' => 'Invalid action.',
                 ], 400),
             };
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
             ], 400);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'An error occurred during upload.',
-                'error' => config('app.debug') ? $e->getMessage() : null,
+                'error' => config('app.debug') ? $e->getMessage() : NULL,
             ], 500);
         }
     }

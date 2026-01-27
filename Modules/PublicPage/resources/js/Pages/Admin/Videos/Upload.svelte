@@ -1,0 +1,970 @@
+<script>
+	import { page } from '@inertiajs/svelte';
+	import { router } from '@inertiajs/svelte';
+
+	$: ({ event, auth } = $page.props);
+
+	// Upload queue state
+	let uploadQueue = [];
+	let dropZoneActive = false;
+	let fileInput;
+
+	// Constants
+	const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
+	const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1GB
+	const ALLOWED_TYPES = ['video/mp4', 'video/webm', 'video/quicktime'];
+
+	// Handle drag and drop
+	function handleDragOver(e) {
+		e.preventDefault();
+		dropZoneActive = true;
+	}
+
+	function handleDragLeave(e) {
+		e.preventDefault();
+		dropZoneActive = false;
+	}
+
+	function handleDrop(e) {
+		e.preventDefault();
+		dropZoneActive = false;
+
+		const files = Array.from(e.dataTransfer.files);
+		addFilesToQueue(files);
+	}
+
+	// Handle file input
+	function handleFileSelect(e) {
+		const files = Array.from(e.target.files);
+		addFilesToQueue(files);
+		e.target.value = ''; // Reset input
+	}
+
+	// Add files to upload queue
+	function addFilesToQueue(files) {
+		for (const file of files) {
+			// Validate file type
+			if (!ALLOWED_TYPES.includes(file.type)) {
+				alert(`Invalid file type: ${file.name}. Only MP4, WebM, and MOV files are allowed.`);
+				continue;
+			}
+
+			// Validate file size
+			if (file.size > MAX_FILE_SIZE) {
+				alert(`File too large: ${file.name}. Maximum size is 1GB.`);
+				continue;
+			}
+
+			// Check if file already in queue
+			if (uploadQueue.some((item) => item.file.name === file.name && item.file.size === file.size)) {
+				continue;
+			}
+
+			// Add to queue
+			uploadQueue = [
+				...uploadQueue,
+				{
+					id: crypto.randomUUID(),
+					file,
+					status: 'waiting', // waiting, uploading, paused, complete, failed
+					progress: 0,
+					bytesUploaded: 0,
+					totalBytes: file.size,
+					uploadId: null,
+					totalChunks: Math.ceil(file.size / CHUNK_SIZE),
+					chunksUploaded: 0,
+					speed: 0,
+					timeRemaining: null,
+					error: null,
+					title: file.name.replace(/\.[^/.]+$/, ''), // Default title from filename
+					description: '',
+					is_featured: false,
+					sort_order: 0
+				}
+			];
+		}
+
+		// Auto-start uploads
+		startPendingUploads();
+	}
+
+	// Start pending uploads
+	function startPendingUploads() {
+		const maxConcurrent = 2; // Max 2 concurrent uploads
+		const uploading = uploadQueue.filter((item) => item.status === 'uploading');
+
+		if (uploading.length < maxConcurrent) {
+			const pending = uploadQueue.filter((item) => item.status === 'waiting');
+			const toStart = pending.slice(0, maxConcurrent - uploading.length);
+
+			for (const item of toStart) {
+				startUpload(item);
+			}
+		}
+	}
+
+	// Start upload for a single file
+	async function startUpload(uploadItem) {
+		uploadQueue = uploadQueue.map((item) =>
+			item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+		);
+
+		try {
+			// Initialize upload
+			const initResult = await initializeUpload(uploadItem);
+			uploadItem.uploadId = initResult.upload_id;
+			uploadItem.totalChunks = initResult.total_chunks;
+
+			// Upload chunks
+			await uploadChunks(uploadItem);
+
+			// Finalize upload
+			await finalizeUpload(uploadItem);
+
+			// Mark as complete
+			uploadQueue = uploadQueue.map((item) =>
+				item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+			);
+
+			// Start next pending upload
+			startPendingUploads();
+		} catch (error) {
+			uploadQueue = uploadQueue.map((item) =>
+				item.id === uploadItem.id
+					? { ...item, status: 'failed', error: error.message }
+					: item
+			);
+		}
+	}
+
+	// Initialize upload on server
+	async function initializeUpload(uploadItem) {
+		const formData = new FormData();
+		formData.append('action', 'initialize');
+		formData.append('file', uploadItem.file);
+
+		const response = await fetch(`/admin/videos/upload/${event.id}`, {
+			method: 'POST',
+			headers: {
+				'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+			},
+			body: formData
+		});
+
+		if (!response.ok) {
+			const data = await response.json();
+			throw new Error(data.message || 'Failed to initialize upload');
+		}
+
+		return await response.json();
+	}
+
+	// Upload file in chunks
+	async function uploadChunks(uploadItem) {
+		const file = uploadItem.file;
+		const totalChunks = uploadItem.totalChunks;
+		let startTime = Date.now();
+
+		for (let i = 0; i < totalChunks; i++) {
+			// Check if paused
+			const currentItem = uploadQueue.find((item) => item.id === uploadItem.id);
+			if (currentItem?.status === 'paused') {
+				return; // Exit chunk upload loop
+			}
+
+			const start = i * CHUNK_SIZE;
+			const end = Math.min(start + CHUNK_SIZE, file.size);
+			const chunk = file.slice(start, end);
+
+			const formData = new FormData();
+			formData.append('action', 'chunk');
+			formData.append('upload_id', uploadItem.uploadId);
+			formData.append('chunk', chunk);
+			formData.append('chunk_index', i.toString());
+			formData.append('total_chunks', totalChunks.toString());
+
+			const response = await fetch(`/admin/videos/upload/${event.id}`, {
+				method: 'POST',
+				headers: {
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+				},
+				body: formData
+			});
+
+			if (!response.ok) {
+				const data = await response.json();
+				throw new Error(data.message || 'Failed to upload chunk');
+			}
+
+			const result = await response.json();
+
+			// Update progress
+			const elapsed = (Date.now() - startTime) / 1000;
+			const speed = result.bytes_received / elapsed;
+			const remainingBytes = result.total_bytes - result.bytes_received;
+			const timeRemaining = remainingBytes / speed;
+
+			uploadQueue = uploadQueue.map((item) =>
+				item.id === uploadItem.id
+					? {
+							...item,
+							chunksUploaded: result.chunks_received,
+							bytesUploaded: result.bytes_received,
+							progress: result.progress,
+							speed,
+							timeRemaining
+					  }
+					: item
+			);
+		}
+	}
+
+	// Finalize upload
+	async function finalizeUpload(uploadItem) {
+		const formData = new FormData();
+		formData.append('action', 'finalize');
+		formData.append('upload_id', uploadItem.uploadId);
+		formData.append('title', uploadItem.title);
+		formData.append('description', uploadItem.description);
+		formData.append('is_featured', uploadItem.is_featured ? '1' : '0');
+		formData.append('sort_order', uploadItem.sort_order.toString());
+
+		const response = await fetch(`/admin/videos/upload/${event.id}`, {
+			method: 'POST',
+			headers: {
+				'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+			},
+			body: formData
+		});
+
+		if (!response.ok) {
+			const data = await response.json();
+			throw new Error(data.message || 'Failed to finalize upload');
+		}
+
+		return await response.json();
+	}
+
+	// Pause upload
+	function pauseUpload(uploadItem) {
+		uploadQueue = uploadQueue.map((item) =>
+			item.id === uploadItem.id ? { ...item, status: 'paused' } : item
+		);
+
+		// Start next pending upload
+		startPendingUploads();
+	}
+
+	// Resume upload
+	async function resumeUpload(uploadItem) {
+		uploadQueue = uploadQueue.map((item) =>
+			item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+		);
+
+		try {
+			// Resume from server
+			const formData = new FormData();
+			formData.append('action', 'resume');
+			formData.append('upload_id', uploadItem.uploadId);
+
+			const response = await fetch(`/admin/videos/upload/${event.id}`, {
+				method: 'POST',
+				headers: {
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+				},
+				body: formData
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to resume upload');
+			}
+
+			const result = await response.json();
+
+			// Continue uploading missing chunks
+			uploadItem.chunksUploaded = result.chunks_received;
+			await uploadMissingChunks(uploadItem, result.missing_chunks);
+
+			// Finalize
+			await finalizeUpload(uploadItem);
+
+			uploadQueue = uploadQueue.map((item) =>
+				item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+			);
+
+			startPendingUploads();
+		} catch (error) {
+			uploadQueue = uploadQueue.map((item) =>
+				item.id === uploadItem.id
+					? { ...item, status: 'failed', error: error.message }
+					: item
+			);
+		}
+	}
+
+	// Upload missing chunks after resume
+	async function uploadMissingChunks(uploadItem, missingChunks) {
+		for (const chunkIndex of missingChunks) {
+			const start = chunkIndex * CHUNK_SIZE;
+			const end = Math.min(start + CHUNK_SIZE, uploadItem.file.size);
+			const chunk = uploadItem.file.slice(start, end);
+
+			const formData = new FormData();
+			formData.append('action', 'chunk');
+			formData.append('upload_id', uploadItem.uploadId);
+			formData.append('chunk', chunk);
+			formData.append('chunk_index', chunkIndex.toString());
+			formData.append('total_chunks', uploadItem.totalChunks.toString());
+
+			const response = await fetch(`/admin/videos/upload/${event.id}`, {
+				method: 'POST',
+				headers: {
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+				},
+				body: formData
+			});
+
+			if (!response.ok) {
+				throw new Error('Failed to upload chunk');
+			}
+
+			const result = await response.json();
+
+			// Update progress
+			uploadQueue = uploadQueue.map((item) =>
+				item.id === uploadItem.id
+					? {
+							...item,
+							chunksUploaded: result.chunks_received,
+							bytesUploaded: result.bytes_received,
+							progress: result.progress
+					  }
+					: item
+			);
+		}
+	}
+
+	// Cancel upload
+	async function cancelUpload(uploadItem) {
+		if (uploadItem.uploadId) {
+			try {
+				const formData = new FormData();
+				formData.append('action', 'cancel');
+				formData.append('upload_id', uploadItem.uploadId);
+
+				await fetch(`/admin/videos/upload/${event.id}`, {
+					method: 'POST',
+					headers: {
+						'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+					},
+					body: formData
+				});
+			} catch (e) {
+				console.error('Failed to cancel upload on server:', e);
+			}
+		}
+
+		uploadQueue = uploadQueue.filter((item) => item.id !== uploadItem.id);
+		startPendingUploads();
+	}
+
+	// Retry failed upload
+	function retryUpload(uploadItem) {
+		// Reset state
+		const resetItem = {
+			...uploadItem,
+			status: 'waiting',
+			progress: 0,
+			bytesUploaded: 0,
+			chunksUploaded: 0,
+			uploadId: null,
+			error: null,
+			speed: 0,
+			timeRemaining: null
+		};
+
+		uploadQueue = uploadQueue.map((item) =>
+			item.id === uploadItem.id ? resetItem : item
+		);
+
+		startPendingUploads();
+	}
+
+	// Pause all uploads
+	function pauseAll() {
+		uploadQueue = uploadQueue.map((item) =>
+			item.status === 'uploading' ? { ...item, status: 'paused' } : item
+		);
+	}
+
+	// Cancel all uploads
+	async function cancelAll() {
+		for (const item of uploadQueue) {
+			if (item.uploadId) {
+				try {
+					const formData = new FormData();
+					formData.append('action', 'cancel');
+					formData.append('upload_id', item.uploadId);
+
+					await fetch(`/admin/videos/upload/${event.id}`, {
+						method: 'POST',
+						headers: {
+							'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+						},
+						body: formData
+					});
+				} catch (e) {
+					console.error('Failed to cancel upload:', e);
+				}
+			}
+		}
+
+		uploadQueue = [];
+	}
+
+	// Format bytes
+	function formatBytes(bytes) {
+		if (bytes === 0) return '0 Bytes';
+		const k = 1024;
+		const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
+		return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+	}
+
+	// Format time remaining
+	function formatTimeRemaining(seconds) {
+		if (!seconds || seconds === Infinity) return '';
+		if (seconds < 60) return `~${Math.round(seconds)} sec remaining`;
+		const mins = Math.ceil(seconds / 60);
+		return `~${mins} min remaining`;
+	}
+
+	// Format speed
+	function formatSpeed(bytesPerSecond) {
+		if (!bytesPerSecond) return '';
+		return `${formatBytes(bytesPerSecond)}/s`;
+	}
+
+	// Get status badge
+	function getStatusBadge(item) {
+		switch (item.status) {
+			case 'waiting':
+				return { bg: 'bg-[#eaeaea]', text: 'text-[#9b9b9b]', label: 'Waiting' };
+			case 'uploading':
+				return { bg: 'bg-[#fff3e6]', text: 'text-[#ff7607]', label: 'Uploading' };
+			case 'paused':
+				return { bg: 'bg-[#fef3c7]', text: 'text-[#f59e0b]', label: 'Paused' };
+			case 'complete':
+				return { bg: 'bg-[#d1fae5]', text: 'text-[#10b981]', label: 'Complete' };
+			case 'failed':
+				return { bg: 'bg-[#fee2e2]', text: 'text-[#ef4444]', label: 'Failed' };
+			default:
+				return { bg: 'bg-[#eaeaea]', text: 'text-[#9b9b9b]', label: 'Unknown' };
+		}
+	}
+
+	// Get progress bar color
+	function getProgressColor(item) {
+		switch (item.status) {
+			case 'uploading':
+				return 'bg-[#ff7607]';
+			case 'paused':
+				return 'bg-[#f59e0b]';
+			case 'complete':
+				return 'bg-[#10b981]';
+			case 'failed':
+				return 'bg-[#ef4444]';
+			default:
+				return 'bg-[#eaeaea]';
+		}
+	}
+
+	// Get item background
+	function getItemBg(item) {
+		switch (item.status) {
+			case 'paused':
+				return 'bg-[#fef3c7] bg-opacity-30';
+			case 'complete':
+				return 'bg-[#d1fae5] bg-opacity-30';
+			case 'failed':
+				return 'bg-[#fee2e2] bg-opacity-30';
+			default:
+				return '';
+		}
+	}
+
+	// Update video metadata
+	function updateMetadata(uploadItem, field, value) {
+		uploadQueue = uploadQueue.map((item) =>
+			item.id === uploadItem.id ? { ...item, [field]: value } : item
+		);
+	}
+
+	// Summary stats
+	$: summaryStats = (() => {
+		const total = uploadQueue.length;
+		const complete = uploadQueue.filter((i) => i.status === 'complete').length;
+		const uploading = uploadQueue.filter((i) => i.status === 'uploading').length;
+		const paused = uploadQueue.filter((i) => i.status === 'paused').length;
+		const waiting = uploadQueue.filter((i) => i.status === 'waiting').length;
+		const failed = uploadQueue.filter((i) => i.status === 'failed').length;
+		const totalBytes = uploadQueue.reduce((sum, i) => sum + i.totalBytes, 0);
+
+		return { total, complete, uploading, paused, waiting, failed, totalBytes };
+	})();
+</script>
+
+<svelte:head>
+	<title>Upload Videos | NIOGG Admin</title>
+</svelte:head>
+
+<div class="flex min-h-screen bg-gray-100">
+	<!-- Sidebar -->
+	<aside class="w-64 bg-[#1b1a1a] text-white flex flex-col flex-shrink-0">
+		<div class="p-6 border-b border-[#333333]">
+			<h1 class="text-xl font-bold text-[#ff7607]">NIOGG Admin</h1>
+			<p class="text-xs text-[#9b9b9b] mt-1">Event & Video Management</p>
+		</div>
+
+		<nav class="flex-1 py-6">
+			<a
+				href="/admin/dashboard"
+				class="flex items-center gap-3 px-6 py-3 text-[#9b9b9b] hover:bg-[#222222] hover:text-white transition-colors"
+			>
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+					/>
+				</svg>
+				<span>Dashboard</span>
+			</a>
+			<a
+				href="/admin/events"
+				class="flex items-center gap-3 px-6 py-3 bg-[#333333] text-[#ff7607] border-r-2 border-[#ff7607]"
+			>
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+					/>
+				</svg>
+				<span class="font-medium">Events</span>
+			</a>
+			<a
+				href="/logout"
+				class="flex items-center gap-3 px-6 py-3 text-[#9b9b9b] hover:bg-[#222222] hover:text-white transition-colors"
+				method="post"
+			>
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+					/>
+				</svg>
+				<span>Logout</span>
+			</a>
+		</nav>
+
+		<div class="p-6 border-t border-[#333333]">
+			<div class="flex items-center gap-3">
+				<div class="w-10 h-10 bg-[#ff7607] rounded-full flex items-center justify-center font-bold">
+					{auth?.user?.name?.charAt(0).toUpperCase() || 'A'}
+				</div>
+				<div class="flex-1">
+					<p class="text-sm font-medium">{auth?.user?.name || 'Admin User'}</p>
+					<p class="text-xs text-[#9b9b9b]">{auth?.user?.is_super_admin ? 'Super Admin' : 'Admin'}</p>
+				</div>
+			</div>
+		</div>
+	</aside>
+
+	<!-- Main Content -->
+	<main class="flex-1 flex flex-col min-w-0">
+		<!-- Header -->
+		<header class="bg-white border-b border-[#eaeaea] px-8 py-4">
+			<div class="flex items-center gap-4">
+				<a href="/admin/events/{event?.id}" class="text-[#9b9b9b] hover:text-[#1b1a1a]">
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
+				</a>
+				<div>
+					<h1 class="text-2xl font-bold text-[#1b1a1a]">Upload Videos</h1>
+					<p class="text-sm text-[#9b9b9b]">{event?.name || 'Event'}</p>
+				</div>
+			</div>
+		</header>
+
+		<!-- Content -->
+		<div class="p-8">
+			<div class="max-w-4xl mx-auto">
+				<!-- Upload Area -->
+				<div class="bg-white rounded-lg border border-[#eaeaea] p-8 mb-6">
+					<div
+						bind:this={fileInput}
+						class="border-2 border-dashed rounded-lg p-12 text-center transition-colors cursor-pointer {dropZoneActive
+							? 'border-[#ff7607] bg-[#fff3e6]'
+							: 'border-[#eaeaea] hover:border-[#ff7607]'}"
+						ondragover={handleDragOver}
+						ondragleave={handleDragLeave}
+						ondrop={handleDrop}
+						onclick={() => document.getElementById('file-input').click()}
+					>
+						<svg
+							class="mx-auto h-16 w-16 text-[#9b9b9b] mb-4"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+							/>
+						</svg>
+						<h3 class="text-lg font-medium text-[#1b1a1a] mb-2">
+							Drop videos here or click to browse
+						</h3>
+						<p class="text-[#9b9b9b] mb-4">MP4, WebM, MOV up to 1 GB each • Multiple files supported</p>
+						<button
+							class="px-6 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium"
+						>
+							Select Files
+						</button>
+						<input
+							id="file-input"
+							type="file"
+							accept="video/mp4,video/webm,video/quicktime"
+							multiple
+							hidden
+							onchange={handleFileSelect}
+						/>
+					</div>
+				</div>
+
+				<!-- Upload Queue -->
+				{#if uploadQueue.length > 0}
+					<div class="bg-white rounded-lg border border-[#eaeaea]">
+						<div class="px-6 py-4 border-b border-[#eaeaea] flex items-center justify-between">
+							<h2 class="font-semibold text-[#1b1a1a]">Upload Queue ({uploadQueue.length} files)</h2>
+							<div class="flex items-center gap-2">
+								<button
+									onclick={pauseAll}
+									class="px-3 py-1 text-sm text-[#9b9b9b] hover:text-[#1b1a1a] border border-[#eaeaea] rounded hover:bg-[#f9f9f9]"
+								>
+									Pause All
+								</button>
+								<button
+									onclick={cancelAll}
+									class="px-3 py-1 text-sm text-[#ef4444] hover:text-[#dc2626] border border-[#eaeaea] rounded hover:bg-[#fee2e2]"
+								>
+									Cancel All
+								</button>
+							</div>
+						</div>
+
+						<div class="divide-y divide-[#f9f9f9]">
+							{#each uploadQueue as item (item.id)}
+								{@const statusBadge = getStatusBadge(item)}
+								{@const progressColor = getProgressColor(item)}
+								{@const itemBg = getItemBg(item)}
+								<div class="p-4 {itemBg}">
+									<div class="flex items-center gap-4">
+										<!-- Video icon -->
+										<div class="w-12 h-12 bg-[#1b1a1a] rounded flex items-center justify-center text-white {item.status ===
+										'waiting' || item.status === 'paused'
+											? 'opacity-50'
+											: ''}">
+											{#if item.status === 'complete'}
+												<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="2"
+														d="M5 13l4 4L19 7"
+													/>
+												</svg>
+											{:else if item.status === 'failed'}
+												<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path
+														stroke-linecap="round"
+														stroke-linejoin="round"
+														stroke-width="2"
+														d="M6 18L18 6M6 6l12 12"
+													/>
+												</svg>
+											{:else}
+												<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+													<path d="M8 5v14l11-7z" />
+												</svg>
+											{/if}
+										</div>
+
+										<div class="flex-1">
+											<!-- Header with name and status -->
+											<div class="flex items-center justify-between mb-1">
+												<div class="flex items-center gap-2">
+													<h3 class="font-medium text-[#1b1a1a] text-sm">{item.file.name}</h3>
+													{#if item.status !== 'waiting'}
+														<span
+															class="px-2 py-0.5 {statusBadge.bg} {statusBadge.text} text-xs font-medium rounded"
+														>
+															{statusBadge.label}
+														</span>
+													{/if}
+												</div>
+												<span class="text-sm font-medium {item.status === 'complete'
+													? 'text-[#10b981]'
+													: item.status === 'failed'
+														? 'text-[#ef4444]'
+														: 'text-[#ff7607]'}"
+												>
+													{item.progress}%
+												</span>
+											</div>
+
+											<!-- Progress bar -->
+											<div class="w-full bg-[#f9f9f9] rounded-full h-2 mb-2">
+												<div
+													class="{progressColor} h-2 rounded-full transition-all"
+													style="width: {item.progress}%"
+												></div>
+											</div>
+
+											<!-- Details and actions -->
+											<div class="flex items-center justify-between text-xs text-[#9b9b9b]">
+												<div>
+													{#if item.status === 'waiting'}
+														<span>Queued • {formatBytes(item.totalBytes)}</span>
+													{:else if item.status === 'paused'}
+														<span>{formatBytes(item.bytesUploaded)} / {formatBytes(item.totalBytes)}
+															• Paused</span
+														>
+													{:else if item.status === 'complete'}
+														<span>{formatBytes(item.totalBytes)} • Uploaded successfully</span>
+													{:else if item.status === 'failed'}
+														<span>{formatBytes(item.bytesUploaded)} / {formatBytes(item.totalBytes)}
+															• {item.error || 'Upload failed'}</span
+														>
+													{:else}
+														<span>{formatBytes(item.bytesUploaded)} / {formatBytes(item.totalBytes)}
+															• {formatSpeed(item.speed)}</span
+														>
+														{#if item.timeRemaining}
+															<span class="ml-2">{formatTimeRemaining(item.timeRemaining)}</span>
+														{/if}
+													{/if}
+												</div>
+
+												<!-- Action buttons -->
+												<div class="flex items-center gap-2">
+													{#if item.status === 'uploading'}
+														<button
+															onclick={() => pauseUpload(item)}
+															class="text-[#9b9b9b] hover:text-[#1b1a1a]"
+															title="Pause"
+														>
+															<svg
+																class="w-4 h-4"
+																fill="none"
+																stroke="currentColor"
+																viewBox="0 0 24 24"
+															>
+																<path
+																	stroke-linecap="round"
+																	stroke-linejoin="round"
+																	stroke-width="2"
+																	d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
+																/>
+															</svg>
+														</button>
+														<button
+															onclick={() => cancelUpload(item)}
+															class="text-[#ef4444] hover:text-[#dc2626]"
+															title="Cancel"
+														>
+															Cancel
+														</button>
+													{:else if item.status === 'paused'}
+														<button
+															onclick={() => resumeUpload(item)}
+															class="text-[#10b981] hover:text-[#059669] flex items-center gap-1"
+															title="Resume"
+														>
+															<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+																<path d="M8 5v14l11-7z" />
+															</svg>
+															Resume
+														</button>
+														<button
+															onclick={() => cancelUpload(item)}
+															class="text-[#ef4444] hover:text-[#dc2626]"
+															title="Cancel"
+														>
+															Cancel
+														</button>
+													{:else if item.status === 'failed'}
+														<button
+															onclick={() => retryUpload(item)}
+															class="text-[#10b981] hover:text-[#059669] flex items-center gap-1"
+															title="Retry"
+														>
+															<svg
+																class="w-4 h-4"
+																fill="none"
+																stroke="currentColor"
+																viewBox="0 0 24 24"
+															>
+																<path
+																	stroke-linecap="round"
+																	stroke-linejoin="round"
+																	stroke-width="2"
+																	d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+																/>
+															</svg>
+															Retry
+														</button>
+														<button
+															onclick={() => cancelUpload(item)}
+															class="text-[#ef4444] hover:text-[#dc2626]"
+															title="Remove"
+														>
+															Remove
+														</button>
+													{:else if item.status === 'waiting'}
+														<button
+															onclick={() => cancelUpload(item)}
+															class="text-[#ef4444] hover:text-[#dc2626]"
+															title="Remove"
+														>
+															Remove
+														</button>
+													{:else if item.status === 'complete'}
+														<a
+															href="/admin/events/{event?.id}"
+															class="text-[#ff7607] hover:text-[#e56a00]"
+															title="View videos"
+														>
+															View
+														</a>
+													{/if}
+												</div>
+											</div>
+
+											<!-- Metadata form for completed uploads -->
+											{#if item.status === 'complete' || item.status === 'waiting'}
+												<div class="mt-3 pt-3 border-t border-[#f9f9f9] grid grid-cols-2 gap-3">
+													<div>
+														<label class="block text-xs font-medium text-[#1b1a1a] mb-1"
+															>Title</label
+														>
+														<input
+															type="text"
+															bind:value={item.title}
+															oninput={(e) => updateMetadata(item, 'title', e.target.value)}
+															class="w-full px-2 py-1 text-sm border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] outline-none"
+															placeholder="Video title"
+														/>
+													</div>
+													<div>
+														<label class="block text-xs font-medium text-[#1b1a1a] mb-1"
+															>Sort Order</label
+														>
+														<input
+															type="number"
+															bind:value={item.sort_order}
+															oninput={(e) => updateMetadata(item, 'sort_order', parseInt(e.target.value) || 0)}
+															class="w-full px-2 py-1 text-sm border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] outline-none"
+															placeholder="0"
+														/>
+													</div>
+													<div class="col-span-2">
+														<label class="block text-xs font-medium text-[#1b1a1a] mb-1"
+															>Description</label
+														>
+														<textarea
+															bind:value={item.description}
+															oninput={(e) => updateMetadata(item, 'description', e.target.value)}
+															rows="2"
+															class="w-full px-2 py-1 text-sm border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] outline-none resize-none"
+															placeholder="Video description (optional)"
+														></textarea>
+													</div>
+												</div>
+											{/if}
+										</div>
+									</div>
+								</div>
+							{/each}
+						</div>
+
+						<!-- Upload Summary -->
+						<div class="px-6 py-4 bg-[#f9f9f9] border-t border-[#eaeaea]">
+							<div class="flex items-center justify-between text-sm">
+								<span class="text-[#9b9b9b]"
+									>{summaryStats.complete} complete, {summaryStats.uploading} uploading,
+									{summaryStats.paused} paused, {summaryStats.waiting} waiting,
+									{summaryStats.failed} failed</span
+								>
+								<span class="text-[#1b1a1a] font-medium">Total: {formatBytes(summaryStats.totalBytes)}</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Bulk Upload Options -->
+					<div class="mt-6 flex items-center justify-between">
+						<div class="text-sm text-[#9b9b9b]">
+							<p>Uploads will be organized in: <span class="text-[#1b1a1a] font-mono">/videos/{event?.slug ||
+									'event'}/</span></p
+							>
+						</div>
+						<a
+							href="/admin/events/{event?.id}"
+							class="px-6 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium"
+						>
+							Done (Close)
+						</a>
+					</div>
+				{/if}
+
+				{#if uploadQueue.length === 0}
+					<!-- Empty state -->
+					<div class="bg-white rounded-lg border border-[#eaeaea] p-12 text-center">
+						<svg
+							class="w-16 h-16 text-[#9b9b9b] mx-auto mb-4"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+							/>
+						</svg>
+						<h3 class="text-lg font-medium text-[#1b1a1a] mb-2">No videos selected</h3>
+						<p class="text-[#9b9b9b] mb-4">Drag and drop video files above or click to browse.</p>
+						<a
+							href="/admin/events/{event?.id}"
+							class="inline-flex items-center gap-2 px-4 py-2 border border-[#eaeaea] text-[#1b1a1a] rounded-lg hover:bg-[#f9f9f9] font-medium text-sm"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+							</svg>
+							Back to Event
+						</a>
+					</div>
+				{/if}
+			</div>
+		</div>
+	</main>
+</div>

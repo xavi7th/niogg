@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Modules\PublicPage\Http\Controllers\PublicBlogController;
 use Modules\PublicPage\Http\Controllers\PublicPageController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminEventController;
+use Modules\PublicPage\Http\Controllers\Admin\AdminVideoController;
 use Modules\PublicPage\Http\Controllers\EventsMediaShowcaseController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminDashboardController;
-use Modules\PublicPage\Http\Controllers\Admin\AdminVideoController;
 
 Route::get('/', [PublicPageController::class, 'index'])->name('app.index');
 Route::get('/about-us', [PublicPageController::class, 'about'])->name('app.about');
@@ -38,6 +38,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     Route::prefix('videos')->name('videos.')->group(function (): void {
+        Route::get('/upload/{event}', [AdminVideoController::class, 'create'])->name('create');
         Route::post('/upload/{event}', [AdminVideoController::class, 'upload'])->name('upload');
         Route::post('/events/{event}', [AdminVideoController::class, 'store'])->name('store');
         Route::put('/{video}', [AdminVideoController::class, 'update'])->name('update');
