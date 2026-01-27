@@ -35,7 +35,7 @@
   });
 </script>
 
-<div class="lazy-thumbnail-container" class:loaded={isVisible}>
+<div class="lazy-thumbnail-container" class:loaded={isVisible} {...$$restProps}>
   {#if isVisible}
     <img
       bind:this={imageElement}

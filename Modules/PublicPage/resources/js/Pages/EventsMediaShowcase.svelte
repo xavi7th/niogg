@@ -38,11 +38,6 @@
     contain: layout style paint;
   }
 
-  /* Performance optimizations */
-  .events-media-showcase * {
-    box-sizing: border-box;
-  }
-
   /* Improve rendering performance */
   .events-media-showcase {
     content-visibility: auto;
