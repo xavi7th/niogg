@@ -84,6 +84,16 @@ class AdminVideoController extends Controller
     }
 
     /**
+     * Show the form for editing a video
+     */
+    public function edit(Video $video): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+            'video' => $video,
+        ]);
+    }
+
+    /**
      * Display paginated list of videos for an event
      */
     public function index(Event $event): \Inertia\Response

@@ -1,10 +1,13 @@
 <script>
 	import { page } from '@inertiajs/svelte';
 	import { router } from '@inertiajs/svelte';
+	import VideoEditModal from '../../../Components/Admin/VideoEditModal.svelte';
 
 	$: ({ event, auth } = $page.props);
 
 	let videoFilter = 'all'; // all, featured
+	let showEditModal = false;
+	let selectedVideo = null;
 
 	$: filteredVideos = event?.videos
 		? event.videos.filter((v) => {
@@ -37,6 +40,11 @@
 				}
 			});
 		}
+	}
+
+	function openEditModal(video) {
+		selectedVideo = video;
+		showEditModal = true;
 	}
 
 	function getEventIcon(icon) {
@@ -317,10 +325,11 @@
 									<div class="flex items-center justify-between mt-3">
 										<span class="text-xs text-[#9b9b9b]">Order: {video.sort_order || 0}</span>
 										<div class="flex gap-1">
-											<a
-												href="/admin/events/{event.id}/videos/{video.id}/edit"
+											<button
+												on:click={() => openEditModal(video)}
 												class="p-1 text-[#9b9b9b] hover:text-[#ff7607]"
 												title="Edit video"
+												type="button"
 											>
 												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path
@@ -330,7 +339,7 @@
 														d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
 													/>
 												</svg>
-											</a>
+											</button>
 											<button
 												on:click={() => deleteVideo(video.id, video.title)}
 												class="p-1 text-[#9b9b9b] hover:text-[#ef4444]"
@@ -396,6 +405,8 @@
 		</div>
 	</main>
 </div>
+
+<VideoEditModal bind:open={showEditModal} video={selectedVideo} eventId={event?.id} />
 
 <style>
 	:global(.line-clamp-1) {
