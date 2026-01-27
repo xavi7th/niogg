@@ -9,12 +9,19 @@
 	let showEditModal = false;
 	let selectedVideo = null;
 
+	// Drag-drop state
+	let draggedVideoId = null;
+	let draggedOverVideoId = null;
+	let isReordering = false;
+
 	$: filteredVideos = event?.videos
 		? event.videos.filter((v) => {
 				if (videoFilter === 'featured') return v.is_featured;
 				return true;
 		  })
 		: [];
+
+	$: sortedVideos = [...filteredVideos].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
 
 	function formatDate(dateStr) {
 		if (!dateStr) return 'N/A';
@@ -53,6 +60,90 @@
 			return icon;
 		}
 		return null;
+	}
+
+	// Drag-drop handlers
+	function handleDragStart(videoId, event) {
+		draggedVideoId = videoId;
+		event.dataTransfer.effectAllowed = 'move';
+		event.dataTransfer.setData('text/plain', videoId.toString());
+		// Set drag image
+		event.target.style.opacity = '0.5';
+	}
+
+	function handleDragEnd(event) {
+		draggedVideoId = null;
+		draggedOverVideoId = null;
+		event.target.style.opacity = '1';
+	}
+
+	function handleDragOver(videoId, event) {
+		event.preventDefault();
+		event.dataTransfer.dropEffect = 'move';
+		if (draggedVideoId !== videoId) {
+			draggedOverVideoId = videoId;
+		}
+	}
+
+	function handleDragLeave(videoId) {
+		if (draggedOverVideoId === videoId) {
+			draggedOverVideoId = null;
+		}
+	}
+
+	async function handleDrop(videoId, event) {
+		event.preventDefault();
+		draggedOverVideoId = null;
+
+		if (draggedVideoId === null || draggedVideoId === videoId) {
+			return;
+		}
+
+		// Calculate new order
+		const draggedIndex = sortedVideos.findIndex((v) => v.id === draggedVideoId);
+		const dropIndex = sortedVideos.findIndex((v) => v.id === videoId);
+
+		if (draggedIndex === -1 || dropIndex === -1) {
+			return;
+		}
+
+		// Create new order array
+		const newOrder = [...sortedVideos];
+		const [removed] = newOrder.splice(draggedIndex, 1);
+		newOrder.splice(dropIndex, 0, removed);
+
+		const videoIds = newOrder.map((v) => v.id);
+
+		// Send reorder request
+		isReordering = true;
+		try {
+			const response = await fetch(`/admin/videos/events/${event.id}/reorder`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+				},
+				body: JSON.stringify({ video_ids: videoIds })
+			});
+
+			if (response.ok) {
+				// Update local videos array with new sort_order
+				sortedVideos.forEach((video, index) => {
+					video.sort_order = index;
+				});
+				// Reload page to show updated order from server
+				router.reload({ only: ['event'] });
+			} else {
+				console.error('Reorder failed:', response.statusText);
+				alert('Failed to reorder videos. Please try again.');
+			}
+		} catch (error) {
+			console.error('Reorder error:', error);
+			alert('Failed to reorder videos. Please try again.');
+		} finally {
+			isReordering = false;
+			draggedVideoId = null;
+		}
 	}
 </script>
 
@@ -242,7 +333,7 @@
 											d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
 										/>
 									</svg>
-									{filteredVideos.length} video{filteredVideos.length !== 1 ? 's' : ''}
+									{sortedVideos.length} video{sortedVideos.length !== 1 ? 's' : ''}
 								</span>
 								{#if event.slug}
 									<span class="flex items-center gap-1">
@@ -264,9 +355,16 @@
 
 				<!-- Videos Section -->
 				<div class="flex items-center justify-between mb-4">
-					<h2 class="text-lg font-semibold text-[#1b1a1a]">
-						Videos ({filteredVideos.length})
-					</h2>
+					<div>
+						<h2 class="text-lg font-semibold text-[#1b1a1a]">
+							Videos ({sortedVideos.length})
+						</h2>
+						{#if sortedVideos.length > 1}
+							<p class="text-sm text-[#9b9b9b] mt-1">
+								Drag videos to reorder them
+							</p>
+						{/if}
+					</div>
 					<div class="flex items-center gap-3">
 						<select
 							bind:value={videoFilter}
@@ -278,13 +376,31 @@
 					</div>
 				</div>
 
-				{#if filteredVideos.length > 0}
-					<!-- Videos Grid -->
+				{#if sortedVideos.length > 0}
+					<!-- Videos Grid with Drag-Drop -->
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-						{#each filteredVideos as video}
+						{#each sortedVideos as video}
 							<div
-								class="bg-white rounded-lg border border-[#eaeaea] overflow-hidden hover:shadow-lg transition-shadow"
+								draggable="true"
+								on:dragstart={(e) => handleDragStart(video.id, e)}
+								on:dragend={handleDragEnd}
+								on:dragover={(e) => handleDragOver(video.id, e)}
+								on:dragleave={() => handleDragLeave(video.id)}
+								on:drop={(e) => handleDrop(video.id, e)}
+								class="bg-white rounded-lg border overflow-hidden hover:shadow-lg transition-all relative group"
+								class:border-orange-300={draggedOverVideoId === video.id}
+								class:ring-2={draggedOverVideoId === video.id}
+								class:ring-orange-400={draggedOverVideoId === video.id}
+								class:border-[#eaeaea]={draggedOverVideoId !== video.id}
+								class:opacity-50={isReordering}
 							>
+								<!-- Drag Handle Indicator -->
+								<div class="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity bg-white rounded-md p-1 shadow-sm">
+									<svg class="w-4 h-4 text-[#9b9b9b]" fill="currentColor" viewBox="0 0 24 24">
+										<path d="M8 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm0 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm-2 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8-14a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm0 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm-2 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+									</svg>
+								</div>
+
 								<!-- Video Thumbnail -->
 								<div class="relative h-36 bg-[#1b1a1a] flex items-center justify-center">
 									{#if video.thumbnail_url}
@@ -318,10 +434,17 @@
 
 								<!-- Video Info -->
 								<div class="p-3">
-									<h3 class="font-medium text-[#1b1a1a] text-sm truncate">{video.title}</h3>
-									{#if video.description}
-										<p class="text-xs text-[#9b9b9b] mt-1 line-clamp-2">{video.description}</p>
-									{/if}
+									<div class="flex items-start gap-2">
+										<svg class="w-4 h-4 text-[#9b9b9b] mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+											<path d="M8 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm0 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm-2 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm8-14a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm0 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm-2 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+										</svg>
+										<div class="flex-1 min-w-0">
+											<h3 class="font-medium text-[#1b1a1a] text-sm truncate">{video.title}</h3>
+											{#if video.description}
+												<p class="text-xs text-[#9b9b9b] mt-1 line-clamp-2">{video.description}</p>
+											{/if}
+										</div>
+									</div>
 									<div class="flex items-center justify-between mt-3">
 										<span class="text-xs text-[#9b9b9b]">Order: {video.sort_order || 0}</span>
 										<div class="flex gap-1">
