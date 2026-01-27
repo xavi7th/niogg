@@ -19,6 +19,13 @@ class VideoUploadService
     private const STORAGE_DISK = 'public';
     private const STORAGE_PATH = 'videos';
 
+    private readonly VideoThumbnailService $thumbnailService;
+
+    public function __construct(VideoThumbnailService $thumbnailService)
+    {
+        $this->thumbnailService = $thumbnailService;
+    }
+
     /**
      * Initialize a new chunked upload session
      */
@@ -126,7 +133,7 @@ class VideoUploadService
         // Clean up chunks
         $this->cleanupChunks($uploadId);
 
-        // Create video record
+        // Create video record (without thumbnail initially)
         $video = Video::create([
             'event_id' => $metadata['event_id'],
             'upload_id' => $uploadId,
@@ -141,6 +148,16 @@ class VideoUploadService
             'mime_type' => $metadata['mime_type'],
             'original_filename' => $metadata['original_filename'],
         ]);
+
+        // Generate thumbnail automatically if not provided
+        if (empty($videoData['thumbnail_url'])) {
+            try {
+                $this->thumbnailService->generateForVideo($video);
+            } catch (\Exception $e) {
+                // Log error but don't fail the upload
+                // Thumbnail generation can be retried later
+            }
+        }
 
         // Clear upload metadata from cache
         cache()->forget("upload:{$uploadId}");
