@@ -29,10 +29,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::prefix('events')->name('events.')->group(function (): void {
         Route::get('/', [AdminEventController::class, 'index'])->name('index');
         Route::get('/create', fn () => 'Events Create - TODO')->name('create');
-        Route::post('/', fn () => 'Events Store - TODO')->name('store');
+        Route::post('/', [AdminEventController::class, 'store'])->name('store');
         Route::get('/{event}', [AdminEventController::class, 'show'])->name('show');
         Route::get('/{event}/edit', fn () => 'Events Edit - TODO')->name('edit');
-        Route::put('/{event}', fn () => 'Events Update - TODO')->name('update');
+        Route::put('/{event}', [AdminEventController::class, 'update'])->name('update');
         Route::delete('/{event}', fn () => 'Events Destroy - TODO')->name('destroy');
     });
 });

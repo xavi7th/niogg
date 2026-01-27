@@ -5,6 +5,8 @@ namespace Modules\PublicPage\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use Modules\PublicPage\Models\Event;
+use Modules\PublicPage\Http\Requests\Admin\EventFormRequest;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminEventController extends Controller
 {
@@ -34,5 +36,27 @@ class AdminEventController extends Controller
         return Inertia::render('Admin/Events/Show', [
             'event' => $event,
         ]);
+    }
+
+    /**
+     * Store a new event
+     */
+    public function store(EventFormRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        Event::create($request->validated());
+
+        return Redirect::route('admin.events.index')
+            ->with('success', 'Event created successfully.');
+    }
+
+    /**
+     * Update an existing event
+     */
+    public function update(EventFormRequest $request, Event $event): \Illuminate\Http\RedirectResponse
+    {
+        $event->update($request->validated());
+
+        return Redirect::route('admin.events.index')
+            ->with('success', 'Event updated successfully.');
     }
 }

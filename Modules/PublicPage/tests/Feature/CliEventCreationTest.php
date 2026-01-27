@@ -25,7 +25,7 @@ class CliEventCreationTest extends TestCase
     public function test_command_help_output(): void
     {
         // Just verify the command runs help without errors
-        $this->artisan('events:create', ['--help' => true])
+        $this->artisan('events:create', ['--help' => TRUE])
             ->assertExitCode(0);
     }
 
@@ -37,7 +37,7 @@ class CliEventCreationTest extends TestCase
 
         // This should not throw an exception
         $this->artisan('events:create', [
-            '--help' => true,
+            '--help' => TRUE,
         ])->assertExitCode(0);
     }
 
@@ -66,7 +66,7 @@ class CliEventCreationTest extends TestCase
             'category' => 'charity_event',
             'event_date' => '2025-12-15',
             'slug' => 'test-event',
-            'is_published' => true,
+            'is_published' => TRUE,
         ]);
 
         // Test that a similar name would get a different slug
@@ -85,7 +85,7 @@ class CliEventCreationTest extends TestCase
             'category' => 'social_event',
             'event_date' => '2025-11-20',
             'slug' => 'manual-test-event',
-            'is_published' => true,
+            'is_published' => TRUE,
         ]);
 
         $this->assertNotNull($event);
@@ -106,7 +106,7 @@ class CliEventCreationTest extends TestCase
             'category' => 'gala_night',
             'event_date' => '2025-10-15',
             'slug' => 'test-event-with-video',
-            'is_published' => true,
+            'is_published' => TRUE,
         ]);
 
         // Create a video for this event
@@ -117,7 +117,7 @@ class CliEventCreationTest extends TestCase
             'video_url' => '/videos/test.mp4',
             'thumbnail_url' => '/images/test.jpg',
             'duration_seconds' => 120,
-            'is_featured' => true,
+            'is_featured' => TRUE,
             'sort_order' => 0,
         ]);
 
