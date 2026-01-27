@@ -6,6 +6,7 @@ use Modules\PublicPage\Http\Controllers\PublicPageController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminEventController;
 use Modules\PublicPage\Http\Controllers\EventsMediaShowcaseController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminDashboardController;
+use Modules\PublicPage\Http\Controllers\Admin\AdminVideoController;
 
 Route::get('/', [PublicPageController::class, 'index'])->name('app.index');
 Route::get('/about-us', [PublicPageController::class, 'about'])->name('app.about');
@@ -34,5 +35,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{event}/edit', [AdminEventController::class, 'edit'])->name('edit');
         Route::put('/{event}', [AdminEventController::class, 'update'])->name('update');
         Route::delete('/{event}', [AdminEventController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('videos')->name('videos.')->group(function (): void {
+        Route::post('/events/{event}', [AdminVideoController::class, 'store'])->name('store');
+        Route::put('/{video}', [AdminVideoController::class, 'update'])->name('update');
+        Route::delete('/{video}', [AdminVideoController::class, 'destroy'])->name('destroy');
     });
 });
