@@ -18,18 +18,18 @@ class Event extends Model
     }
 
     protected $fillable = [
-    'name',
-    'description',
-    'icon',
-    'category',
-    'event_date',
-    'slug',
-    'is_published',
+        'name',
+        'description',
+        'icon',
+        'category',
+        'event_date',
+        'slug',
+        'is_published',
     ];
 
     protected $casts = [
-    'event_date' => 'date',
-    'is_published' => 'boolean',
+        'event_date' => 'date',
+        'is_published' => 'boolean',
     ];
 
     protected static function boot(): void

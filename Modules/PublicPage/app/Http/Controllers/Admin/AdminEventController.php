@@ -5,8 +5,8 @@ namespace Modules\PublicPage\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use Modules\PublicPage\Models\Event;
-use Modules\PublicPage\Http\Requests\Admin\EventFormRequest;
 use Illuminate\Support\Facades\Redirect;
+use Modules\PublicPage\Http\Requests\Admin\EventFormRequest;
 
 class AdminEventController extends Controller
 {
