@@ -2,6 +2,7 @@
 	import { page } from '@inertiajs/svelte';
 	import { router } from '@inertiajs/svelte';
 	import { useForm } from '@inertiajs/svelte';
+	import AdminSidebar from '../../../Components/Admin/AdminSidebar.svelte';
 
 	$: ({ auth, errors } = $page.props);
 
@@ -45,74 +46,7 @@
 </svelte:head>
 
 <div class="flex min-h-screen bg-gray-100">
-	<!-- Sidebar -->
-	<aside class="w-64 bg-[#1b1a1a] text-white flex flex-col flex-shrink-0">
-		<!-- Logo -->
-		<div class="p-6 border-b border-[#333333]">
-			<h1 class="text-xl font-bold text-[#ff7607]">NIOGG Admin</h1>
-			<p class="text-xs text-[#9b9b9b] mt-1">Event & Video Management</p>
-		</div>
-
-		<!-- Navigation -->
-		<nav class="flex-1 py-6">
-			<a
-				href="/admin/dashboard"
-				class="flex items-center gap-3 px-6 py-3 text-[#9b9b9b] hover:bg-[#222222] hover:text-white transition-colors"
-			>
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-					/>
-				</svg>
-				<span>Dashboard</span>
-			</a>
-			<a
-				href="/admin/events"
-				class="flex items-center gap-3 px-6 py-3 bg-[#333333] text-[#ff7607] border-r-2 border-[#ff7607]"
-			>
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-					/>
-				</svg>
-				<span class="font-medium">Events</span>
-			</a>
-			<a
-				href="/logout"
-				class="flex items-center gap-3 px-6 py-3 text-[#9b9b9b] hover:bg-[#222222] hover:text-white transition-colors"
-				method="post"
-			>
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-					/>
-				</svg>
-				<span>Logout</span>
-			</a>
-		</nav>
-
-		<!-- User -->
-		<div class="p-6 border-t border-[#333333]">
-			<div class="flex items-center gap-3">
-				<div class="w-10 h-10 bg-[#ff7607] rounded-full flex items-center justify-center font-bold">
-					{auth?.user?.name?.charAt(0).toUpperCase() || 'A'}
-				</div>
-				<div class="flex-1">
-					<p class="text-sm font-medium">{auth?.user?.name || 'Admin User'}</p>
-					<p class="text-xs text-[#9b9b9b]">{auth?.user?.is_super_admin ? 'Super Admin' : 'Admin'}</p>
-				</div>
-			</div>
-		</div>
-	</aside>
+	<AdminSidebar />
 
 	<!-- Main Content -->
 	<main class="flex-1 flex flex-col min-w-0">
