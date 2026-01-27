@@ -80,6 +80,10 @@ class HandleInertiaRequests extends Middleware
       return 'userauth::app';
     }
 
+    if (Str::startsWith(Route::currentRouteName(), 'admin.')) {
+      return 'publicpage::app';
+    }
+
     if (Str::startsWith(Route::currentRouteName(), 'events.')) {
       return 'publicpage::app';
     }

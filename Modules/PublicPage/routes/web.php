@@ -20,3 +20,17 @@ Route::get('/article/{post}', [PublicBlogController::class, 'show'])->name('app.
 Route::get('/events/media-showcase', [EventsMediaShowcaseController::class, 'index'])->name('events.media-showcase');
 Route::get('/events/{event:slug}', [EventsMediaShowcaseController::class, 'show'])->name('events.show');
 Route::get('/events/{event:slug}/videos', [EventsMediaShowcaseController::class, 'eventVideos'])->name('events.videos');
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function (): void {
+    Route::get('/dashboard', fn () => 'Dashboard - TODO')->name('dashboard');
+
+    Route::prefix('events')->name('events.')->group(function (): void {
+        Route::get('/', fn () => 'Events Index - TODO')->name('index');
+        Route::get('/create', fn () => 'Events Create - TODO')->name('create');
+        Route::post('/', fn () => 'Events Store - TODO')->name('store');
+        Route::get('/{event}', fn () => 'Events Show - TODO')->name('show');
+        Route::get('/{event}/edit', fn () => 'Events Edit - TODO')->name('edit');
+        Route::put('/{event}', fn () => 'Events Update - TODO')->name('update');
+        Route::delete('/{event}', fn () => 'Events Destroy - TODO')->name('destroy');
+    });
+});
