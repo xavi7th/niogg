@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\PublicPage\Http\Controllers\PublicBlogController;
 use Modules\PublicPage\Http\Controllers\PublicPageController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminEventController;
+use Modules\PublicPage\Http\Controllers\Admin\AdminDashboardController;
 use Modules\PublicPage\Http\Controllers\EventsMediaShowcaseController;
 
 Route::get('/', [PublicPageController::class, 'index'])->name('app.index');
@@ -23,7 +24,7 @@ Route::get('/events/{event:slug}', [EventsMediaShowcaseController::class, 'show'
 Route::get('/events/{event:slug}/videos', [EventsMediaShowcaseController::class, 'eventVideos'])->name('events.videos');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function (): void {
-    Route::get('/dashboard', fn () => 'Dashboard - TODO')->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::prefix('events')->name('events.')->group(function (): void {
         Route::get('/', [AdminEventController::class, 'index'])->name('index');
