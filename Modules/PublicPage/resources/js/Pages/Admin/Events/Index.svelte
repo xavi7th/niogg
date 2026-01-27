@@ -138,11 +138,30 @@
 
 			if (response.ok) {
 				const data = await response.json();
+				window.ToastLarge.fire({
+					title: 'Success',
+					html: data.message,
+					icon: 'success',
+					timer: 3000
+				});
 				router.reload({ only: ['events'] });
 				clearSelection();
+			} else {
+				const data = await response.json();
+				window.ToastLarge.fire({
+					title: 'Error',
+					html: data.message || 'Failed to publish events.',
+					icon: 'error',
+					timer: 5000
+				});
 			}
 		} catch (error) {
-			console.error('Bulk publish failed:', error);
+			window.ToastLarge.fire({
+				title: 'Error',
+				html: 'Network error. Please check your connection and try again.',
+				icon: 'error',
+				timer: 5000
+			});
 		}
 	}
 
@@ -161,11 +180,30 @@
 
 			if (response.ok) {
 				const data = await response.json();
+				window.ToastLarge.fire({
+					title: 'Success',
+					html: data.message,
+					icon: 'success',
+					timer: 3000
+				});
 				router.reload({ only: ['events'] });
 				clearSelection();
+			} else {
+				const data = await response.json();
+				window.ToastLarge.fire({
+					title: 'Error',
+					html: data.message || 'Failed to unpublish events.',
+					icon: 'error',
+					timer: 5000
+				});
 			}
 		} catch (error) {
-			console.error('Bulk unpublish failed:', error);
+			window.ToastLarge.fire({
+				title: 'Error',
+				html: 'Network error. Please check your connection and try again.',
+				icon: 'error',
+				timer: 5000
+			});
 		}
 	}
 
@@ -183,12 +221,32 @@
 			});
 
 			if (response.ok) {
+				const data = await response.json();
 				showBulkDeleteDialog = false;
+				window.ToastLarge.fire({
+					title: 'Success',
+					html: data.message,
+					icon: 'success',
+					timer: 3000
+				});
 				router.reload({ only: ['events'] });
 				clearSelection();
+			} else {
+				const data = await response.json();
+				window.ToastLarge.fire({
+					title: 'Error',
+					html: data.message || 'Failed to delete events.',
+					icon: 'error',
+					timer: 5000
+				});
 			}
 		} catch (error) {
-			console.error('Bulk delete failed:', error);
+			window.ToastLarge.fire({
+				title: 'Error',
+				html: 'Network error. Please check your connection and try again.',
+				icon: 'error',
+				timer: 5000
+			});
 		}
 	}
 

@@ -3,6 +3,7 @@
 namespace Modules\PublicPage\Http\Controllers\Admin;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use InvalidArgumentException;
 use App\Http\Controllers\Controller;
@@ -114,10 +115,16 @@ class AdminVideoController extends Controller
      */
     public function store(VideoFormRequest $request, Event $event): \Illuminate\Http\RedirectResponse
     {
-        $video = $event->videos()->create($request->validated());
+        try {
+            $video = $event->videos()->create($request->validated());
 
-        return Redirect::route('admin.events.show', $event)
-            ->with('success', 'Video added successfully.');
+            return Redirect::route('admin.events.show', $event)
+                ->with('success', 'Video added successfully.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withInput()
+                ->with('error', 'Failed to add video. Please try again.');
+        }
     }
 
     /**
@@ -125,10 +132,16 @@ class AdminVideoController extends Controller
      */
     public function update(VideoFormRequest $request, Video $video): \Illuminate\Http\RedirectResponse
     {
-        $video->update($request->validated());
+        try {
+            $video->update($request->validated());
 
-        return Redirect::route('admin.events.show', $video->event)
-            ->with('success', 'Video updated successfully.');
+            return Redirect::route('admin.events.show', $video->event)
+                ->with('success', 'Video updated successfully.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withInput()
+                ->with('error', 'Failed to update video. Please try again.');
+        }
     }
 
     /**
@@ -136,11 +149,16 @@ class AdminVideoController extends Controller
      */
     public function destroy(Video $video): \Illuminate\Http\RedirectResponse
     {
-        $event = $video->event;
-        $video->delete();
+        try {
+            $event = $video->event;
+            $video->delete();
 
-        return Redirect::route('admin.events.show', $event)
-            ->with('success', 'Video deleted successfully.');
+            return Redirect::route('admin.events.show', $event)
+                ->with('success', 'Video deleted successfully.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->with('error', 'Failed to delete video. Please try again.');
+        }
     }
 
     /**
@@ -148,31 +166,40 @@ class AdminVideoController extends Controller
      */
     public function reorder(\Illuminate\Http\Request $request, Event $event): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'video_ids' => 'required|array',
-            'video_ids.*' => 'integer|exists:videos,id',
-        ]);
+        try {
+            $request->validate([
+                'video_ids' => 'required|array',
+                'video_ids.*' => 'integer|exists:videos,id',
+            ]);
 
-        $videoIds = $request->input('video_ids');
+            $videoIds = $request->input('video_ids');
 
-        // Verify all videos belong to this event
-        $eventVideoIds = $event->videos()->pluck('id')->toArray();
-        $invalidIds = array_diff($videoIds, $eventVideoIds);
+            // Verify all videos belong to this event
+            $eventVideoIds = $event->videos()->pluck('id')->toArray();
+            $invalidIds = array_diff($videoIds, $eventVideoIds);
 
-        if ( ! empty($invalidIds)) {
+            if ( ! empty($invalidIds)) {
+                return response()->json([
+                    'message' => 'Some videos do not belong to this event.',
+                ], 400);
+            }
+
+            // Update sort_order for each video
+            foreach ($videoIds as $index => $videoId) {
+                Video::where('id', $videoId)->update(['sort_order' => $index]);
+            }
+
             return response()->json([
-                'message' => 'Some videos do not belong to this event.',
-            ], 400);
+                'message' => 'Videos reordered successfully.',
+                'order' => $videoIds,
+            ]);
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to reorder videos. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : NULL,
+            ], 500);
         }
-
-        // Update sort_order for each video
-        foreach ($videoIds as $index => $videoId) {
-            Video::where('id', $videoId)->update(['sort_order' => $index]);
-        }
-
-        return response()->json([
-            'message' => 'Videos reordered successfully.',
-            'order' => $videoIds,
-        ]);
     }
 }

@@ -85,6 +85,14 @@ router.on("success", (e) => {
       timer: 3000,
       allowEscapeKey: true,
     });
+  } else if (e.detail.page.props.flash.error) {
+    ToastLarge.fire({
+      title: "Error",
+      html: e.detail.page.props.flash.error,
+      icon: "error",
+      timer: 5000,
+      allowEscapeKey: true,
+    });
   } else if (e.detail.page.props.flash.warning) {
     ToastLarge.fire({
       title: "Note!!",

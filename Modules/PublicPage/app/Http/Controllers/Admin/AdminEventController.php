@@ -2,6 +2,8 @@
 
 namespace Modules\PublicPage\Http\Controllers\Admin;
 
+use Exception;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use Modules\PublicPage\Models\Event;
@@ -67,12 +69,18 @@ class AdminEventController extends Controller
      */
     public function store(EventFormRequest $request): \Illuminate\Http\RedirectResponse
     {
-        Event::create($request->validated());
+        try {
+            Event::create($request->validated());
 
-        Cache::tags(['admin.events'])->flush();
+            Cache::tags(['admin.events'])->flush();
 
-        return Redirect::route('admin.events.index')
-            ->with('success', 'Event created successfully.');
+            return Redirect::route('admin.events.index')
+                ->with('success', 'Event created successfully.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withInput()
+                ->with('error', 'Failed to create event. Please try again.');
+        }
     }
 
     /**
@@ -80,12 +88,18 @@ class AdminEventController extends Controller
      */
     public function update(EventFormRequest $request, Event $event): \Illuminate\Http\RedirectResponse
     {
-        $event->update($request->validated());
+        try {
+            $event->update($request->validated());
 
-        Cache::tags(['admin.events'])->flush();
+            Cache::tags(['admin.events'])->flush();
 
-        return Redirect::route('admin.events.index')
-            ->with('success', 'Event updated successfully.');
+            return Redirect::route('admin.events.index')
+                ->with('success', 'Event updated successfully.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withInput()
+                ->with('error', 'Failed to update event. Please try again.');
+        }
     }
 
     /**
@@ -93,12 +107,17 @@ class AdminEventController extends Controller
      */
     public function destroy(Event $event): \Illuminate\Http\RedirectResponse
     {
-        $event->delete();
+        try {
+            $event->delete();
 
-        Cache::tags(['admin.events'])->flush();
+            Cache::tags(['admin.events'])->flush();
 
-        return Redirect::route('admin.events.index')
-            ->with('success', 'Event deleted successfully.');
+            return Redirect::route('admin.events.index')
+                ->with('success', 'Event deleted successfully.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->with('error', 'Failed to delete event. Please try again.');
+        }
     }
 
     /**
@@ -106,19 +125,28 @@ class AdminEventController extends Controller
      */
     public function bulkPublish(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'event_ids' => ['required', 'array', 'min:1'],
-            'event_ids.*' => ['exists:events,id'],
-        ]);
+        try {
+            $request->validate([
+                'event_ids' => ['required', 'array', 'min:1'],
+                'event_ids.*' => ['exists:events,id'],
+            ]);
 
-        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => TRUE]);
+            $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => TRUE]);
 
-        Cache::tags(['admin.events'])->flush();
+            Cache::tags(['admin.events'])->flush();
 
-        return response()->json([
-            'message' => "{$count} event(s) published successfully.",
-            'count' => $count,
-        ]);
+            return response()->json([
+                'message' => "{$count} event(s) published successfully.",
+                'count' => $count,
+            ]);
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to publish events. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : NULL,
+            ], 500);
+        }
     }
 
     /**
@@ -126,19 +154,28 @@ class AdminEventController extends Controller
      */
     public function bulkUnpublish(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'event_ids' => ['required', 'array', 'min:1'],
-            'event_ids.*' => ['exists:events,id'],
-        ]);
+        try {
+            $request->validate([
+                'event_ids' => ['required', 'array', 'min:1'],
+                'event_ids.*' => ['exists:events,id'],
+            ]);
 
-        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => FALSE]);
+            $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => FALSE]);
 
-        Cache::tags(['admin.events'])->flush();
+            Cache::tags(['admin.events'])->flush();
 
-        return response()->json([
-            'message' => "{$count} event(s) unpublished successfully.",
-            'count' => $count,
-        ]);
+            return response()->json([
+                'message' => "{$count} event(s) unpublished successfully.",
+                'count' => $count,
+            ]);
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to unpublish events. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : NULL,
+            ], 500);
+        }
     }
 
     /**
@@ -146,18 +183,27 @@ class AdminEventController extends Controller
      */
     public function bulkDelete(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'event_ids' => ['required', 'array', 'min:1'],
-            'event_ids.*' => ['exists:events,id'],
-        ]);
+        try {
+            $request->validate([
+                'event_ids' => ['required', 'array', 'min:1'],
+                'event_ids.*' => ['exists:events,id'],
+            ]);
 
-        $count = Event::whereIn('id', $request->event_ids)->delete();
+            $count = Event::whereIn('id', $request->event_ids)->delete();
 
-        Cache::tags(['admin.events'])->flush();
+            Cache::tags(['admin.events'])->flush();
 
-        return response()->json([
-            'message' => "{$count} event(s) deleted successfully.",
-            'count' => $count,
-        ]);
+            return response()->json([
+                'message' => "{$count} event(s) deleted successfully.",
+                'count' => $count,
+            ]);
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete events. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : NULL,
+            ], 500);
+        }
     }
 }

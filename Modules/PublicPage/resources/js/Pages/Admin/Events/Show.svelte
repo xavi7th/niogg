@@ -146,6 +146,7 @@
 			});
 
 			if (response.ok) {
+				const data = await response.json();
 				// Update local videos array with new sort_order
 				sortedVideos.forEach((video, index) => {
 					video.sort_order = index;
@@ -153,12 +154,21 @@
 				// Reload page to show updated order from server
 				router.reload({ only: ['event'] });
 			} else {
-				console.error('Reorder failed:', response.statusText);
-				alert('Failed to reorder videos. Please try again.');
+				const data = await response.json();
+				window.ToastLarge.fire({
+					title: 'Error',
+					html: data.message || 'Failed to reorder videos.',
+					icon: 'error',
+					timer: 5000
+				});
 			}
 		} catch (error) {
-			console.error('Reorder error:', error);
-			alert('Failed to reorder videos. Please try again.');
+			window.ToastLarge.fire({
+				title: 'Error',
+				html: 'Network error. Please check your connection and try again.',
+				icon: 'error',
+				timer: 5000
+			});
 		} finally {
 			isReordering = false;
 			draggedVideoId = null;
