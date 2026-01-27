@@ -100,4 +100,64 @@ class AdminEventController extends Controller
         return Redirect::route('admin.events.index')
             ->with('success', 'Event deleted successfully.');
     }
+
+    /**
+     * Bulk publish multiple events
+     */
+    public function bulkPublish(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate([
+            'event_ids' => ['required', 'array', 'min:1'],
+            'event_ids.*' => ['exists:events,id'],
+        ]);
+
+        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => true]);
+
+        Cache::tags(['admin.events'])->flush();
+
+        return response()->json([
+            'message' => "{$count} event(s) published successfully.",
+            'count' => $count,
+        ]);
+    }
+
+    /**
+     * Bulk unpublish multiple events
+     */
+    public function bulkUnpublish(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate([
+            'event_ids' => ['required', 'array', 'min:1'],
+            'event_ids.*' => ['exists:events,id'],
+        ]);
+
+        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => false]);
+
+        Cache::tags(['admin.events'])->flush();
+
+        return response()->json([
+            'message' => "{$count} event(s) unpublished successfully.",
+            'count' => $count,
+        ]);
+    }
+
+    /**
+     * Bulk delete multiple events with cascading delete for associated videos
+     */
+    public function bulkDelete(\Illuminate\Http\Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate([
+            'event_ids' => ['required', 'array', 'min:1'],
+            'event_ids.*' => ['exists:events,id'],
+        ]);
+
+        $count = Event::whereIn('id', $request->event_ids)->delete();
+
+        Cache::tags(['admin.events'])->flush();
+
+        return response()->json([
+            'message' => "{$count} event(s) deleted successfully.",
+            'count' => $count,
+        ]);
+    }
 }

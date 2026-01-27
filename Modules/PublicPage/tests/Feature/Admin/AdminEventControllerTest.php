@@ -320,4 +320,245 @@ class AdminEventControllerTest extends TestCase
         $cached = Cache::tags(['admin.events'])->get($cacheKey);
         $this->assertNotNull($cached);
     }
+
+    public function test_bulk_publish_requires_authentication(): void
+    {
+        $response = $this->post('/admin/events/bulk/publish', [
+            'event_ids' => [1, 2, 3],
+        ]);
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_bulk_publish_requires_admin_role(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => FALSE,
+            'is_super_admin' => FALSE,
+        ]);
+
+        $response = $this->actingAs($user)->post('/admin/events/bulk/publish', [
+            'event_ids' => [1, 2, 3],
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_bulk_publish_requires_event_ids_array(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $response = $this->actingAs($user)->postJson('/admin/events/bulk/publish', [
+            'event_ids' => 'not-an-array',
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['event_ids']);
+    }
+
+    public function test_bulk_publish_publishes_events(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event1 = Event::factory()->create(['is_published' => FALSE]);
+        $event2 = Event::factory()->create(['is_published' => FALSE]);
+        $event3 = Event::factory()->create(['is_published' => FALSE]);
+
+        $response = $this->actingAs($user)->postJson('/admin/events/bulk/publish', [
+            'event_ids' => [$event1->id, $event2->id],
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => '2 event(s) published successfully.',
+                'count' => 2,
+            ]);
+
+        $this->assertDatabaseHas('events', ['id' => $event1->id, 'is_published' => TRUE]);
+        $this->assertDatabaseHas('events', ['id' => $event2->id, 'is_published' => TRUE]);
+        $this->assertDatabaseHas('events', ['id' => $event3->id, 'is_published' => FALSE]);
+    }
+
+    public function test_bulk_publish_invalidates_cache(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event1 = Event::factory()->create(['is_published' => FALSE]);
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+
+        $this->actingAs($user)->post('/admin/events/bulk/publish', [
+            'event_ids' => [$event1->id],
+        ]);
+
+        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+    }
+
+    public function test_bulk_unpublish_requires_authentication(): void
+    {
+        $response = $this->post('/admin/events/bulk/unpublish', [
+            'event_ids' => [1, 2, 3],
+        ]);
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_bulk_unpublish_requires_admin_role(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => FALSE,
+            'is_super_admin' => FALSE,
+        ]);
+
+        $response = $this->actingAs($user)->post('/admin/events/bulk/unpublish', [
+            'event_ids' => [1, 2, 3],
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_bulk_unpublish_unpublishes_events(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event1 = Event::factory()->create(['is_published' => TRUE]);
+        $event2 = Event::factory()->create(['is_published' => TRUE]);
+        $event3 = Event::factory()->create(['is_published' => TRUE]);
+
+        $response = $this->actingAs($user)->postJson('/admin/events/bulk/unpublish', [
+            'event_ids' => [$event1->id, $event2->id],
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => '2 event(s) unpublished successfully.',
+                'count' => 2,
+            ]);
+
+        $this->assertDatabaseHas('events', ['id' => $event1->id, 'is_published' => FALSE]);
+        $this->assertDatabaseHas('events', ['id' => $event2->id, 'is_published' => FALSE]);
+        $this->assertDatabaseHas('events', ['id' => $event3->id, 'is_published' => TRUE]);
+    }
+
+    public function test_bulk_unpublish_invalidates_cache(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event1 = Event::factory()->create(['is_published' => TRUE]);
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+
+        $this->actingAs($user)->post('/admin/events/bulk/unpublish', [
+            'event_ids' => [$event1->id],
+        ]);
+
+        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+    }
+
+    public function test_bulk_delete_requires_authentication(): void
+    {
+        $response = $this->delete('/admin/events/bulk', [
+            'event_ids' => [1, 2, 3],
+        ]);
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_bulk_delete_requires_admin_role(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => FALSE,
+            'is_super_admin' => FALSE,
+        ]);
+
+        $response = $this->actingAs($user)->delete('/admin/events/bulk', [
+            'event_ids' => [1, 2, 3],
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_bulk_delete_deletes_events(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event1 = Event::factory()->create();
+        $event2 = Event::factory()->create();
+        $event3 = Event::factory()->create();
+
+        $response = $this->actingAs($user)->deleteJson('/admin/events/bulk', [
+            'event_ids' => [$event1->id, $event2->id],
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => '2 event(s) deleted successfully.',
+                'count' => 2,
+            ]);
+
+        $this->assertDatabaseMissing('events', ['id' => $event1->id]);
+        $this->assertDatabaseMissing('events', ['id' => $event2->id]);
+        $this->assertDatabaseHas('events', ['id' => $event3->id]);
+    }
+
+    public function test_bulk_delete_cascades_to_videos(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event1 = Event::factory()->create();
+        $video1 = Video::factory()->for($event1)->create();
+        $video2 = Video::factory()->for($event1)->create();
+
+        $response = $this->actingAs($user)->deleteJson('/admin/events/bulk', [
+            'event_ids' => [$event1->id],
+        ]);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('events', ['id' => $event1->id]);
+        $this->assertDatabaseMissing('videos', ['id' => $video1->id]);
+        $this->assertDatabaseMissing('videos', ['id' => $video2->id]);
+    }
+
+    public function test_bulk_delete_invalidates_cache(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event1 = Event::factory()->create();
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+
+        $this->actingAs($user)->delete('/admin/events/bulk', [
+            'event_ids' => [$event1->id],
+        ]);
+
+        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+    }
 }

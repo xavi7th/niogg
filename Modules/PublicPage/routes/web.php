@@ -31,6 +31,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/', [AdminEventController::class, 'index'])->name('index');
         Route::get('/create', [AdminEventController::class, 'create'])->name('create');
         Route::post('/', [AdminEventController::class, 'store'])->name('store');
+        Route::post('/bulk/publish', [AdminEventController::class, 'bulkPublish'])->name('bulkPublish');
+        Route::post('/bulk/unpublish', [AdminEventController::class, 'bulkUnpublish'])->name('bulkUnpublish');
+        Route::delete('/bulk', [AdminEventController::class, 'bulkDelete'])->name('bulkDelete');
         Route::get('/{event}', [AdminEventController::class, 'show'])->name('show');
         Route::get('/{event}/edit', [AdminEventController::class, 'edit'])->name('edit');
         Route::put('/{event}', [AdminEventController::class, 'update'])->name('update');
