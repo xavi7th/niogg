@@ -38,6 +38,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     });
 
     Route::prefix('videos')->name('videos.')->group(function (): void {
+        Route::post('/upload/{event}', [AdminVideoController::class, 'upload'])->name('upload');
         Route::post('/events/{event}', [AdminVideoController::class, 'store'])->name('store');
         Route::put('/{video}', [AdminVideoController::class, 'update'])->name('update');
         Route::delete('/{video}', [AdminVideoController::class, 'destroy'])->name('destroy');

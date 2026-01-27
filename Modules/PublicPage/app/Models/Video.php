@@ -25,12 +25,17 @@ class Video extends Model
       'duration_seconds',
       'is_featured',
       'sort_order',
+      'upload_id',
+      'file_size',
+      'mime_type',
+      'original_filename',
     ];
 
     protected $casts = [
       'is_featured' => 'boolean',
       'duration_seconds' => 'integer',
       'sort_order' => 'integer',
+      'file_size' => 'integer',
     ];
 
     /**
@@ -46,7 +51,7 @@ class Video extends Model
      */
     public function scopeFeatured($query)
     {
-        return $query->where('is_featured', TRUE);
+        return $query->where('is_featured', true);
     }
 
     /**
