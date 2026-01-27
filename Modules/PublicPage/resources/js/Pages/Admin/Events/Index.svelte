@@ -1,8 +1,12 @@
 <script>
 	import { page } from '@inertiajs/svelte';
 	import { router } from '@inertiajs/svelte';
+	import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog.svelte';
 
 	$: ({ events, auth } = $page.props);
+
+	let showDeleteDialog = false;
+	let eventToDelete = null;
 
 	let searchQuery = '';
 	let statusFilter = 'all';
@@ -55,14 +59,29 @@
 		return null;
 	}
 
-	function deleteEvent(eventId, eventName) {
-		if (confirm(`Are you sure you want to delete "${eventName}"? This action cannot be undone.`)) {
-			router.delete(`/admin/events/${eventId}`, {
-				onSuccess: () => {
-					// Page will reload with updated data
-				}
-			});
-		}
+	function confirmDeleteEvent() {
+		if (!eventToDelete) return;
+
+		router.delete(`/admin/events/${eventToDelete.id}`, {
+			onSuccess: () => {
+				showDeleteDialog = false;
+				eventToDelete = null;
+			},
+			onError: () => {
+				showDeleteDialog = false;
+				eventToDelete = null;
+			}
+		});
+	}
+
+	function openDeleteDialog(event) {
+		eventToDelete = event;
+		showDeleteDialog = true;
+	}
+
+	function closeDeleteDialog() {
+		showDeleteDialog = false;
+		eventToDelete = null;
 	}
 </script>
 
@@ -314,9 +333,10 @@
 										Edit
 									</a>
 									<button
-										on:click={() => deleteEvent(event.id, event.name)}
+										on:click={() => openDeleteDialog(event)}
 										class="px-3 py-2 border border-[#eaeaea] rounded text-sm text-[#9b9b9b] hover:text-[#ef4444] hover:bg-[#fee2e2]"
 										title="Delete event"
+										type="button"
 									>
 										<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 											<path
@@ -405,6 +425,18 @@
 		</div>
 	</main>
 </div>
+
+<DeleteConfirmationDialog
+	bind:open={showDeleteDialog}
+	title="Delete Event"
+	message="Are you sure you want to delete this event? All associated videos will also be deleted."
+	itemName={eventToDelete?.name || ''}
+	itemType="event"
+	showWarning={true}
+	warningMessage="This will permanently delete the event and all its videos. This action cannot be undone."
+	on:confirm={confirmDeleteEvent}
+	on:cancel={closeDeleteDialog}
+/>
 
 <style>
 	:global(.line-clamp-1) {

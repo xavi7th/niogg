@@ -2,12 +2,15 @@
 	import { page } from '@inertiajs/svelte';
 	import { router } from '@inertiajs/svelte';
 	import VideoEditModal from '../../../Components/Admin/VideoEditModal.svelte';
+	import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog.svelte';
 
 	$: ({ event, auth } = $page.props);
 
 	let videoFilter = 'all'; // all, featured
 	let showEditModal = false;
 	let selectedVideo = null;
+	let showDeleteDialog = false;
+	let videoToDelete = null;
 
 	// Drag-drop state
 	let draggedVideoId = null;
@@ -39,14 +42,29 @@
 		return `${mins}:${secs.toString().padStart(2, '0')}`;
 	}
 
-	function deleteVideo(videoId, videoTitle) {
-		if (confirm(`Are you sure you want to delete "${videoTitle}"? This action cannot be undone.`)) {
-			router.delete(`/admin/events/${event.id}/videos/${videoId}`, {
-				onSuccess: () => {
-					// Page will reload with updated data
-				}
-			});
-		}
+	function confirmDeleteVideo() {
+		if (!videoToDelete) return;
+
+		router.delete(`/admin/events/${event.id}/videos/${videoToDelete.id}`, {
+			onSuccess: () => {
+				showDeleteDialog = false;
+				videoToDelete = null;
+			},
+			onError: () => {
+				showDeleteDialog = false;
+				videoToDelete = null;
+			}
+		});
+	}
+
+	function openDeleteDialog(video) {
+		videoToDelete = video;
+		showDeleteDialog = true;
+	}
+
+	function closeDeleteDialog() {
+		showDeleteDialog = false;
+		videoToDelete = null;
 	}
 
 	function openEditModal(video) {
@@ -464,9 +482,10 @@
 												</svg>
 											</button>
 											<button
-												on:click={() => deleteVideo(video.id, video.title)}
+												on:click={() => openDeleteDialog(video)}
 												class="p-1 text-[#9b9b9b] hover:text-[#ef4444]"
 												title="Delete video"
+												type="button"
 											>
 												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 													<path
@@ -530,6 +549,18 @@
 </div>
 
 <VideoEditModal bind:open={showEditModal} video={selectedVideo} eventId={event?.id} />
+
+<DeleteConfirmationDialog
+	bind:open={showDeleteDialog}
+	title="Delete Video"
+	message="Are you sure you want to delete this video?"
+	itemName={videoToDelete?.title || ''}
+	itemType="video"
+	showWarning={false}
+	warningMessage=""
+	on:confirm={confirmDeleteVideo}
+	on:cancel={closeDeleteDialog}
+/>
 
 <style>
 	:global(.line-clamp-1) {

@@ -28,7 +28,7 @@ class SendPasswordResetSuccessfulNotification extends Notification implements Sh
 
   public function toMail(User $user): MailMessage
   {
-    return (new MailMessage())
+    return (new MailMessage)
         ->subject(Lang::get('Password Reset Successful'))
         ->greeting('Hello ' . Str::of($user->full_name)->before(' ') . '.')
         ->line(Lang::get('You have successfully reset your ' . config('app.name') . ' password. You can now log in to your dashboard using your new password by clicking the link below.'))

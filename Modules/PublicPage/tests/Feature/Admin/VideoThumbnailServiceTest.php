@@ -18,7 +18,7 @@ class VideoThumbnailServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->service = new VideoThumbnailService();
+        $this->service = new VideoThumbnailService;
         Storage::fake('public');
     }
 
