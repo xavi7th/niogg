@@ -8,10 +8,18 @@
 
 	let showDeleteDialog = false;
 	let eventToDelete = null;
+	let showBulkDeleteDialog = false;
 
 	let searchQuery = '';
 	let statusFilter = 'all';
 	let categoryFilter = 'all';
+
+	// Bulk selection state
+	let selectedEventIds = [];
+	let selectAllChecked = false;
+
+	// Track selected events for bulk delete
+	let selectedEventsCount = 0;
 
 	// Extract unique categories from events
 	$: categories = events?.data
@@ -40,6 +48,15 @@
 				return true;
 		  })
 		: [];
+
+	// Update select all state based on filtered events
+	$: selectAllChecked =
+		filteredEvents.length > 0 &&
+		selectedEventIds.length === filteredEvents.length &&
+		filteredEvents.every((event) => selectedEventIds.includes(event.id));
+
+	// Track count for bulk delete dialog
+	$: selectedEventsCount = selectedEventIds.length;
 
 	function formatDate(dateStr) {
 		if (!dateStr) return 'N/A';
@@ -83,6 +100,105 @@
 	function closeDeleteDialog() {
 		showDeleteDialog = false;
 		eventToDelete = null;
+	}
+
+	// Bulk action functions
+	function toggleSelectAll() {
+		if (selectAllChecked) {
+			selectedEventIds = [];
+		} else {
+			selectedEventIds = filteredEvents.map((event) => event.id);
+		}
+	}
+
+	function toggleEventSelection(eventId) {
+		if (selectedEventIds.includes(eventId)) {
+			selectedEventIds = selectedEventIds.filter((id) => id !== eventId);
+		} else {
+			selectedEventIds = [...selectedEventIds, eventId];
+		}
+	}
+
+	function clearSelection() {
+		selectedEventIds = [];
+	}
+
+	async function bulkPublish() {
+		if (selectedEventIds.length === 0) return;
+
+		try {
+			const response = await fetch('/admin/events/bulk-publish', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+				},
+				body: JSON.stringify({ event_ids: selectedEventIds })
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				router.reload({ only: ['events'] });
+				clearSelection();
+			}
+		} catch (error) {
+			console.error('Bulk publish failed:', error);
+		}
+	}
+
+	async function bulkUnpublish() {
+		if (selectedEventIds.length === 0) return;
+
+		try {
+			const response = await fetch('/admin/events/bulk-unpublish', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+				},
+				body: JSON.stringify({ event_ids: selectedEventIds })
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				router.reload({ only: ['events'] });
+				clearSelection();
+			}
+		} catch (error) {
+			console.error('Bulk unpublish failed:', error);
+		}
+	}
+
+	async function confirmBulkDelete() {
+		if (selectedEventIds.length === 0) return;
+
+		try {
+			const response = await fetch('/admin/events/bulk-delete', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+				},
+				body: JSON.stringify({ event_ids: selectedEventIds })
+			});
+
+			if (response.ok) {
+				showBulkDeleteDialog = false;
+				router.reload({ only: ['events'] });
+				clearSelection();
+			}
+		} catch (error) {
+			console.error('Bulk delete failed:', error);
+		}
+	}
+
+	function openBulkDeleteDialog() {
+		if (selectedEventIds.length === 0) return;
+		showBulkDeleteDialog = true;
+	}
+
+	function closeBulkDeleteDialog() {
+		showBulkDeleteDialog = false;
 	}
 </script>
 
@@ -158,6 +274,19 @@
 			<!-- Search & Filter Bar -->
 			<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
 				<div class="flex items-center gap-4">
+					<!-- Select All Checkbox -->
+					{#if filteredEvents.length > 0}
+						<label class="flex items-center gap-2 cursor-pointer">
+							<input
+								type="checkbox"
+								bind:checked={selectAllChecked}
+								on:change={toggleSelectAll}
+								class="w-4 h-4 text-[#ff7607] border-[#eaeaea] rounded focus:ring-[#ff7607]"
+							/>
+							<span class="text-sm text-[#9b9b9b]">Select All</span>
+						</label>
+					{/if}
+
 					<!-- Search -->
 					<div class="relative">
 						<input
@@ -200,13 +329,79 @@
 				</div>
 			</div>
 
+			<!-- Bulk Action Bar -->
+			{#if selectedEventIds.length > 0}
+				<div class="fixed bottom-0 left-64 right-0 bg-[#1b1a1a] text-white px-6 py-4 flex items-center justify-between shadow-lg z-40">
+					<div class="flex items-center gap-4">
+						<span class="text-sm font-medium"
+							>{selectedEventIds.length} event{selectedEventIds.length !== 1 ? 's' : ''} selected</span
+						>
+					</div>
+					<div class="flex items-center gap-3">
+						<button
+							on:click={bulkPublish}
+							class="px-4 py-2 bg-[#10b981] text-white rounded-lg hover:bg-[#059669] font-medium text-sm flex items-center gap-2"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M5 13l4 4L19 7"
+								/>
+							</svg>
+							Publish
+						</button>
+						<button
+							on:click={bulkUnpublish}
+							class="px-4 py-2 bg-[#f59e0b] text-white rounded-lg hover:bg-[#d97706] font-medium text-sm flex items-center gap-2"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+							</svg>
+							Unpublish
+						</button>
+						<button
+							on:click={openBulkDeleteDialog}
+							class="px-4 py-2 bg-[#ef4444] text-white rounded-lg hover:bg-[#dc2626] font-medium text-sm flex items-center gap-2"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+								/>
+							</svg>
+							Delete
+						</button>
+						<button
+							on:click={clearSelection}
+							class="px-4 py-2 border border-[#9b9b9b] text-[#9b9b9b] rounded-lg hover:text-white hover:border-white font-medium text-sm"
+						>
+							Cancel
+						</button>
+					</div>
+				</div>
+			{/if}
+
 			<!-- Events Grid -->
 			{#if filteredEvents.length > 0}
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{#each filteredEvents as event}
 						<div
-							class="bg-white rounded-lg border border-[#eaeaea] overflow-hidden hover:shadow-lg transition-shadow"
+							class="bg-white rounded-lg border border-[#eaeaea] overflow-hidden hover:shadow-lg transition-shadow relative {selectedEventIds.includes(event.id) ? 'ring-2 ring-[#ff7607]' : ''}"
 						>
+							<!-- Checkbox for bulk selection -->
+							<div class="absolute top-3 left-3 z-10">
+								<input
+									type="checkbox"
+									checked={selectedEventIds.includes(event.id)}
+									on:change={() => toggleEventSelection(event.id)}
+									class="w-5 h-5 text-[#ff7607] border-gray-300 rounded focus:ring-[#ff7607] cursor-pointer"
+								/>
+							</div>
+
 							<!-- Event Icon/Thumbnail -->
 							<div class="h-40 bg-gradient-to-br from-[#1b1a1a] to-[#333333] flex items-center justify-center">
 								{#if getEventIcon(event.icon)}
@@ -370,6 +565,17 @@
 	warningMessage="This will permanently delete the event and all its videos. This action cannot be undone."
 	on:confirm={confirmDeleteEvent}
 	on:cancel={closeDeleteDialog}
+/>
+
+<DeleteConfirmationDialog
+	bind:open={showBulkDeleteDialog}
+	title="Delete {selectedEventsCount} Events"
+	message={`Are you sure you want to delete ${selectedEventsCount} event${selectedEventsCount !== 1 ? 's' : ''}? All associated videos will also be deleted.`}
+	itemType="events"
+	showWarning={true}
+	warningMessage={`This will permanently delete ${selectedEventsCount} event${selectedEventsCount !== 1 ? 's' : ''} and all their videos. This action cannot be undone.`}
+	on:confirm={confirmBulkDelete}
+	on:cancel={closeBulkDeleteDialog}
 />
 
 <style>
