@@ -44,11 +44,13 @@
         </div>
 
         {#if event.videos && event.videos.length > 1}
-          <SupportingVideoGrid
-            videos={event.videos.filter((v) => !v.is_featured)}
-            currentlyPlaying={selectedVideos.get(event.id)}
-            onVideoSelect={(video) => handleVideoSelect(event.id, video.id)}
-          />
+          <div class="supporting-videos-section">
+            <SupportingVideoGrid
+              videos={event.videos.filter((v) => !v.is_featured)}
+              currentlyPlaying={selectedVideos.get(event.id)}
+              onVideoSelect={(video) => handleVideoSelect(event.id, video.id)}
+            />
+          </div>
         {/if}
       </div>
     </section>
@@ -78,6 +80,10 @@
 
   .featured-player-section {
     margin: 2rem 0;
+  }
+
+  .supporting-videos-section {
+    margin: 0 0 2rem 0;
   }
 
   .view-all-button {
@@ -137,10 +143,6 @@
     /* Reduced motion support */
     @media (prefers-reduced-motion: reduce) {
       .btn-primary {
-        transition: none !important;
-      }
-
-      .video-player-container {
         transition: none !important;
       }
     }

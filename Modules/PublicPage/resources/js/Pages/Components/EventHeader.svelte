@@ -11,21 +11,25 @@
 </script>
 
 <div class="event-header">
-  <div class="icon-container">
-    <div class="icon" aria-hidden="true">
-      {event.icon}
+  <div class="header-top">
+    <div class="icon-container">
+      <div class="icon" aria-hidden="true">
+        {event.icon}
+      </div>
+    </div>
+
+    <div class="header-content">
+      {#if event.category}
+        <div class="category-badge">
+          {getCategoryLabel(event.category)}
+        </div>
+      {/if}
+
+      <h2 class="event-title">
+        {event.name}
+      </h2>
     </div>
   </div>
-
-  <h2 class="event-title">
-    {event.name}
-  </h2>
-
-  {#if event.category}
-    <div class="category-badge">
-      {getCategoryLabel(event.category)}
-    </div>
-  {/if}
 
   {#if event.description}
     <p class="event-description">
@@ -41,41 +45,57 @@
     border-bottom: 3px solid #ff7607;
   }
 
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 1rem;
+  }
+
   .icon-container {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 1rem;
+    justify-content: center;
+    flex-shrink: 0;
   }
 
   .icon {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: #ff7607;
+    background: linear-gradient(135deg, #ff7607, #ff9a3c);
+    box-shadow: 0px 10px 40px 0px rgba(255, 118, 7, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
+    font-size: 44px;
+  }
+
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex: 1;
   }
 
   .event-title {
     font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: 700;
     color: #1b1a1a;
-    margin: 0 0 1rem 0;
+    margin: 0;
   }
 
   .category-badge {
     display: inline-block;
     background-color: #fff3e6;
     color: #ff7607;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1.5px;
   }
 
   .event-description {
@@ -87,10 +107,21 @@
   }
 
   @media (max-width: 768px) {
+    .header-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+    }
+
     .icon {
-      width: clamp(60px, 15vw, 80px);
-      height: clamp(60px, 15vw, 80px);
-      font-size: clamp(36px, 10vw, 48px);
+      width: clamp(56px, 15vw, 80px);
+      height: clamp(56px, 15vw, 80px);
+      font-size: clamp(31px, 10vw, 44px);
+    }
+
+    .header-content {
+      align-items: center;
     }
 
     .event-header {
