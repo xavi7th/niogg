@@ -6,10 +6,16 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\PublicPage\Database\Factories\EventFactory;
 
 class Event extends Model
 {
     use HasFactory;
+
+    protected static function newFactory(): EventFactory
+    {
+        return EventFactory::new();
+    }
 
     protected $fillable = [
     'name',

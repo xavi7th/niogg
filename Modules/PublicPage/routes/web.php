@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\PublicPage\Http\Controllers\PublicBlogController;
 use Modules\PublicPage\Http\Controllers\PublicPageController;
+use Modules\PublicPage\Http\Controllers\Admin\AdminEventController;
 use Modules\PublicPage\Http\Controllers\EventsMediaShowcaseController;
 
 Route::get('/', [PublicPageController::class, 'index'])->name('app.index');
@@ -25,10 +26,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/dashboard', fn () => 'Dashboard - TODO')->name('dashboard');
 
     Route::prefix('events')->name('events.')->group(function (): void {
-        Route::get('/', fn () => 'Events Index - TODO')->name('index');
+        Route::get('/', [AdminEventController::class, 'index'])->name('index');
         Route::get('/create', fn () => 'Events Create - TODO')->name('create');
         Route::post('/', fn () => 'Events Store - TODO')->name('store');
-        Route::get('/{event}', fn () => 'Events Show - TODO')->name('show');
+        Route::get('/{event}', [AdminEventController::class, 'show'])->name('show');
         Route::get('/{event}/edit', fn () => 'Events Edit - TODO')->name('edit');
         Route::put('/{event}', fn () => 'Events Update - TODO')->name('update');
         Route::delete('/{event}', fn () => 'Events Destroy - TODO')->name('destroy');

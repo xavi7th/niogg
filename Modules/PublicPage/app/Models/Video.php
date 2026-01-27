@@ -5,10 +5,16 @@ namespace Modules\PublicPage\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\PublicPage\Database\Factories\VideoFactory;
 
 class Video extends Model
 {
     use HasFactory;
+
+    protected static function newFactory(): VideoFactory
+    {
+        return VideoFactory::new();
+    }
 
     protected $fillable = [
       'event_id',
