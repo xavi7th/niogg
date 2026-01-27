@@ -77,4 +77,15 @@ class AdminEventController extends Controller
         return Redirect::route('admin.events.index')
             ->with('success', 'Event updated successfully.');
     }
+
+    /**
+     * Delete an event with cascading delete for associated videos
+     */
+    public function destroy(Event $event): \Illuminate\Http\RedirectResponse
+    {
+        $event->delete();
+
+        return Redirect::route('admin.events.index')
+            ->with('success', 'Event deleted successfully.');
+    }
 }

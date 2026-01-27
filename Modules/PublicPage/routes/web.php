@@ -33,6 +33,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{event}', [AdminEventController::class, 'show'])->name('show');
         Route::get('/{event}/edit', [AdminEventController::class, 'edit'])->name('edit');
         Route::put('/{event}', [AdminEventController::class, 'update'])->name('update');
-        Route::delete('/{event}', fn () => 'Events Destroy - TODO')->name('destroy');
+        Route::delete('/{event}', [AdminEventController::class, 'destroy'])->name('destroy');
     });
 });

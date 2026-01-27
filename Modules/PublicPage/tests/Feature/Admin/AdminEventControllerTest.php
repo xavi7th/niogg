@@ -147,4 +147,76 @@ class AdminEventControllerTest extends TestCase
             $page->where('event.videos.0.id', $video2->id);
         });
     }
+
+    public function test_destroy_requires_authentication(): void
+    {
+        $event = Event::factory()->create();
+
+        $response = $this->delete("/admin/events/{$event->id}");
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_destroy_requires_admin_role(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => FALSE,
+            'is_super_admin' => FALSE,
+        ]);
+
+        $event = Event::factory()->create();
+
+        $response = $this->actingAs($user)->delete("/admin/events/{$event->id}");
+
+        $response->assertStatus(403);
+    }
+
+    public function test_destroy_deletes_event(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event = Event::factory()->create();
+
+        $response = $this->actingAs($user)->delete("/admin/events/{$event->id}");
+
+        $response->assertRedirect('/admin/events');
+        $this->assertDatabaseMissing('events', ['id' => $event->id]);
+    }
+
+    public function test_destroy_cascades_to_videos(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event = Event::factory()->create();
+        $video1 = Video::factory()->for($event)->create();
+        $video2 = Video::factory()->for($event)->create();
+
+        $this->assertDatabaseHas('videos', ['id' => $video1->id]);
+        $this->assertDatabaseHas('videos', ['id' => $video2->id]);
+
+        $response = $this->actingAs($user)->delete("/admin/events/{$event->id}");
+
+        $response->assertRedirect('/admin/events');
+        $this->assertDatabaseMissing('events', ['id' => $event->id]);
+        $this->assertDatabaseMissing('videos', ['id' => $video1->id]);
+        $this->assertDatabaseMissing('videos', ['id' => $video2->id]);
+    }
+
+    public function test_destroy_returns_success_flash_message(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event = Event::factory()->create();
+
+        $response = $this->actingAs($user)->delete("/admin/events/{$event->id}");
+
+        $response->assertRedirect('/admin/events')
+            ->assertSessionHas('success', 'Event deleted successfully.');
+    }
 }
