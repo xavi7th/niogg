@@ -2,12 +2,12 @@
 
 namespace Modules\PublicPage\Tests\Feature\Admin;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Storage;
-use Modules\PublicPage\Models\Event;
-use Modules\PublicPage\Models\Video;
-use Modules\PublicPage\Services\VideoThumbnailService;
 use Tests\TestCase;
+use ReflectionClass;
+use InvalidArgumentException;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\PublicPage\Services\VideoThumbnailService;
 
 class VideoThumbnailServiceTest extends TestCase
 {
@@ -22,7 +22,7 @@ class VideoThumbnailServiceTest extends TestCase
         Storage::fake('public');
     }
 
-    public function test_delete_thumbnails_removes_all_sizes()
+    public function test_delete_thumbnails_removes_all_sizes(): void
     {
         $thumbnailUrl = Storage::disk('public')->url('videos/thumbnails/abc123_medium.jpg');
 
@@ -39,21 +39,21 @@ class VideoThumbnailServiceTest extends TestCase
         Storage::disk('public')->assertMissing('videos/thumbnails/abc123_large.jpg');
     }
 
-    public function test_delete_thumbnails_handles_empty_url()
+    public function test_delete_thumbnails_handles_empty_url(): void
     {
         // Should not throw exception
         $this->service->deleteThumbnails('');
-        $this->assertTrue(true);
+        $this->assertTrue(TRUE);
     }
 
-    public function test_delete_thumbnails_handles_null_url()
+    public function test_delete_thumbnails_handles_null_url(): void
     {
         // Should not throw exception
-        $this->service->deleteThumbnails(null);
-        $this->assertTrue(true);
+        $this->service->deleteThumbnails(NULL);
+        $this->assertTrue(TRUE);
     }
 
-    public function test_get_all_sizes_returns_correct_urls()
+    public function test_get_all_sizes_returns_correct_urls(): void
     {
         $thumbnailUrl = Storage::disk('public')->url('videos/thumbnails/test123_medium.jpg');
 
@@ -68,7 +68,7 @@ class VideoThumbnailServiceTest extends TestCase
         $this->assertStringContainsString('test123_large.jpg', $sizes['large']);
     }
 
-    public function test_get_all_sizes_handles_empty_url()
+    public function test_get_all_sizes_handles_empty_url(): void
     {
         $sizes = $this->service->getAllSizes('');
 
@@ -77,27 +77,27 @@ class VideoThumbnailServiceTest extends TestCase
         $this->assertNull($sizes['large']);
     }
 
-    public function test_get_all_sizes_handles_null_url()
+    public function test_get_all_sizes_handles_null_url(): void
     {
-        $sizes = $this->service->getAllSizes(null);
+        $sizes = $this->service->getAllSizes(NULL);
 
         $this->assertNull($sizes['small']);
         $this->assertNull($sizes['medium']);
         $this->assertNull($sizes['large']);
     }
 
-    public function test_generate_from_path_throws_exception_for_nonexistent_file()
+    public function test_generate_from_path_throws_exception_for_nonexistent_file(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Video file not found');
 
         $this->service->generateFromPath('videos/nonexistent.mp4', 10);
     }
 
-    public function test_thumbnail_sizes_are_correctly_defined()
+    public function test_thumbnail_sizes_are_correctly_defined(): void
     {
         // Test the SIZE constants are accessible and correct
-        $service = new \ReflectionClass(VideoThumbnailService::class);
+        $service = new ReflectionClass(VideoThumbnailService::class);
         $sizes = $service->getConstant('SIZES');
 
         $this->assertIsArray($sizes);

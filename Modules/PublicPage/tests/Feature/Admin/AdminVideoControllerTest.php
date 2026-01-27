@@ -2,11 +2,11 @@
 
 namespace Modules\PublicPage\Tests\Feature\Admin;
 
+use Tests\TestCase;
 use App\Models\User;
 use Modules\PublicPage\Models\Event;
 use Modules\PublicPage\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 class AdminVideoControllerTest extends TestCase
 {
@@ -182,5 +182,89 @@ class AdminVideoControllerTest extends TestCase
             ]);
 
         $response->assertSessionHasErrors(['thumbnail_url']);
+    }
+
+    public function test_guest_cannot_reorder_videos(): void
+    {
+        $event = Event::factory()->create();
+        $video1 = Video::factory()->for($event)->create(['sort_order' => 0]);
+        $video2 = Video::factory()->for($event)->create(['sort_order' => 1]);
+
+        $response = $this->post(route('admin.videos.reorder', $event), [
+            'video_ids' => [$video2->id, $video1->id],
+        ]);
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_admin_can_reorder_videos(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+        $event = Event::factory()->create();
+        $video1 = Video::factory()->for($event)->create(['sort_order' => 0]);
+        $video2 = Video::factory()->for($event)->create(['sort_order' => 1]);
+        $video3 = Video::factory()->for($event)->create(['sort_order' => 2]);
+
+        $response = $this->actingAs($user)
+            ->post(route('admin.videos.reorder', $event), [
+                'video_ids' => [$video3->id, $video1->id, $video2->id],
+            ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'message' => 'Videos reordered successfully.',
+            'order' => [$video3->id, $video1->id, $video2->id],
+        ]);
+
+        $this->assertDatabaseHas('videos', [
+            'id' => $video3->id,
+            'sort_order' => 0,
+        ]);
+        $this->assertDatabaseHas('videos', [
+            'id' => $video1->id,
+            'sort_order' => 1,
+        ]);
+        $this->assertDatabaseHas('videos', [
+            'id' => $video2->id,
+            'sort_order' => 2,
+        ]);
+    }
+
+    public function test_reorder_fails_with_video_ids_from_different_event(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+        $event1 = Event::factory()->create();
+        $event2 = Event::factory()->create();
+        $video1 = Video::factory()->for($event1)->create();
+        $video2 = Video::factory()->for($event1)->create();
+        $video3 = Video::factory()->for($event2)->create();
+
+        $response = $this->actingAs($user)
+            ->post(route('admin.videos.reorder', $event1), [
+                'video_ids' => [$video1->id, $video2->id, $video3->id],
+            ]);
+
+        $response->assertStatus(400);
+        $response->assertJson([
+            'message' => 'Some videos do not belong to this event.',
+        ]);
+    }
+
+    public function test_reorder_requires_video_ids_array(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+        $event = Event::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->post(route('admin.videos.reorder', $event));
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['video_ids']);
     }
 }

@@ -142,4 +142,37 @@ class AdminVideoController extends Controller
         return Redirect::route('admin.events.show', $event)
             ->with('success', 'Video deleted successfully.');
     }
+
+    /**
+     * Reorder videos within an event
+     */
+    public function reorder(\Illuminate\Http\Request $request, Event $event): \Illuminate\Http\JsonResponse
+    {
+        $request->validate([
+            'video_ids' => 'required|array',
+            'video_ids.*' => 'integer|exists:videos,id',
+        ]);
+
+        $videoIds = $request->input('video_ids');
+
+        // Verify all videos belong to this event
+        $eventVideoIds = $event->videos()->pluck('id')->toArray();
+        $invalidIds = array_diff($videoIds, $eventVideoIds);
+
+        if ( ! empty($invalidIds)) {
+            return response()->json([
+                'message' => 'Some videos do not belong to this event.',
+            ], 400);
+        }
+
+        // Update sort_order for each video
+        foreach ($videoIds as $index => $videoId) {
+            Video::where('id', $videoId)->update(['sort_order' => $index]);
+        }
+
+        return response()->json([
+            'message' => 'Videos reordered successfully.',
+            'order' => $videoIds,
+        ]);
+    }
 }
