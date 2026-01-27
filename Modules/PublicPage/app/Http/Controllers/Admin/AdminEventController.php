@@ -111,7 +111,7 @@ class AdminEventController extends Controller
             'event_ids.*' => ['exists:events,id'],
         ]);
 
-        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => true]);
+        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => TRUE]);
 
         Cache::tags(['admin.events'])->flush();
 
@@ -131,7 +131,7 @@ class AdminEventController extends Controller
             'event_ids.*' => ['exists:events,id'],
         ]);
 
-        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => false]);
+        $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => FALSE]);
 
         Cache::tags(['admin.events'])->flush();
 

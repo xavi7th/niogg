@@ -24,17 +24,17 @@
 	<!-- Main Content -->
 	<main class="flex-1 flex flex-col min-w-0">
 		<!-- Header -->
-		<header class="bg-white border-b border-[#eaeaea] px-8 py-4">
+		<header class="bg-white border-b border-[#eaeaea] px-4 sm:px-6 lg:px-8 py-4">
 			<div class="flex items-center justify-between">
 				<div>
-					<h1 class="text-2xl font-bold text-[#1b1a1a]">Dashboard</h1>
+					<h1 class="text-xl sm:text-2xl font-bold text-[#1b1a1a]">Dashboard</h1>
 					<p class="text-sm text-[#9b9b9b]">Welcome back, {auth?.user?.name || 'Admin'}</p>
 				</div>
 			</div>
 		</header>
 
 		<!-- Content -->
-		<div class="p-8">
+		<div class="p-4 sm:p-6 lg:p-8">
 			<!-- Stats Cards -->
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 				<!-- Total Events -->
@@ -111,7 +111,7 @@
 			</div>
 
 			<!-- Quick Actions -->
-			<div class="flex items-center justify-between mb-6">
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
 				<h2 class="text-lg font-semibold text-[#1b1a1a]">Recent Events</h2>
 				<div class="flex gap-3">
 					<a
@@ -134,7 +134,8 @@
 
 			<!-- Events Table -->
 			<div class="bg-white rounded-lg border border-[#eaeaea] overflow-hidden">
-				<table class="w-full">
+				<div class="overflow-x-auto">
+					<table class="w-full min-w-[600px]">
 					<thead class="bg-[#f9f9f9]">
 						<tr>
 							<th class="text-left py-4 px-6 text-sm font-semibold text-[#1b1a1a]">Event Name</th>
@@ -191,6 +192,7 @@
 						{/if}
 					</tbody>
 				</table>
+				</div>
 			</div>
 		</div>
 	</main>

@@ -176,8 +176,8 @@
 	<!-- Main Content -->
 	<main class="flex-1 flex flex-col min-w-0">
 		<!-- Header -->
-		<header class="bg-white border-b border-[#eaeaea] px-8 py-4">
-			<div class="flex items-center justify-between">
+		<header class="bg-white border-b border-[#eaeaea] px-4 sm:px-6 lg:px-8 py-4">
+			<div class="flex flex-col gap-4">
 				<div class="flex items-center gap-4">
 					<a
 						href="/admin/events"
@@ -193,7 +193,7 @@
 						</svg>
 					</a>
 					<div>
-						<h1 class="text-2xl font-bold text-[#1b1a1a]">{event?.name || 'Event Details'}</h1>
+						<h1 class="text-xl sm:text-2xl font-bold text-[#1b1a1a]">{event?.name || 'Event Details'}</h1>
 						<p class="text-sm text-[#9b9b9b]">Manage videos for this event</p>
 					</div>
 				</div>
@@ -218,11 +218,11 @@
 		</header>
 
 		<!-- Content -->
-		<div class="p-8">
+		<div class="p-4 sm:p-6 lg:p-8">
 			{#if event}
 				<!-- Event Info Card -->
-				<div class="bg-white rounded-lg border border-[#eaeaea] p-6 mb-6">
-					<div class="flex items-start gap-6">
+				<div class="bg-white rounded-lg border border-[#eaeaea] p-4 sm:p-6 mb-6">
+					<div class="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
 						{#if getEventIcon(event.icon)}
 							<div class="w-20 h-20 bg-[#1b1a1a] rounded-lg flex items-center justify-center text-4xl flex-shrink-0">
 								{event.icon}
@@ -239,8 +239,8 @@
 								</svg>
 							</div>
 						{/if}
-						<div class="flex-1">
-							<div class="flex items-start justify-between">
+						<div class="flex-1 w-full">
+							<div class="flex flex-col sm:flex-row items-start justify-between gap-4">
 								<div>
 									<h2 class="text-xl font-semibold text-[#1b1a1a]">{event.name}</h2>
 									{#if event.description}
@@ -264,7 +264,7 @@
 									{/if}
 								</div>
 							</div>
-							<div class="flex items-center gap-6 mt-4 text-sm text-[#9b9b9b]">
+							<div class="flex flex-wrap items-center gap-4 sm:gap-6 mt-4 text-sm text-[#9b9b9b]">
 								<span class="flex items-center gap-1">
 									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path
@@ -306,8 +306,8 @@
 				</div>
 
 				<!-- Videos Section -->
-				<div class="flex items-center justify-between mb-4">
-					<div>
+				<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+					<div class="w-full sm:w-auto">
 						<h2 class="text-lg font-semibold text-[#1b1a1a]">
 							Videos ({sortedVideos.length})
 						</h2>
@@ -317,10 +317,10 @@
 							</p>
 						{/if}
 					</div>
-					<div class="flex items-center gap-3">
+					<div class="flex items-center gap-3 w-full sm:w-auto">
 						<select
 							bind:value={videoFilter}
-							class="px-3 py-2 border border-[#eaeaea] rounded text-sm focus:ring-2 focus:ring-[#ff7607] outline-none bg-white"
+							class="w-full sm:w-auto px-3 py-2 border border-[#eaeaea] rounded text-sm focus:ring-2 focus:ring-[#ff7607] outline-none bg-white"
 						>
 							<option value="all">All Videos</option>
 							<option value="featured">Featured Only</option>

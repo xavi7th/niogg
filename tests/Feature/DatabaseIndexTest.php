@@ -103,7 +103,7 @@ class DatabaseIndexTest extends TestCase
      */
     private function hasIndex(string $table, string $indexName): bool
     {
-        $indexes = collect(DB::select("SHOW INDEX FROM {$table}"))->pluck('Key_name')->unique()->toArray();
+        $indexes = collect(DB::select('SHOW INDEX FROM ' . $table))->pluck('Key_name')->unique()->toArray();
 
         return in_array($indexName, $indexes, TRUE);
     }

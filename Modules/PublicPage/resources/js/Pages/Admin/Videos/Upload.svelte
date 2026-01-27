@@ -525,7 +525,7 @@
 	<!-- Main Content -->
 	<main class="flex-1 flex flex-col min-w-0">
 		<!-- Header -->
-		<header class="bg-white border-b border-[#eaeaea] px-8 py-4">
+		<header class="bg-white border-b border-[#eaeaea] px-4 sm:px-6 lg:px-8 py-4">
 			<div class="flex items-center gap-4">
 				<a href="/admin/events/{event?.id}" class="text-[#9b9b9b] hover:text-[#1b1a1a]">
 					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -533,20 +533,20 @@
 					</svg>
 				</a>
 				<div>
-					<h1 class="text-2xl font-bold text-[#1b1a1a]">Upload Videos</h1>
+					<h1 class="text-xl sm:text-2xl font-bold text-[#1b1a1a]">Upload Videos</h1>
 					<p class="text-sm text-[#9b9b9b]">{event?.name || 'Event'}</p>
 				</div>
 			</div>
 		</header>
 
 		<!-- Content -->
-		<div class="p-8">
+		<div class="p-4 sm:p-6 lg:p-8">
 			<div class="max-w-4xl mx-auto">
 				<!-- Upload Area -->
-				<div class="bg-white rounded-lg border border-[#eaeaea] p-8 mb-6">
+				<div class="bg-white rounded-lg border border-[#eaeaea] p-4 sm:p-6 lg:p-8 mb-6">
 					<div
 						bind:this={fileInput}
-						class="border-2 border-dashed rounded-lg p-12 text-center transition-colors cursor-pointer {dropZoneActive
+						class="border-2 border-dashed rounded-lg p-8 sm:p-12 text-center transition-colors cursor-pointer {dropZoneActive
 							? 'border-[#ff7607] bg-[#fff3e6]'
 							: 'border-[#eaeaea] hover:border-[#ff7607]'}"
 						ondragover={handleDragOver}
@@ -590,9 +590,9 @@
 				<!-- Upload Queue -->
 				{#if uploadQueue.length > 0}
 					<div class="bg-white rounded-lg border border-[#eaeaea]">
-						<div class="px-6 py-4 border-b border-[#eaeaea] flex items-center justify-between">
+						<div class="px-4 sm:px-6 py-4 border-b border-[#eaeaea] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
 							<h2 class="font-semibold text-[#1b1a1a]">Upload Queue ({uploadQueue.length} files)</h2>
-							<div class="flex items-center gap-2">
+							<div class="flex items-center gap-2 w-full sm:w-auto">
 								<button
 									onclick={pauseAll}
 									class="px-3 py-1 text-sm text-[#9b9b9b] hover:text-[#1b1a1a] border border-[#eaeaea] rounded hover:bg-[#f9f9f9]"
@@ -613,10 +613,10 @@
 								{@const statusBadge = getStatusBadge(item)}
 								{@const progressColor = getProgressColor(item)}
 								{@const itemBg = getItemBg(item)}
-								<div class="p-4 {itemBg}">
-									<div class="flex items-center gap-4">
+								<div class="p-3 sm:p-4 {itemBg}">
+									<div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
 										<!-- Video icon -->
-										<div class="w-12 h-12 bg-[#1b1a1a] rounded flex items-center justify-center text-white {item.status ===
+										<div class="w-12 h-12 min-w-[48px] bg-[#1b1a1a] rounded flex items-center justify-center text-white {item.status ===
 										'waiting' || item.status === 'paused'
 											? 'opacity-50'
 											: ''}">
@@ -677,8 +677,8 @@
 											</div>
 
 											<!-- Details and actions -->
-											<div class="flex items-center justify-between text-xs text-[#9b9b9b]">
-												<div>
+											<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-[#9b9b9b] w-full">
+												<div class="flex-1">
 													{#if item.status === 'waiting'}
 														<span>Queued • {formatBytes(item.totalBytes)}</span>
 													{:else if item.status === 'paused'}
@@ -702,7 +702,7 @@
 												</div>
 
 												<!-- Action buttons -->
-												<div class="flex items-center gap-2">
+												<div class="flex items-center gap-2 flex-wrap">
 													{#if item.status === 'uploading'}
 														<button
 															onclick={() => pauseUpload(item)}
@@ -798,7 +798,7 @@
 
 											<!-- Metadata form for completed uploads -->
 											{#if item.status === 'complete' || item.status === 'waiting'}
-												<div class="mt-3 pt-3 border-t border-[#f9f9f9] grid grid-cols-2 gap-3">
+												<div class="mt-3 pt-3 border-t border-[#f9f9f9] grid grid-cols-1 sm:grid-cols-2 gap-3">
 													<div>
 														<label class="block text-xs font-medium text-[#1b1a1a] mb-1"
 															>Title</label
@@ -844,8 +844,8 @@
 						</div>
 
 						<!-- Upload Summary -->
-						<div class="px-6 py-4 bg-[#f9f9f9] border-t border-[#eaeaea]">
-							<div class="flex items-center justify-between text-sm">
+						<div class="px-4 sm:px-6 py-3 sm:py-4 bg-[#f9f9f9] border-t border-[#eaeaea]">
+							<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-sm">
 								<span class="text-[#9b9b9b]"
 									>{summaryStats.complete} complete, {summaryStats.uploading} uploading,
 									{summaryStats.paused} paused, {summaryStats.waiting} waiting,
@@ -857,7 +857,7 @@
 					</div>
 
 					<!-- Bulk Upload Options -->
-					<div class="mt-6 flex items-center justify-between">
+					<div class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
 						<div class="text-sm text-[#9b9b9b]">
 							<p>Uploads will be organized in: <span class="text-[#1b1a1a] font-mono">/videos/{event?.slug ||
 									'event'}/</span></p

@@ -212,15 +212,15 @@
 	<!-- Main Content -->
 	<main class="flex-1 flex flex-col min-w-0">
 		<!-- Header -->
-		<header class="bg-white border-b border-[#eaeaea] px-8 py-4">
-			<div class="flex items-center justify-between">
+		<header class="bg-white border-b border-[#eaeaea] px-4 sm:px-6 lg:px-8 py-4">
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
-					<h1 class="text-2xl font-bold text-[#1b1a1a]">Events</h1>
+					<h1 class="text-xl sm:text-2xl font-bold text-[#1b1a1a]">Events</h1>
 					<p class="text-sm text-[#9b9b9b]">Manage your events and media content</p>
 				</div>
 				<a
 					href="/admin/events/create"
-					class="px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm flex items-center gap-2"
+					class="px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm flex items-center gap-2 w-full sm:w-auto justify-center"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -231,12 +231,12 @@
 		</header>
 
 		<!-- Content -->
-		<div class="p-8">
+		<div class="p-4 sm:p-6 lg:p-8">
 			<!-- Tabs -->
 			<div class="border-b border-[#eaeaea] mb-6">
-				<nav class="flex gap-6">
+				<nav class="flex gap-4 sm:gap-6 overflow-x-auto">
 					<button
-						class="py-3 border-b-2 font-medium text-sm transition-colors"
+						class="py-3 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap"
 						class:border-[#ff7607]={statusFilter === 'all'}
 						class:border-transparent={statusFilter !== 'all'}
 						class:text-[#ff7607]={statusFilter === 'all'}
@@ -247,7 +247,7 @@
 						All Events
 					</button>
 					<button
-						class="py-3 border-b-2 font-medium text-sm transition-colors"
+						class="py-3 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap"
 						class:border-[#ff7607]={statusFilter === 'published'}
 						class:border-transparent={statusFilter !== 'published'}
 						class:text-[#ff7607]={statusFilter === 'published'}
@@ -258,7 +258,7 @@
 						Published
 					</button>
 					<button
-						class="py-3 border-b-2 font-medium text-sm transition-colors"
+						class="py-3 px-2 border-b-2 font-medium text-sm transition-colors whitespace-nowrap"
 						class:border-[#ff7607]={statusFilter === 'draft'}
 						class:border-transparent={statusFilter !== 'draft'}
 						class:text-[#ff7607]={statusFilter === 'draft'}
@@ -272,8 +272,9 @@
 			</div>
 
 			<!-- Search & Filter Bar -->
-			<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-				<div class="flex items-center gap-4">
+			<div class="flex flex-col gap-4 mb-6">
+				<!-- First row: Select all and filters -->
+				<div class="flex flex-wrap items-center gap-3 sm:gap-4">
 					<!-- Select All Checkbox -->
 					{#if filteredEvents.length > 0}
 						<label class="flex items-center gap-2 cursor-pointer">
@@ -287,13 +288,29 @@
 						</label>
 					{/if}
 
+					<!-- Category Filter -->
+					{#if categories.length > 0}
+						<select
+							bind:value={categoryFilter}
+							class="px-3 py-2 text-sm border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none bg-white"
+						>
+							<option value="all">All Categories</option>
+							{#each categories as category}
+								<option value={category}>{category}</option>
+							{/each}
+						</select>
+					{/if}
+				</div>
+
+				<!-- Second row: Search and count -->
+				<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
 					<!-- Search -->
-					<div class="relative">
+					<div class="relative w-full sm:w-auto sm:flex-1 max-w-md">
 						<input
 							type="text"
 							placeholder="Search events..."
 							bind:value={searchQuery}
-							class="pl-10 pr-4 py-2 border border-[#eaeaea] rounded-lg w-64 focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none"
+							class="w-full pl-10 pr-4 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none"
 						/>
 						<svg
 							class="w-5 h-5 text-[#9b9b9b] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
@@ -310,37 +327,24 @@
 						</svg>
 					</div>
 
-					<!-- Category Filter -->
-					{#if categories.length > 0}
-						<select
-							bind:value={categoryFilter}
-							class="px-4 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none bg-white"
-						>
-							<option value="all">All Categories</option>
-							{#each categories as category}
-								<option value={category}>{category}</option>
-							{/each}
-						</select>
-					{/if}
-				</div>
-
-				<div class="text-sm text-[#9b9b9b]">
-					{filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''}
+					<div class="text-sm text-[#9b9b9b]">
+						{filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''}
+					</div>
 				</div>
 			</div>
 
 			<!-- Bulk Action Bar -->
 			{#if selectedEventIds.length > 0}
-				<div class="fixed bottom-0 left-64 right-0 bg-[#1b1a1a] text-white px-6 py-4 flex items-center justify-between shadow-lg z-40">
+				<div class="fixed bottom-0 left-0 lg:left-64 right-0 bg-[#1b1a1a] text-white px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg z-40">
 					<div class="flex items-center gap-4">
 						<span class="text-sm font-medium"
 							>{selectedEventIds.length} event{selectedEventIds.length !== 1 ? 's' : ''} selected</span
 						>
 					</div>
-					<div class="flex items-center gap-3">
+					<div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
 						<button
 							on:click={bulkPublish}
-							class="px-4 py-2 bg-[#10b981] text-white rounded-lg hover:bg-[#059669] font-medium text-sm flex items-center gap-2"
+							class="px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm bg-[#10b981] text-white rounded-lg hover:bg-[#059669] font-medium flex items-center gap-1 sm:gap-2"
 						>
 							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -354,7 +358,7 @@
 						</button>
 						<button
 							on:click={bulkUnpublish}
-							class="px-4 py-2 bg-[#f59e0b] text-white rounded-lg hover:bg-[#d97706] font-medium text-sm flex items-center gap-2"
+							class="px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm bg-[#f59e0b] text-white rounded-lg hover:bg-[#d97706] font-medium flex items-center gap-1 sm:gap-2"
 						>
 							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -363,7 +367,7 @@
 						</button>
 						<button
 							on:click={openBulkDeleteDialog}
-							class="px-4 py-2 bg-[#ef4444] text-white rounded-lg hover:bg-[#dc2626] font-medium text-sm flex items-center gap-2"
+							class="px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm bg-[#ef4444] text-white rounded-lg hover:bg-[#dc2626] font-medium flex items-center gap-1 sm:gap-2"
 						>
 							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path
@@ -377,7 +381,7 @@
 						</button>
 						<button
 							on:click={clearSelection}
-							class="px-4 py-2 border border-[#9b9b9b] text-[#9b9b9b] rounded-lg hover:text-white hover:border-white font-medium text-sm"
+							class="px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm border border-[#9b9b9b] text-[#9b9b9b] rounded-lg hover:text-white hover:border-white font-medium"
 						>
 							Cancel
 						</button>
