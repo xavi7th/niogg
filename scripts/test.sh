@@ -10,7 +10,7 @@ run_artisan() {
 }
 
 if [[ $# -eq 0 ]]; then
-  run_artisan --bail
+  run_artisan --stop-on-failure
   exit 0
 fi
 
