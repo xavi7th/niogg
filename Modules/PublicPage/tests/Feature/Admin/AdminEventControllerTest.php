@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Modules\PublicPage\Models\Event;
 use Modules\PublicPage\Models\Video;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AdminEventControllerTest extends TestCase
@@ -218,5 +219,105 @@ class AdminEventControllerTest extends TestCase
 
         $response->assertRedirect('/admin/events')
             ->assertSessionHas('success', 'Event deleted successfully.');
+    }
+
+    public function test_index_caches_paginated_results(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        Event::factory()->count(20)->create();
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+
+        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+    }
+
+    public function test_store_invalidates_cache(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        Event::factory()->count(5)->create();
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+
+        $this->actingAs($user)->post('/admin/events', [
+            'name' => 'New Event',
+            'category' => 'Test',
+            'event_date' => '2025-01-01',
+            'is_published' => FALSE,
+        ]);
+
+        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+    }
+
+    public function test_update_invalidates_cache(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event = Event::factory()->create();
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+
+        $this->actingAs($user)->put("/admin/events/{$event->id}", [
+            'name' => 'Updated Event',
+            'category' => 'Test',
+            'event_date' => '2025-01-01',
+            'is_published' => FALSE,
+        ]);
+
+        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+    }
+
+    public function test_destroy_invalidates_cache(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        $event = Event::factory()->create();
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+
+        $this->actingAs($user)->delete("/admin/events/{$event->id}");
+
+        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+    }
+
+    public function test_cache_has_ttl_of_one_hour(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => TRUE,
+        ]);
+
+        Event::factory()->count(5)->create();
+
+        Cache::flush();
+
+        $this->actingAs($user)->get('/admin/events?page=1');
+        $cacheKey = 'admin.events.list:page:1:per_page:15';
+
+        $cached = Cache::tags(['admin.events'])->get($cacheKey);
+        $this->assertNotNull($cached);
     }
 }

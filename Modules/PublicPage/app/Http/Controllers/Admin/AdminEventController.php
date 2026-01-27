@@ -5,6 +5,7 @@ namespace Modules\PublicPage\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use Modules\PublicPage\Models\Event;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use Modules\PublicPage\Http\Requests\Admin\EventFormRequest;
 
@@ -15,9 +16,14 @@ class AdminEventController extends Controller
      */
     public function index(): \Inertia\Response
     {
-        $events = Event::with('videos')
+        $page = request('page', 1);
+        $perPage = request('per_page', 15);
+
+        $cacheKey = "admin.events.list:page:{$page}:per_page:{$perPage}";
+
+        $events = Cache::tags(['admin.events'])->remember($cacheKey, 3600, fn () => Event::with('videos')
             ->orderBy('event_date', 'desc')
-            ->paginate(15);
+            ->paginate(15));
 
         return Inertia::render('Admin/Events/Index', [
             'events' => $events,
@@ -63,6 +69,8 @@ class AdminEventController extends Controller
     {
         Event::create($request->validated());
 
+        Cache::tags(['admin.events'])->flush();
+
         return Redirect::route('admin.events.index')
             ->with('success', 'Event created successfully.');
     }
@@ -74,6 +82,8 @@ class AdminEventController extends Controller
     {
         $event->update($request->validated());
 
+        Cache::tags(['admin.events'])->flush();
+
         return Redirect::route('admin.events.index')
             ->with('success', 'Event updated successfully.');
     }
@@ -84,6 +94,8 @@ class AdminEventController extends Controller
     public function destroy(Event $event): \Illuminate\Http\RedirectResponse
     {
         $event->delete();
+
+        Cache::tags(['admin.events'])->flush();
 
         return Redirect::route('admin.events.index')
             ->with('success', 'Event deleted successfully.');
