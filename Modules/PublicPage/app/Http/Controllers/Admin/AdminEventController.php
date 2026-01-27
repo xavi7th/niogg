@@ -25,6 +25,14 @@ class AdminEventController extends Controller
     }
 
     /**
+     * Show the form for creating a new event
+     */
+    public function create(): \Inertia\Response
+    {
+        return Inertia::render('Admin/Events/Create');
+    }
+
+    /**
      * Display single event with associated videos
      */
     public function show(Event $event): \Inertia\Response
@@ -34,6 +42,16 @@ class AdminEventController extends Controller
         }]);
 
         return Inertia::render('Admin/Events/Show', [
+            'event' => $event,
+        ]);
+    }
+
+    /**
+     * Show the form for editing an existing event
+     */
+    public function edit(Event $event): \Inertia\Response
+    {
+        return Inertia::render('Admin/Events/Edit', [
             'event' => $event,
         ]);
     }
