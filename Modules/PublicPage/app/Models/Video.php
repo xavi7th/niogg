@@ -9,67 +9,67 @@ use Modules\PublicPage\Database\Factories\VideoFactory;
 
 class Video extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected static function newFactory(): VideoFactory
-    {
-        return VideoFactory::new();
-    }
+  protected static function newFactory(): VideoFactory
+  {
+    return VideoFactory::new();
+  }
 
-    protected $fillable = [
-      'event_id',
-      'title',
-      'description',
-      'video_url',
-      'thumbnail_url',
-      'duration_seconds',
-      'is_featured',
-      'sort_order',
-      'upload_id',
-      'file_size',
-      'mime_type',
-      'original_filename',
-    ];
+  protected $fillable = [
+    'event_id',
+    'title',
+    'description',
+    'video_url',
+    'thumbnail_url',
+    'duration_seconds',
+    'is_featured',
+    'sort_order',
+    'upload_id',
+    'file_size',
+    'mime_type',
+    'original_filename',
+  ];
 
-    protected $casts = [
-      'is_featured' => 'boolean',
-      'duration_seconds' => 'integer',
-      'sort_order' => 'integer',
-      'file_size' => 'integer',
-    ];
+  protected $casts = [
+    'is_featured' => 'boolean',
+    'duration_seconds' => 'integer',
+    'sort_order' => 'integer',
+    'file_size' => 'integer',
+  ];
 
-    /**
-     * Event relationship with cascade delete
-     */
-    public function event(): BelongsTo
-    {
-        return $this->belongsTo(Event::class);
-    }
+  /**
+   * Event relationship with cascade delete
+   */
+  public function event(): BelongsTo
+  {
+    return $this->belongsTo(Event::class);
+  }
 
-    /**
-     * Get featured videos
-     */
-    public function scopeFeatured($query)
-    {
-        return $query->where('is_featured', true);
-    }
+  /**
+   * Get featured videos
+   */
+  public function scopeFeatured($query)
+  {
+    return $query->where('is_featured', TRUE);
+  }
 
-    /**
-     * Order by sort_order then created_at
-     */
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('sort_order')->orderBy('created_at');
-    }
+  /**
+   * Order by sort_order then created_at
+   */
+  public function scopeOrdered($query)
+  {
+    return $query->orderBy('sort_order')->orderBy('created_at');
+  }
 
-    /**
-     * Format duration from seconds to MM:SS (Accessor)
-     */
-    public function getFormatDurationAttribute(): string
-    {
-        $minutes = (int) ($this->duration_seconds / 60);
-        $seconds = $this->duration_seconds % 60;
+  /**
+   * Format duration from seconds to MM:SS (Accessor)
+   */
+  public function getFormatDurationAttribute(): string
+  {
+    $minutes = (int) ($this->duration_seconds / 60);
+    $seconds = $this->duration_seconds % 60;
 
-        return sprintf('%d:%02d', $minutes, $seconds);
-    }
+    return sprintf('%d:%02d', $minutes, $seconds);
+  }
 }
