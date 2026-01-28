@@ -36,10 +36,6 @@
       </div>
     </section>
   {/each}
-
-  <div class="view-all-button">
-    <button on:click={onViewToggle} class="btn-primary">View All Videos</button>
-  </div>
 </div>
 
 <style>
@@ -89,11 +85,6 @@
 
   .btn-see-more:active {
     background-color: #d55b04;
-  }
-
-  .view-all-button {
-    text-align: center;
-    padding: 1.5rem 0.75rem;
   }
 
   .btn-primary {

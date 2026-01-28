@@ -1,12 +1,19 @@
+<script context="module">
+  import PublicPageLayout from "@publicpage-pages/Layouts/PublicPageLayout.svelte";
+  export const layout = PublicPageLayout;
+</script>
+
 <script>
   import { page } from '@inertiajs/svelte';
-  import PublicPageLayout from '@publicpage-pages/Layouts/PublicPageLayout.svelte';
-  import EventTimeline from '@publicpage-pages/Components/EventTimeline.svelte';
+  import PageTitle from '@publicpage-partials/PageTitle.svelte';
+  import MediaShowcaseHero from '@publicpage-pages/Components/MediaShowcaseHero.svelte';
   import EventsGrid from '@publicpage-pages/Components/EventsGrid.svelte';
+  import EventTimeline from '@publicpage-pages/Components/EventTimeline.svelte';
   import EventsFeaturedOnly from '@publicpage-pages/Components/EventsFeaturedOnly.svelte';
 
   export let events = [];
-  export let pageTitle = 'Events Media Showcase';
+
+  $: ({ app } = $page.props);
 
   let viewMode = 'timeline';
 
@@ -19,16 +26,20 @@
   };
 </script>
 
-<PublicPageLayout {pageTitle}>
-  <div class="events-media-showcase">
-    {#if viewMode === 'timeline'}
-      <EventTimeline {events} onViewToggle={handleToggleToGrid} />
-      <EventsFeaturedOnly {events} onViewToggle={handleToggleToGrid} />
-    {:else}
-      <EventsGrid {events} onBackToTimeline={handleBackToTimeline} />
-    {/if}
-  </div>
-</PublicPageLayout>
+<PageTitle appName={app.name} pageTitle='Events Media Showcase'>
+  <li class="breadcrumb-item active" aria-current="page">Events Media Showcase</li>
+</PageTitle>
+
+<MediaShowcaseHero onViewToggle={handleToggleToGrid} />
+
+<div class="events-media-showcase">
+  {#if viewMode === 'timeline'}
+    <EventTimeline {events} onViewToggle={handleToggleToGrid} />
+    <EventsFeaturedOnly {events} onViewToggle={handleToggleToGrid} />
+  {:else}
+    <EventsGrid {events} onBackToTimeline={handleBackToTimeline} />
+  {/if}
+</div>
 
 <style>
   .events-media-showcase {

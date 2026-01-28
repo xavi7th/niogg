@@ -55,10 +55,6 @@
       </div>
     </section>
   {/each}
-
-  <div class="view-all-button">
-    <button on:click={onViewToggle} class="btn-primary">View All Videos</button>
-  </div>
 </div>
 
 <style>
@@ -84,11 +80,6 @@
 
   .supporting-videos-section {
     margin: 0 0 2rem 0;
-  }
-
-  .view-all-button {
-    text-align: center;
-    padding: 2rem 1rem;
   }
 
   .btn-primary {

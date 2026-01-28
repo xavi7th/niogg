@@ -5,24 +5,31 @@
   let selectedCategory = 'all';
 
   const categories = Array.from(
-    new Set(events.map((e) => e.category).filter(Boolean))
-  );
+    new Set(events.map((e) => e.category || 'uncategorized'))
+  ).filter(c => c !== 'all');
 
   const getFilteredVideos = () => {
     if (selectedCategory === 'all') {
       return events.flatMap((e) =>
-        (e.videos || []).map((v) => ({ ...v, eventCategory: e.category }))
+        (e.videos || []).map((v) => ({
+          ...v,
+          eventCategory: e.category || 'Uncategorized'
+        }))
       );
     }
     return events
-      .filter((e) => e.category === selectedCategory)
+      .filter((e) => (e.category || 'uncategorized') === selectedCategory)
       .flatMap((e) =>
-        (e.videos || []).map((v) => ({ ...v, eventCategory: e.category }))
+        (e.videos || []).map((v) => ({
+          ...v,
+          eventCategory: e.category || 'Uncategorized'
+        }))
       );
   };
 
   const getCategoryLabel = (category) => {
     if (!category) return '';
+    if (category === 'uncategorized') return 'Uncategorized';
     return category
       .split('_')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
