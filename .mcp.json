@@ -1,21 +1,16 @@
 {
-    "mcpServers": {
-        "laravel-boost": {
-            "command": "cd site && vendor/bin/sail",
-            "args": [
-                "artisan",
-                "boost:mcp"
-            ]
-        },
-        "sequential-thinking": {
-            "command": "node",
-            "args": [
-                ".claude/sequential-thinking-wrapper.js"
-            ],
-            "env": {
-                "DISABLE_THOUGHT_LOGGING": "false"
-            },
-            "disabled": false
-        }
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "cd site && vendor/bin/sail",
+      "args": ["artisan", "boost:mcp"]
+    },
+    "sequential-thinking": {
+      "command": "node",
+      "args": [".claude/sequential-thinking-wrapper.js"],
+      "env": {
+        "DISABLE_THOUGHT_LOGGING": "false"
+      },
+      "disabled": false
     }
+  }
 }
