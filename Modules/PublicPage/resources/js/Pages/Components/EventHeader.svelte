@@ -28,14 +28,14 @@
       <h2 class="event-title">
         {event.name}
       </h2>
+
+      {#if event.description}
+        <p class="event-description">
+          {event.description}
+        </p>
+      {/if}
     </div>
   </div>
-
-  {#if event.description}
-    <p class="event-description">
-      {event.description}
-    </p>
-  {/if}
 </div>
 
 <style>
@@ -72,17 +72,18 @@
   }
 
   .header-content {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     justify-content: flex-start;
     flex: 1;
   }
 
   .event-title {
+    font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: 700;
     color: #1b1a1a;
-    margin: 0;
+    margin-bottom: 8px;
   }
 
   .category-badge {
@@ -92,7 +93,7 @@
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
     letter-spacing: 1.5px;

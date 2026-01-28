@@ -102,7 +102,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f0f0f0;
+    background: linear-gradient(45deg, #222 30%, #666);
   }
 
   .placeholder-image {
@@ -110,6 +110,7 @@
     height: 100%;
     object-fit: cover;
     opacity: 0.5;
+    font-size: 9px;
   }
 
   .placeholder-fallback {

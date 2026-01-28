@@ -80,7 +80,7 @@
           class="play-icon"
           aria-hidden="true"
         >
-          <circle cx="50" cy="50" r="48" fill="white" />
+          <circle cx="50" cy="50" r="48" fill="#222222" />
           <polygon points="35,20 35,80 80,50" fill="#ff7607" />
         </svg>
       </div>
@@ -186,7 +186,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: #222;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,7 +1,6 @@
 <script context="module">
   import PublicPageLayout from "@publicpage-pages/Layouts/PublicPageLayout.svelte";
   export const layout = PublicPageLayout;
-
 </script>
 
 <script>
