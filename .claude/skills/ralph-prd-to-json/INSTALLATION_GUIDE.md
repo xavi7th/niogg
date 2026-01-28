@@ -93,11 +93,13 @@ Once installed, you can trigger the skill by saying any of the following to Clau
 ### Input Modes
 
 **Mode 1: Convert from File**
+
 ```
 Convert tasks/prd-authentication.md to prd.json
 ```
 
 **Mode 2: Convert from Text/Clipboard**
+
 ```
 Convert this PRD to prd.json:
 
@@ -108,16 +110,19 @@ Convert this PRD to prd.json:
 ### Example Prompts
 
 **Converting an existing PRD file:**
+
 ```
 Convert the PRD to JSON for the Ralph loop
 ```
 
 **Converting a specific PRD:**
+
 ```
 Convert tasks/prd-user-authentication.md to prd.json
 ```
 
 **Converting pasted content:**
+
 ```
 Convert this PRD to prd.json:
 
@@ -180,16 +185,19 @@ The skill generates a JSON file with this structure:
 ## Typical Workflow
 
 1. **Create a PRD** (manually or using ralph-prd-generator skill):
+
    ```
    tasks/prd-my-feature.md
    ```
 
 2. **Convert to JSON:**
+
    ```
    Convert the PRD to JSON
    ```
 
 3. **Review the output:**
+
    ```
    ✅ Created tasks/prd.json
 
@@ -235,6 +243,7 @@ If you see US-000 added to your stories, it means `scripts/test.sh` or composer 
 ### Stories Too Large Warning
 
 If the skill warns about large stories, consider:
+
 - Breaking the PRD into smaller functional requirements
 - Asking the skill to split: "Convert and split large stories"
 

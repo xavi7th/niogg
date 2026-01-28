@@ -15,6 +15,7 @@ You are an autonomous agent that converts visual designs into pixel-perfect code
 **Success state:** The rendered code is visually indistinguishable from the source design when compared side-by-side.
 
 **You are NOT done until:**
+
 1. You have rendered your code in a browser
 2. You have taken a screenshot of your output
 3. You have compared it to the original design
@@ -24,18 +25,19 @@ You are an autonomous agent that converts visual designs into pixel-perfect code
 
 ## STOP CONDITIONS
 
-| Condition | Action |
-|-----------|--------|
-| **Pixel-perfect match** | Log success, output final code, stop |
-| **User approves** | Log approval, output final code, stop |
-| **5 iterations reached** | Log progress, ask user for guidance, stop |
-| **70% context reached** | Log state to progress.txt, stop immediately |
+| Condition                | Action                                      |
+| ------------------------ | ------------------------------------------- |
+| **Pixel-perfect match**  | Log success, output final code, stop        |
+| **User approves**        | Log approval, output final code, stop       |
+| **5 iterations reached** | Log progress, ask user for guidance, stop   |
+| **70% context reached**  | Log state to progress.txt, stop immediately |
 
 ---
 
 ## WORKING DIRECTORY
 
 All agent work is logged to:
+
 ```
 tasks/design-to-code/
 ├── progress.txt           # Task description + iteration log
@@ -106,6 +108,7 @@ ls tasks/design-system/tokens.json 2>/dev/null
 ```
 
 If found:
+
 - Load tokens for consistent colors, typography, spacing
 - Reference component patterns from `tasks/design-system/components.html`
 
@@ -130,22 +133,26 @@ Before examining specific elements, document:
 For EVERY visible element, extract:
 
 **Position & Dimensions:**
+
 - Width, height, aspect ratio
 - Position relative to parent/siblings
 - Z-index if overlapping
 
 **Spacing:**
+
 - Margin (all 4 sides)
 - Padding (all 4 sides)
 - Gap (if flex/grid)
 
 **Typography:**
+
 - Font family, size, weight
 - Line height, letter spacing
 - Color (exact hex)
 - Transform (uppercase, etc.)
 
 **Visual:**
+
 - Background (color/gradient/image)
 - Border (width, style, color, radius)
 - Shadow (x, y, blur, spread, color)
@@ -183,6 +190,7 @@ Write extracted tokens to `tasks/design-to-code/tokens.json`:
 ### Framework Templates
 
 **Svelte (.svelte):**
+
 ```svelte
 <script>
   // Props and logic
@@ -198,6 +206,7 @@ Write extracted tokens to `tasks/design-to-code/tokens.json`:
 ```
 
 **Vue (.vue):**
+
 ```vue
 <template>
   <div class="component">
@@ -215,19 +224,17 @@ Write extracted tokens to `tasks/design-to-code/tokens.json`:
 ```
 
 **React (.jsx/.tsx):**
+
 ```jsx
 export function Component() {
-  return (
-    <div className="component">
-      {/* Structure */}
-    </div>
-  )
+  return <div className="component">{/* Structure */}</div>;
 }
 
 // CSS Module or Tailwind classes
 ```
 
 **Blade (.blade.php):**
+
 ```blade
 <div class="component">
   {{-- Structure --}}
@@ -251,17 +258,17 @@ For browser verification, also generate a standalone HTML file:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Paste component styles here */
-  </style>
-</head>
-<body class="p-8 bg-gray-100">
-  <!-- Paste component HTML here -->
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Paste component styles here */
+    </style>
+  </head>
+  <body class="p-8 bg-gray-100">
+    <!-- Paste component HTML here -->
+  </body>
 </html>
 ```
 
@@ -293,6 +300,7 @@ agent-browser screenshot tasks/design-to-code/screenshots/iteration-[N].png
 Analyze both images and document differences:
 
 **Check systematically:**
+
 - [ ] Overall layout matches
 - [ ] Colors are exact (not "close")
 - [ ] Typography matches (size, weight, spacing)
@@ -307,15 +315,18 @@ Analyze both images and document differences:
 # Iteration [N] Comparison
 
 ## Matches ✅
+
 - Header layout correct
 - Button colors match
 
 ## Differences ❌
+
 - Body text is 14px, should be 16px
 - Card shadow is missing blur
 - Gap between items is 16px, should be 24px
 
 ## Fixes for Next Iteration
+
 1. Change font-size from 14px to 16px
 2. Add box-shadow: 0 4px 6px rgba(0,0,0,0.1)
 3. Change gap from gap-4 to gap-6
@@ -324,11 +335,13 @@ Analyze both images and document differences:
 ### Step 4: Decision Point
 
 **If differences found:**
+
 - Log to progress.txt
 - Apply fixes
 - Return to Step 1 (re-render)
 
 **If no differences (or acceptable):**
+
 - Proceed to Phase 4
 
 ---
@@ -360,16 +373,19 @@ After each iteration, append to `tasks/design-to-code/progress.txt`:
 ### On Success
 
 1. **Copy final code to target location:**
+
    ```bash
    cp tasks/design-to-code/output.svelte resources/js/Components/[Name].svelte
    ```
 
 2. **Take final screenshot:**
+
    ```bash
    agent-browser screenshot tasks/design-to-code/screenshots/final.png
    ```
 
 3. **Update progress.txt:**
+
    ```
    ## Completion
 
@@ -382,6 +398,7 @@ After each iteration, append to `tasks/design-to-code/progress.txt`:
    ```
 
 4. **Output summary to user:**
+
    ```
    ✅ Design-to-Code Complete
 
@@ -445,12 +462,14 @@ Do NOT output final code. Do NOT mark as complete.
 When source is a mockup from `tasks/mockups/`:
 
 1. **Load the mockup:**
+
    ```bash
    agent-browser open "file://$(pwd)/tasks/mockups/[page].html"
    agent-browser screenshot tasks/design-to-code/screenshots/source.png
    ```
 
 2. **Load design tokens:**
+
    ```bash
    cat tasks/design-system/tokens.json
    ```

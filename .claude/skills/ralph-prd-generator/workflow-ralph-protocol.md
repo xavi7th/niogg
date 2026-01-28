@@ -52,6 +52,7 @@ COMPLETION: When ALL stories pass → <promise>COMPLETE</promise>
 ## 1. Story Grouping Strategy (The "Trinity")
 
 **For UI-related features, stories are processed in groups of 3:**
+
 1. **US-XXX-01**: Implementation (Code)
 2. **US-XXX-02**: Visual Verification (Screenshots)
 3. **US-XXX-03**: E2E Test (Playwright/Code)
@@ -83,6 +84,7 @@ COMPLETION: When ALL stories pass → <promise>COMPLETE</promise>
 #### A. Before Screenshot (UI Stories Only)
 
 For any story involving UI changes:
+
 ```bash
 agent-browser open "<app-url>/relevant-page"
 agent-browser screenshot tasks/screenshots/US-XXX-before.png
@@ -96,6 +98,7 @@ agent-browser screenshot tasks/screenshots/US-XXX-before.png
 #### C. Verify (US-XXX-02) — UI Stories
 
 1. **Build first** (required for frontend changes):
+
    ```bash
    sail shell -c "bun run build"   # Docker
    # OR
@@ -103,12 +106,14 @@ agent-browser screenshot tasks/screenshots/US-XXX-before.png
    ```
 
 2. **Navigate and inspect:**
+
    ```bash
    agent-browser open "<app-url>/relevant-page"
    agent-browser snapshot -i -c    # Get interactive elements, compact
    ```
 
 3. **Take screenshots:**
+
    ```bash
    # Viewport screenshot (for specific component/section)
    agent-browser screenshot tasks/screenshots/US-XXX-after.png
@@ -144,6 +149,7 @@ agent-browser screenshot tasks/screenshots/US-XXX-before.png
 4. **Skip**: Purely cosmetic changes (CSS color, typo) don't need new tests, but run existing suite
 
 Write E2E tests based on actual DOM structure observed during verification:
+
 ```bash
 agent-browser snapshot -i -c    # Get refs for selectors
 ```
@@ -180,6 +186,7 @@ composer e2e <test-file> # Run specific E2E test
 ```
 
 **FAILURE PROTOCOL:** If checks fail after 3 attempts:
+
 1. Do NOT commit
 2. Append failure log to `tasks/progress.txt`
 3. Output: "ABORTING: Unable to pass quality checks for US-XXX."
@@ -190,6 +197,7 @@ composer e2e <test-file> # Run specific E2E test
 **CRITICAL: Monitor your context usage.**
 
 If context reaches **70% capacity**:
+
 1. **STOP immediately** — do not continue the story
 2. Log to `tasks/progress.txt`:
    ```
@@ -210,10 +218,12 @@ If context reaches **70% capacity**:
 Only proceed if Step 4 passed AND context is under 70%.
 
 **Update `tasks/prd.json`:**
+
 - Set `passes: true` for completed stories
 - Add notes (optional but recommended)
 
 **Append to `tasks/progress.txt`:**
+
 ```
 ## [YYYY-MM-DD HH:MM] - US-XXX (Story Group)
 - Implemented: [1-2 sentence description]
@@ -226,6 +236,7 @@ Only proceed if Step 4 passed AND context is under 70%.
 ### Step 7: Learnings Documentation
 
 **Update CLAUDE.md files** where applicable:
+
 - Check for reusable patterns in edited directories
 - Add learnings FUTURE iterations should know
 - Do NOT add generic information
@@ -238,6 +249,7 @@ git commit -m "feat: [description of feature/fix]"
 ```
 
 **Rules:**
+
 - Use conventional commits: `feat:`, `fix:`, `refactor:`
 - Do NOT `git add .`
 - Do NOT commit files inside `tasks/`
@@ -249,9 +261,11 @@ git commit -m "feat: [description of feature/fix]"
 - Stop execution
 
 **If ALL stories now have `passes: true`:**
+
 ```
 <promise>COMPLETE</promise>
 ```
+
 Do NOT add anything after the completion signal.
 
 ---
@@ -260,11 +274,11 @@ Do NOT add anything after the completion signal.
 
 **ALL UI stories must capture:**
 
-| Screenshot | When | Naming |
-|------------|------|--------|
-| Before | Start of UI story | `tasks/screenshots/US-XXX-before.png` |
-| After | End of implementation | `tasks/screenshots/US-XXX-after.png` |
-| Full page (optional) | When layout matters | `tasks/screenshots/US-XXX-full.png` |
+| Screenshot           | When                   | Naming                                   |
+| -------------------- | ---------------------- | ---------------------------------------- |
+| Before               | Start of UI story      | `tasks/screenshots/US-XXX-before.png`    |
+| After                | End of implementation  | `tasks/screenshots/US-XXX-after.png`     |
+| Full page (optional) | When layout matters    | `tasks/screenshots/US-XXX-full.png`      |
 | Component (optional) | Specific element focus | `tasks/screenshots/US-XXX-component.png` |
 
 This enables human verification of changes.
@@ -305,22 +319,24 @@ This enables human verification of changes.
 
 Follow ALL standards in project CLAUDE.md. Key rules:
 
-* **IDs:** Use `str_obfuscate()` for sensitive IDs passed to frontend
-* **Testing:**
+- **IDs:** Use `str_obfuscate()` for sensitive IDs passed to frontend
+- **Testing:**
   - ALWAYS build before browser testing
   - Never commit without browser verification for UI changes
   - All backend changes MUST have feature/unit tests
   - Save screenshots in `tasks/screenshots/`
-* **Context:** Stop at 70% — log challenges, don't mark passed
+- **Context:** Stop at 70% — log challenges, don't mark passed
 
 ---
 
 ## 6. Stop Conditions
 
 ### Success (Completion)
+
 All stories have `passes: true`. Output: `<promise>COMPLETE</promise>`
 
 ### Iteration End (Continue)
+
 - Story completed successfully
 - Quality checks pass
 - Records updated
@@ -328,6 +344,7 @@ All stories have `passes: true`. Output: `<promise>COMPLETE</promise>`
 - Next iteration picks up next story
 
 ### Context Limit (Pause)
+
 - Context reached 70%
 - Logged to progress.txt
 - NOT marked as passed
@@ -335,6 +352,7 @@ All stories have `passes: true`. Output: `<promise>COMPLETE</promise>`
 - Next iteration resumes
 
 ### Failure (Abort)
+
 - Quality checks failed 3 times
 - Logged to progress.txt
 - Output: "ABORTING: Unable to pass quality checks for US-XXX."
@@ -367,6 +385,7 @@ agent-browser screenshot tasks/screenshots/US-005-after.png
 ```
 
 **US-005-02:** Visual verification
+
 ```bash
 agent-browser snapshot -i -c
 # Document selectors for tests: [data-testid="category-filter"]
@@ -374,6 +393,7 @@ agent-browser screenshot --full tasks/screenshots/US-005-full.png
 ```
 
 **US-005-03:** E2E test (based on discovered selectors)
+
 ```javascript
 test("filter events by category", async ({ page }) => {
   await page.goto("/events");
@@ -384,6 +404,7 @@ test("filter events by category", async ({ page }) => {
 ```
 
 **Single commit:**
+
 ```bash
 git add Modules/PublicPage/resources/js/Pages/EventGallery.svelte
 git add tests/Feature/EventFilterE2ETest.php

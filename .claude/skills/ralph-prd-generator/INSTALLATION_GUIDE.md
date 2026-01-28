@@ -112,16 +112,19 @@ Once installed, you can trigger the skill by saying any of the following to Clau
 ### Example Prompts
 
 **Starting a new project:**
+
 ```
 Create a PRD for a new task management app
 ```
 
 **Adding a feature to existing project:**
+
 ```
 Write a PRD for adding user authentication to my app
 ```
 
 **Converting a GitHub issue:**
+
 ```
 Convert this GitHub issue to a PRD: https://github.com/user/repo/issues/123
 ```
@@ -147,13 +150,7 @@ Example suggestions the skill might make:
 ```json
 {
   "permissions": {
-    "allow": [
-      "bun run dev",
-      "bun run build",
-      "bun run lint",
-      "bunx prisma generate",
-      "bunx prisma migrate dev"
-    ]
+    "allow": ["bun run dev", "bun run build", "bun run lint", "bunx prisma generate", "bunx prisma migrate dev"]
   }
 }
 ```

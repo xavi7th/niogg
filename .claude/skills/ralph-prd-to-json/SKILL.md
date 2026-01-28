@@ -117,11 +117,13 @@ Stories execute in priority order. Earlier stories must not depend on later ones
 ### Step 1: Locate the PRD
 
 **For Mode 1 (File):**
+
 1. Check `tasks/` directory for PRD files matching `prd-*.md`
 2. If multiple exist, use the most recently modified one (or the one specified)
 3. If none exist, return an error: "No PRD file found in tasks/. Please create a PRD first using the ralph-prd-generator skill."
 
 **For Mode 2 (Text):**
+
 1. Use the PRD content provided directly in the prompt
 
 ### Step 2: Check for Existing prd.json (Archiving)
@@ -153,11 +155,13 @@ Check if the design system skill was run before conversion:
 3. If found, flag that UI stories should reference these files
 
 **If design system exists:**
+
 - UI story acceptance criteria should include: "Match mockup in tasks/mockups/[page].html"
 - UI story acceptance criteria should include: "Use design tokens from tasks/design-system/tokens.json"
 - Component stories should reference: "Follow patterns in tasks/design-system/components.html"
 
 **If no design system exists:**
+
 - Warn: "No design system found. Consider running 'create design system' before converting."
 - Continue conversion without mockup references
 
@@ -181,11 +185,7 @@ For each functional requirement (FR-1, FR-2, etc.), create a user story object:
   "id": "US-001",
   "title": "Brief descriptive title",
   "description": "As a [user type], I need [functionality] so that [benefit].",
-  "acceptanceCriteria": [
-    "Specific, verifiable criterion 1",
-    "Specific, verifiable criterion 2",
-    "Test command that must pass"
-  ],
+  "acceptanceCriteria": ["Specific, verifiable criterion 1", "Specific, verifiable criterion 2", "Test command that must pass"],
   "priority": 1,
   "passes": false,
   "notes": ""
@@ -245,6 +245,7 @@ For backend stories (models, controllers, services, APIs, database changes), inc
 **Context Limit for UI Stories**: If context reaches 70% capacity during implementation or verification, STOP immediately. Log challenges to `tasks/progress.txt`. Do NOT mark as passed.
 
 **Design System Integration**: If `tasks/design-system/` exists, UI stories MUST reference:
+
 - `tasks/mockups/[relevant-page].html` — for layout and component reference
 - `tasks/design-system/tokens.json` — for colors, typography, spacing
 - `tasks/design-system/components.html` — for component patterns
@@ -286,6 +287,7 @@ For backend stories (models, controllers, services, APIs, database changes), inc
 - Has business logic that needs automated regression testing
 
 **When E2E tests may NOT be needed:**
+
 - Simple visual changes (styling updates, layout tweaks)
 - Static content updates
 - Minor UI adjustments
@@ -315,6 +317,7 @@ For backend stories (models, controllers, services, APIs, database changes), inc
 **Note**: E2E tests run via `composer e2e` which executes `bun run test:e2e`. [Modify this to match codebase]
 
 **Debugging Note:** If E2E tests fail repeatedly, use the agent-browser CLI tool for debugging:
+
 - Navigate: `agent-browser open <url>`
 - Inspect elements: `agent-browser snapshot -i`
 - Take screenshots: `agent-browser screenshot /path/to/file.png`
@@ -358,18 +361,21 @@ Acceptance criteria must be:
 **Always add appropriate code quality checks as final criteria based on tech stack:**
 
 **For PHP/Laravel projects:**
+
 ```
 "Run 'composer lint' to format code"
 "Run 'composer test' to verify tests pass"
 ```
 
 **For TypeScript/JavaScript projects:**
+
 ```
 "Run 'bun format' to format code"
 "Run 'bun run typecheck' to verify types"
 ```
 
 **For mixed projects (Laravel + Vue/React/Svelte):**
+
 ```
 "Run 'composer lint' to format PHP code"
 "Run 'bun format' to format frontend code"
@@ -382,23 +388,27 @@ Acceptance criteria must be:
 Based on the PRD's tech stack, use appropriate commands:
 
 **Laravel:**
+
 - `composer test` - runs PEST tests (auto-detects Sail)
 - `composer e2e` - runs E2E tests
 - `composer lint` - formats code (Rector + Pint)
 - `php artisan migrate`
 
 **Node/JavaScript:**
+
 - `bun run test` or `npm run test`
 - `bun run typecheck` or `npm run typecheck`
 - `bun run build` or `npm run build`
 - `bun format` or `npm run format`
 
 **Vue/React/Svelte:**
+
 - Build command before browser verification
 - Typecheck command
 - Format command
 
 **Python:**
+
 - `pytest`
 - `python -m mypy .`
 - `black .` or `ruff format .`
@@ -406,6 +416,7 @@ Based on the PRD's tech stack, use appropriate commands:
 #### Testing Conventions
 
 **Note**: Tests MUST be run via composer scripts when available:
+
 - `composer test` - runs PEST tests via scripts/test.sh (auto-detects Sail)
 - `composer e2e` - runs E2E tests which executes `bun run test:e2e`
 
@@ -470,18 +481,18 @@ Each is one focused change that can be completed and verified independently.
 
 ## Verification Decision Matrix
 
-| Story Type | Example | PEST Test | -02 Browser | -03 E2E |
-|------------|---------|-----------|-------------|---------|
-| UI Component | "Create user profile page" | ❌ | ✅ | ❌ |
-| UI + Workflow | "User registration form with validation" | ❌ | ✅ | ✅ |
-| API Endpoint | "POST /api/users returns user data" | ✅ | ❌ | ❌ |
-| API + UI Consumer | "Display user list from API" | ✅ | ✅ | ❌ |
-| CRUD Feature | "Admin can create/edit/delete products" | ✅ | ✅ | ✅ |
-| Database Migration | "Add email_verified column to users" | ✅ | ❌ | ❌ |
-| Background Job | "Send welcome email after registration" | ✅ | ❌ | ❌ |
-| Auth Flow | "User login with remember me" | ✅ | ✅ | ✅ |
-| Config/Setup | "Add environment variables for SMTP" | ❌ | ❌ | ❌ |
-| Styling Only | "Update button colors to match brand" | ❌ | ✅ | ❌ |
+| Story Type         | Example                                  | PEST Test | -02 Browser | -03 E2E |
+| ------------------ | ---------------------------------------- | --------- | ----------- | ------- |
+| UI Component       | "Create user profile page"               | ❌        | ✅          | ❌      |
+| UI + Workflow      | "User registration form with validation" | ❌        | ✅          | ✅      |
+| API Endpoint       | "POST /api/users returns user data"      | ✅        | ❌          | ❌      |
+| API + UI Consumer  | "Display user list from API"             | ✅        | ✅          | ❌      |
+| CRUD Feature       | "Admin can create/edit/delete products"  | ✅        | ✅          | ✅      |
+| Database Migration | "Add email_verified column to users"     | ✅        | ❌          | ❌      |
+| Background Job     | "Send welcome email after registration"  | ✅        | ❌          | ❌      |
+| Auth Flow          | "User login with remember me"            | ✅        | ✅          | ✅      |
+| Config/Setup       | "Add environment variables for SMTP"     | ❌        | ❌          | ❌      |
+| Styling Only       | "Update button colors to match brand"    | ❌        | ✅          | ❌      |
 
 ---
 
@@ -515,6 +526,7 @@ Before saving prd.json, verify:
 Add ability to mark tasks with different statuses.
 
 ## Tech Stack
+
 - Frontend: Vue 3 with TypeScript
 - Backend: Laravel
 
@@ -861,11 +873,13 @@ run_artisan --filter "$arg" "$@"
 ### Works Great With:
 
 **ralph-prd-generator:**
+
 - Create PRD with ralph-prd-generator
 - Convert to JSON with ralph-prd-to-json
 - Complete workflow!
 
 **agent-browser:**
+
 - JSON includes agent-browser verification for UI stories
 - Ensures visual confirmation
 

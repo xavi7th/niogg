@@ -84,22 +84,26 @@ Once installed, you can trigger the skill by saying:
 ### Example Prompts
 
 **Create full design system:**
+
 ```
 Create a design system for my email app PRD
 ```
 
 **With reference URL:**
+
 ```
 Create design system based on superhuman.com design
 ```
 
 **With uploaded images:**
+
 ```
 [Upload screenshot]
 Create a design system inspired by this design
 ```
 
 **Generate specific mockups:**
+
 ```
 Generate mockups for the login and dashboard pages from my PRD
 ```
@@ -109,28 +113,35 @@ Generate mockups for the login and dashboard pages from my PRD
 ## Typical Workflow
 
 1. **Create PRD first:**
+
    ```
    Create a PRD for user authentication
    ```
 
 2. **Generate design system:**
+
    ```
    Create design system for this PRD
    ```
+
    - Provide reference URLs or images if you have them
    - Answer questions about style preferences
    - Review mockups and iterate
 
 3. **Convert to JSON:**
+
    ```
    Convert PRD to JSON
    ```
+
    - Converter automatically references mockups in stories
 
 4. **Run Ralph loop:**
+
    ```bash
    ./scripts/ralph/ralph.sh 25
    ```
+
    - Ralph uses mockups as visual reference for implementation
 
 ---
@@ -140,6 +151,7 @@ Generate mockups for the login and dashboard pages from my PRD
 ### tasks/design-system/tokens.json
 
 Design tokens in JSON format:
+
 ```json
 {
   "colors": {
@@ -156,6 +168,7 @@ Design tokens in JSON format:
 ### tasks/design-system/tailwind.extend.js
 
 Tailwind config extensions (if using Tailwind):
+
 ```javascript
 module.exports = {
   colors: { ... },
@@ -167,6 +180,7 @@ module.exports = {
 ### tasks/design-system/components.html
 
 Interactive component library preview. Open in browser to see:
+
 - Color swatches
 - Typography scale
 - Buttons (all variants)
@@ -174,9 +188,10 @@ Interactive component library preview. Open in browser to see:
 - Cards
 - Other components
 
-### tasks/mockups/*.html
+### tasks/mockups/\*.html
 
 Self-contained HTML mockups for each page. Features:
+
 - Uses Tailwind CDN (no build required)
 - Realistic placeholder content
 - Responsive design
@@ -201,11 +216,7 @@ When `tasks/design-system/` exists, the converter adds to UI story acceptance cr
 
 ```json
 {
-  "acceptanceCriteria": [
-    "Match mockup in tasks/mockups/login.html",
-    "Use colors from tasks/design-system/tokens.json",
-    "Follow patterns in tasks/design-system/components.html"
-  ]
+  "acceptanceCriteria": ["Match mockup in tasks/mockups/login.html", "Use colors from tasks/design-system/tokens.json", "Follow patterns in tasks/design-system/components.html"]
 }
 ```
 
@@ -222,6 +233,7 @@ Create design system based on:
 ```
 
 The skill will fetch these pages and analyze:
+
 - Color palette
 - Typography
 - Spacing patterns
@@ -230,6 +242,7 @@ The skill will fetch these pages and analyze:
 ### Option 2: Uploaded Images
 
 Upload screenshots or design files directly in the chat. The skill will analyze:
+
 - Dominant colors
 - Layout structure
 - Typography style
@@ -238,6 +251,7 @@ Upload screenshots or design files directly in the chat. The skill will analyze:
 ### Option 3: Brand Guidelines
 
 If you have existing brand colors or fonts:
+
 ```
 Create design system using:
 - Primary color: #6366f1

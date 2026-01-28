@@ -13,6 +13,7 @@ You are a UI/UX designer helping create a consistent design system and visual mo
 ## Overview
 
 This skill:
+
 1. Analyzes existing project design patterns (if any)
 2. Gathers design inspiration from user (URLs, images, preferences)
 3. Generates a design system (tokens, components)
@@ -42,6 +43,7 @@ tasks/
 ## CRITICAL: Always Ask Discovery Questions
 
 **NEVER skip the discovery phase.** Even if the user provides detailed requirements:
+
 - Always check for existing design systems first
 - Always ask about design preferences and references
 - Always confirm understanding before generating
@@ -55,24 +57,28 @@ tasks/
 Before asking questions, scan the project for existing design patterns:
 
 **Check for Tailwind CSS:**
+
 ```bash
 # Look for tailwind config
 cat tailwind.config.js 2>/dev/null || cat tailwind.config.ts 2>/dev/null
 ```
 
 **Check for CSS variables:**
+
 ```bash
 # Look for CSS custom properties
 grep -r "--color\|--font\|--spacing" resources/css/ src/styles/ 2>/dev/null | head -20
 ```
 
 **Check for existing component library:**
+
 ```bash
 # Look for UI components
 ls -la resources/js/Components/ src/components/ components/ 2>/dev/null
 ```
 
 **Check for design tokens:**
+
 ```bash
 # Look for existing token files
 find . -name "tokens.json" -o -name "theme.json" -o -name "design-system*" 2>/dev/null
@@ -83,6 +89,7 @@ find . -name "tokens.json" -o -name "theme.json" -o -name "design-system*" 2>/de
 Ask these questions **one at a time**:
 
 **1. Design References:**
+
 ```
 Do you have any design references I should use as inspiration?
 
@@ -93,16 +100,19 @@ D. No references - create something modern and clean
 ```
 
 **2. If user provides URL(s):**
+
 - Use `web_fetch` to retrieve the page
 - Analyze: color palette, typography, spacing, layout patterns, component styles
 - Extract key design decisions
 
 **3. If user provides images:**
+
 - Analyze the uploaded images
 - Extract: dominant colors, layout structure, typography style, UI patterns
 - Note specific elements the user might want to replicate
 
 **4. Style Preferences:**
+
 ```
 What style direction fits your project?
 
@@ -115,6 +125,7 @@ F. Match the reference I provided
 ```
 
 **5. Color Preferences:**
+
 ```
 Any specific brand colors I should use?
 
@@ -124,6 +135,7 @@ C. No - suggest a palette based on style preference
 ```
 
 **6. Typography Preferences:**
+
 ```
 Font preferences?
 
@@ -134,6 +146,7 @@ D. Suggest based on style preference
 ```
 
 **7. Component Complexity:**
+
 ```
 What level of component detail do you need in mockups?
 
@@ -156,6 +169,7 @@ web_fetch <url>
 ```
 
 **Extract and document:**
+
 - **Colors:** Primary, secondary, accent, background, text colors
 - **Typography:** Font families, sizes, weights, line heights
 - **Spacing:** Padding/margin patterns, grid structure
@@ -168,6 +182,7 @@ web_fetch <url>
 When user provides reference images:
 
 **Document observations:**
+
 - Color palette (extract 5-8 key colors)
 - Layout structure (grid, sidebar, single column)
 - Typography style (serif, sans-serif, display)
@@ -288,20 +303,20 @@ When user provides reference images:
 module.exports = {
   colors: {
     primary: {
-      50: '#eff6ff',
-      100: '#dbeafe',
-      500: '#3b82f6',
-      600: '#2563eb',
-      700: '#1d4ed8',
+      50: "#eff6ff",
+      100: "#dbeafe",
+      500: "#3b82f6",
+      600: "#2563eb",
+      700: "#1d4ed8",
     },
     // ... rest of colors from tokens
   },
   fontFamily: {
-    sans: ['Inter', 'system-ui', 'sans-serif'],
-    mono: ['JetBrains Mono', 'monospace'],
+    sans: ["Inter", "system-ui", "sans-serif"],
+    mono: ["JetBrains Mono", "monospace"],
   },
   // ... rest of extensions
-}
+};
 ```
 
 ### Step 3: Create components.html
@@ -311,66 +326,68 @@ Generate an HTML file showcasing all components:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Design System - Component Library</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>/* Custom styles and token overrides */</style>
-</head>
-<body class="bg-gray-50 p-8">
-  <h1 class="text-3xl font-bold mb-8">Component Library</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System - Component Library</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom styles and token overrides */
+    </style>
+  </head>
+  <body class="bg-gray-50 p-8">
+    <h1 class="text-3xl font-bold mb-8">Component Library</h1>
 
-  <!-- Colors -->
-  <section class="mb-12">
-    <h2 class="text-xl font-semibold mb-4">Colors</h2>
-    <div class="flex gap-4">
-      <div class="w-20 h-20 bg-primary-500 rounded"></div>
-      <!-- ... more color swatches -->
-    </div>
-  </section>
+    <!-- Colors -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">Colors</h2>
+      <div class="flex gap-4">
+        <div class="w-20 h-20 bg-primary-500 rounded"></div>
+        <!-- ... more color swatches -->
+      </div>
+    </section>
 
-  <!-- Typography -->
-  <section class="mb-12">
-    <h2 class="text-xl font-semibold mb-4">Typography</h2>
-    <p class="text-4xl font-bold">Heading 1</p>
-    <p class="text-3xl font-bold">Heading 2</p>
-    <!-- ... more typography examples -->
-  </section>
+    <!-- Typography -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">Typography</h2>
+      <p class="text-4xl font-bold">Heading 1</p>
+      <p class="text-3xl font-bold">Heading 2</p>
+      <!-- ... more typography examples -->
+    </section>
 
-  <!-- Buttons -->
-  <section class="mb-12">
-    <h2 class="text-xl font-semibold mb-4">Buttons</h2>
-    <div class="flex gap-4">
-      <button class="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600">Primary</button>
-      <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Secondary</button>
-      <button class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">Outline</button>
-    </div>
-  </section>
+    <!-- Buttons -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">Buttons</h2>
+      <div class="flex gap-4">
+        <button class="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600">Primary</button>
+        <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Secondary</button>
+        <button class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">Outline</button>
+      </div>
+    </section>
 
-  <!-- Form Inputs -->
-  <section class="mb-12">
-    <h2 class="text-xl font-semibold mb-4">Form Inputs</h2>
-    <div class="space-y-4 max-w-md">
-      <input type="text" placeholder="Text input" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-500">
-      <select class="w-full px-3 py-2 border rounded">
-        <option>Select option</option>
-      </select>
-      <textarea placeholder="Textarea" class="w-full px-3 py-2 border rounded"></textarea>
-    </div>
-  </section>
+    <!-- Form Inputs -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">Form Inputs</h2>
+      <div class="space-y-4 max-w-md">
+        <input type="text" placeholder="Text input" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-500" />
+        <select class="w-full px-3 py-2 border rounded">
+          <option>Select option</option>
+        </select>
+        <textarea placeholder="Textarea" class="w-full px-3 py-2 border rounded"></textarea>
+      </div>
+    </section>
 
-  <!-- Cards -->
-  <section class="mb-12">
-    <h2 class="text-xl font-semibold mb-4">Cards</h2>
-    <div class="bg-white p-6 rounded-lg shadow max-w-sm">
-      <h3 class="font-semibold mb-2">Card Title</h3>
-      <p class="text-gray-600">Card content goes here.</p>
-    </div>
-  </section>
+    <!-- Cards -->
+    <section class="mb-12">
+      <h2 class="text-xl font-semibold mb-4">Cards</h2>
+      <div class="bg-white p-6 rounded-lg shadow max-w-sm">
+        <h3 class="font-semibold mb-2">Card Title</h3>
+        <p class="text-gray-600">Card content goes here.</p>
+      </div>
+    </section>
 
-  <!-- ... more components -->
-</body>
+    <!-- ... more components -->
+  </body>
 </html>
 ```
 
@@ -381,6 +398,7 @@ Generate an HTML file showcasing all components:
 ### Step 1: Identify Pages from PRD
 
 Read the PRD and identify all pages/views that need mockups:
+
 - Login/Register pages
 - Dashboard
 - Settings
@@ -394,31 +412,32 @@ For each page, create a complete HTML file:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>[Page Name] - Mockup</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          // Paste token extensions here
-        }
-      }
-    }
-  </script>
-  <style>
-    /* Any custom styles */
-  </style>
-</head>
-<body>
-  <!-- Full page mockup with realistic content -->
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Page Name] - Mockup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            // Paste token extensions here
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Any custom styles */
+    </style>
+  </head>
+  <body>
+    <!-- Full page mockup with realistic content -->
+  </body>
 </html>
 ```
 
 **Mockup requirements:**
+
 - Use design tokens consistently
 - Include realistic placeholder content (not "Lorem ipsum" everywhere)
 - Show all states where relevant (empty, loading, error, populated)
@@ -445,6 +464,7 @@ I'll iterate until you're happy with the designs.
 ```
 
 **Iterate until user approves:**
+
 - Make specific adjustments based on feedback
 - Re-generate affected mockups
 - Show before/after if helpful
@@ -466,10 +486,10 @@ I'll iterate until you're happy with the designs.
 
 ## Colors
 
-| Name | Usage | Value |
-|------|-------|-------|
+| Name        | Usage                  | Value   |
+| ----------- | ---------------------- | ------- |
 | primary-500 | Primary actions, links | #3b82f6 |
-| ... | ... | ... |
+| ...         | ...                    | ...     |
 
 ## Typography
 
@@ -480,6 +500,7 @@ I'll iterate until you're happy with the designs.
 ## Component Patterns
 
 See `components.html` for live examples of:
+
 - Buttons (primary, secondary, outline, ghost)
 - Form inputs (text, select, checkbox, radio)
 - Cards
@@ -494,11 +515,11 @@ See `components.html` for live examples of:
 
 ## Index
 
-| Page | File | Description |
-|------|------|-------------|
-| Login | login.html | User authentication page |
-| Dashboard | dashboard.html | Main application dashboard |
-| Settings | settings.html | User settings and preferences |
+| Page      | File           | Description                   |
+| --------- | -------------- | ----------------------------- |
+| Login     | login.html     | User authentication page      |
+| Dashboard | dashboard.html | Main application dashboard    |
+| Settings  | settings.html  | User settings and preferences |
 
 ## Usage
 
@@ -544,11 +565,7 @@ After this skill completes, the JSON converter should:
 2. Reference mockups in acceptance criteria:
    ```json
    {
-     "acceptanceCriteria": [
-       "Match mockup in tasks/mockups/login.html",
-       "Use colors from tasks/design-system/tokens.json",
-       "Follow component patterns in tasks/design-system/components.html"
-     ]
+     "acceptanceCriteria": ["Match mockup in tasks/mockups/login.html", "Use colors from tasks/design-system/tokens.json", "Follow component patterns in tasks/design-system/components.html"]
    }
    ```
 
@@ -568,6 +585,7 @@ After this skill completes, the JSON converter should:
 ## Sequential Thinking Tool
 
 **If sequential_thinking MCP server is available, USE IT for:**
+
 - Analyzing reference designs to extract patterns
 - Planning component hierarchy
 - Determining color palette relationships
