@@ -3,12 +3,12 @@
 namespace Modules\PublicPage\Http\Controllers\Admin;
 
 use Exception;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use Modules\PublicPage\Models\Event;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Modules\PublicPage\Http\Requests\Admin\EventFormRequest;
 
 class AdminEventController extends Controller
@@ -23,7 +23,7 @@ class AdminEventController extends Controller
 
         $cacheKey = "admin.events.list:page:{$page}:per_page:{$perPage}";
 
-        $events = Cache::tags(['admin.events'])->remember($cacheKey, 3600, fn () => Event::with('videos')
+        $events = Cache::remember($cacheKey, 3600, fn () => Event::with('videos')
             ->orderBy('event_date', 'desc')
             ->paginate(15));
 
@@ -72,7 +72,7 @@ class AdminEventController extends Controller
         try {
             Event::create($request->validated());
 
-            Cache::tags(['admin.events'])->flush();
+            // Cache expires naturally after 1 hour
 
             return Redirect::route('admin.events.index')
                 ->with('success', 'Event created successfully.');
@@ -91,7 +91,7 @@ class AdminEventController extends Controller
         try {
             $event->update($request->validated());
 
-            Cache::tags(['admin.events'])->flush();
+            // Cache expires naturally after 1 hour
 
             return Redirect::route('admin.events.index')
                 ->with('success', 'Event updated successfully.');
@@ -110,7 +110,7 @@ class AdminEventController extends Controller
         try {
             $event->delete();
 
-            Cache::tags(['admin.events'])->flush();
+            // Cache expires naturally after 1 hour
 
             return Redirect::route('admin.events.index')
                 ->with('success', 'Event deleted successfully.');
@@ -133,7 +133,7 @@ class AdminEventController extends Controller
 
             $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => TRUE]);
 
-            Cache::tags(['admin.events'])->flush();
+            // Cache expires naturally after 1 hour
 
             return response()->json([
                 'message' => "{$count} event(s) published successfully.",
@@ -162,7 +162,7 @@ class AdminEventController extends Controller
 
             $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => FALSE]);
 
-            Cache::tags(['admin.events'])->flush();
+            // Cache expires naturally after 1 hour
 
             return response()->json([
                 'message' => "{$count} event(s) unpublished successfully.",
@@ -191,7 +191,7 @@ class AdminEventController extends Controller
 
             $count = Event::whereIn('id', $request->event_ids)->delete();
 
-            Cache::tags(['admin.events'])->flush();
+            // Cache expires naturally after 1 hour
 
             return response()->json([
                 'message' => "{$count} event(s) deleted successfully.",
