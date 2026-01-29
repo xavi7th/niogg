@@ -128,6 +128,3 @@
 		</div>
 	</div>
 </aside>
-
-<!-- Spacer for desktop layout -->
-<div class="hidden lg:block w-64 flex-shrink-0"></div>
