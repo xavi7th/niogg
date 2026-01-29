@@ -60,7 +60,16 @@ class AdminEventController extends Controller
     public function edit(Event $event): \Inertia\Response
     {
         return Inertia::render('PublicPage::Admin/Events/Edit', [
-            'event' => $event,
+            'event' => [
+                'id' => $event->id,
+                'name' => $event->name,
+                'description' => $event->description,
+                'icon' => $event->icon,
+                'category' => $event->category,
+                'event_date' => $event->event_date?->format('Y-m-d'),
+                'slug' => $event->slug,
+                'is_published' => $event->is_published,
+            ],
         ]);
     }
 

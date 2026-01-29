@@ -1,32 +1,51 @@
 <script>
+  import { onMount } from 'svelte';
 	import { page } from '@inertiajs/svelte';
 	import { router } from '@inertiajs/svelte';
-	import { useForm } from '@inertiajs/svelte';
 	import AdminSidebar from '../../../Components/Admin/AdminSidebar.svelte';
 
 	$: ({ auth, errors, event } = $page.props);
 
-	const form = useForm({
-		name: event?.name || '',
-		description: event?.description || '',
-		icon: event?.icon || '',
-		category: event?.category || '',
-		event_date: event?.event_date || '',
-		is_published: event?.is_published || false,
-		_method: 'PUT'
-	});
+	let formData = {};
+
+	let isLoading = false;
+	let showIconPicker = false;
+
+	// Common emoji categories
+	const emojiCategories = {
+		'Events & Celebrations': ['🎉', '🎊', '🎈', '🎁', '🏆', '🥇', '🎯', '🎪', '🎭'],
+		'Business & Work': ['💼', '📊', '📈', '💡', '🏢', '📅', '✅', '📝', '📌', '🔔'],
+		'Sports & Activities': ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🏊', '🎿', '🏋️', '🚴'],
+		'Tech & Media': ['💻', '📱', '🎬', '📷', '🎥', '🎧', '🎙️', '💾', '📡', '🔌'],
+		'Education': ['📚', '🎓', '✏️', '📐', '🔬', '💡', '🎨', '🎼', '🏛️', '🗺️'],
+		'Food & Drink': ['🍕', '🍔', '🍰', '☕', '🍷', '🥂', '🍽️', '🍜', '🥘', '🍿'],
+		'Travel': ['✈️', '🚗', '🚄', '🏨', '🏖️', '🗺️', '🏔', '🏝️', '🎒', '📸'],
+		'Miscellaneous': ['⭐', '❤️', '🔥', '💎', '🚀', '🎯', '💪', '👏', '🙌', '🎊']
+	};
 
 	function handleSubmit() {
-		form.post(`/admin/events/${event.id}`, {
-			onSuccess: () => {
-				// Page will redirect on success
-			}
-		});
+		isLoading = true;
+		router.post(`/admin/events/${event.id}`, {
+			_method: 'PUT',
+			...formData
+		}, {
+				onSuccess: () => {
+					isLoading = false;
+				},
+				onError: () => {
+					isLoading = false;
+				}
+			});
 	}
 
 	function saveAsDraft() {
-		form.is_published = false;
+		formData.is_published = false;
 		handleSubmit();
+	}
+
+	function selectIcon(emoji) {
+		formData.icon = emoji;
+		showIconPicker = false;
 	}
 
 	function generateSlugPreview(name) {
@@ -39,7 +58,30 @@
 			.replace(/^-+|-+$/g, '');
 	}
 
-	$: slugPreview = event?.slug || generateSlugPreview(form.name);
+	$: slugPreview = generateSlugPreview(formData.name);
+
+	function isValidSlug(slug) {
+		// Slug must be: lowercase, alphanumeric, hyphens only, no consecutive hyphens
+		// Must start and end with alphanumeric
+		const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+		return slugRegex.test(slug) && slug.length >= 2 && slug.length <= 255;
+	}
+
+	$: slugError = formData.slug && !isValidSlug(formData.slug) ? 'Slug must contain only lowercase letters, numbers, and hyphens. No consecutive hyphens allowed.' : '';
+
+  $: console.log(formData)
+
+  onMount(() => {
+    formData = {
+      name: event?.name || '',
+      description: event?.description || '',
+      icon: event?.icon || '',
+      category: event?.category || '',
+      event_date: event?.event_date || '',
+      is_published: event?.is_published || false,
+      slug: event?.slug || ''
+    };
+  })
 </script>
 
 <svelte:head>
@@ -85,7 +127,7 @@
 							<input
 								type="text"
 								id="name"
-								bind:value={form.name}
+								bind:value={formData.name}
 								placeholder="Enter event name"
 								class="w-full px-3 py-2 border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none"
 								class:border-[#ef4444]={errors.name}
@@ -105,7 +147,7 @@
 							</label>
 							<textarea
 								id="description"
-								bind:value={form.description}
+								bind:value={formData.description}
 								rows="4"
 								placeholder="Enter event description"
 								class="w-full px-3 py-2 border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none resize-none"
@@ -126,7 +168,7 @@
 								</label>
 								<select
 									id="category"
-									bind:value={form.category}
+									bind:value={formData.category}
 									class="w-full px-3 py-2 border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none bg-white"
 									class:border-[#ef4444]={errors.category}
 								>
@@ -151,7 +193,7 @@
 								<input
 									type="date"
 									id="event_date"
-									bind:value={form.event_date}
+									bind:value={formData.event_date}
 									class="w-full px-3 py-2 border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none"
 									class:border-[#ef4444]={errors.event_date}
 								/>
@@ -161,26 +203,84 @@
 							</div>
 						</div>
 
-						<!-- Icon/Emoji -->
+						<!-- Icon Selector -->
 						<div>
-							<label for="icon" class="block text-sm font-medium text-[#1b1a1a] mb-1">
+							<label class="block text-sm font-medium text-[#1b1a1a] mb-1">
 								Event Icon (Emoji)
 							</label>
-							<div class="flex items-center gap-3">
-								<input
-									type="text"
-									id="icon"
-									bind:value={form.icon}
-									placeholder="🎬"
-									maxlength="2"
-									class="w-20 px-3 py-2 border border-[#eaeaea] rounded text-center text-2xl focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none"
-									class:border-[#ef4444]={errors.icon}
-								/>
-								<span class="text-sm text-[#9b9b9b]">Choose an emoji to represent your event</span>
+							<div class="space-y-3">
+								<!-- Icon Display and Picker Button -->
+								<div class="flex items-center gap-3">
+									<div
+										class="w-16 h-16 border-2 border-dashed border-[#eaeaea] rounded-xl flex items-center justify-center text-4xl cursor-pointer hover:border-[#ff7607] hover:bg-[#fff3e6] transition-colors"
+										on:click={() => showIconPicker = !showIconPicker}
+									>
+										{#if formData.icon}
+											{formData.icon}
+										{:else}
+											<span class="text-gray-300 text-2xl">+</span>
+										{/if}
+									</div>
+									<div class="flex-1">
+										<input
+											type="text"
+											id="icon"
+											bind:value={formData.icon}
+											placeholder="🎬"
+											maxlength="2"
+											class="w-24 px-3 py-2 border border-[#eaeaea] rounded text-center text-2xl focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none"
+											class:border-[#ef4444]={errors.icon}
+										/>
+										<button
+											type="button"
+											on:click={() => showIconPicker = !showIconPicker}
+											class="px-3 py-2 bg-[#f9f9f9] hover:bg-[#f0f0f0] border border-[#eaeaea] rounded text-sm font-medium transition-colors"
+										>
+											Choose Icon
+										</button>
+									</div>
+								</div>
+								<p class="text-sm text-[#9b9b9b]">Choose an emoji to represent your event</p>
+								{#if errors.icon}
+									<p class="text-sm text-[#ef4444] mt-1">{errors.icon}</p>
+								{/if}
+
+								<!-- Icon Picker Modal -->
+								{#if showIconPicker}
+									<div class="mt-4 p-4 bg-gray-50 rounded-xl border border-[#eaeaea]">
+										<div class="flex justify-between items-center mb-3">
+											<h3 class="text-sm font-semibold text-[#1b1a1a]">Select an Icon</h3>
+											<button
+												type="button"
+												on:click={() => showIconPicker = false}
+												class="text-gray-400 hover:text-gray-600"
+											>
+												<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+												</svg>
+											</button>
+										</div>
+										<div class="space-y-4 max-h-64 overflow-y-auto">
+											{#each Object.entries(emojiCategories) as [category, emojis]}
+												<div>
+													<p class="text-xs font-medium text-gray-500 mb-2">{category}</p>
+													<div class="flex flex-wrap gap-1">
+														{#each emojis as emoji}
+															<button
+																type="button"
+																on:click={() => selectIcon(emoji)}
+																class="w-10 h-10 text-2xl flex items-center justify-center rounded-lg hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-[#eaeaea]"
+															>
+																{emoji}
+															</button>
+														{/each}
+													</div>
+												</div>
+											{/each}
+										</div>
+									</div>
+								{/if}
 							</div>
-							{#if errors.icon}
-								<p class="text-sm text-[#ef4444] mt-1">{errors.icon}</p>
-							{/if}
 						</div>
 					</div>
 				</div>
@@ -198,7 +298,7 @@
 						<label class="relative inline-flex items-center cursor-pointer">
 							<input
 								type="checkbox"
-								bind:checked={form.is_published}
+								bind:checked={formData.is_published}
 								class="sr-only peer"
 							/>
 							<div
@@ -209,17 +309,32 @@
 
 					<!-- Slug Preview -->
 					<div class="py-3">
-						<label class="block text-sm font-medium text-[#1b1a1a] mb-1">URL Slug</label>
+						<label for="slug" class="block text-sm font-medium text-[#1b1a1a] mb-1">URL Slug</label>
 						<div class="flex items-center">
 							<span class="text-[#9b9b9b] text-sm">/events/</span>
 							<input
 								type="text"
-								value={slugPreview}
-								readonly
-								class="flex-1 px-3 py-2 border border-[#eaeaea] rounded-l-none rounded-r focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none bg-[#f9f9f9]"
+								id="slug"
+								bind:value={formData.slug}
+								class="flex-1 px-3 py-2 border rounded-l-none rounded-r focus:ring-2 focus:ring-[#ff7607] focus:border-transparent outline-none {errors.slug || slugError ? 'border-[#ef4444]' : ''}"
+								placeholder="event-url-slug"
 							/>
 						</div>
-						<p class="text-xs text-[#9b9b9b] mt-1">This will be the URL for your event page</p>
+						<div class="flex items-center justify-between mt-1">
+							<p class="text-xs text-[#9b9b9b]">This will be the URL for your event page</p>
+							<button
+								type="button"
+								on:click={() => formData.slug = generateSlugPreview(formData.name)}
+								class="text-xs text-[#ff7607] hover:text-[#e56a00] font-medium"
+							>
+								Auto-generate from name
+							</button>
+						</div>
+						{#if errors.slug}
+							<p class="text-sm text-[#ef4444] mt-1">{errors.slug}</p>
+						{:else if slugError}
+							<p class="text-sm text-[#ef4444] mt-1">{slugError}</p>
+						{/if}
 					</div>
 				</div>
 
@@ -234,17 +349,17 @@
 					<button
 						type="button"
 						on:click={saveAsDraft}
-						disabled={form.processing}
+						disabled={isLoading}
 						class="px-6 py-2 border border-[#eaeaea] text-[#1b1a1a] rounded-lg hover:bg-[#f9f9f9] font-medium disabled:opacity-50 disabled:cursor-not-allowed"
 					>
 						Save as Draft
 					</button>
 					<button
 						type="submit"
-						disabled={form.processing}
+						disabled={isLoading}
 						class="px-6 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium disabled:opacity-50 disabled:cursor-not-allowed"
 					>
-						{form.processing ? 'Updating...' : 'Update Event'}
+						{isLoading ? 'Updating...' : 'Update Event'}
 					</button>
 				</div>
 			</form>
