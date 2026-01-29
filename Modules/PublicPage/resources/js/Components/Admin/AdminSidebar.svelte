@@ -1,8 +1,6 @@
 <script>
-	import { page } from '@inertiajs/svelte';
+	import { page, router } from '@inertiajs/svelte';
 	import { onMount } from 'svelte';
-
-	export let currentPage = '';
 
 	let isMobileMenuOpen = false;
 
@@ -25,6 +23,11 @@
 		isMobileMenuOpen = false;
 	}
 
+	function handleLogout(e) {
+		e.preventDefault();
+		router.post('/logout');
+	}
+
 	const navItems = [
 		{
 			name: 'Dashboard',
@@ -43,7 +46,7 @@
 			href: '/logout',
 			id: 'logout',
 			icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />',
-			method: 'post'
+			isLogout: true
 		}
 	];
 
@@ -96,20 +99,34 @@
 	<!-- Navigation -->
 	<nav class="flex-1 py-6 overflow-y-auto">
 		{#each navItems as item}
-			<a
-				href={item.href}
-				data-method={item.method || 'get'}
-				on:click={closeMobileMenu}
-				class="flex items-center gap-3 px-6 py-3 transition-colors
-				{activePage === item.id && item.id !== 'logout'
-					? 'bg-[#333333] text-[#ff7607] border-r-2 border-[#ff7607]'
-					: 'text-[#9b9b9b] hover:bg-[#222222] hover:text-white'}"
-			>
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					{@html item.icon}
-				</svg>
-				<span class="{activePage === item.id && item.id !== 'logout' ? 'font-medium' : ''}">{item.name}</span>
-			</a>
+			{#if item.isLogout}
+				<button
+					type="button"
+					on:click={(e) => { handleLogout(e); closeMobileMenu(); }}
+					on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { handleLogout(e); closeMobileMenu(); } }}
+					class="flex items-center gap-3 px-6 py-3 transition-colors w-full text-left
+					text-[#9b9b9b] hover:bg-[#222222] hover:text-white focus:outline-none focus:bg-[#222222]"
+				>
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						{@html item.icon}
+					</svg>
+					<span>{item.name}</span>
+				</button>
+			{:else}
+				<a
+					href={item.href}
+					on:click={closeMobileMenu}
+					class="flex items-center gap-3 px-6 py-3 transition-colors
+					{activePage === item.id
+						? 'bg-[#333333] text-[#ff7607] border-r-2 border-[#ff7607]'
+						: 'text-[#9b9b9b] hover:bg-[#222222] hover:text-white'}"
+				>
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						{@html item.icon}
+					</svg>
+					<span class="{activePage === item.id ? 'font-medium' : ''}">{item.name}</span>
+				</a>
+			{/if}
 		{/each}
 	</nav>
 
