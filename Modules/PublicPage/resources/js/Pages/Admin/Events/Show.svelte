@@ -215,7 +215,7 @@
 						Edit Event
 					</a>
 					<a
-						href="/admin/events/{event?.id}/videos/create"
+						href="/admin/videos/upload/{event?.id}"
 						class="px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm flex items-center gap-2"
 					>
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -470,7 +470,7 @@
 						</p>
 						{#if videoFilter !== 'featured'}
 							<a
-								href="/admin/events/{event.id}/videos/create"
+								href="/admin/videos/upload/{event.id}"
 								class="inline-flex items-center gap-2 px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm"
 							>
 								<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
