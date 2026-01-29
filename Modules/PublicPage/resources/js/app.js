@@ -172,21 +172,42 @@ console.info(
 
 createInertiaApp({
   resolve: (name) => {
-    const pages = import.meta.glob(["./Pages/**/*.svelte", "../../../../Modules/**/Pages/**/*.svelte"], { eager: true });
+    try {
+      const pages = import.meta.glob(["./Pages/**/*.svelte", "../../../Modules/**/Pages/**/*.svelte"], { eager: true });
 
-    let page = undefined,
-      pageUrl = undefined;
+      let page = undefined,
+        pageUrl = undefined;
 
-    if (name.includes("::")) {
-      let [module, pageLocation] = name.split("::");
-      page = pages[(pageUrl = `../../../${module}/resources/js/Pages/${pageLocation}.svelte`)] ?? pages[(pageUrl = `./Pages/${pageLocation}.svelte`)];
+      if (!name) {
+        throw new Error(`Page name is undefined`);
+      }
+
+      if (typeof name !== 'string') {
+        throw new Error(`Page name is not a string: ${typeof name}`);
+      }
+
+      if (name.includes("::")) {
+        let parts = name.split("::");
+        if (!parts || parts.length < 2) {
+          throw new Error(`Invalid page name format: ${name}`);
+        }
+        let [module, pageLocation] = parts;
+        pageUrl = `../../../Modules/${module}/resources/js/Pages/${pageLocation}.svelte`;
+        page = pages[pageUrl] ?? pages[`./Pages/${pageLocation}.svelte`];
+      } else {
+        pageUrl = `./Pages/${name}.svelte`;
+        page = pages[pageUrl];
+      }
+
+      if (page == undefined) {
+        throw new Error(`Page not found: ${name} (looked for ${pageUrl})`);
+      }
+
+      return page;
+    } catch (e) {
+      console.error('Error resolving page:', name, e);
+      throw e;
     }
-
-    if (page == undefined) {
-      throw new Error(`Page not found: ${pageUrl}`);
-    }
-
-    return page;
   },
 
   setup({ el, App, props }) {
