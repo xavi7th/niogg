@@ -81,7 +81,8 @@ class AdminEventController extends Controller
         try {
             Event::create($request->validated());
 
-            // Cache expires naturally after 1 hour
+            // Clear events list cache
+            $this->clearEventsCache();
 
             return Redirect::route('admin.events.index')
                 ->with('success', 'Event created successfully.');
@@ -100,7 +101,8 @@ class AdminEventController extends Controller
         try {
             $event->update($request->validated());
 
-            // Cache expires naturally after 1 hour
+            // Clear events list cache
+            $this->clearEventsCache();
 
             return Redirect::route('admin.events.index')
                 ->with('success', 'Event updated successfully.');
@@ -119,7 +121,8 @@ class AdminEventController extends Controller
         try {
             $event->delete();
 
-            // Cache expires naturally after 1 hour
+            // Clear events list cache
+            $this->clearEventsCache();
 
             return Redirect::route('admin.events.index')
                 ->with('success', 'Event deleted successfully.');
@@ -142,7 +145,8 @@ class AdminEventController extends Controller
 
             $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => TRUE]);
 
-            // Cache expires naturally after 1 hour
+            // Clear events list cache
+            $this->clearEventsCache();
 
             return response()->json([
                 'message' => "{$count} event(s) published successfully.",
@@ -171,7 +175,8 @@ class AdminEventController extends Controller
 
             $count = Event::whereIn('id', $request->event_ids)->update(['is_published' => FALSE]);
 
-            // Cache expires naturally after 1 hour
+            // Clear events list cache
+            $this->clearEventsCache();
 
             return response()->json([
                 'message' => "{$count} event(s) unpublished successfully.",
@@ -200,7 +205,8 @@ class AdminEventController extends Controller
 
             $count = Event::whereIn('id', $request->event_ids)->delete();
 
-            // Cache expires naturally after 1 hour
+            // Clear events list cache
+            $this->clearEventsCache();
 
             return response()->json([
                 'message' => "{$count} event(s) deleted successfully.",
@@ -213,6 +219,20 @@ class AdminEventController extends Controller
                 'message' => 'Failed to delete events. Please try again.',
                 'error' => config('app.debug') ? $e->getMessage() : NULL,
             ], 500);
+        }
+    }
+
+    /**
+     * Clear events list cache for all pages
+     */
+    protected function clearEventsCache(): void
+    {
+        // Clear all paginated event list caches
+        $perPage = 15;
+        $maxPages = 100; // Safety limit
+
+        for ($page = 1; $page <= $maxPages; $page++) {
+            Cache::forget("admin.events.list:page:{$page}:per_page:{$perPage}");
         }
     }
 }

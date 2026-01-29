@@ -28,6 +28,7 @@ class EventFormRequest extends FormRequest
             'icon' => ['nullable', 'string', 'max:255'],
             'category' => ['required', 'string', 'max:100'],
             'event_date' => ['required', 'date'],
+            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
             'is_published' => ['boolean'],
         ];
     }
@@ -47,6 +48,8 @@ class EventFormRequest extends FormRequest
             'event_date.required' => 'Event date is required.',
             'event_date.date' => 'Event date must be a valid date.',
             'icon.max' => 'Event icon must not exceed 255 characters.',
+            'slug.regex' => 'Slug must contain only lowercase letters, numbers, and hyphens. No consecutive hyphens allowed.',
+            'slug.max' => 'Slug must not exceed 255 characters.',
         ];
     }
 }
