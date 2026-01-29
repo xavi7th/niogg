@@ -35,7 +35,9 @@ class AuthenticatedSessionController extends Controller
 
     $request->session()->regenerate();
 
-    return Inertia::location(RouteServiceProvider::home());
+    $location = Auth::guard('web')->user()->is_admin ? route('admin.dashboard') : route('appuser.dashboard');
+
+    return Inertia::location(redirect($location));
   }
 
   /**

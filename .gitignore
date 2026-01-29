@@ -45,3 +45,4 @@ tasks/*
 .ralph/archive/*
 .ralph/.last-branch
 test-results/*
+storage/logs/*
