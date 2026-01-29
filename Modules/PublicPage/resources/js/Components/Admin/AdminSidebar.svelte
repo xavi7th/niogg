@@ -4,11 +4,14 @@
 
 	let isMobileMenuOpen = false;
 
-	$: ({ url } = $page);
-
 	// Detect current page from URL for active state
 	$: activePage = (() => {
-		const path = url?.pathname || '';
+		let path = '';
+		try {
+			path = ($page && $page.url && $page.url.pathname) || window.location.pathname || '';
+		} catch (e) {
+			path = window.location.pathname || '';
+		}
 		if (path.includes('/admin/dashboard')) return 'dashboard';
 		if (path.includes('/admin/events')) return 'events';
 		if (path.includes('/admin/videos')) return 'videos';
@@ -51,7 +54,7 @@
 	];
 
 	// Close mobile menu when route changes
-	$: if ($page.url) {
+	$: if ($page && $page.url) {
 		closeMobileMenu();
 	}
 </script>
