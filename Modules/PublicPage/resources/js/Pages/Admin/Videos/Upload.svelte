@@ -1,14 +1,25 @@
 <script>
 	import { page } from '@inertiajs/svelte';
 	import { router } from '@inertiajs/svelte';
+	import { onMount } from 'svelte';
+	import { writable } from 'svelte/store';
 	import AdminSidebar from '../../../Components/Admin/AdminSidebar.svelte';
 
 	$: ({ event, auth } = $page.props);
 
-	// Upload queue state
-	let uploadQueue = [];
+	// Upload queue state - use Svelte store for better reactivity
+	const uploadQueue = writable([]);
 	let dropZoneActive = false;
-	let fileInput;
+	let fileInputElement;
+
+	// Set up event listener when component mounts
+	onMount(() => {
+		console.log('onMount called, fileInputElement:', fileInputElement);
+		if (fileInputElement) {
+			console.log('Adding event listener to fileInputElement');
+			fileInputElement.addEventListener('change', handleFileSelect);
+		}
+	});
 
 	// Constants
 	const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
@@ -36,38 +47,53 @@
 
 	// Handle file input
 	function handleFileSelect(e) {
+		console.log('handleFileSelect called!', e.target.files);
 		const files = Array.from(e.target.files);
+		console.log('Files array:', files);
 		addFilesToQueue(files);
 		e.target.value = ''; // Reset input
 	}
 
+	// Trigger file input click
+	function triggerFileSelect() {
+		if (fileInputElement) {
+			fileInputElement.click();
+		} else {
+			// Fallback to getElementById
+			const input = document.getElementById('file-input');
+			if (input) {
+				input.click();
+			}
+		}
+	}
+
 	// Add files to upload queue
 	function addFilesToQueue(files) {
-		for (const file of files) {
-			// Validate file type
-			if (!ALLOWED_TYPES.includes(file.type)) {
-				alert(`Invalid file type: ${file.name}. Only MP4, WebM, and MOV files are allowed.`);
-				continue;
-			}
+		uploadQueue.update(currentQueue => {
+			let newQueue = [...currentQueue];
+			for (const file of files) {
+				// Validate file type
+				if (!ALLOWED_TYPES.includes(file.type)) {
+					alert(`Invalid file type: ${file.name}. Only MP4, WebM, and MOV files are allowed.`);
+					continue;
+				}
 
-			// Validate file size
-			if (file.size > MAX_FILE_SIZE) {
-				alert(`File too large: ${file.name}. Maximum size is 1GB.`);
-				continue;
-			}
+				// Validate file size
+				if (file.size > MAX_FILE_SIZE) {
+					alert(`File too large: ${file.name}. Maximum size is 1GB.`);
+					continue;
+				}
 
-			// Check if file already in queue
-			if (uploadQueue.some((item) => item.file.name === file.name && item.file.size === file.size)) {
-				continue;
-			}
+				// Check if file already in queue
+				if (newQueue.some((item) => item.file.name === file.name && item.file.size === file.size)) {
+					continue;
+				}
 
-			// Add to queue
-			uploadQueue = [
-				...uploadQueue,
-				{
+				// Add to queue
+				const newItem = {
 					id: crypto.randomUUID(),
 					file,
-					status: 'waiting', // waiting, uploading, paused, complete, failed
+					status: 'waiting',
 					progress: 0,
 					bytesUploaded: 0,
 					totalBytes: file.size,
@@ -77,37 +103,46 @@
 					speed: 0,
 					timeRemaining: null,
 					error: null,
-					title: file.name.replace(/\.[^/.]+$/, ''), // Default title from filename
+					title: file.name.replace(/\.[^/.]+$/, ''),
 					description: '',
 					is_featured: false,
 					sort_order: 0
-				}
-			];
-		}
+				};
 
-		// Auto-start uploads
-		startPendingUploads();
+				newQueue.push(newItem);
+			}
+			return newQueue;
+		});
 	}
 
 	// Start pending uploads
 	function startPendingUploads() {
+		console.log('startPendingUploads called!');
 		const maxConcurrent = 2; // Max 2 concurrent uploads
-		const uploading = uploadQueue.filter((item) => item.status === 'uploading');
+		uploadQueue.update(currentQueue => {
+			console.log('Current queue in startPendingUploads:', currentQueue);
+			const uploading = currentQueue.filter((item) => item.status === 'uploading');
+			const pending = currentQueue.filter((item) => item.status === 'waiting');
+			console.log('Uploading:', uploading.length, 'Pending:', pending.length);
 
-		if (uploading.length < maxConcurrent) {
-			const pending = uploadQueue.filter((item) => item.status === 'waiting');
-			const toStart = pending.slice(0, maxConcurrent - uploading.length);
+			if (uploading.length < maxConcurrent) {
+				const toStart = pending.slice(0, maxConcurrent - uploading.length);
+				console.log('Starting uploads for:', toStart);
 
-			for (const item of toStart) {
-				startUpload(item);
+				for (const item of toStart) {
+					startUpload(item);
+				}
 			}
-		}
+			return currentQueue;
+		});
 	}
 
 	// Start upload for a single file
 	async function startUpload(uploadItem) {
-		uploadQueue = uploadQueue.map((item) =>
-			item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+		uploadQueue.update(queue =>
+			queue.map((item) =>
+				item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+			)
 		);
 
 		try {
@@ -123,17 +158,21 @@
 			await finalizeUpload(uploadItem);
 
 			// Mark as complete
-			uploadQueue = uploadQueue.map((item) =>
-				item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+			uploadQueue.update(queue =>
+				queue.map((item) =>
+					item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+				)
 			);
 
 			// Start next pending upload
 			startPendingUploads();
 		} catch (error) {
-			uploadQueue = uploadQueue.map((item) =>
-				item.id === uploadItem.id
-					? { ...item, status: 'failed', error: error.message }
-					: item
+			uploadQueue.update(queue =>
+				queue.map((item) =>
+					item.id === uploadItem.id
+						? { ...item, status: 'failed', error: error.message }
+						: item
+				)
 			);
 		}
 	}
@@ -168,7 +207,12 @@
 
 		for (let i = 0; i < totalChunks; i++) {
 			// Check if paused
-			const currentItem = uploadQueue.find((item) => item.id === uploadItem.id);
+			let currentItem;
+			await uploadQueue.update(queue => {
+				currentItem = queue.find((item) => item.id === uploadItem.id);
+				return queue;
+			});
+
 			if (currentItem?.status === 'paused') {
 				return; // Exit chunk upload loop
 			}
@@ -205,17 +249,19 @@
 			const remainingBytes = result.total_bytes - result.bytes_received;
 			const timeRemaining = remainingBytes / speed;
 
-			uploadQueue = uploadQueue.map((item) =>
-				item.id === uploadItem.id
-					? {
-							...item,
-							chunksUploaded: result.chunks_received,
-							bytesUploaded: result.bytes_received,
-							progress: result.progress,
-							speed,
-							timeRemaining
-					  }
-					: item
+			uploadQueue.update(queue =>
+				queue.map((item) =>
+					item.id === uploadItem.id
+						? {
+								...item,
+								chunksUploaded: result.chunks_received,
+								bytesUploaded: result.bytes_received,
+								progress: result.progress,
+								speed,
+								timeRemaining
+						  }
+						: item
+				)
 			);
 		}
 	}
@@ -248,8 +294,10 @@
 
 	// Pause upload
 	function pauseUpload(uploadItem) {
-		uploadQueue = uploadQueue.map((item) =>
-			item.id === uploadItem.id ? { ...item, status: 'paused' } : item
+		uploadQueue.update(queue =>
+			queue.map((item) =>
+				item.id === uploadItem.id ? { ...item, status: 'paused' } : item
+			)
 		);
 
 		// Start next pending upload
@@ -258,8 +306,10 @@
 
 	// Resume upload
 	async function resumeUpload(uploadItem) {
-		uploadQueue = uploadQueue.map((item) =>
-			item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+		uploadQueue.update(queue =>
+			queue.map((item) =>
+				item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+			)
 		);
 
 		try {
@@ -289,16 +339,20 @@
 			// Finalize
 			await finalizeUpload(uploadItem);
 
-			uploadQueue = uploadQueue.map((item) =>
-				item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+			uploadQueue.update(queue =>
+				queue.map((item) =>
+					item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+				)
 			);
 
 			startPendingUploads();
 		} catch (error) {
-			uploadQueue = uploadQueue.map((item) =>
-				item.id === uploadItem.id
-					? { ...item, status: 'failed', error: error.message }
-					: item
+			uploadQueue.update(queue =>
+				queue.map((item) =>
+					item.id === uploadItem.id
+						? { ...item, status: 'failed', error: error.message }
+						: item
+				)
 			);
 		}
 	}
@@ -332,15 +386,17 @@
 			const result = await response.json();
 
 			// Update progress
-			uploadQueue = uploadQueue.map((item) =>
-				item.id === uploadItem.id
-					? {
-							...item,
-							chunksUploaded: result.chunks_received,
-							bytesUploaded: result.bytes_received,
-							progress: result.progress
-					  }
-					: item
+			uploadQueue.update(queue =>
+				queue.map((item) =>
+					item.id === uploadItem.id
+						? {
+								...item,
+								chunksUploaded: result.chunks_received,
+								bytesUploaded: result.bytes_received,
+								progress: result.progress
+						  }
+						: item
+				)
 			);
 		}
 	}
@@ -365,7 +421,7 @@
 			}
 		}
 
-		uploadQueue = uploadQueue.filter((item) => item.id !== uploadItem.id);
+		uploadQueue.update(queue => queue.filter((item) => item.id !== uploadItem.id));
 		startPendingUploads();
 	}
 
@@ -384,8 +440,10 @@
 			timeRemaining: null
 		};
 
-		uploadQueue = uploadQueue.map((item) =>
-			item.id === uploadItem.id ? resetItem : item
+		uploadQueue.update(queue =>
+			queue.map((item) =>
+				item.id === uploadItem.id ? resetItem : item
+			)
 		);
 
 		startPendingUploads();
@@ -393,14 +451,22 @@
 
 	// Pause all uploads
 	function pauseAll() {
-		uploadQueue = uploadQueue.map((item) =>
-			item.status === 'uploading' ? { ...item, status: 'paused' } : item
+		uploadQueue.update(queue =>
+			queue.map((item) =>
+				item.status === 'uploading' ? { ...item, status: 'paused' } : item
+			)
 		);
 	}
 
 	// Cancel all uploads
 	async function cancelAll() {
-		for (const item of uploadQueue) {
+		let queueToCancel;
+		await uploadQueue.update(queue => {
+			queueToCancel = queue;
+			return queue;
+		});
+
+		for (const item of queueToCancel) {
 			if (item.uploadId) {
 				try {
 					const formData = new FormData();
@@ -420,7 +486,7 @@
 			}
 		}
 
-		uploadQueue = [];
+		uploadQueue.set([]);
 	}
 
 	// Format bytes
@@ -496,20 +562,23 @@
 
 	// Update video metadata
 	function updateMetadata(uploadItem, field, value) {
-		uploadQueue = uploadQueue.map((item) =>
-			item.id === uploadItem.id ? { ...item, [field]: value } : item
+		uploadQueue.update(queue =>
+			queue.map((item) =>
+				item.id === uploadItem.id ? { ...item, [field]: value } : item
+			)
 		);
 	}
 
 	// Summary stats
 	$: summaryStats = (() => {
-		const total = uploadQueue.length;
-		const complete = uploadQueue.filter((i) => i.status === 'complete').length;
-		const uploading = uploadQueue.filter((i) => i.status === 'uploading').length;
-		const paused = uploadQueue.filter((i) => i.status === 'paused').length;
-		const waiting = uploadQueue.filter((i) => i.status === 'waiting').length;
-		const failed = uploadQueue.filter((i) => i.status === 'failed').length;
-		const totalBytes = uploadQueue.reduce((sum, i) => sum + i.totalBytes, 0);
+		const queue = $uploadQueue;
+		const total = queue.length;
+		const complete = queue.filter((i) => i.status === 'complete').length;
+		const uploading = queue.filter((i) => i.status === 'uploading').length;
+		const paused = queue.filter((i) => i.status === 'paused').length;
+		const waiting = queue.filter((i) => i.status === 'waiting').length;
+		const failed = queue.filter((i) => i.status === 'failed').length;
+		const totalBytes = queue.reduce((sum, i) => sum + i.totalBytes, 0);
 
 		return { total, complete, uploading, paused, waiting, failed, totalBytes };
 	})();
@@ -544,15 +613,22 @@
 			<div class="max-w-4xl mx-auto">
 				<!-- Upload Area -->
 				<div class="bg-white rounded-lg border border-[#eaeaea] p-4 sm:p-6 lg:p-8 mb-6">
-					<div
-						bind:this={fileInput}
-						class="border-2 border-dashed rounded-lg p-8 sm:p-12 text-center transition-colors cursor-pointer {dropZoneActive
+					<input
+						bind:this={fileInputElement}
+						id="file-input"
+						type="file"
+						accept="video/mp4,video/webm,video/quicktime"
+						multiple
+						class="hidden"
+					/>
+					<label
+						for="file-input"
+						class="border-2 border-dashed rounded-lg p-8 sm:p-12 text-center transition-colors cursor-pointer block {dropZoneActive
 							? 'border-[#ff7607] bg-[#fff3e6]'
 							: 'border-[#eaeaea] hover:border-[#ff7607]'}"
 						ondragover={handleDragOver}
 						ondragleave={handleDragLeave}
 						ondrop={handleDrop}
-						onclick={() => document.getElementById('file-input').click()}
 					>
 						<svg
 							class="mx-auto h-16 w-16 text-[#9b9b9b] mb-4"
@@ -571,36 +647,34 @@
 							Drop videos here or click to browse
 						</h3>
 						<p class="text-[#9b9b9b] mb-4">MP4, WebM, MOV up to 1 GB each • Multiple files supported</p>
-						<button
-							class="px-6 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium"
+						<span
+							class="inline-block px-6 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium"
 						>
 							Select Files
-						</button>
-						<input
-							id="file-input"
-							type="file"
-							accept="video/mp4,video/webm,video/quicktime"
-							multiple
-							hidden
-							onchange={handleFileSelect}
-						/>
-					</div>
+						</span>
+					</label>
 				</div>
 
 				<!-- Upload Queue -->
-				{#if uploadQueue.length > 0}
+				{#if $uploadQueue.length > 0}
 					<div class="bg-white rounded-lg border border-[#eaeaea]">
 						<div class="px-4 sm:px-6 py-4 border-b border-[#eaeaea] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-							<h2 class="font-semibold text-[#1b1a1a]">Upload Queue ({uploadQueue.length} files)</h2>
+							<h2 class="font-semibold text-[#1b1a1a]">Upload Queue ({$uploadQueue.length} files)</h2>
 							<div class="flex items-center gap-2 w-full sm:w-auto">
 								<button
-									onclick={pauseAll}
+									on:click={startPendingUploads}
+									class="px-3 py-1 text-sm text-[#10b981] hover:text-[#059669] border border-[#10b981] rounded hover:bg-[#d1fae5]"
+								>
+									Start Upload
+								</button>
+								<button
+									on:click={pauseAll}
 									class="px-3 py-1 text-sm text-[#9b9b9b] hover:text-[#1b1a1a] border border-[#eaeaea] rounded hover:bg-[#f9f9f9]"
 								>
 									Pause All
 								</button>
 								<button
-									onclick={cancelAll}
+									on:click={cancelAll}
 									class="px-3 py-1 text-sm text-[#ef4444] hover:text-[#dc2626] border border-[#eaeaea] rounded hover:bg-[#fee2e2]"
 								>
 									Cancel All
@@ -609,7 +683,7 @@
 						</div>
 
 						<div class="divide-y divide-[#f9f9f9]">
-							{#each uploadQueue as item (item.id)}
+							{#each $uploadQueue as item (item.id)}
 								{@const statusBadge = getStatusBadge(item)}
 								{@const progressColor = getProgressColor(item)}
 								{@const itemBg = getItemBg(item)}
@@ -705,7 +779,7 @@
 												<div class="flex items-center gap-2 flex-wrap">
 													{#if item.status === 'uploading'}
 														<button
-															onclick={() => pauseUpload(item)}
+															on:click={() => pauseUpload(item)}
 															class="text-[#9b9b9b] hover:text-[#1b1a1a]"
 															title="Pause"
 														>
@@ -724,7 +798,7 @@
 															</svg>
 														</button>
 														<button
-															onclick={() => cancelUpload(item)}
+															on:click={() => cancelUpload(item)}
 															class="text-[#ef4444] hover:text-[#dc2626]"
 															title="Cancel"
 														>
@@ -732,7 +806,7 @@
 														</button>
 													{:else if item.status === 'paused'}
 														<button
-															onclick={() => resumeUpload(item)}
+															on:click={() => resumeUpload(item)}
 															class="text-[#10b981] hover:text-[#059669] flex items-center gap-1"
 															title="Resume"
 														>
@@ -742,7 +816,7 @@
 															Resume
 														</button>
 														<button
-															onclick={() => cancelUpload(item)}
+															on:click={() => cancelUpload(item)}
 															class="text-[#ef4444] hover:text-[#dc2626]"
 															title="Cancel"
 														>
@@ -750,7 +824,7 @@
 														</button>
 													{:else if item.status === 'failed'}
 														<button
-															onclick={() => retryUpload(item)}
+															on:click={() => retryUpload(item)}
 															class="text-[#10b981] hover:text-[#059669] flex items-center gap-1"
 															title="Retry"
 														>
@@ -770,7 +844,7 @@
 															Retry
 														</button>
 														<button
-															onclick={() => cancelUpload(item)}
+															on:click={() => cancelUpload(item)}
 															class="text-[#ef4444] hover:text-[#dc2626]"
 															title="Remove"
 														>
@@ -778,7 +852,7 @@
 														</button>
 													{:else if item.status === 'waiting'}
 														<button
-															onclick={() => cancelUpload(item)}
+															on:click={() => cancelUpload(item)}
 															class="text-[#ef4444] hover:text-[#dc2626]"
 															title="Remove"
 														>
@@ -872,7 +946,7 @@
 					</div>
 				{/if}
 
-				{#if uploadQueue.length === 0}
+				{#if $uploadQueue.length === 0}
 					<!-- Empty state -->
 					<div class="bg-white rounded-lg border border-[#eaeaea] p-12 text-center">
 						<svg
