@@ -173,7 +173,7 @@ console.info(
 createInertiaApp({
   resolve: (name) => {
     try {
-      const pages = import.meta.glob(["./Pages/**/*.svelte", "../../../Modules/**/Pages/**/*.svelte"], { eager: true });
+      const pages = import.meta.glob(["./Pages/**/*.svelte", "/Modules/**/resources/js/Pages/**/*.svelte"], { eager: true });
 
       let page = undefined,
         pageUrl = undefined;
@@ -192,7 +192,7 @@ createInertiaApp({
           throw new Error(`Invalid page name format: ${name}`);
         }
         let [module, pageLocation] = parts;
-        pageUrl = `../../../Modules/${module}/resources/js/Pages/${pageLocation}.svelte`;
+        pageUrl = `/Modules/${module}/resources/js/Pages/${pageLocation}.svelte`;
         page = pages[pageUrl] ?? pages[`./Pages/${pageLocation}.svelte`];
       } else {
         pageUrl = `./Pages/${name}.svelte`;

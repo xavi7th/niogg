@@ -139,28 +139,48 @@
 
 	// Start upload for a single file
 	async function startUpload(uploadItem) {
+		const itemId = uploadItem.id;
+
 		uploadQueue.update(queue =>
 			queue.map((item) =>
-				item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+				item.id === itemId ? { ...item, status: 'uploading' } : item
 			)
 		);
 
 		try {
+			// Get current item from store
+			let currentItem;
+			uploadQueue.update(queue => {
+				currentItem = queue.find(item => item.id === itemId);
+				return queue;
+			});
+
 			// Initialize upload
-			const initResult = await initializeUpload(uploadItem);
-			uploadItem.uploadId = initResult.upload_id;
-			uploadItem.totalChunks = initResult.total_chunks;
+			const initResult = await initializeUpload(currentItem);
 
-			// Upload chunks
-			await uploadChunks(uploadItem);
+			// Update store with uploadId and totalChunks
+			uploadQueue.update(queue =>
+				queue.map(item =>
+					item.id === itemId
+						? { ...item, uploadId: initResult.upload_id, totalChunks: initResult.total_chunks }
+						: item
+				)
+			);
 
-			// Finalize upload
-			await finalizeUpload(uploadItem);
+			// Upload chunks (reads from store, updates store internally)
+			await uploadChunks(itemId);
+
+			// Get updated item for finalization
+			uploadQueue.update(queue => {
+				currentItem = queue.find(item => item.id === itemId);
+				return queue;
+			});
+			await finalizeUpload(currentItem);
 
 			// Mark as complete
 			uploadQueue.update(queue =>
 				queue.map((item) =>
-					item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+					item.id === itemId ? { ...item, status: 'complete', progress: 100 } : item
 				)
 			);
 
@@ -169,7 +189,7 @@
 		} catch (error) {
 			uploadQueue.update(queue =>
 				queue.map((item) =>
-					item.id === uploadItem.id
+					item.id === itemId
 						? { ...item, status: 'failed', error: error.message }
 						: item
 				)
@@ -192,24 +212,40 @@
 		});
 
 		if (!response.ok) {
-			const data = await response.json();
-			throw new Error(data.message || 'Failed to initialize upload');
+			const contentType = response.headers.get('content-type');
+			if (contentType && contentType.includes('application/json')) {
+				const data = await response.json();
+				throw new Error(data.message || 'Failed to initialize upload');
+			} else {
+				// Handle HTML error response (e.g., 413 Payload Too Large)
+				const text = await response.text();
+				if (response.status === 413) {
+					throw new Error('File too large. Maximum upload size is 1GB.');
+				}
+				throw new Error(`Server error (${response.status}): Failed to initialize upload`);
+			}
 		}
 
 		return await response.json();
 	}
 
 	// Upload file in chunks
-	async function uploadChunks(uploadItem) {
-		const file = uploadItem.file;
-		const totalChunks = uploadItem.totalChunks;
+	async function uploadChunks(itemId) {
+		let currentItem;
+		uploadQueue.update(queue => {
+			currentItem = queue.find((item) => item.id === itemId);
+			return queue;
+		});
+
+		const file = currentItem.file;
+		const totalChunks = currentItem.totalChunks;
+		const uploadId = currentItem.uploadId;
 		let startTime = Date.now();
 
 		for (let i = 0; i < totalChunks; i++) {
 			// Check if paused
-			let currentItem;
-			await uploadQueue.update(queue => {
-				currentItem = queue.find((item) => item.id === uploadItem.id);
+			uploadQueue.update(queue => {
+				currentItem = queue.find((item) => item.id === itemId);
 				return queue;
 			});
 
@@ -223,7 +259,7 @@
 
 			const formData = new FormData();
 			formData.append('action', 'chunk');
-			formData.append('upload_id', uploadItem.uploadId);
+			formData.append('upload_id', uploadId);
 			formData.append('chunk', chunk);
 			formData.append('chunk_index', i.toString());
 			formData.append('total_chunks', totalChunks.toString());
@@ -237,8 +273,13 @@
 			});
 
 			if (!response.ok) {
-				const data = await response.json();
-				throw new Error(data.message || 'Failed to upload chunk');
+				const contentType = response.headers.get('content-type');
+				if (contentType && contentType.includes('application/json')) {
+					const data = await response.json();
+					throw new Error(data.message || 'Failed to upload chunk');
+				} else {
+					throw new Error(`Server error (${response.status}): Failed to upload chunk`);
+				}
 			}
 
 			const result = await response.json();
@@ -251,7 +292,7 @@
 
 			uploadQueue.update(queue =>
 				queue.map((item) =>
-					item.id === uploadItem.id
+					item.id === itemId
 						? {
 								...item,
 								chunksUploaded: result.chunks_received,
@@ -285,8 +326,13 @@
 		});
 
 		if (!response.ok) {
-			const data = await response.json();
-			throw new Error(data.message || 'Failed to finalize upload');
+			const contentType = response.headers.get('content-type');
+			if (contentType && contentType.includes('application/json')) {
+				const data = await response.json();
+				throw new Error(data.message || 'Failed to finalize upload');
+			} else {
+				throw new Error(`Server error (${response.status}): Failed to finalize upload`);
+			}
 		}
 
 		return await response.json();
@@ -306,17 +352,26 @@
 
 	// Resume upload
 	async function resumeUpload(uploadItem) {
+		const itemId = uploadItem.id;
+
 		uploadQueue.update(queue =>
 			queue.map((item) =>
-				item.id === uploadItem.id ? { ...item, status: 'uploading' } : item
+				item.id === itemId ? { ...item, status: 'uploading' } : item
 			)
 		);
 
 		try {
+			// Get current item from store
+			let currentItem;
+			uploadQueue.update(queue => {
+				currentItem = queue.find((item) => item.id === itemId);
+				return queue;
+			});
+
 			// Resume from server
 			const formData = new FormData();
 			formData.append('action', 'resume');
-			formData.append('upload_id', uploadItem.uploadId);
+			formData.append('upload_id', currentItem.uploadId);
 
 			const response = await fetch(`/admin/videos/upload/${event.id}`, {
 				method: 'POST',
@@ -333,15 +388,18 @@
 			const result = await response.json();
 
 			// Continue uploading missing chunks
-			uploadItem.chunksUploaded = result.chunks_received;
-			await uploadMissingChunks(uploadItem, result.missing_chunks);
+			await uploadMissingChunks(itemId, result.missing_chunks);
 
-			// Finalize
-			await finalizeUpload(uploadItem);
+			// Get updated item for finalization
+			uploadQueue.update(queue => {
+				currentItem = queue.find((item) => item.id === itemId);
+				return queue;
+			});
+			await finalizeUpload(currentItem);
 
 			uploadQueue.update(queue =>
 				queue.map((item) =>
-					item.id === uploadItem.id ? { ...item, status: 'complete', progress: 100 } : item
+					item.id === itemId ? { ...item, status: 'complete', progress: 100 } : item
 				)
 			);
 
@@ -349,7 +407,7 @@
 		} catch (error) {
 			uploadQueue.update(queue =>
 				queue.map((item) =>
-					item.id === uploadItem.id
+					item.id === itemId
 						? { ...item, status: 'failed', error: error.message }
 						: item
 				)
@@ -358,18 +416,28 @@
 	}
 
 	// Upload missing chunks after resume
-	async function uploadMissingChunks(uploadItem, missingChunks) {
+	async function uploadMissingChunks(itemId, missingChunks) {
+		let currentItem;
+		uploadQueue.update(queue => {
+			currentItem = queue.find((item) => item.id === itemId);
+			return queue;
+		});
+
+		const file = currentItem.file;
+		const uploadId = currentItem.uploadId;
+		const totalChunks = currentItem.totalChunks;
+
 		for (const chunkIndex of missingChunks) {
 			const start = chunkIndex * CHUNK_SIZE;
-			const end = Math.min(start + CHUNK_SIZE, uploadItem.file.size);
-			const chunk = uploadItem.file.slice(start, end);
+			const end = Math.min(start + CHUNK_SIZE, file.size);
+			const chunk = file.slice(start, end);
 
 			const formData = new FormData();
 			formData.append('action', 'chunk');
-			formData.append('upload_id', uploadItem.uploadId);
+			formData.append('upload_id', uploadId);
 			formData.append('chunk', chunk);
 			formData.append('chunk_index', chunkIndex.toString());
-			formData.append('total_chunks', uploadItem.totalChunks.toString());
+			formData.append('total_chunks', totalChunks.toString());
 
 			const response = await fetch(`/admin/videos/upload/${event.id}`, {
 				method: 'POST',
@@ -388,7 +456,7 @@
 			// Update progress
 			uploadQueue.update(queue =>
 				queue.map((item) =>
-					item.id === uploadItem.id
+					item.id === itemId
 						? {
 								...item,
 								chunksUploaded: result.chunks_received,

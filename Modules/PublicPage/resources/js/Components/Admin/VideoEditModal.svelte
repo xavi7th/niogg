@@ -1,32 +1,25 @@
 <script>
-	import { fly } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
 	import { router } from '@inertiajs/svelte';
-	import { useForm } from '@inertiajs/svelte';
 
 	export let open = false;
-	export let video = null;
-	export let eventId = null;
+	export let video = {};
 
-	let form;
-
-	$: if (video) {
-		form = useForm({
-			title: video.title || '',
-			description: video.description || '',
-			duration_seconds: video.duration_seconds || 0,
-			is_featured: video.is_featured || false,
-			sort_order: video.sort_order || 0,
-		});
-	}
+	let isSubmitting = false;
 
 	function close() {
 		open = false;
+		isSubmitting = false;
 	}
 
 	function submit() {
-		form.put(`/admin/videos/${video.id}`, {
+		isSubmitting = true;
+		router.put(`/admin/videos/${video.id}`, video, {
 			onSuccess: () => {
 				close();
+			},
+			onFinish: () => {
+				isSubmitting = false;
 			},
 		});
 	}
@@ -72,37 +65,25 @@
 						<input
 							id="title"
 							type="text"
-							bind:value={form.title}
-							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none {form.errors.title
-								? 'border-[#ef4444]'
-								: ''}"
+							bind:value={video.title}
+							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none"
 							placeholder="Video title"
 						/>
-						{#if form.errors.title}
-							<p class="mt-1 text-sm text-[#ef4444]">{form.errors.title}</p>
-						{/if}
 					</div>
 
-					<!-- Description -->
 					<div>
 						<label for="description" class="block text-sm font-medium text-[#1b1a1a] mb-1">
 							Description
 						</label>
 						<textarea
 							id="description"
-							bind:value={form.description}
+							bind:value={video.description}
 							rows="3"
-							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none resize-none {form.errors.description
-								? 'border-[#ef4444]'
-								: ''}"
+							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none resize-none"
 							placeholder="Video description (optional)"
 						></textarea>
-						{#if form.errors.description}
-							<p class="mt-1 text-sm text-[#ef4444]">{form.errors.description}</p>
-						{/if}
 					</div>
 
-					<!-- Duration -->
 					<div>
 						<label for="duration" class="block text-sm font-medium text-[#1b1a1a] mb-1">
 							Duration (seconds)
@@ -111,18 +92,12 @@
 							id="duration"
 							type="number"
 							min="0"
-							bind:value={form.duration_seconds}
-							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none {form.errors.duration_seconds
-								? 'border-[#ef4444]'
-								: ''}"
+							bind:value={video.duration_seconds}
+							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none"
 							placeholder="0"
 						/>
-						{#if form.errors.duration_seconds}
-							<p class="mt-1 text-sm text-[#ef4444]">{form.errors.duration_seconds}</p>
-						{/if}
 					</div>
 
-					<!-- Sort Order -->
 					<div>
 						<label for="sort_order" class="block text-sm font-medium text-[#1b1a1a] mb-1">
 							Sort Order
@@ -131,18 +106,12 @@
 							id="sort_order"
 							type="number"
 							min="0"
-							bind:value={form.sort_order}
-							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none {form.errors.sort_order
-								? 'border-[#ef4444]'
-								: ''}"
+							bind:value={video.sort_order}
+							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none"
 							placeholder="0"
 						/>
-						{#if form.errors.sort_order}
-							<p class="mt-1 text-sm text-[#ef4444]">{form.errors.sort_order}</p>
-						{/if}
 					</div>
 
-					<!-- Featured Toggle -->
 					<div class="flex items-center justify-between">
 						<div>
 							<label for="featured" class="block text-sm font-medium text-[#1b1a1a]">
@@ -154,7 +123,7 @@
 							<input
 								id="featured"
 								type="checkbox"
-								bind:checked={form.is_featured}
+								bind:checked={video.is_featured}
 								class="sr-only peer"
 							/>
 							<div
@@ -164,22 +133,21 @@
 					</div>
 				</div>
 
-				<!-- Modal Footer -->
 				<div class="flex items-center justify-end gap-3 p-6 border-t border-[#eaeaea]">
 					<button
 						on:click={close}
 						type="button"
 						class="px-4 py-2 border border-[#eaeaea] text-[#1b1a1a] rounded-lg hover:bg-[#f9f9f9] font-medium text-sm"
-						disabled={form.processing}
+						disabled={isSubmitting}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
 						class="px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-						disabled={form.processing}
+						disabled={isSubmitting}
 					>
-						{#if form.processing}
+						{#if isSubmitting}
 							Saving...
 						{:else}
 							Save Changes
