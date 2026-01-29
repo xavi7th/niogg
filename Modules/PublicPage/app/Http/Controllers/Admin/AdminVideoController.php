@@ -3,13 +3,13 @@
 namespace Modules\PublicPage\Http\Controllers\Admin;
 
 use Exception;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use InvalidArgumentException;
 use App\Http\Controllers\Controller;
 use Modules\PublicPage\Models\Event;
 use Modules\PublicPage\Models\Video;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Modules\PublicPage\Services\VideoUploadService;
 use Modules\PublicPage\Http\Requests\Admin\VideoFormRequest;
 use Modules\PublicPage\Http\Requests\Admin\VideoUploadRequest;
@@ -28,7 +28,7 @@ class AdminVideoController extends Controller
      */
     public function create(Event $event): \Inertia\Response
     {
-        return Inertia::render('Admin/Videos/Upload', [
+        return Inertia::render('PublicPage::Admin/Videos/Upload', [
             'event' => $event,
         ]);
     }
@@ -104,7 +104,7 @@ class AdminVideoController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return Inertia::render('Admin/Videos/Index', [
+        return Inertia::render('PublicPage::Admin/Videos/Index', [
             'event' => $event,
             'videos' => $videos,
         ]);

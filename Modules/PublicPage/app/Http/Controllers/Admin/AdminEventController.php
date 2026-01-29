@@ -27,7 +27,7 @@ class AdminEventController extends Controller
             ->orderBy('event_date', 'desc')
             ->paginate(15));
 
-        return Inertia::render('Admin/Events/Index', [
+        return Inertia::render('PublicPage::Admin/Events/Index', [
             'events' => $events,
         ]);
     }
@@ -37,7 +37,7 @@ class AdminEventController extends Controller
      */
     public function create(): \Inertia\Response
     {
-        return Inertia::render('Admin/Events/Create');
+        return Inertia::render('PublicPage::Admin/Events/Create');
     }
 
     /**
@@ -49,7 +49,7 @@ class AdminEventController extends Controller
             $query->orderBy('sort_order')->orderBy('created_at');
         }]);
 
-        return Inertia::render('Admin/Events/Show', [
+        return Inertia::render('PublicPage::Admin/Events/Show', [
             'event' => $event,
         ]);
     }
@@ -59,7 +59,7 @@ class AdminEventController extends Controller
      */
     public function edit(Event $event): \Inertia\Response
     {
-        return Inertia::render('Admin/Events/Edit', [
+        return Inertia::render('PublicPage::Admin/Events/Edit', [
             'event' => $event,
         ]);
     }

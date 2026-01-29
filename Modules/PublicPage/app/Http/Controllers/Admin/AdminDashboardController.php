@@ -68,7 +68,7 @@ class AdminDashboardController extends Controller
                 ]);
             });
 
-        return Inertia::render('Admin/Dashboard', [
+        return Inertia::render('PublicPage::Admin/Dashboard', [
             'stats' => $stats,
             'categoryStats' => $categoryStats,
             'recentEvents' => $recentEvents,

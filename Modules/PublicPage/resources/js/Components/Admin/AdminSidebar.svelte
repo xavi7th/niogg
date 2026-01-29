@@ -10,7 +10,7 @@
 
 	// Detect current page from URL for active state
 	$: activePage = (() => {
-		const path = url.pathname;
+		const path = url?.pathname || '';
 		if (path.includes('/admin/dashboard')) return 'dashboard';
 		if (path.includes('/admin/events')) return 'events';
 		if (path.includes('/admin/videos')) return 'videos';
@@ -98,7 +98,7 @@
 		{#each navItems as item}
 			<a
 				href={item.href}
-				{method}
+				data-method={item.method || 'get'}
 				on:click={closeMobileMenu}
 				class="flex items-center gap-3 px-6 py-3 transition-colors
 				{activePage === item.id && item.id !== 'logout'
