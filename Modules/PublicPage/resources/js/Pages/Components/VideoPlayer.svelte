@@ -14,8 +14,26 @@
   // Initialize as loaded for testing
   isLoaded = true;
 
+  // Detect video MIME type based on file extension
+  $: videoMimeType = (() => {
+    if (!video?.video_url) return 'video/mp4';
+    try {
+      const urlParts = video.video_url.split('.');
+      if (urlParts.length < 2) return 'video/mp4';
+      const extension = urlParts.pop().toLowerCase();
+      switch (extension) {
+        case 'mp4': return 'video/mp4';
+        case 'webm': return 'video/webm';
+        case 'mov': return 'video/quicktime';
+        default: return 'video/mp4';
+      }
+    } catch {
+      return 'video/mp4';
+    }
+  })();
+
   function handlePlayClick() {
-    if (videoElement && isLoaded) {
+    if (videoElement && isLoaded && video?.video_url) {
       videoElement.play();
     }
   }
@@ -41,7 +59,7 @@
         on:play={handlePlay}
         on:pause={handlePause}
       >
-        <source src={video.video_url} type="video/mp4" />
+        <source src={video.video_url} type={videoMimeType} />
         <p>Your browser does not support HTML5 video.</p>
       </video>
     {:else}

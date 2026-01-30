@@ -10,7 +10,6 @@
   export let placeholder = '';
 
   onMount(() => {
-    // Intersection Observer for lazy loading images
     observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -36,17 +35,17 @@
 </script>
 
 <div class="lazy-thumbnail-container" class:loaded={isVisible} {...$$restProps}>
-  {#if isVisible}
-    <img
-      bind:this={imageElement}
-      src={src}
-      alt={alt}
-      loading="lazy"
-      class="lazy-thumbnail-image"
-      decoding="async"
-      style="will-change: opacity;"
-    />
-  {:else}
+  <img
+    bind:this={imageElement}
+    src={src}
+    alt={alt}
+    loading="lazy"
+    class="lazy-thumbnail-image"
+    decoding="async"
+    style="will-change: opacity;"
+  />
+
+  {#if !isVisible}
     <div class="placeholder">
       {#if placeholder}
         <img
@@ -58,7 +57,7 @@
       {:else}
         <div class="placeholder-fallback">
           <svg width="50" height="50" viewBox="0 0 100 100" fill="none" stroke="#ccc" stroke-width="2">
-            <circle cx="50" cy="50" r="48" fill="#f5f5f5" />
+            <circle cx="50" cy="50" r="48" fill="#222" />
             <path d="M35 35 L65 65 M65 35 L35 65" stroke="#ccc" stroke-width="2" stroke-linecap="round" />
           </svg>
         </div>
