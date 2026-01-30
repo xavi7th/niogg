@@ -19,12 +19,14 @@ class VideoUploadRequest extends FormRequest
 
     switch ($this->input('action')) {
       case 'initialize':
-        $rules['file'] = 'required|file|max:1048576'; // 1GB max in KB
+        $rules['filename'] = 'required|string|max:255';
+        $rules['file_size'] = 'required|integer|min:1|max:1073741824'; // 1GB max
+        $rules['mime_type'] = 'required|string|in:video/mp4,video/webm,video/quicktime';
         break;
 
       case 'chunk':
         $rules['upload_id'] = 'required|string|uuid';
-        $rules['chunk'] = 'required|file|max:5120'; // 5MB max in KB
+        $rules['chunk'] = 'required|file|max:10240'; // 10MB max in KB
         $rules['chunk_index'] = 'required|integer|min:0';
         $rules['total_chunks'] = 'required|integer|min:1';
         break;

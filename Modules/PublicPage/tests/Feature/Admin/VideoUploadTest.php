@@ -60,12 +60,13 @@ class VideoUploadTest extends TestCase
   public function test_initialize_upload_creates_upload_session(): void
   {
     $event = Event::factory()->create();
-    $file = UploadedFile::fake()->create('video.mp4', 10000); // 10MB
 
     $response = $this->actingAs($this->admin)
         ->postJson(route('admin.videos.upload', $event), [
           'action' => 'initialize',
-          'file' => $file,
+          'filename' => 'video.mp4',
+          'file_size' => 10000000, // 10MB
+          'mime_type' => 'video/mp4',
         ]);
 
     $response->assertStatus(200)
@@ -74,8 +75,8 @@ class VideoUploadTest extends TestCase
           'chunk_size',
           'total_chunks',
         ])
-        ->assertJsonPath('chunk_size', 5242880) // 5MB
-        ->assertJsonPath('total_chunks', 2);
+        ->assertJsonPath('chunk_size', 10485760) // 10MB
+        ->assertJsonPath('total_chunks', 1);
 
     // Verify upload metadata is cached
     $uploadId = $response->json('upload_id');
@@ -87,28 +88,29 @@ class VideoUploadTest extends TestCase
   public function test_initialize_upload_rejects_invalid_file_type(): void
   {
     $event = Event::factory()->create();
-    $file = UploadedFile::fake()->create('document.pdf', 1000);
 
     $response = $this->actingAs($this->admin)
         ->postJson(route('admin.videos.upload', $event), [
           'action' => 'initialize',
-          'file' => $file,
+          'filename' => 'document.pdf',
+          'file_size' => 1000,
+          'mime_type' => 'application/pdf',
         ]);
 
-    $response->assertStatus(400)
-        ->assertJsonPath('message', 'Invalid file type. Only MP4, WebM, and MOV files are allowed.');
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors(['mime_type']);
   }
 
   public function test_initialize_upload_rejects_oversized_file(): void
   {
     $event = Event::factory()->create();
-    // Create file larger than 1GB (using KB as unit in validator)
-    $file = UploadedFile::fake()->create('video.mp4', 1048577); // Just over 1GB in KB
 
     $response = $this->actingAs($this->admin)
         ->postJson(route('admin.videos.upload', $event), [
           'action' => 'initialize',
-          'file' => $file,
+          'filename' => 'video.mp4',
+          'file_size' => 1073741825, // Just over 1GB in bytes
+          'mime_type' => 'video/mp4',
         ]);
 
     $response->assertStatus(422);
@@ -125,13 +127,13 @@ class VideoUploadTest extends TestCase
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
       'mime_type' => 'video/mp4',
-      'total_size' => 10485760, // 10MB
+      'total_size' => 20971520, // 20MB = 2 chunks of 10MB each
       'chunks_received' => 0,
       'bytes_received' => 0,
       'status' => 'initialized',
     ], now()->addHours(24));
 
-    $chunk = UploadedFile::fake()->create('chunk.bin', 5000); // 5MB
+    $chunk = UploadedFile::fake()->create('chunk.bin', 10000); // 10MB in KB
 
     $response = $this->actingAs($this->admin)
         ->postJson(route('admin.videos.upload', $event), [
@@ -168,9 +170,9 @@ class VideoUploadTest extends TestCase
       'event_id' => $event->id,
       'original_filename' => 'test-video.mp4',
       'mime_type' => 'video/mp4',
-      'total_size' => 10485760,
+      'total_size' => 20971520, // 20MB
       'chunks_received' => 2,
-      'bytes_received' => 10485760,
+      'bytes_received' => 20971520,
       'status' => 'complete',
     ], now()->addHours(24));
 
@@ -208,7 +210,7 @@ class VideoUploadTest extends TestCase
     $this->assertNotNull($video);
     $this->assertEquals('Test Video', $video->title);
     $this->assertEquals($event->id, $video->event_id);
-    $this->assertEquals(10485760, $video->file_size);
+    $this->assertEquals(20971520, $video->file_size);
     $this->assertEquals('video/mp4', $video->mime_type);
 
     // Verify chunks were cleaned up
@@ -220,15 +222,15 @@ class VideoUploadTest extends TestCase
     $event = Event::factory()->create();
     $uploadId = Str::uuid()->toString();
 
-    // Initialize upload in cache
+    // Initialize upload in cache with 25MB total = 3 chunks of 10MB each
     cache()->put("upload:{$uploadId}", [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
       'mime_type' => 'video/mp4',
-      'total_size' => 15728640, // 15MB = 3 chunks
+      'total_size' => 26214400, // 25MB = 3 chunks (10MB + 10MB + 5MB)
       'chunks_received' => 1,
-      'bytes_received' => 5242880,
+      'bytes_received' => 10485760, // 10MB received
       'status' => 'uploading',
     ], now()->addHours(24));
 
@@ -269,9 +271,9 @@ class VideoUploadTest extends TestCase
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
       'mime_type' => 'video/mp4',
-      'total_size' => 10485760,
+      'total_size' => 20971520, // 20MB
       'chunks_received' => 1,
-      'bytes_received' => 5242880,
+      'bytes_received' => 10485760, // 10MB received
       'status' => 'uploading',
     ], now()->addHours(24));
 
@@ -323,9 +325,9 @@ class VideoUploadTest extends TestCase
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
       'mime_type' => 'video/mp4',
-      'total_size' => 10485760,
+      'total_size' => 20971520, // 20MB = 2 chunks
       'chunks_received' => 1,
-      'bytes_received' => 5242880,
+      'bytes_received' => 10485760, // 10MB received
       'status' => 'uploading',
     ], now()->addHours(24));
 

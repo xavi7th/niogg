@@ -43,7 +43,12 @@ class AdminVideoController extends Controller
     try {
       return match ($action) {
         'initialize' => response()->json(
-            $this->uploadService->initializeUpload($request->file('file'), $event->id)
+            $this->uploadService->initializeUpload(
+                $request->input('filename'),
+                (int) $request->input('file_size'),
+                $request->input('mime_type'),
+                $event->id
+            )
         ),
         'chunk' => response()->json(
             $this->uploadService->uploadChunk(
@@ -65,7 +70,7 @@ class AdminVideoController extends Controller
         'cancel' => response()->json(
             tap(
                 ['message' => 'Upload cancelled successfully.'],
-                fn() => $this->uploadService->cancelUpload($request->input('upload_id'))
+                fn () => $this->uploadService->cancelUpload($request->input('upload_id'))
             )
         ),
         default => response()->json([
@@ -119,7 +124,7 @@ class AdminVideoController extends Controller
       $video = $event->videos()->create($request->validated());
 
       return Redirect::route('admin.events.show', $event)
-        ->with('success', 'Video added successfully.');
+          ->with('success', 'Video added successfully.');
     } catch (Exception $e) {
       return Redirect::back()
           ->withInput()
@@ -136,7 +141,7 @@ class AdminVideoController extends Controller
       $video->update($request->validated());
 
       return Redirect::route('admin.events.show', $video->event)
-        ->with('success', 'Video updated successfully.');
+          ->with('success', 'Video updated successfully.');
     } catch (Exception $e) {
       return Redirect::back()
           ->withInput()
@@ -154,10 +159,10 @@ class AdminVideoController extends Controller
       $video->delete();
 
       return Redirect::route('admin.events.show', $event)
-        ->with('success', 'Video deleted successfully.');
+          ->with('success', 'Video deleted successfully.');
     } catch (Exception $e) {
       return Redirect::back()
-        ->with('error', 'Failed to delete video. Please try again.');
+          ->with('error', 'Failed to delete video. Please try again.');
     }
   }
 
@@ -178,7 +183,7 @@ class AdminVideoController extends Controller
       $eventVideoIds = $event->videos()->pluck('id')->toArray();
       $invalidIds = array_diff($videoIds, $eventVideoIds);
 
-      if (! empty($invalidIds)) {
+      if ( ! empty($invalidIds)) {
         return response()->json([
           'message' => 'Some videos do not belong to this event.',
         ], 400);

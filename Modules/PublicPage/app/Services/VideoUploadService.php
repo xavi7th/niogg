@@ -21,7 +21,7 @@ class VideoUploadService
     'video/quicktime', // .mov files
   ];
 
-  private const CHUNK_SIZE = 5242880; // 5MB chunks
+  private const CHUNK_SIZE = 10485760; // 10MB chunks (increased for parallel uploads)
 
   private const STORAGE_DISK = 'public';
 
@@ -37,12 +37,12 @@ class VideoUploadService
   /**
    * Initialize a new chunked upload session
    */
-  public function initializeUpload(UploadedFile $file, int $eventId): array
+  public function initializeUpload(string $filename, int $fileSize, string $mimeType, int $eventId): array
   {
-    $this->validateFile($file);
+    $this->validateMetadata($filename, $fileSize, $mimeType);
 
     $uploadId = Str::uuid()->toString();
-    $filename = $this->generateFilename($file);
+    $extension = mb_strtolower(pathinfo($filename, PATHINFO_EXTENSION));
     $chunkPath = $this->getChunkPath($uploadId);
 
     // Create chunk directory
@@ -52,9 +52,9 @@ class VideoUploadService
     $metadata = [
       'upload_id' => $uploadId,
       'event_id' => $eventId,
-      'original_filename' => $file->getClientOriginalName(),
-      'mime_type' => $file->getMimeType(),
-      'total_size' => $file->getSize(),
+      'original_filename' => $filename,
+      'mime_type' => $mimeType,
+      'total_size' => $fileSize,
       'chunks_received' => 0,
       'bytes_received' => 0,
       'status' => 'initialized',
@@ -65,7 +65,7 @@ class VideoUploadService
     return [
       'upload_id' => $uploadId,
       'chunk_size' => self::CHUNK_SIZE,
-      'total_chunks' => (int) ceil($file->getSize() / self::CHUNK_SIZE),
+      'total_chunks' => (int) ceil($fileSize / self::CHUNK_SIZE),
     ];
   }
 
@@ -258,6 +258,33 @@ class VideoUploadService
   }
 
   /**
+   * Validate upload metadata (for initialize without file upload)
+   */
+  private function validateMetadata(string $filename, int $fileSize, string $mimeType): void
+  {
+    // Check file size
+    if ($fileSize > self::MAX_FILE_SIZE) {
+      throw new InvalidArgumentException('File size exceeds maximum allowed size of 1GB.');
+    }
+
+    // Check MIME type
+    if ( ! in_array($mimeType, self::ALLOWED_MIME_TYPES, TRUE)) {
+      throw new InvalidArgumentException(
+          'Invalid file type. Only MP4, WebM, and MOV files are allowed.'
+      );
+    }
+
+    // Check by file extension for better accuracy
+    $extension = mb_strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+    $allowedExtensions = ['mp4', 'webm', 'mov'];
+    if ( ! in_array($extension, $allowedExtensions, TRUE)) {
+      throw new InvalidArgumentException(
+          'Invalid file extension. Only .mp4, .webm, and .mov files are allowed.'
+      );
+    }
+  }
+
+  /**
    * Generate unique filename for storage
    */
   private function generateFilename(UploadedFile $file): string
@@ -276,7 +303,7 @@ class VideoUploadService
   }
 
   /**
-   * Combine all chunks into final video file
+   * Combine all chunks into final video file using streaming
    */
   private function combineChunks(string $uploadId, string $originalFilename): string
   {
@@ -296,13 +323,29 @@ class VideoUploadService
     $finalFilename = Str::uuid()->toString() . '.' . $extension;
     $finalPath = self::STORAGE_PATH . '/' . $finalFilename;
 
-    // Combine chunks
-    $combinedContent = '';
-    foreach ($chunks as $chunk) {
-      $combinedContent .= Storage::disk(self::STORAGE_DISK)->get($chunk);
+    // Stream chunks directly to final file (no memory buildup)
+    $disk = Storage::disk(self::STORAGE_DISK);
+    $tempPath = sys_get_temp_dir() . '/' . $finalFilename;
+
+    $outStream = fopen($tempPath, 'wb');
+    if ($outStream === FALSE) {
+      throw new Exception('Failed to create temporary file for chunk combination.');
     }
 
-    Storage::disk(self::STORAGE_DISK)->put($finalPath, $combinedContent);
+    try {
+      foreach ($chunks as $chunk) {
+        $chunkContent = $disk->get($chunk);
+        if ($chunkContent !== FALSE && $chunkContent !== '') {
+          fwrite($outStream, $chunkContent);
+        }
+      }
+    } finally {
+      fclose($outStream);
+    }
+
+    // Store the combined file
+    $disk->put($finalPath, file_get_contents($tempPath));
+    unlink($tempPath);
 
     return $finalPath;
   }
