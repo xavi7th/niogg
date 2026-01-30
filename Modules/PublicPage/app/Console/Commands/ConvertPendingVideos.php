@@ -2,6 +2,7 @@
 
 namespace Modules\PublicPage\Console\Commands;
 
+use Throwable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Bus;
 use Modules\PublicPage\Models\Video;
@@ -56,7 +57,7 @@ class ConvertPendingVideos extends Command
   {
     return Video::query()
         ->where('mime_type', '!=', 'video/mp4')
-        ->where(function ($query) {
+        ->where(function ($query): void {
           $query->whereNull('conversion_status')
               ->orWhere('conversion_status', 'pending');
         })
@@ -98,7 +99,7 @@ class ConvertPendingVideos extends Command
       Bus::dispatch(new ConvertVideoToMp4($video));
       $this->info('  Conversion job dispatched');
       $this->scheduled++;
-    } catch (\Throwable $e) {
+    } catch (Throwable $e) {
       $this->error('  Failed to dispatch: ' . $e->getMessage());
       $this->failed++;
     }
@@ -111,7 +112,7 @@ class ConvertPendingVideos extends Command
 
     $relativePath = str_replace($storageUrl, '', $videoUrl);
 
-    if (strpos($videoUrl, 'http') === 0) {
+    if (str_starts_with($videoUrl, 'http')) {
       $relativePath = parse_url($videoUrl, PHP_URL_PATH);
       $relativePath = str_replace('/storage/', '', $relativePath);
     } else {

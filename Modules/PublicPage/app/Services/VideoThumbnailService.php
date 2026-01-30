@@ -46,7 +46,7 @@ class VideoThumbnailService
   {
     $fullVideoPath = Storage::disk(self::STORAGE_DISK)->path($videoPath);
 
-    if (! file_exists($fullVideoPath)) {
+    if ( ! file_exists($fullVideoPath)) {
       throw new InvalidArgumentException("Video file not found: {$videoPath}");
     }
 
@@ -80,8 +80,8 @@ class VideoThumbnailService
       $image = $this->imageManager->read($tempFile);
       $image->cover($width, $height);
       Storage::disk(self::STORAGE_DISK)->put(
-        $thumbnailPath,
-        $image->toJpeg(quality: 85)
+          $thumbnailPath,
+          $image->toJpeg(quality: 85)
       );
 
       $thumbnails[$size] = Storage::disk(self::STORAGE_DISK)->url($thumbnailPath);
@@ -105,9 +105,9 @@ class VideoThumbnailService
   {
     // Extract relative path from full URL
     $videoPath = str_replace(
-      Storage::disk(self::STORAGE_DISK)->url(''),
-      '',
-      $video->video_url
+        Storage::disk(self::STORAGE_DISK)->url(''),
+        '',
+        $video->video_url
     );
 
     $thumbnails = $this->generateFromPath($videoPath, $video->duration_seconds);
@@ -141,9 +141,9 @@ class VideoThumbnailService
     }
 
     $thumbnailPath = str_replace(
-      Storage::disk(self::STORAGE_DISK)->url(''),
-      '',
-      $thumbnailUrl
+        Storage::disk(self::STORAGE_DISK)->url(''),
+        '',
+        $thumbnailUrl
     );
 
     // Extract base name (without size suffix)
@@ -176,9 +176,9 @@ class VideoThumbnailService
     }
 
     $thumbnailPath = str_replace(
-      Storage::disk(self::STORAGE_DISK)->url(''),
-      '',
-      $thumbnailUrl
+        Storage::disk(self::STORAGE_DISK)->url(''),
+        '',
+        $thumbnailUrl
     );
 
     $pathInfo = pathinfo($thumbnailPath);

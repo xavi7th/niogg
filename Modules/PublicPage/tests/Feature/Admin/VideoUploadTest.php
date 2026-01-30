@@ -63,19 +63,19 @@ class VideoUploadTest extends TestCase
     $file = UploadedFile::fake()->create('video.mp4', 10000); // 10MB
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'initialize',
-        'file' => $file,
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'initialize',
+          'file' => $file,
+        ]);
 
     $response->assertStatus(200)
-      ->assertJsonStructure([
-        'upload_id',
-        'chunk_size',
-        'total_chunks',
-      ])
-      ->assertJsonPath('chunk_size', 5242880) // 5MB
-      ->assertJsonPath('total_chunks', 2);
+        ->assertJsonStructure([
+          'upload_id',
+          'chunk_size',
+          'total_chunks',
+        ])
+        ->assertJsonPath('chunk_size', 5242880) // 5MB
+        ->assertJsonPath('total_chunks', 2);
 
     // Verify upload metadata is cached
     $uploadId = $response->json('upload_id');
@@ -90,13 +90,13 @@ class VideoUploadTest extends TestCase
     $file = UploadedFile::fake()->create('document.pdf', 1000);
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'initialize',
-        'file' => $file,
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'initialize',
+          'file' => $file,
+        ]);
 
     $response->assertStatus(400)
-      ->assertJsonPath('message', 'Invalid file type. Only MP4, WebM, and MOV files are allowed.');
+        ->assertJsonPath('message', 'Invalid file type. Only MP4, WebM, and MOV files are allowed.');
   }
 
   public function test_initialize_upload_rejects_oversized_file(): void
@@ -106,10 +106,10 @@ class VideoUploadTest extends TestCase
     $file = UploadedFile::fake()->create('video.mp4', 1048577); // Just over 1GB in KB
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'initialize',
-        'file' => $file,
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'initialize',
+          'file' => $file,
+        ]);
 
     $response->assertStatus(422);
   }
@@ -134,27 +134,27 @@ class VideoUploadTest extends TestCase
     $chunk = UploadedFile::fake()->create('chunk.bin', 5000); // 5MB
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'chunk',
-        'upload_id' => $uploadId,
-        'chunk' => $chunk,
-        'chunk_index' => 0,
-        'total_chunks' => 2,
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'chunk',
+          'upload_id' => $uploadId,
+          'chunk' => $chunk,
+          'chunk_index' => 0,
+          'total_chunks' => 2,
+        ]);
 
     $response->assertStatus(200)
-      ->assertJsonStructure([
-        'upload_id',
-        'chunk_index',
-        'chunks_received',
-        'total_chunks',
-        'bytes_received',
-        'total_bytes',
-        'progress',
-        'status',
-      ])
-      ->assertJsonPath('chunks_received', 1)
-      ->assertJsonPath('progress', 50);
+        ->assertJsonStructure([
+          'upload_id',
+          'chunk_index',
+          'chunks_received',
+          'total_chunks',
+          'bytes_received',
+          'total_bytes',
+          'progress',
+          'status',
+        ])
+        ->assertJsonPath('chunks_received', 1)
+        ->assertJsonPath('progress', 50);
   }
 
   public function test_finalize_upload_creates_video_record(): void
@@ -180,28 +180,28 @@ class VideoUploadTest extends TestCase
     Storage::disk('public')->put('videos/chunks/' . $uploadId . '/chunk_1', 'fake video data part 2');
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'finalize',
-        'upload_id' => $uploadId,
-        'title' => 'Test Video',
-        'description' => 'Test Description',
-        'duration_seconds' => 120,
-        'is_featured' => TRUE,
-        'sort_order' => 1,
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'finalize',
+          'upload_id' => $uploadId,
+          'title' => 'Test Video',
+          'description' => 'Test Description',
+          'duration_seconds' => 120,
+          'is_featured' => TRUE,
+          'sort_order' => 1,
+        ]);
 
     $response->assertStatus(201)
-      ->assertJsonStructure([
-        'video' => [
-          'id',
-          'title',
-          'description',
-          'video_url',
-          'duration_seconds',
-          'is_featured',
-          'sort_order',
-        ],
-      ]);
+        ->assertJsonStructure([
+          'video' => [
+            'id',
+            'title',
+            'description',
+            'video_url',
+            'duration_seconds',
+            'is_featured',
+            'sort_order',
+          ],
+        ]);
 
     // Verify video was created
     $video = Video::where('upload_id', $uploadId)->first();
@@ -237,25 +237,25 @@ class VideoUploadTest extends TestCase
     Storage::disk('public')->put('videos/chunks/' . $uploadId . '/chunk_0', 'fake video data');
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'resume',
-        'upload_id' => $uploadId,
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'resume',
+          'upload_id' => $uploadId,
+        ]);
 
     $response->assertStatus(200)
-      ->assertJsonStructure([
-        'upload_id',
-        'original_filename',
-        'total_size',
-        'bytes_received',
-        'chunks_received',
-        'total_chunks',
-        'received_chunks',
-        'missing_chunks',
-        'status',
-      ])
-      ->assertJsonPath('received_chunks', [0])
-      ->assertJsonPath('missing_chunks', [1, 2]);
+        ->assertJsonStructure([
+          'upload_id',
+          'original_filename',
+          'total_size',
+          'bytes_received',
+          'chunks_received',
+          'total_chunks',
+          'received_chunks',
+          'missing_chunks',
+          'status',
+        ])
+        ->assertJsonPath('received_chunks', [0])
+        ->assertJsonPath('missing_chunks', [1, 2]);
   }
 
   public function test_cancel_upload_cleans_up_resources(): void
@@ -283,13 +283,13 @@ class VideoUploadTest extends TestCase
     Storage::disk('public')->assertExists('videos/chunks/' . $uploadId . '/chunk_0');
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'cancel',
-        'upload_id' => $uploadId,
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'cancel',
+          'upload_id' => $uploadId,
+        ]);
 
     $response->assertStatus(200)
-      ->assertJsonPath('message', 'Upload cancelled successfully.');
+        ->assertJsonPath('message', 'Upload cancelled successfully.');
 
     // Verify cache was cleared
     $this->assertNull(cache()->get("upload:{$uploadId}"));
@@ -304,12 +304,12 @@ class VideoUploadTest extends TestCase
     $event = Event::factory()->create();
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'invalid_action',
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'invalid_action',
+        ]);
 
     $response->assertStatus(422)
-      ->assertJsonValidationErrors(['action']);
+        ->assertJsonValidationErrors(['action']);
   }
 
   public function test_finalize_without_complete_upload_fails(): void
@@ -330,13 +330,13 @@ class VideoUploadTest extends TestCase
     ], now()->addHours(24));
 
     $response = $this->actingAs($this->admin)
-      ->postJson(route('admin.videos.upload', $event), [
-        'action' => 'finalize',
-        'upload_id' => $uploadId,
-        'title' => 'Test Video',
-      ]);
+        ->postJson(route('admin.videos.upload', $event), [
+          'action' => 'finalize',
+          'upload_id' => $uploadId,
+          'title' => 'Test Video',
+        ]);
 
     $response->assertStatus(400)
-      ->assertJsonPath('message', 'Upload is not complete. All chunks must be received first.');
+        ->assertJsonPath('message', 'Upload is not complete. All chunks must be received first.');
   }
 }

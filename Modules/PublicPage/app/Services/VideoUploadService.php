@@ -6,10 +6,10 @@ use Exception;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Http\UploadedFile;
-use Modules\PublicPage\Models\Video;
-use Modules\PublicPage\Jobs\ConvertVideoToMp4;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Bus;
+use Modules\PublicPage\Models\Video;
+use Illuminate\Support\Facades\Storage;
+use Modules\PublicPage\Jobs\ConvertVideoToMp4;
 
 class VideoUploadService
 {
@@ -73,14 +73,14 @@ class VideoUploadService
    * Handle a chunk upload
    */
   public function uploadChunk(
-    string $uploadId,
-    UploadedFile $chunk,
-    int $chunkIndex,
-    int $totalChunks
+      string $uploadId,
+      UploadedFile $chunk,
+      int $chunkIndex,
+      int $totalChunks
   ): array {
     $metadata = cache()->get("upload:{$uploadId}");
 
-    if (! $metadata) {
+    if ( ! $metadata) {
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
     }
 
@@ -93,8 +93,8 @@ class VideoUploadService
     $chunkPath = $this->getChunkPath($uploadId);
     $chunkFilename = "chunk_{$chunkIndex}";
     Storage::disk(self::STORAGE_DISK)->put(
-      "{$chunkPath}/{$chunkFilename}",
-      file_get_contents($chunk->getRealPath())
+        "{$chunkPath}/{$chunkFilename}",
+        file_get_contents($chunk->getRealPath())
     );
 
     // Update metadata
@@ -127,7 +127,7 @@ class VideoUploadService
   {
     $metadata = cache()->get("upload:{$uploadId}");
 
-    if (! $metadata) {
+    if ( ! $metadata) {
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
     }
 
@@ -171,7 +171,7 @@ class VideoUploadService
     }
 
     // Dispatch conversion job for non-MP4 videos
-    if (! $isMp4) {
+    if ( ! $isMp4) {
       Bus::dispatch(new ConvertVideoToMp4($video));
     }
 
@@ -188,7 +188,7 @@ class VideoUploadService
   {
     $metadata = cache()->get("upload:{$uploadId}");
 
-    if (! $metadata) {
+    if ( ! $metadata) {
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
     }
 
@@ -213,8 +213,8 @@ class VideoUploadService
       'total_chunks' => (int) ceil($metadata['total_size'] / self::CHUNK_SIZE),
       'received_chunks' => $receivedChunks,
       'missing_chunks' => array_values(array_diff(
-        range(0, (int) ceil($metadata['total_size'] / self::CHUNK_SIZE) - 1),
-        $receivedChunks
+          range(0, (int) ceil($metadata['total_size'] / self::CHUNK_SIZE) - 1),
+          $receivedChunks
       )),
       'status' => $metadata['status'],
     ];
@@ -241,18 +241,18 @@ class VideoUploadService
 
     // Check MIME type
     $mimeType = $file->getMimeType();
-    if (! in_array($mimeType, self::ALLOWED_MIME_TYPES, TRUE)) {
+    if ( ! in_array($mimeType, self::ALLOWED_MIME_TYPES, TRUE)) {
       throw new InvalidArgumentException(
-        'Invalid file type. Only MP4, WebM, and MOV files are allowed.'
+          'Invalid file type. Only MP4, WebM, and MOV files are allowed.'
       );
     }
 
     // Additional check by file extension for better accuracy
     $extension = mb_strtolower($file->getClientOriginalExtension());
     $allowedExtensions = ['mp4', 'webm', 'mov'];
-    if (! in_array($extension, $allowedExtensions, TRUE)) {
+    if ( ! in_array($extension, $allowedExtensions, TRUE)) {
       throw new InvalidArgumentException(
-        'Invalid file extension. Only .mp4, .webm, and .mov files are allowed.'
+          'Invalid file extension. Only .mp4, .webm, and .mov files are allowed.'
       );
     }
   }

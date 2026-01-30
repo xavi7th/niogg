@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Throwable;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +70,7 @@ class CreateAdminUser extends Command
       ]);
 
       return self::SUCCESS;
-    } catch (\Throwable $e) {
+    } catch (Throwable $e) {
       DB::rollBack();
 
       $this->error('Failed to create admin user: ' . $e->getMessage());

@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
-use App\Providers\RouteServiceProvider;
 use Modules\UserAuth\Http\Requests\LoginRequest;
 
 class AuthenticatedSessionController extends Controller

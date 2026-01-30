@@ -3,18 +3,18 @@
 namespace Modules\PublicPage\Jobs;
 
 use Exception;
-use Modules\PublicPage\Models\Video;
+use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Storage;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Modules\PublicPage\Models\Video;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use FFMpeg\Format\Video\X264;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
-class ConvertVideoToMp4 implements ShouldQueue, ShouldBeUnique
+class ConvertVideoToMp4 implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -55,7 +55,7 @@ class ConvertVideoToMp4 implements ShouldQueue, ShouldBeUnique
 
         $sourcePath = $this->getLocalPath($video->video_url);
 
-        if (! file_exists($sourcePath)) {
+        if ( ! file_exists($sourcePath)) {
             throw new Exception("Video file not found: {$sourcePath}");
         }
 
@@ -110,7 +110,7 @@ class ConvertVideoToMp4 implements ShouldQueue, ShouldBeUnique
 
     $relativePath = str_replace($storageUrl, '', $url);
 
-    if (strpos($url, 'http') === 0) {
+    if (str_starts_with($url, 'http')) {
       $relativePath = parse_url($url, PHP_URL_PATH);
       $relativePath = str_replace('/storage/', '', $relativePath);
     } else {
