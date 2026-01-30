@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from "svelte";
+  import { modalRoot } from "@/stores";
   import { page } from '@inertiajs/svelte';
+  import { Portal } from "svelte-teleport";
   import Header from '@publicpage-partials/Header.svelte';
   import Footer from '@publicpage-partials/Footer.svelte';
   import SearchModal from '@publicpage-partials/SearchModal.svelte';
@@ -33,3 +35,5 @@
 {#if isMounted}
 	<script src="/build/assets/app-init.js"></script>
 {/if}
+
+<Portal bind:this={$modalRoot} on:received={() => {}}></Portal>

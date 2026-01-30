@@ -3,7 +3,9 @@
 
 import { writable } from "svelte/store";
 
-export const pageTitle = writable("Enski Integrated");
+export const modalRoot = writable(undefined);
+
+export const pageTitle = writable("NIOGG");
 export const pageHeader = writable("");
 export const pageDescription = writable("");
 

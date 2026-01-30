@@ -6,12 +6,26 @@
   export let videos = [];
   export let pageTitle = 'Event Videos';
 
+  let modalVideo = null;
+  let modalVideoElement = null;
+
   const getCategoryLabel = (category) => {
     if (!category) return '';
     return category
       .split('_')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  };
+
+  const openVideoModal = (video) => {
+    modalVideo = video;
+  };
+
+  const closeVideoModal = () => {
+    if (modalVideoElement) {
+      modalVideoElement.pause();
+    }
+    modalVideo = null;
   };
 </script>
 
@@ -37,7 +51,7 @@
 
     <div class="video-grid">
       {#each videos.data || videos as video (video.id)}
-        <div class="video-card">
+        <div class="video-card" on:click={() => openVideoModal(video)} role="button" tabindex="0">
           <div class="card-image">
             <img src={video.thumbnail_url} alt={video.title} loading="lazy" />
             <div class="play-button">
@@ -72,6 +86,34 @@
       </div>
     {/if}
   </div>
+
+  <!-- Video Modal -->
+  {#if modalVideo}
+    <div class="video-modal" on:click={closeVideoModal} on:keydown={(e) => e.key === 'Escape' && closeVideoModal()} role="dialog" aria-modal="true">
+      <div class="modal-content" on:click|stopPropagation>
+        <button class="modal-close" on:click={closeVideoModal} aria-label="Close modal">×</button>
+        <div class="modal-video-wrapper">
+          <video
+            bind:this={modalVideoElement}
+            src={modalVideo.video_url}
+            poster={modalVideo.thumbnail_url}
+            controls
+            autoplay
+            preload="metadata"
+            class="modal-video-element"
+          >
+            <p>Your browser does not support HTML5 video.</p>
+          </video>
+        </div>
+        <div class="modal-info">
+          <h3 class="modal-title">{modalVideo.title}</h3>
+          {#if modalVideo.description}
+            <p class="modal-description">{modalVideo.description}</p>
+          {/if}
+        </div>
+      </div>
+    </div>
+  {/if}
 </PublicPageLayout>
 
 <style>
@@ -146,10 +188,16 @@
     border-radius: 4px;
     overflow: hidden;
     transition: all 0.3s ease;
+    cursor: pointer;
   }
 
   .video-card:hover {
     transform: translateY(-4px);
+  }
+
+  .video-card:focus-visible {
+    outline: 2px solid #ff7607;
+    outline-offset: 2px;
   }
 
   .card-image {
@@ -188,6 +236,11 @@
     justify-content: center;
     color: white;
     z-index: 2;
+    transition: transform 0.2s ease;
+  }
+
+  .video-card:hover .play-button {
+    transform: translate(-50%, -50%) scale(1.1);
   }
 
   .featured-badge {
@@ -244,6 +297,93 @@
 
   .btn-load-more:hover {
     background-color: #e66d06;
+  }
+
+  /* Video Modal */
+  .video-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 8px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  .modal-close:hover {
+    background: #f0f0f0;
+  }
+
+  .modal-video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: #000;
+  }
+
+  .modal-video-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .modal-info {
+    padding: 1.5rem;
+  }
+
+  .modal-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1b1a1a;
+  }
+
+  .modal-description {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
   }
 
   @media (max-width: 991px) {

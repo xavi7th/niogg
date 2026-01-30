@@ -40,6 +40,7 @@
     "clsx": "^2.1.1",
     "lucide-svelte": "^0.439.0",
     "prettier": "^3.5.3",
+    "svelte-teleport": "^0.1.1",
     "sweetalert2": "^11.26.17",
     "tailwind-merge": "^2.5.2",
     "tailwind-variants": "^0.2.1",
