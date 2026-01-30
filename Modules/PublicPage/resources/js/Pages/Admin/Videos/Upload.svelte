@@ -22,7 +22,7 @@
 	});
 
 	// Constants
-	const CHUNK_SIZE = 10 * 1024 * 1024; // 10MB chunks (increased for parallel uploads)
+	const CHUNK_SIZE = 10 * 1024 * 1024; // 10MB chunks
 	const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1GB
 	const ALLOWED_TYPES = ['video/mp4', 'video/webm', 'video/quicktime'];
 
@@ -231,7 +231,7 @@
 		return await response.json();
 	}
 
-	// Upload file in chunks (parallelized)
+	// Upload file in chunks (sequentially to avoid race conditions)
 	async function uploadChunks(itemId) {
 		let currentItem;
 		uploadQueue.update(queue => {
@@ -242,94 +242,70 @@
 		const file = currentItem.file;
 		const totalChunks = currentItem.totalChunks;
 		const uploadId = currentItem.uploadId;
-		const MAX_PARALLEL = 3; // Upload 3 chunks at once
 		let startTime = Date.now();
 
-		// Create all chunk upload promises
-		const chunkPromises = [];
 		for (let i = 0; i < totalChunks; i++) {
-			chunkPromises.push(
-				(async () => {
-					// Check if paused before starting this chunk
-					let isPaused = false;
-					uploadQueue.update(queue => {
-						const item = queue.find((item) => item.id === itemId);
-						isPaused = item?.status === 'paused';
-						return queue;
-					});
-					if (isPaused) throw new Error('PAUSED');
+			// Check if paused
+			uploadQueue.update(queue => {
+				currentItem = queue.find((item) => item.id === itemId);
+				return queue;
+			});
 
-					const start = i * CHUNK_SIZE;
-					const end = Math.min(start + CHUNK_SIZE, file.size);
-					const chunk = file.slice(start, end);
-
-					const formData = new FormData();
-					formData.append('action', 'chunk');
-					formData.append('upload_id', uploadId);
-					formData.append('chunk', chunk);
-					formData.append('chunk_index', i.toString());
-					formData.append('total_chunks', totalChunks.toString());
-
-					const response = await fetch(`/admin/videos/upload/${event.id}`, {
-						method: 'POST',
-						headers: {
-							'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
-						},
-						body: formData
-					});
-
-					if (!response.ok) {
-						const contentType = response.headers.get('content-type');
-						if (contentType && contentType.includes('application/json')) {
-							const data = await response.json();
-							throw new Error(data.message || 'Failed to upload chunk');
-						} else {
-							throw new Error(`Server error (${response.status}): Failed to upload chunk`);
-						}
-					}
-
-					return await response.json();
-				})()
-			);
-		}
-
-		// Execute uploads with parallelism limit
-		let completed = 0;
-		for (let i = 0; i < chunkPromises.length; i += MAX_PARALLEL) {
-			const batch = chunkPromises.slice(i, i + MAX_PARALLEL);
-
-			try {
-				const results = await Promise.all(batch);
-
-				for (const result of results) {
-					// Update progress for each completed chunk
-					const elapsed = (Date.now() - startTime) / 1000;
-					const speed = result.bytes_received / elapsed;
-					const remainingBytes = result.total_bytes - result.bytes_received;
-					const timeRemaining = remainingBytes / speed;
-
-					uploadQueue.update(queue =>
-						queue.map((item) =>
-							item.id === itemId
-								? {
-										...item,
-										chunksUploaded: result.chunks_received,
-										bytesUploaded: result.bytes_received,
-										progress: result.progress,
-										speed,
-										timeRemaining
-								  }
-								: item
-						)
-					);
-					completed++;
-				}
-			} catch (error) {
-				if (error.message === 'PAUSED') {
-					return; // Exit chunk upload loop
-				}
-				throw error;
+			if (currentItem?.status === 'paused') {
+				return; // Exit chunk upload loop
 			}
+
+			const start = i * CHUNK_SIZE;
+			const end = Math.min(start + CHUNK_SIZE, file.size);
+			const chunk = file.slice(start, end);
+
+			const formData = new FormData();
+			formData.append('action', 'chunk');
+			formData.append('upload_id', uploadId);
+			formData.append('chunk', chunk);
+			formData.append('chunk_index', i.toString());
+			formData.append('total_chunks', totalChunks.toString());
+
+			const response = await fetch(`/admin/videos/upload/${event.id}`, {
+				method: 'POST',
+				headers: {
+					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+				},
+				body: formData
+			});
+
+			if (!response.ok) {
+				const contentType = response.headers.get('content-type');
+				if (contentType && contentType.includes('application/json')) {
+					const data = await response.json();
+					throw new Error(data.message || 'Failed to upload chunk');
+				} else {
+					throw new Error(`Server error (${response.status}): Failed to upload chunk`);
+				}
+			}
+
+			const result = await response.json();
+
+			// Update progress
+			const elapsed = (Date.now() - startTime) / 1000;
+			const speed = result.bytes_received / elapsed;
+			const remainingBytes = result.total_bytes - result.bytes_received;
+			const timeRemaining = remainingBytes / speed;
+
+			uploadQueue.update(queue =>
+				queue.map((item) =>
+					item.id === itemId
+						? {
+								...item,
+								chunksUploaded: result.chunks_received,
+								bytesUploaded: result.bytes_received,
+								progress: result.progress,
+								speed,
+								timeRemaining
+						  }
+						: item
+				)
+			);
 		}
 	}
 
