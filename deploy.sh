@@ -160,7 +160,7 @@ composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 
 # Run migrations
 echo "  → Running database migrations..."
-if ! php artisan migrate:fresh --force; then
+if ! php artisan migrate --force; then
   echo "❌ ERROR: Database migration failed!"
   exit 1
 fi
