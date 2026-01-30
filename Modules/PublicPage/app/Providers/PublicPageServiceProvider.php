@@ -5,6 +5,7 @@ namespace Modules\PublicPage\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\PublicPage\Console\Commands\CreateEventCommand;
+use Modules\PublicPage\Console\Commands\ConvertPendingVideos;
 
 class PublicPageServiceProvider extends ServiceProvider
 {
@@ -68,6 +69,7 @@ class PublicPageServiceProvider extends ServiceProvider
   {
     $this->commands([
       CreateEventCommand::class,
+      ConvertPendingVideos::class,
     ]);
   }
 }

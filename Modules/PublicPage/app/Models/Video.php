@@ -29,6 +29,10 @@ class Video extends Model
     'file_size',
     'mime_type',
     'original_filename',
+    'conversion_status',
+    'conversion_started_at',
+    'conversion_completed_at',
+    'conversion_error',
   ];
 
   protected $casts = [
@@ -36,6 +40,8 @@ class Video extends Model
     'duration_seconds' => 'integer',
     'sort_order' => 'integer',
     'file_size' => 'integer',
+    'conversion_started_at' => 'datetime',
+    'conversion_completed_at' => 'datetime',
   ];
 
   /**

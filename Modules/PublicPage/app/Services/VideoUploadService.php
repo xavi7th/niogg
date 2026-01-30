@@ -7,7 +7,9 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Http\UploadedFile;
 use Modules\PublicPage\Models\Video;
+use Modules\PublicPage\Jobs\ConvertVideoToMp4;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Bus;
 
 class VideoUploadService
 {
@@ -139,6 +141,8 @@ class VideoUploadService
     // Clean up chunks
     $this->cleanupChunks($uploadId);
 
+    $isMp4 = $metadata['mime_type'] === 'video/mp4';
+
     // Create video record (without thumbnail initially)
     $video = Video::create([
       'event_id' => $metadata['event_id'],
@@ -153,6 +157,7 @@ class VideoUploadService
       'file_size' => $metadata['total_size'],
       'mime_type' => $metadata['mime_type'],
       'original_filename' => $metadata['original_filename'],
+      'conversion_status' => $isMp4 ? 'completed' : 'pending',
     ]);
 
     // Generate thumbnail automatically if not provided
@@ -163,6 +168,11 @@ class VideoUploadService
         // Log error but don't fail the upload
         // Thumbnail generation can be retried later
       }
+    }
+
+    // Dispatch conversion job for non-MP4 videos
+    if (! $isMp4) {
+      Bus::dispatch(new ConvertVideoToMp4($video));
     }
 
     // Clear upload metadata from cache
