@@ -62,45 +62,12 @@ class PublicPageController extends Controller
   {
     $teams = [
       [
-        'name' => 'Comrade Activist Asuke Robinson',
-        'position' => 'C.E.O. / Founder',
+        'name' => 'Comrade Asuke Robinson',
+        'position' => 'Co-Founder',
         'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
-        'desc' => 'Comrade auke Robinson,hails from isoko north LGA ozoro delta state university,abraka delta state is a versatile personality with great idea and business accumen.
+        'desc' => 'Comrade Asuke Robinson, hails from Isoko North LGA Ozoro Delta State University, Abraka Delta State is a versatile personality with great idea and business acumen.
                   He is a visionary writer, an activist , a human resources development personnel, a motivational speaker, multiple award winning, a real estate and property
-                  manager a mentor whose examplary behavior is outstanding.above all he is a philanthropist.',
-      ],
-      [
-        'name' => 'Chief Victor Ukiri',
-        'position' => 'Chairman',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
-        'desc' => 'Chief (Sir) Toranmah Victor Ukin (KSM) is from Alaka Quarters in Effurun, Uvwie L. G. A. He attended St. Mary Rrivate Schools, Lagos, Lagos State. Government College Ughell, Delta
-            State and Anambra State Polytechnic Oko, Anambra State. He has served in the public domain for over 30 years as an architect, builder, project and design supervisor.
-            He is happily married to his loving wife and they are blessed with children. He is a member of the Uvwe traditional council as a titled chief of the kingdom.
-            He is an ambassador of the International Association of World Peace Advocate.',
-      ],
-      [
-        'name' => 'Barrister Okiemute Akpofure Esq.',
-        'position' => 'Legal Adviser',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
-        'desc' => '',
-      ],
-      [
-        'name' => 'Ebenezer Emunarhine',
-        'position' => 'P.R.O.',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
-        'desc' => '',
-      ],
-      [
-        'name' => 'Ognenevwegba Merit',
-        'position' => 'Treasurer',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
-        'desc' => '',
-      ],
-      [
-        'name' => 'Musa khairat',
-        'position' => 'Secretary / Admin',
-        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/woman.jpeg',
-        'desc' => '',
+                  manager a mentor whose exemplary behavior is outstanding.above all he is a philanthropist.',
       ],
     ];
 
