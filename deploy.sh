@@ -178,6 +178,11 @@ echo "  → Updating public symlink..."
 rm -rf "\$BASE/public"
 ln -sfn "\$BASE/current/public" "\$BASE/public"
 
+# Fix public/build permissions for web access
+echo "  → Fixing public/build permissions..."
+find "\$REL/public/build" -type d -exec chmod 755 {} \; 2>/dev/null || true
+find "\$REL/public/build" -type f -exec chmod 644 {} \; 2>/dev/null || true
+
 echo "✅ Server finalize complete"
 EOSSH
 fi
