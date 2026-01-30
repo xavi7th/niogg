@@ -231,7 +231,7 @@
 		return await response.json();
 	}
 
-	// Upload file in chunks (sequentially to avoid race conditions)
+	// Upload file in chunks (parallelized for speed with retry logic)
 	async function uploadChunks(itemId) {
 		let currentItem;
 		uploadQueue.update(queue => {
@@ -242,71 +242,150 @@
 		const file = currentItem.file;
 		const totalChunks = currentItem.totalChunks;
 		const uploadId = currentItem.uploadId;
+		const MAX_PARALLEL = 3; // Upload 3 chunks at once
+		const MAX_RETRIES = 3; // Retry failed chunks up to 3 times
 		let startTime = Date.now();
 
+		// Upload all chunks with concurrency limit and retry
+		const uploadPromises = [];
 		for (let i = 0; i < totalChunks; i++) {
-			// Check if paused
+			uploadPromises.push(
+				() => uploadSingleChunkWithRetry(i, file, uploadId, totalChunks, itemId, startTime, MAX_RETRIES)
+			);
+		}
+
+		// Execute with concurrency limit
+		for (let i = 0; i < uploadPromises.length; i += MAX_PARALLEL) {
+			const batch = uploadPromises.slice(i, i + MAX_PARALLEL);
+
+			// Check if paused before starting batch
+			let isPaused = false;
 			uploadQueue.update(queue => {
-				currentItem = queue.find((item) => item.id === itemId);
+				const item = queue.find((item) => item.id === itemId);
+				isPaused = item?.status === 'paused';
 				return queue;
 			});
 
-			if (currentItem?.status === 'paused') {
+			if (isPaused) {
 				return; // Exit chunk upload loop
 			}
 
-			const start = i * CHUNK_SIZE;
-			const end = Math.min(start + CHUNK_SIZE, file.size);
-			const chunk = file.slice(start, end);
+			// Execute batch (each element is a function that returns a promise)
+			try {
+				await Promise.all(batch.map(fn => fn()));
+			} catch (error) {
+				// Check if paused during error handling
+				let currentlyPaused = false;
+				uploadQueue.update(queue => {
+					const item = queue.find((item) => item.id === itemId);
+					currentlyPaused = item?.status === 'paused';
+					return queue;
+				});
 
-			const formData = new FormData();
-			formData.append('action', 'chunk');
-			formData.append('upload_id', uploadId);
-			formData.append('chunk', chunk);
-			formData.append('chunk_index', i.toString());
-			formData.append('total_chunks', totalChunks.toString());
-
-			const response = await fetch(`/admin/videos/upload/${event.id}`, {
-				method: 'POST',
-				headers: {
-					'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
-				},
-				body: formData
-			});
-
-			if (!response.ok) {
-				const contentType = response.headers.get('content-type');
-				if (contentType && contentType.includes('application/json')) {
-					const data = await response.json();
-					throw new Error(data.message || 'Failed to upload chunk');
-				} else {
-					throw new Error(`Server error (${response.status}): Failed to upload chunk`);
+				if (currentlyPaused) {
+					return;
 				}
+				throw error;
 			}
-
-			const result = await response.json();
-
-			// Update progress
-			const elapsed = (Date.now() - startTime) / 1000;
-			const speed = result.bytes_received / elapsed;
-			const remainingBytes = result.total_bytes - result.bytes_received;
-			const timeRemaining = remainingBytes / speed;
-
-			uploadQueue.update(queue =>
-				queue.map((item) =>
-					item.id === itemId
-						? {
-								...item,
-								chunksUploaded: result.chunks_received,
-								bytesUploaded: result.bytes_received,
-								progress: result.progress,
-								speed,
-								timeRemaining
-						  }
-						: item
-				)
-			);
 		}
+	}
+
+	// Upload a single chunk with exponential backoff retry
+	async function uploadSingleChunkWithRetry(chunkIndex, file, uploadId, totalChunks, itemId, startTime, maxRetries) {
+		for (let attempt = 0; attempt <= maxRetries; attempt++) {
+			try {
+				await uploadSingleChunk(chunkIndex, file, uploadId, totalChunks, itemId, startTime);
+				return; // Success, exit retry loop
+			} catch (error) {
+				// Check if paused, don't retry
+				let isPaused = false;
+				uploadQueue.update(queue => {
+					const item = queue.find((item) => item.id === itemId);
+					isPaused = item?.status === 'paused';
+					return queue;
+				});
+
+				if (isPaused) {
+					return; // Exit gracefully if paused
+				}
+
+				// Last attempt failed, throw the error
+				if (attempt === maxRetries) {
+					throw error;
+				}
+
+				// Exponential backoff: 1s, 2s, 4s
+				const delay = Math.pow(2, attempt) * 1000;
+				await new Promise(resolve => setTimeout(resolve, delay));
+			}
+		}
+	}
+
+	// Upload a single chunk
+	async function uploadSingleChunk(chunkIndex, file, uploadId, totalChunks, itemId, startTime) {
+		// Check if paused
+		let isPaused = false;
+		uploadQueue.update(queue => {
+			const item = queue.find((item) => item.id === itemId);
+			isPaused = item?.status === 'paused';
+			return queue;
+		});
+
+		if (isPaused) {
+			return Promise.resolve(); // Return resolved promise, not undefined
+		}
+
+		const start = chunkIndex * CHUNK_SIZE;
+		const end = Math.min(start + CHUNK_SIZE, file.size);
+		const chunk = file.slice(start, end);
+
+		const formData = new FormData();
+		formData.append('action', 'chunk');
+		formData.append('upload_id', uploadId);
+		formData.append('chunk', chunk);
+		formData.append('chunk_index', chunkIndex.toString());
+		formData.append('total_chunks', totalChunks.toString());
+
+		const response = await fetch(`/admin/videos/upload/${event.id}`, {
+			method: 'POST',
+			headers: {
+				'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
+			},
+			body: formData
+		});
+
+		if (!response.ok) {
+			const contentType = response.headers.get('content-type');
+			if (contentType && contentType.includes('application/json')) {
+				const data = await response.json();
+				throw new Error(data.message || 'Failed to upload chunk');
+			} else {
+				throw new Error(`Server error (${response.status}): Failed to upload chunk`);
+			}
+		}
+
+		const result = await response.json();
+
+		// Update progress
+		const elapsed = (Date.now() - startTime) / 1000;
+		const speed = result.bytes_received / elapsed;
+		const remainingBytes = result.total_bytes - result.bytes_received;
+		const timeRemaining = remainingBytes / speed;
+
+		uploadQueue.update(queue =>
+			queue.map((item) =>
+				item.id === itemId
+					? {
+							...item,
+							chunksUploaded: result.chunks_received,
+							bytesUploaded: result.bytes_received,
+							progress: result.progress,
+							speed,
+							timeRemaining
+					  }
+					: item
+			)
+		);
 	}
 
 	// Finalize upload

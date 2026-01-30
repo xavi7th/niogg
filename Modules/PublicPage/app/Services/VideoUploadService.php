@@ -21,7 +21,7 @@ class VideoUploadService
     'video/quicktime', // .mov files
   ];
 
-  private const CHUNK_SIZE = 10485760; // 10MB chunks (increased for parallel uploads)
+  private const CHUNK_SIZE = 10485760; // 10MB chunks
 
   private const STORAGE_DISK = 'public';
 
@@ -84,7 +84,13 @@ class VideoUploadService
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
     }
 
-    // Validate chunk
+    // Validate chunk index is within expected range
+    $expectedChunks = (int) ceil($metadata['total_size'] / self::CHUNK_SIZE);
+    if ($chunkIndex < 0 || $chunkIndex >= $expectedChunks) {
+      throw new InvalidArgumentException("Invalid chunk index {$chunkIndex}. Expected range: 0 to " . ($expectedChunks - 1));
+    }
+
+    // Validate chunk size
     if ($chunk->getSize() > self::CHUNK_SIZE) {
       throw new InvalidArgumentException('Chunk size exceeds maximum allowed size.');
     }
@@ -97,27 +103,51 @@ class VideoUploadService
         file_get_contents($chunk->getRealPath())
     );
 
-    // Update metadata
-    $metadata['chunks_received']++;
-    $metadata['bytes_received'] += $chunk->getSize();
-    $metadata['status'] = $metadata['chunks_received'] >= $totalChunks ? 'complete' : 'uploading';
-    $metadata['last_chunk_index'] = $chunkIndex;
+    // Use cache lock for thread-safe counter updates
+    $lock = cache()->lock("upload:{$uploadId}:lock", 10);
 
-    cache()->put("upload:{$uploadId}", $metadata, now()->addHours(24));
+    try {
+      $lock->block(5);
 
-    // Calculate progress percentage
-    $progress = (int) min(100, ($metadata['chunks_received'] / $totalChunks) * 100);
+      // Get fresh metadata
+      $metadata = cache()->get("upload:{$uploadId}");
 
-    return [
-      'upload_id' => $uploadId,
-      'chunk_index' => $chunkIndex,
-      'chunks_received' => $metadata['chunks_received'],
-      'total_chunks' => $totalChunks,
-      'bytes_received' => $metadata['bytes_received'],
-      'total_bytes' => $metadata['total_size'],
-      'progress' => $progress,
-      'status' => $metadata['status'],
-    ];
+      // Atomically increment bytes received
+      $metadata['bytes_received'] = ($metadata['bytes_received'] ?? 0) + $chunk->getSize();
+
+      // Track which chunk indices we've received (for duplicate detection)
+      if ( ! isset($metadata['received_indices'])) {
+        $metadata['received_indices'] = [];
+      }
+      $metadata['received_indices'][] = $chunkIndex;
+      $metadata['received_indices'] = array_unique($metadata['received_indices']);
+      $chunksReceived = count($metadata['received_indices']);
+
+      $status = $chunksReceived >= $expectedChunks ? 'complete' : 'uploading';
+
+      // Update metadata
+      $metadata['chunks_received'] = $chunksReceived;
+      $metadata['status'] = $status;
+      $metadata['last_chunk_index'] = $chunkIndex;
+
+      cache()->put("upload:{$uploadId}", $metadata, now()->addHours(24));
+
+      // Calculate progress percentage
+      $progress = (int) min(100, ($chunksReceived / $expectedChunks) * 100);
+
+      return [
+        'upload_id' => $uploadId,
+        'chunk_index' => $chunkIndex,
+        'chunks_received' => $chunksReceived,
+        'total_chunks' => $expectedChunks,
+        'bytes_received' => $metadata['bytes_received'],
+        'total_bytes' => $metadata['total_size'],
+        'progress' => $progress,
+        'status' => $status,
+      ];
+    } finally {
+      $lock?->release();
+    }
   }
 
   /**
@@ -131,8 +161,18 @@ class VideoUploadService
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
     }
 
-    if ($metadata['status'] !== 'complete') {
-      throw new InvalidArgumentException('Upload is not complete. All chunks must be received first.');
+    // Verify all chunks received using tracked indices
+    $expectedChunks = (int) ceil($metadata['total_size'] / self::CHUNK_SIZE);
+    $receivedIndices = $metadata['received_indices'] ?? [];
+    $actualChunks = count($receivedIndices);
+
+    if ($actualChunks < $expectedChunks) {
+      // Find missing chunks
+      $missingChunks = array_diff(range(0, $expectedChunks - 1), $receivedIndices);
+      throw new InvalidArgumentException(
+          "Upload is not complete. Expected {$expectedChunks} chunks, but only {$actualChunks} received. " .
+          'Missing chunks: ' . implode(', ', $missingChunks)
+      );
     }
 
     // Combine chunks into final file

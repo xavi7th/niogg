@@ -164,7 +164,7 @@ class VideoUploadTest extends TestCase
     $event = Event::factory()->create();
     $uploadId = Str::uuid()->toString();
 
-    // Initialize upload in cache
+    // Initialize upload in cache with received indices
     cache()->put("upload:{$uploadId}", [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
@@ -173,6 +173,7 @@ class VideoUploadTest extends TestCase
       'total_size' => 20971520, // 20MB
       'chunks_received' => 2,
       'bytes_received' => 20971520,
+      'received_indices' => [0, 1], // Track which chunks were received
       'status' => 'complete',
     ], now()->addHours(24));
 
@@ -339,6 +340,6 @@ class VideoUploadTest extends TestCase
         ]);
 
     $response->assertStatus(400)
-        ->assertJsonPath('message', 'Upload is not complete. All chunks must be received first.');
+        ->assertJsonPath('message', 'Upload is not complete. Expected 2 chunks, but only 0 received. Missing chunks: 0, 1');
   }
 }
