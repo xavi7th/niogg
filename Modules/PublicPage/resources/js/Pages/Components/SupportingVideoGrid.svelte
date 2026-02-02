@@ -38,9 +38,9 @@
 
         <div class="gradient-overlay"></div>
 
-        {#if video.formatDuration}
+        {#if video.format_duration}
           <div class="duration-badge-thumbnail">
-            {video.formatDuration}
+            {video.format_duration}
           </div>
         {/if}
 
