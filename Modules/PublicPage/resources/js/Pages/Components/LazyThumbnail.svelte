@@ -3,11 +3,21 @@
 
   let imageElement;
   let isVisible = false;
+  let imgError = false;
   let observer;
 
   export let src = '';
   export let alt = '';
   export let placeholder = '';
+
+  function handleImageError(event) {
+    imgError = true;
+    console.error('LazyThumbnail: Failed to load image', {
+      src,
+      alt,
+      error: event
+    });
+  }
 
   onMount(() => {
     observer = new IntersectionObserver((entries) => {
@@ -35,15 +45,26 @@
 </script>
 
 <div class="lazy-thumbnail-container" class:loaded={isVisible} {...$$restProps}>
-  <img
-    bind:this={imageElement}
-    src={src}
-    alt={alt}
-    loading="lazy"
-    class="lazy-thumbnail-image"
-    decoding="async"
-    style="will-change: opacity;"
-  />
+  {#if imgError && placeholder}
+    <img
+      src={placeholder}
+      alt={alt}
+      loading="lazy"
+      class="lazy-thumbnail-image error-fallback"
+      decoding="async"
+    />
+  {:else}
+    <img
+      bind:this={imageElement}
+      src={src}
+      alt={alt}
+      loading="lazy"
+      class="lazy-thumbnail-image"
+      decoding="async"
+      style="will-change: opacity;"
+      on:error={handleImageError}
+    />
+  {/if}
 
   {#if !isVisible}
     <div class="placeholder">
@@ -130,6 +151,12 @@
   @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Error fallback styling */
+  .lazy-thumbnail-image.error-fallback {
+    opacity: 1;
+    animation: none;
   }
 
   /* Reduced motion support */
