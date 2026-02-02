@@ -60,25 +60,25 @@ Explicitly excluded.
 | THUMB-01 | Phase 1 | Pending |
 | THUMB-02 | Phase 1 | Pending |
 | THUMB-03 | Phase 1 | Pending |
-| THUMB-04 | Phase 1 | Pending |
-| THUMB-05 | Phase 1 | Pending |
-| THUMB-06 | Phase 1 | Pending |
-| THUMB-07 | Phase 1 | Pending |
-| CUSTOM-01 | Phase 2 | Pending |
-| CUSTOM-02 | Phase 2 | Pending |
-| CUSTOM-03 | Phase 2 | Pending |
-| SORT-01 | Phase 3 | Pending |
-| SORT-02 | Phase 3 | Pending |
-| SORT-03 | Phase 3 | Pending |
-| MOBILE-01 | Phase 4 | Pending |
-| MOBILE-02 | Phase 4 | Pending |
-| MOBILE-03 | Phase 4 | Pending |
+| THUMB-04 | Phase 2 | Pending |
+| THUMB-05 | Phase 2 | Pending |
+| THUMB-06 | Phase 2 | Pending |
+| THUMB-07 | Phase 2 | Pending |
+| CUSTOM-01 | Phase 3 | Pending |
+| CUSTOM-02 | Phase 3 | Pending |
+| CUSTOM-03 | Phase 3 | Pending |
+| SORT-01 | Phase 4 | Pending |
+| SORT-02 | Phase 4 | Pending |
+| SORT-03 | Phase 4 | Pending |
+| MOBILE-01 | Phase 5 | Pending |
+| MOBILE-02 | Phase 5 | Pending |
+| MOBILE-03 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 15 total
-- Mapped to phases: 0 (roadmap not created yet)
-- Unmapped: 15 ⚠️
+- Mapped to phases: 15
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 after initial definition*
+*Last updated: 2026-02-02 after roadmap creation*
