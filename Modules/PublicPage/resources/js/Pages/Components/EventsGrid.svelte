@@ -102,8 +102,8 @@
         <div class="card-content">
           <h4 class="card-title">{video.title}</h4>
           <div class="card-info">
-            {#if video.formatDuration}
-              <span class="duration">{video.formatDuration}</span>
+            {#if video.format_duration}
+              <span class="duration">{video.format_duration}</span>
             {/if}
             {#if video.eventCategory}
               <span class="category">{getCategoryLabel(video.eventCategory)}</span>
