@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "laravel-boost": {
-      "command": "cd site && vendor/bin/sail",
+      "command": "vendor/bin/sail",
       "args": ["artisan", "boost:mcp"]
     },
     "sequential-thinking": {
