@@ -54,9 +54,9 @@
                 </div>
                 <div class="card-content">
                   <h4 class="card-title">{featuredVideo.title}</h4>
-                  {#if featuredVideo.format_duration || featuredVideo.formatDuration}
+                  {#if featuredVideo.format_duration}
                     <div class="card-info">
-                      <span class="duration">{featuredVideo.format_duration || featuredVideo.formatDuration}</span>
+                      <span class="duration">{featuredVideo.format_duration}</span>
                     </div>
                   {/if}
                 </div>

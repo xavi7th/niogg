@@ -110,7 +110,7 @@
       {/if}
       <h3 class="video-title">{video.title}</h3>
       <div class="video-meta">
-        <span class="duration">⏱ {video.formatDuration || '0:00'}</span>
+        <span class="duration">⏱ {video.format_duration || '0:00'}</span>
         <span class="date">📅 {video.date || ''}</span>
         <span class="views">👁 {video.views || 0}</span>
       </div>
