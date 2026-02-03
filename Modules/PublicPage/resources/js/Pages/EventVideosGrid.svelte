@@ -1,6 +1,7 @@
 <script>
   import { Link } from '@inertiajs/svelte';
   import PublicPageLayout from '@publicpage-pages/Layouts/PublicPageLayout.svelte';
+  import LazyThumbnail from '@publicpage-pages/Components/LazyThumbnail.svelte';
 
   export let event = {};
   export let videos = [];
@@ -53,7 +54,12 @@
       {#each videos.data || videos as video (video.id)}
         <div class="video-card" on:click={() => openVideoModal(video)} role="button" tabindex="0">
           <div class="card-image">
-            <img src={video.thumbnail_url} alt={video.title} loading="lazy" />
+            <LazyThumbnail
+              src={video.thumbnail_url}
+              alt={video.title}
+              placeholder="/images/video-placeholder-default.jpg"
+              class="card-thumbnail"
+            />
             <div class="play-button">
               <svg width="50" height="50" viewBox="0 0 100 100" fill="currentColor">
                 <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="2" />
