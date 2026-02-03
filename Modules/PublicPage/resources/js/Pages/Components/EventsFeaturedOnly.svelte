@@ -10,6 +10,7 @@
   let modalVideo = null;
   let pageModals = undefined;
   let modalVideoElement = null;
+  let playAttempted = false;
 
   const navigateToEventGrid = (eventSlug) => {
     router.visit(`/events/${eventSlug}/videos`);
@@ -17,15 +18,28 @@
 
   const openVideoModal = (video) => {
     modalVideo = video;
+    playAttempted = false;
 
     setTimeout(() => {
       pageModals.teleport_to($modalRoot);
     }, 300);
   };
 
+  const handleCanPlay = () => {
+    if (!playAttempted && modalVideoElement) {
+      playAttempted = true;
+      modalVideoElement.play().catch(error => {
+        console.log('Autoplay prevented:', error.name);
+        // User will need to click play manually - browser policy
+      });
+    }
+  };
+
   const closeVideoModal = () => {
     if (modalVideoElement) {
       modalVideoElement.pause();
+      modalVideoElement.currentTime = 0;
+      modalVideoElement.src = '';
     }
     modalVideo = null;
   };
@@ -90,7 +104,7 @@
           src={modalVideo.video_url}
           poster={modalVideo.thumbnail_url}
           controls
-          autoplay
+          on:canplay={handleCanPlay}
           preload="metadata"
           class="modal-video-element"
         >
