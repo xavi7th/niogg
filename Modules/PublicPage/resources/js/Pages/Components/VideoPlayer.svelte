@@ -56,6 +56,8 @@
         controls
         class="video-element"
         preload="metadata"
+        playsinline
+        muted
         on:play={handlePlay}
         on:pause={handlePause}
       >
