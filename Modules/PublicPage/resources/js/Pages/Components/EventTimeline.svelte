@@ -39,7 +39,9 @@
 
         <div data-event-player={event.id} class="featured-player-section">
           {#if getSelectedVideo(event.id)}
-            <VideoPlayer video={getSelectedVideo(event.id)} size="large" />
+            {#key getSelectedVideo(event.id)?.id || 'empty'}
+              <VideoPlayer video={getSelectedVideo(event.id)} size="large" />
+            {/key}
           {/if}
         </div>
 
