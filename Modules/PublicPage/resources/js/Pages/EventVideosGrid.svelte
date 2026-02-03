@@ -10,6 +10,9 @@
   let modalVideo = null;
   let modalVideoElement = null;
   let playAttempted = false;
+  let videoError = null;
+  let retryCount = 0;
+  const MAX_RETRIES = 3;
 
   const getCategoryLabel = (category) => {
     if (!category) return '';
@@ -22,6 +25,8 @@
   const openVideoModal = (video) => {
     modalVideo = video;
     playAttempted = false;
+    videoError = null;
+    retryCount = 0;
   };
 
   const handleCanPlay = () => {
@@ -31,6 +36,41 @@
         console.log('Autoplay prevented:', error.name);
         // User will need to click play manually - browser policy
       });
+    }
+  };
+
+  const handleVideoError = (event) => {
+    const video = event.target;
+    const error = video.error;
+
+    if (retryCount < MAX_RETRIES) {
+      console.error('Video load error:', error);
+      videoError = {
+        code: error?.code || 'UNKNOWN',
+        message: getVideoErrorMessage(error?.code),
+        retryable: retryCount < MAX_RETRIES
+      };
+    }
+  };
+
+  const getVideoErrorMessage = (code) => {
+    switch (code) {
+      case 1: return 'Video fetching aborted';
+      case 2: return 'Network error during video load';
+      case 3: return 'Video decoding error';
+      case 4: return 'Video format or source not supported';
+      default: return 'Unable to load video';
+    }
+  };
+
+  const handleRetry = () => {
+    if (retryCount < MAX_RETRIES) {
+      retryCount++;
+      videoError = null;
+      if (modalVideoElement) {
+        modalVideoElement.load();
+        // handleCanPlay will trigger play() on next canplay event
+      }
     }
   };
 
@@ -113,12 +153,24 @@
       <div class="modal-content" on:click|stopPropagation>
         <button class="modal-close" on:click={closeVideoModal} aria-label="Close modal">×</button>
         <div class="modal-video-wrapper">
+          {#if videoError}
+            <div class="video-error-overlay">
+              <p class="error-message">{videoError.message}</p>
+              {#if videoError.retryable && retryCount < MAX_RETRIES}
+                <button on:click={handleRetry} class="btn-retry">Retry</button>
+              {/if}
+            </div>
+          {/if}
           <video
             bind:this={modalVideoElement}
             src={modalVideo.video_url}
             poster={modalVideo.thumbnail_url}
             controls
+            autoplay
+            muted
+            playsinline
             on:canplay={handleCanPlay}
+            on:error={handleVideoError}
             preload="metadata"
             class="modal-video-element"
           >
@@ -404,6 +456,44 @@
     font-size: 0.9rem;
     color: #666;
     line-height: 1.5;
+  }
+
+  .video-error-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 5;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .error-message {
+    color: white;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .btn-retry {
+    background-color: #ff7607;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn-retry:hover {
+    background-color: #e66d06;
   }
 
   @media (max-width: 991px) {
