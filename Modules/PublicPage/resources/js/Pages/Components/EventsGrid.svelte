@@ -1,6 +1,7 @@
 <script>
   import { modalRoot } from "@/stores";
   import { Portal } from "svelte-teleport";
+  import LazyThumbnail from "./LazyThumbnail.svelte";
 
   export let events = [];
   export let onBackToTimeline = () => {};
@@ -90,7 +91,12 @@
     {#each filteredVideos as video (video.id)}
       <div class="video-card" on:click={() => openVideoModal(video)} role="button" tabindex="0">
         <div class="card-image">
-          <img src={video.thumbnail_url} alt={video.title} loading="lazy" />
+          <LazyThumbnail
+            src={video.thumbnail_url}
+            alt={video.title}
+            placeholder="/images/video-placeholder-default.jpg"
+            class="card-thumbnail"
+          />
           <div class="play-button">
             <svg width="50" height="50" viewBox="0 0 100 100" fill="currentColor">
               <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="2" />
