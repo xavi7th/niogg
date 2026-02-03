@@ -9,6 +9,7 @@
 
   let modalVideo = null;
   let modalVideoElement = null;
+  let playAttempted = false;
 
   const getCategoryLabel = (category) => {
     if (!category) return '';
@@ -20,11 +21,24 @@
 
   const openVideoModal = (video) => {
     modalVideo = video;
+    playAttempted = false;
+  };
+
+  const handleCanPlay = () => {
+    if (!playAttempted && modalVideoElement) {
+      playAttempted = true;
+      modalVideoElement.play().catch(error => {
+        console.log('Autoplay prevented:', error.name);
+        // User will need to click play manually - browser policy
+      });
+    }
   };
 
   const closeVideoModal = () => {
     if (modalVideoElement) {
       modalVideoElement.pause();
+      modalVideoElement.currentTime = 0;
+      modalVideoElement.src = '';
     }
     modalVideo = null;
   };
@@ -104,7 +118,7 @@
             src={modalVideo.video_url}
             poster={modalVideo.thumbnail_url}
             controls
-            autoplay
+            on:canplay={handleCanPlay}
             preload="metadata"
             class="modal-video-element"
           >
