@@ -7,9 +7,9 @@
 
 ### Thumbnails
 
-- [ ] **THUMB-01**: Videos display thumbnails in event grid view (EventVideosGrid.svelte)
-- [ ] **THUMB-02**: Videos display thumbnails in media showcase grid view (EventsGrid.svelte)
-- [ ] **THUMB-03**: Videos display thumbnails in timeline supporting video list (SupportingVideoGrid.svelte)
+- [x] **THUMB-01**: Videos display thumbnails in event grid view (EventVideosGrid.svelte)
+- [x] **THUMB-02**: Videos display thumbnails in media showcase grid view (EventsGrid.svelte)
+- [x] **THUMB-03**: Videos display thumbnails in timeline supporting video list (SupportingVideoGrid.svelte)
 - [ ] **THUMB-04**: Videos play when clicked in event view modal (EventVideosGrid.svelte)
 - [ ] **THUMB-05**: Videos play when clicked in grid view modal (EventsGrid.svelte)
 - [ ] **THUMB-06**: Videos play when clicked in timeline supporting video list (EventTimeline.svelte)
@@ -46,39 +46,41 @@ Deferred to future release.
 
 Explicitly excluded.
 
-| Feature | Reason |
-|---------|--------|
-| Custom thumbnail on create form | Keep upload form simple, edit-only for v1 |
-| Pagination/infinite scroll for grid | Current page-based navigation works |
-| Multi-column sort | Single date-based sort meets current need |
-| CDN integration | Local storage sufficient for v1 |
+| Feature                             | Reason                                    |
+| ----------------------------------- | ----------------------------------------- |
+| Custom thumbnail on create form     | Keep upload form simple, edit-only for v1 |
+| Pagination/infinite scroll for grid | Current page-based navigation works       |
+| Multi-column sort                   | Single date-based sort meets current need |
+| CDN integration                     | Local storage sufficient for v1           |
 
 ## Traceability
 
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| THUMB-01 | Phase 1 | Pending |
-| THUMB-02 | Phase 1 | Pending |
-| THUMB-03 | Phase 1 | Pending |
-| THUMB-04 | Phase 2 | Pending |
-| THUMB-05 | Phase 2 | Pending |
-| THUMB-06 | Phase 2 | Pending |
-| THUMB-07 | Phase 2 | Pending |
-| CUSTOM-01 | Phase 3 | Pending |
-| CUSTOM-02 | Phase 3 | Pending |
-| CUSTOM-03 | Phase 3 | Pending |
-| SORT-01 | Phase 4 | Pending |
-| SORT-02 | Phase 4 | Pending |
-| SORT-03 | Phase 4 | Pending |
-| MOBILE-01 | Phase 5 | Pending |
-| MOBILE-02 | Phase 5 | Pending |
-| MOBILE-03 | Phase 5 | Pending |
+| Requirement | Phase   | Status  |
+| ----------- | ------- | ------- |
+| THUMB-01    | Phase 1 | Complete |
+| THUMB-02    | Phase 1 | Complete |
+| THUMB-03    | Phase 1 | Complete |
+| THUMB-04    | Phase 2 | Pending |
+| THUMB-05    | Phase 2 | Pending |
+| THUMB-06    | Phase 2 | Pending |
+| THUMB-07    | Phase 2 | Pending |
+| CUSTOM-01   | Phase 3 | Pending |
+| CUSTOM-02   | Phase 3 | Pending |
+| CUSTOM-03   | Phase 3 | Pending |
+| SORT-01     | Phase 4 | Pending |
+| SORT-02     | Phase 4 | Pending |
+| SORT-03     | Phase 4 | Pending |
+| MOBILE-01   | Phase 5 | Pending |
+| MOBILE-02   | Phase 5 | Pending |
+| MOBILE-03   | Phase 5 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 15 total
 - Mapped to phases: 15
 - Unmapped: 0
 
 ---
-*Requirements defined: 2026-02-02*
-*Last updated: 2026-02-02 after roadmap creation*
+
+_Requirements defined: 2026-02-02_
+_Last updated: 2026-02-03 after Phase 1 completion_
