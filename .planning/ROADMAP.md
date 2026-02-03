@@ -14,7 +14,7 @@ Fix broken video thumbnails and playback in the existing event media showcase sy
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Fix Thumbnail Display** - Restore thumbnail images across all video views (Completed 2026-02-03)
-- [ ] **Phase 2: Fix Video Playback** - Restore video playback functionality across all views
+- [x] **Phase 2: Fix Video Playback** - Restore video playback functionality across all views (Completed 2026-02-03)
 - [ ] **Phase 3: Custom Thumbnail Upload** - Enable admins to upload custom thumbnails
 - [ ] **Phase 4: Event Sorting** - Add global sort control for event date ordering
 - [ ] **Phase 5: Mobile UX** - Ensure mobile timeline and playback work correctly
@@ -54,9 +54,9 @@ Plans:
 
 Plans:
 
-- [ ] 02-01: Timeline reactivity with {#key} blocks - Wave 1
-- [ ] 02-02: Modal autoplay with canplay event - Wave 2
-- [ ] 02-03: Mobile compatibility and error handling - Wave 3 (depends on 02-02)
+- [x] 02-01: Timeline reactivity with {#key} blocks - Wave 1
+- [x] 02-02: Modal autoplay with canplay event - Wave 2
+- [x] 02-03: Mobile compatibility and error handling - Wave 3 (depends on 02-02)
 
 ### Phase 3: Custom Thumbnail Upload
 
@@ -120,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase                      | Plans Complete | Status      | Completed    |
 | -------------------------- | -------------- | ----------- | ------------ |
 | 1. Fix Thumbnail Display   | 3/3            | Verified    | 2026-02-03   |
-| 2. Fix Video Playback      | 0/3            | Not started | -            |
+| 2. Fix Video Playback      | 3/3            | Verified    | 2026-02-03   |
 | 3. Custom Thumbnail Upload | 0/3            | Not started | -            |
 | 4. Event Sorting           | 0/3            | Not started | -            |
 | 5. Mobile UX               | 0/3            | Not started | -            |
