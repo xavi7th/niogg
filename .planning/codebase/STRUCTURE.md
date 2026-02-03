@@ -55,17 +55,20 @@
 ## Directory Purposes
 
 **Core Laravel App (`/app`):**
+
 - Purpose: Application-level code shared across modules
 - Contains: User model, global controllers, middleware
 - Note: Minimal logic, most code lives in modules
 
 **Modules Directory (`/Modules`):**
+
 - Purpose: Domain separation using Nwidart Laravel Modules
 - Structure: Each module is self-contained with own app, resources, database
 - Active modules: UserAuth, AppUser, PublicPage, Conference
 - Controlled via `modules_statuses.json`
 
 **Module Structure (`/Modules/{ModuleName}`):**
+
 ```
 Modules/ModuleName/
 ├── app/                       # Module's app directory
@@ -96,6 +99,7 @@ Modules/ModuleName/
 ```
 
 **Docker (`/docker`):**
+
 - Purpose: Containerization with Laravel Sail
 - Contains: Docker configurations for PHP 7.3-8.3, MySQL, PostgreSQL
 - Used: Local development and deployment
@@ -103,27 +107,32 @@ Modules/ModuleName/
 ## Key File Locations
 
 **Entry Points:**
+
 - `bootstrap/app.php`: Application instance creation
 - `vite.config.js`: Asset build configuration
 - `modules_statuses.json`: Module activation control
 
 **Configuration:**
+
 - `config/modules.php`: Module configuration
 - `app/Http/Kernel.php`: HTTP middleware registration
 - `config/app.php`: Application configuration
 
 **Core Logic:**
+
 - `Modules/{ModuleName}/app/Http/Controllers/`: Controllers
 - `Modules/{ModuleName}/app/Models/`: Domain models
 - `Modules/{ModuleName}/routes/`: Route definitions
 
 **Frontend:**
+
 - `Modules/{ModuleName}/resources/js/Pages/`: Svelte pages
 - `Modules/{ModuleName}/vite.config.js`: Module asset config
 
 ## Naming Conventions
 
 **Files:**
+
 - Controllers: PascalCase, suffix `Controller` (e.g., `PublicBlogController`)
 - Models: PascalCase, singular (e.g., `User`, `Conference`)
 - Views: PascalCase, descriptive (e.g., `Dashboard.blade.php`)
@@ -131,6 +140,7 @@ Modules/ModuleName/
 - Pages: PascalCase (e.g., `Index.svelte`, `UserProfile.svelte`)
 
 **Directories:**
+
 - Modules: PascalCase (e.g., `PublicPage`, `UserAuth`)
 - Controllers: PascalCase, descriptive (e.g., `AdminEventController`)
 - Views: kebab-case (e.g., `user-profile`)
@@ -139,45 +149,53 @@ Modules/ModuleName/
 ## Where to Add New Code
 
 **New Module:**
+
 - Create: `php artisan module:make ModuleName`
 - Enable: Add to `modules_statuses.json`
 - Structure: Follow existing module pattern
 
 **New Feature in Existing Module:**
+
 - Controller: `/Modules/{ModuleName}/app/Http/Controllers/`
 - Views: `/Modules/{ModuleName}/resources/views/`
 - Frontend: `/Modules/{ModuleName}/resources/js/Pages/`
 - Routes: `/Modules/{ModuleName}/routes/web.php`
 
 **New API Endpoint:**
+
 - Controller: `/Modules/{ModuleName}/app/Http/Controllers/`
 - Routes: `/Modules/{ModuleName}/routes/api.php`
 - Validation: `/Modules/{ModuleName}/app/Http/Requests/`
 
 **New Component/Module:**
+
 - Implementation: `/Modules/{ModuleName}/resources/js/Components/`
 - Update: `/Modules/{ModuleName}/vite.config.js` with new aliases
 - Import: Use module-specific aliases (e.g., `@publicpage-components`)
 
 **Shared Helpers:**
+
 - Global helpers: `/app/helpers.php`
 - Module helpers: `/Modules/{ModuleName}/app/Helpers/` (if created)
 
 ## Special Directories
 
 **`/Modules`:**
+
 - Purpose: Domain-separated modules
 - Generated: No, created manually
 - Committed: Yes
 
 **`/storage` (within modules):**
+
 - Purpose: Module-specific storage
 - Generated: No, user uploads
 - Committed: No, in .gitignore
 
 **`/public/modules`:**
+
 - Purpose: URL-accessible module assets
 - Generated: Yes, by Vite build
 - Committed: No, build artifacts
 
-*Structure analysis: 2026-02-02*
+_Structure analysis: 2026-02-02_

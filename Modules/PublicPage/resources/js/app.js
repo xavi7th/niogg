@@ -167,7 +167,7 @@ console.info(
     border-radius: 0.125rem;
     padding: 0.25rem 0.5rem;
     background-color: ${process.env.NODE_ENV !== "development" ? "green" : "#E36049"}
-    `,
+    `
 );
 
 createInertiaApp({
@@ -182,7 +182,7 @@ createInertiaApp({
         throw new Error(`Page name is undefined`);
       }
 
-      if (typeof name !== 'string') {
+      if (typeof name !== "string") {
         throw new Error(`Page name is not a string: ${typeof name}`);
       }
 
@@ -205,7 +205,7 @@ createInertiaApp({
 
       return page;
     } catch (e) {
-      console.error('Error resolving page:', name, e);
+      console.error("Error resolving page:", name, e);
       throw e;
     }
   },

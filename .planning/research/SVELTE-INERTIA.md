@@ -21,6 +21,7 @@ This destroys and recreates the component when the key value changes - critical 
 **Critical Finding:** Laravel accessors defined as `getFormatDurationAttribute()` serialize to JSON as `format_duration` (snake_case), NOT `formatDuration` (camelCase).
 
 **Frontend must use snake_case:**
+
 ```svelte
 <!-- Correct -->
 {video.format_duration}
@@ -32,6 +33,7 @@ This destroys and recreates the component when the key value changes - critical 
 ### 3. Lazy Loading Images
 
 Current `LazyThumbnail.svelte` implementation is correct. Key improvements:
+
 - Use `loading="lazy"` as native fallback
 - Add `decoding="async"` for non-blocking decode
 - Always `unobserve()` after first load
@@ -39,6 +41,7 @@ Current `LazyThumbnail.svelte` implementation is correct. Key improvements:
 ### 4. Mobile Video Playback
 
 **Required attributes:**
+
 - `playsinline` - REQUIRED for iOS
 - `muted` - for autoplay to work
 - `preload="metadata"` - avoid loading entire file
@@ -53,4 +56,4 @@ Current `LazyThumbnail.svelte` implementation is correct. Key improvements:
 
 ---
 
-*Sources: Svelte docs, CSS-Tricks, Laravel Daily, Stack Overflow*
+_Sources: Svelte docs, CSS-Tricks, Laravel Daily, Stack Overflow_

@@ -9,6 +9,7 @@
 Store sort state in URL query params for bookmarkable URLs.
 
 **Backend:**
+
 ```php
 $sort = $request->input('sort', 'newest'); // newest|oldest
 $direction = $sort === 'newest' ? 'desc' : 'asc';
@@ -18,6 +19,7 @@ $events = Event::orderBy('event_date', $direction)->get();
 ### 2. Dynamic Scope Parameters
 
 **Update Event model:**
+
 ```php
 public function scopeOrdered($query, $direction = 'desc')
 {
@@ -56,4 +58,4 @@ let sort = $page.url.searchParams.get('sort') || 'newest';
 
 ---
 
-*Sources: Inertia.js docs, Laracasts, dev.to*
+_Sources: Inertia.js docs, Laracasts, dev.to_

@@ -57,4 +57,4 @@ Image files only: jpg, png, webp. Max 2MB recommended.
 
 ---
 
-*Sources: protonemedia/laravel-ffmpeg GitHub, Spatie MediaLibrary docs, Laracasts*
+_Sources: protonemedia/laravel-ffmpeg GitHub, Spatie MediaLibrary docs, Laracasts_

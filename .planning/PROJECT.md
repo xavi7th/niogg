@@ -48,6 +48,7 @@ Fix broken video thumbnails, playback issues, and add sorting/thumbnail upload f
 ## Context
 
 **Existing System:**
+
 - Laravel 10 modular monolith with Nwidart Modules
 - Conference module manages events and videos
 - PublicPage module handles public-facing media showcase
@@ -57,6 +58,7 @@ Fix broken video thumbnails, playback issues, and add sorting/thumbnail upload f
 - Auto-generated thumbnails: small (320x180), medium (640x360), large (1280x720)
 
 **Known Issues (from CONCERNS.md):**
+
 - Mobile video playback was recently fixed (commit 621f5c3)
 - VideoThumbnailService uses FFMpeg + Intervention Image
 - SupportingVideoGrid component has proper structure but may have data passing issues
@@ -64,6 +66,7 @@ Fix broken video thumbnails, playback issues, and add sorting/thumbnail upload f
 - Video model has `formatDuration` accessor but frontend uses `format_duration` (snake_case)
 
 **Tech Stack:**
+
 - PHP 8.1+, Laravel 10, MariaDB 10, Redis
 - Svelte, Inertia.js, Vite, Tailwind CSS
 - FFMpeg for video processing
@@ -80,12 +83,13 @@ Fix broken video thumbnails, playback issues, and add sorting/thumbnail upload f
 
 <!-- Decisions that constrain future work. Add throughout project lifecycle. -->
 
-| Decision | Rationale | Outcome |
-|----------|-----------|---------|
-| Custom thumbnails on edit page only | Simpler v1, reduce upload form complexity | — Pending |
-| Auto-generate as fallback | Always have a thumbnail, even if user doesn't provide one | — Pending |
-| Global sort control | Consistent sorting across timeline and grid views | — Pending |
-| Keep mobile timeline behavior | Mobile UX already works (featured → grid button) | — Pending |
+| Decision                            | Rationale                                                 | Outcome   |
+| ----------------------------------- | --------------------------------------------------------- | --------- |
+| Custom thumbnails on edit page only | Simpler v1, reduce upload form complexity                 | — Pending |
+| Auto-generate as fallback           | Always have a thumbnail, even if user doesn't provide one | — Pending |
+| Global sort control                 | Consistent sorting across timeline and grid views         | — Pending |
+| Keep mobile timeline behavior       | Mobile UX already works (featured → grid button)          | — Pending |
 
 ---
-*Last updated: 2026-02-02 after initialization*
+
+_Last updated: 2026-02-02 after initialization_

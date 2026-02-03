@@ -23,26 +23,26 @@ export const isOnline = writable(navigator.onLine);
 
 // Dark mode store with localStorage persistence
 const getInitialTheme = () => {
-	if (typeof window !== 'undefined') {
-		const stored = localStorage.getItem('theme');
-		if (stored) return stored === 'dark';
-		return window.matchMedia('(prefers-color-scheme: dark)').matches;
-	}
-	return false;
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem("theme");
+    if (stored) return stored === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  return false;
 };
 
 export const darkMode = writable(getInitialTheme());
 
-if (typeof window !== 'undefined') {
-	darkMode.subscribe((value) => {
-		if (value) {
-			document.documentElement.classList.add('dark');
-			localStorage.setItem('theme', 'dark');
-		} else {
-			document.documentElement.classList.remove('dark');
-			localStorage.setItem('theme', 'light');
-		}
-	});
+if (typeof window !== "undefined") {
+  darkMode.subscribe((value) => {
+    if (value) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  });
 }
 
 let updateOnlineStatus = (e) => {

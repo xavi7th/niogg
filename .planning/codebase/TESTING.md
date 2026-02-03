@@ -5,15 +5,18 @@
 ## Test Framework
 
 **Runner:**
+
 - PHPUnit 10
 - Laravel's artisan test command
 - Config: `/phpunit.xml`
 
 **Assertion Library:**
+
 - PHPUnit's built-in assertions
 - Laravel's test helpers (`assertSessionHas`, `assertDatabaseHas`, etc.)
 
 **Run Commands:**
+
 ```bash
 # All tests
 vendor/bin/sail artisan test --compact
@@ -31,17 +34,20 @@ vendor/bin/sail artisan test --filter=test_media_showcase_page_loads
 ## Test File Organization
 
 **Location:**
+
 - Feature tests: `tests/Feature/`
 - Unit tests: `tests/Unit/`
 - Module tests: `Modules/{ModuleName}/tests/`
 - Module tests are isolated and don't run in main phpunit.xml
 
 **Naming:**
+
 - Feature tests: `[Feature]Test.php` (e.g., `EventHeaderDisplayTest.php`)
 - Unit tests: `[Unit]Test.php` (e.g., `VideoServiceTest.php`)
 - E2E tests: `[Feature]Test.php` in E2E directory
 
 **Structure:**
+
 ```
 Modules/
 └── PublicPage/
@@ -65,6 +71,7 @@ Modules/
 ## Test Structure
 
 **Suite Organization:**
+
 ```php
 class AdminEventControllerTest extends TestCase
 {
@@ -89,6 +96,7 @@ class AdminEventControllerTest extends TestCase
 ```
 
 **Patterns:**
+
 - Use `RefreshDatabase` trait for feature tests
 - Test both happy and failure paths
 - Include authentication/authorization tests
@@ -101,10 +109,12 @@ class AdminEventControllerTest extends TestCase
 **Framework:** PHPUnit's built-in mocking
 
 **Patterns:**
+
 - Mock external services (e.g., Storage, Cache)
 - Mock Jobs for async operations
 - Use facades for service mocking
 - Example:
+
 ```php
 Storage::shouldReceive('disk')
     ->with('public')
@@ -116,6 +126,7 @@ Cache::shouldReceive('forget')
 ```
 
 **What to Mock:**
+
 - File system operations
 - External API calls
 - Queue jobs
@@ -123,6 +134,7 @@ Cache::shouldReceive('forget')
 - Time-sensitive functions
 
 **What NOT to Mock:**
+
 - Eloquent relationships
 - Laravel facades that don't need isolation
 - Database transactions (handled by RefreshDatabase)
@@ -130,6 +142,7 @@ Cache::shouldReceive('forget')
 ## Fixtures and Factories
 
 **Test Data:**
+
 ```php
 Event::create([
     'name' => 'Community Impact Program: Free Medical Outreach',
@@ -143,10 +156,12 @@ Event::create([
 ```
 
 **Location:**
+
 - Factories: `Modules/{ModuleName}/database/factories/`
 - Seeders: `Modules/{ModuleName}/database/seeders/`
 
 **Factory States:**
+
 ```php
 class EventFactory extends Factory
 {
@@ -174,6 +189,7 @@ Event::factory()->published()->count(5)->create();
 **Requirements:** No enforced minimum coverage requirement in main phpunit.xml
 
 **View Coverage:**
+
 ```bash
 # Generate coverage report
 vendor/bin/sail php vendor/bin/phpunit --coverage-html coverage
@@ -183,6 +199,7 @@ vendor/bin/sail php vendor/bin/phpunit --coverage-clover coverage.xml
 ```
 
 **Exclusions:**
+
 - Vendor files
 - Generated files
 - Test files themselves
@@ -191,6 +208,7 @@ vendor/bin/sail php vendor/bin/phpunit --coverage-clover coverage.xml
 ## Test Types
 
 **Unit Tests:**
+
 - Test business logic in isolation
 - Mock external dependencies
 - Test small, focused pieces of code
@@ -198,6 +216,7 @@ vendor/bin/sail php vendor/bin/phpunit --coverage-clover coverage.xml
 - Location: `tests/Unit/`
 
 **Feature Tests:**
+
 - Test HTTP endpoints
 - Test complete user flows
 - Test database interactions
@@ -206,6 +225,7 @@ vendor/bin/sail php vendor/bin/phpunit --coverage-clover coverage.xml
 - Location: `tests/Feature/`
 
 **E2E Tests:**
+
 - Test complete user journeys
 - Test JavaScript functionality
 - Test responsive design
@@ -216,6 +236,7 @@ vendor/bin/sail php vendor/bin/phpunit --coverage-clover coverage.xml
 ## Common Patterns
 
 **Async Testing:**
+
 ```php
 public function test_bulk_publish_publishes_events(): void
 {
@@ -236,6 +257,7 @@ public function test_bulk_publish_publishes_events(): void
 ```
 
 **Error Testing:**
+
 ```php
 public function test_bulk_publish_requires_event_ids_array(): void
 {
@@ -251,6 +273,7 @@ public function test_bulk_publish_requires_event_ids_array(): void
 ```
 
 **Cache Testing:**
+
 ```php
 public function test_index_caches_paginated_results(): void
 {
@@ -266,6 +289,7 @@ public function test_index_caches_paginated_results(): void
 ```
 
 **Authorization Testing:**
+
 ```php
 public function test_index_requires_authentication(): void
 {
@@ -282,6 +306,7 @@ public function test_index_requires_admin_role(): void
 ```
 
 **Inertia Testing:**
+
 ```php
 $response->assertInertia(function ($page) use ($event): void {
     $page->where('event.id', $event->id)
@@ -303,4 +328,4 @@ $response->assertInertia(function ($page) use ($event): void {
 
 ---
 
-*Testing analysis: 2026-02-02*
+_Testing analysis: 2026-02-02_

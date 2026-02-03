@@ -26,7 +26,7 @@ test.describe("Bulk Actions E2E", () => {
     await expect(bulkActionBar).toBeVisible();
 
     // Verify selected count is displayed
-    await expect(bulkActionBar.locator('text=/1 event selected/')).toBeVisible();
+    await expect(bulkActionBar.locator("text=/1 event selected/")).toBeVisible();
 
     // Verify all bulk action buttons are present
     await expect(bulkActionBar.locator('button:has-text("Publish")')).toBeVisible();
@@ -54,7 +54,7 @@ test.describe("Bulk Actions E2E", () => {
       }
 
       // Verify bulk action bar shows correct count
-      const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+      const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
       await expect(bulkActionBar).toBeVisible();
       await expect(bulkActionBar.locator(`text=/${checkboxCount} events selected/`)).toBeVisible();
     }
@@ -68,7 +68,7 @@ test.describe("Bulk Actions E2E", () => {
     await firstCheckbox.check();
 
     // Verify bulk action bar appears
-    const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+    const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
     await expect(bulkActionBar).toBeVisible();
 
     // Click cancel button
@@ -85,7 +85,7 @@ test.describe("Bulk Actions E2E", () => {
     await page.goto("/admin/events");
 
     // First create a draft event if none exist
-    const draftBadge = page.locator('text=Draft').first();
+    const draftBadge = page.locator("text=Draft").first();
     const hasDraft = await draftBadge.isVisible().catch(() => false);
 
     if (!hasDraft) {
@@ -101,14 +101,14 @@ test.describe("Bulk Actions E2E", () => {
     await page.goto("/admin/events");
 
     // Find draft events and select one
-    const draftEventCard = page.locator('.bg-white.rounded-lg').filter({ hasText: 'Draft' }).first();
+    const draftEventCard = page.locator(".bg-white.rounded-lg").filter({ hasText: "Draft" }).first();
     await expect(draftEventCard).toBeVisible();
 
     const draftCheckbox = draftEventCard.locator('input[type="checkbox"]');
     await draftCheckbox.check();
 
     // Verify bulk action bar appears
-    const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+    const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
     await expect(bulkActionBar).toBeVisible();
 
     // Click publish button
@@ -126,14 +126,14 @@ test.describe("Bulk Actions E2E", () => {
       });
 
     // Verify event is now published
-    await expect(draftEventCard.locator('text=Published')).toBeVisible();
+    await expect(draftEventCard.locator("text=Published")).toBeVisible();
   });
 
   test("bulk unpublish updates events to draft", async ({ page }) => {
     await page.goto("/admin/events");
 
     // First create a published event if none exist
-    const publishedBadge = page.locator('text=Published').first();
+    const publishedBadge = page.locator("text=Published").first();
     const hasPublished = await publishedBadge.isVisible().catch(() => false);
 
     if (!hasPublished) {
@@ -150,14 +150,14 @@ test.describe("Bulk Actions E2E", () => {
     await page.goto("/admin/events");
 
     // Find published events and select one
-    const publishedEventCard = page.locator('.bg-white.rounded-lg').filter({ hasText: 'Published' }).first();
+    const publishedEventCard = page.locator(".bg-white.rounded-lg").filter({ hasText: "Published" }).first();
     await expect(publishedEventCard).toBeVisible();
 
     const publishedCheckbox = publishedEventCard.locator('input[type="checkbox"]');
     await publishedCheckbox.check();
 
     // Verify bulk action bar appears
-    const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+    const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
     await expect(bulkActionBar).toBeVisible();
 
     // Click unpublish button
@@ -175,7 +175,7 @@ test.describe("Bulk Actions E2E", () => {
       });
 
     // Verify event is now draft
-    await expect(publishedEventCard.locator('text=Draft')).toBeVisible();
+    await expect(publishedEventCard.locator("text=Draft")).toBeVisible();
   });
 
   test("bulk delete shows confirmation dialog", async ({ page }) => {
@@ -186,7 +186,7 @@ test.describe("Bulk Actions E2E", () => {
     await firstCheckbox.check();
 
     // Verify bulk action bar appears
-    const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+    const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
     await expect(bulkActionBar).toBeVisible();
 
     // Click delete button
@@ -197,10 +197,10 @@ test.describe("Bulk Actions E2E", () => {
     await expect(dialog).toBeVisible();
 
     // Verify dialog shows plural title for bulk delete
-    await expect(dialog.locator('text=/Delete.*Events/')).toBeVisible();
+    await expect(dialog.locator("text=/Delete.*Events/")).toBeVisible();
 
     // Verify dialog shows count
-    await expect(dialog.locator('text=/1 event/')).toBeVisible();
+    await expect(dialog.locator("text=/1 event/")).toBeVisible();
 
     // Verify warning message about cascading delete
     await expect(dialog.locator("text=videos will be deleted")).toBeVisible();
@@ -224,7 +224,7 @@ test.describe("Bulk Actions E2E", () => {
     await page.goto("/admin/events");
 
     // Select the test events
-    const testEventCards = page.locator('.bg-white.rounded-lg').filter({ hasText: /Bulk Delete Test Event/ });
+    const testEventCards = page.locator(".bg-white.rounded-lg").filter({ hasText: /Bulk Delete Test Event/ });
     const cardCount = await testEventCards.count();
 
     if (cardCount >= 2) {
@@ -233,9 +233,9 @@ test.describe("Bulk Actions E2E", () => {
       await testEventCards.nth(1).locator('input[type="checkbox"]').check();
 
       // Verify bulk action bar appears with correct count
-      const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+      const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
       await expect(bulkActionBar).toBeVisible();
-      await expect(bulkActionBar.locator('text=/2 events selected/')).toBeVisible();
+      await expect(bulkActionBar.locator("text=/2 events selected/")).toBeVisible();
 
       // Click delete button
       await bulkActionBar.locator('button:has-text("Delete")').click();
@@ -271,12 +271,12 @@ test.describe("Bulk Actions E2E", () => {
     await firstCheckbox.check();
 
     // Click delete button
-    const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+    const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
     await bulkActionBar.locator('button:has-text("Delete")').click();
 
     // Get event name for verification
-    const selectedEvent = page.locator('.bg-white.rounded-lg.ring-2');
-    const eventName = await selectedEvent.locator('h3').textContent();
+    const selectedEvent = page.locator(".bg-white.rounded-lg.ring-2");
+    const eventName = await selectedEvent.locator("h3").textContent();
 
     // Cancel deletion in dialog
     const dialog = page.locator('[role="dialog"]');
@@ -303,15 +303,15 @@ test.describe("Bulk Actions E2E", () => {
       await eventCheckboxes.nth(2).check();
 
       // Verify bulk action bar shows correct count
-      const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+      const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
       await expect(bulkActionBar).toBeVisible();
-      await expect(bulkActionBar.locator('text=/3 events selected/')).toBeVisible();
+      await expect(bulkActionBar.locator("text=/3 events selected/")).toBeVisible();
 
       // Unselect one event
       await eventCheckboxes.nth(1).uncheck();
 
       // Verify count updates
-      await expect(bulkActionBar.locator('text=/2 events selected/')).toBeVisible();
+      await expect(bulkActionBar.locator("text=/2 events selected/")).toBeVisible();
     }
   });
 
@@ -323,7 +323,7 @@ test.describe("Bulk Actions E2E", () => {
     await firstCheckbox.check();
 
     // Verify selected event has orange ring
-    const selectedEvent = page.locator('.ring-2.ring-\\[\\#ff7607\\], .ring-2.ring-orange-400');
+    const selectedEvent = page.locator(".ring-2.ring-\\[\\#ff7607\\], .ring-2.ring-orange-400");
     await expect(selectedEvent).toBeVisible();
   });
 
@@ -344,15 +344,15 @@ test.describe("Bulk Actions E2E", () => {
       await selectAllCheckbox.check();
 
       // Verify bulk action bar appears
-      const bulkActionBar = page.locator('.fixed.bottom-0.left-64');
+      const bulkActionBar = page.locator(".fixed.bottom-0.left-64");
       await expect(bulkActionBar).toBeVisible();
 
       // Verify only published events are selected (all visible events should have Published badge)
-      const selectedEvents = page.locator('.ring-2.ring-\\[\\#ff7607\\], .ring-2.ring-orange-400');
+      const selectedEvents = page.locator(".ring-2.ring-\\[\\#ff7607\\], .ring-2.ring-orange-400");
       const selectedCount = await selectedEvents.count();
 
       for (let i = 0; i < selectedCount; i++) {
-        await expect(selectedEvents.nth(i).locator('text=Published')).toBeVisible();
+        await expect(selectedEvents.nth(i).locator("text=Published")).toBeVisible();
       }
     }
   });

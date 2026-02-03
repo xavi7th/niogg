@@ -9,6 +9,7 @@
 **Issue:** Videos in modals often need a second click to play.
 
 **Solution:** Wait for modal transition, then call play():
+
 ```javascript
 setTimeout(() => {
   modalVideoElement.play();
@@ -32,6 +33,7 @@ setTimeout(() => {
 ### 3. Source Loading Timing
 
 Wait for `loadeddata` or `canplay` events:
+
 ```svelte
 <video
   on:canplay={() => videoElement.play()}
@@ -42,6 +44,7 @@ Wait for `loadeddata` or `canplay` events:
 ### 4. Mobile Video Requirements
 
 **Required attributes:**
+
 - `playsinline` - REQUIRED for iOS
 - `muted` - for autoplay to work
 - `webkit-playsinline` - older iOS fallback
@@ -61,4 +64,4 @@ Chrome/Safari require `muted` for autoplay. User interaction required before aut
 
 ---
 
-*Sources: MDN, Stack Overflow, Svelte docs*
+_Sources: MDN, Stack Overflow, Svelte docs_

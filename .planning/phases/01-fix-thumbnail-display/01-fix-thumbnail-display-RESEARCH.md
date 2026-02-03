@@ -19,20 +19,23 @@ This phase requires fixing broken thumbnail image display across three existing 
 ## Standard Stack
 
 ### Core
-| Library | Version | Purpose | Why Standard |
-|---------|---------|---------|--------------|
-| Svelte | 4.x (via Vite) | Component framework | Project's established frontend stack |
-| IntersectionObserver API | Native | Lazy loading | Browser-native, no dependencies needed |
-| Laravel Eloquent Accessors | 10.x | Computed model properties | Laravel's standard pattern for derived attributes |
+
+| Library                    | Version        | Purpose                   | Why Standard                                      |
+| -------------------------- | -------------- | ------------------------- | ------------------------------------------------- |
+| Svelte                     | 4.x (via Vite) | Component framework       | Project's established frontend stack              |
+| IntersectionObserver API   | Native         | Lazy loading              | Browser-native, no dependencies needed            |
+| Laravel Eloquent Accessors | 10.x           | Computed model properties | Laravel's standard pattern for derived attributes |
 
 ### Supporting
-| Library | Version | Purpose | When to Use |
-|---------|---------|---------|-------------|
+
+| Library          | Version     | Purpose             | When to Use                                |
+| ---------------- | ----------- | ------------------- | ------------------------------------------ |
 | `loading="lazy"` | Native HTML | Simple lazy loading | For straightforward img tags, no JS needed |
 
 ### Alternatives Considered
-| Instead of | Could Use | Tradeoff |
-|------------|-----------|----------|
+
+| Instead of           | Could Use               | Tradeoff                                            |
+| -------------------- | ----------------------- | --------------------------------------------------- |
 | IntersectionObserver | native `loading="lazy"` | Less control, no custom loading states, but simpler |
 
 **Installation:**
@@ -54,9 +57,11 @@ Modules/PublicPage/resources/js/
 ```
 
 ### Pattern 1: LazyThumbnail Component Usage
+
 **What:** IntersectionObserver-based lazy loading component with placeholder support
 **When to use:** Grid views with many images, need loading state, want optimal performance
 **Example:**
+
 ```svelte
 <LazyThumbnail
   src={video.thumbnail_url}
@@ -67,6 +72,7 @@ Modules/PublicPage/resources/js/
 ```
 
 **Current implementation:**
+
 - Uses IntersectionObserver with 100px rootMargin (loads before entering viewport)
 - Supports placeholder prop (low-res image or fallback)
 - Has SVG fallback when no placeholder provided
@@ -75,14 +81,17 @@ Modules/PublicPage/resources/js/
 - Respects `prefers-reduced-motion`
 
 ### Pattern 2: Native Lazy Loading
+
 **What:** Browser-native lazy loading using `loading="lazy"` attribute
 **When to use:** Simple grids, don't need custom loading states, okay with browser defaults
 **Example:**
+
 ```svelte
 <img src={video.thumbnail_url} alt={video.title} loading="lazy" />
 ```
 
 **Tradeoffs:**
+
 - ✅ No JavaScript required
 - ✅ Browser-optimized
 - ❌ No loading state control
@@ -90,9 +99,11 @@ Modules/PublicPage/resources/js/
 - ❌ Browser support varies (though 95%+ in 2026)
 
 ### Pattern 3: Error Handling with Fallback
+
 **What:** Handle broken/missing thumbnails gracefully
 **When to use:** Production apps with real data, thumbnails may fail
 **Example:**
+
 ```svelte
 <script>
   let imgError = false;
@@ -110,6 +121,7 @@ Modules/PublicPage/resources/js/
 ```
 
 ### Anti-Patterns to Avoid
+
 - **Inconsistent accessor naming**: Don't mix `formatDuration` and `format_duration` - pick one convention and use it everywhere
 - **Missing alt attributes**: All thumbnails need descriptive alt text for accessibility
 - **Blocking page load**: Always lazy-load images below the fold
@@ -119,44 +131,50 @@ Modules/PublicPage/resources/js/
 
 Problems that look simple but have existing solutions:
 
-| Problem | Don't Build | Use Instead | Why |
-|---------|-------------|-------------|-----|
-| Lazy loading detection | Custom scroll event listeners | IntersectionObserver | More performant, handles edge cases, browser-native |
-| Image aspect ratio maintenance | Manual height calculations | `padding-bottom` with percentage | Responsive, works at all viewports |
-| Placeholder generation | Inline SVG strings | Separate placeholder file | Reusable, cacheable, easier to update |
+| Problem                        | Don't Build                   | Use Instead                      | Why                                                 |
+| ------------------------------ | ----------------------------- | -------------------------------- | --------------------------------------------------- |
+| Lazy loading detection         | Custom scroll event listeners | IntersectionObserver             | More performant, handles edge cases, browser-native |
+| Image aspect ratio maintenance | Manual height calculations    | `padding-bottom` with percentage | Responsive, works at all viewports                  |
+| Placeholder generation         | Inline SVG strings            | Separate placeholder file        | Reusable, cacheable, easier to update               |
 
 **Key insight:** The LazyThumbnail component already exists and handles most edge cases. Use it rather than building new lazy-loading logic.
 
 ## Common Pitfalls
 
 ### Pitfall 1: Inconsistent Accessor Naming
+
 **What goes wrong:** Frontend uses `formatDuration`, backend provides `format_duration`, causing undefined values
 **Why it happens:** Laravel uses snake_case for accessors by convention, but frontend follows JavaScript camelCase convention
 **How to avoid:**
+
 - Use camelCase in PHP accessor: `getFormatDurationAttribute()`
 - Access as `format_duration` OR `formatDuration` in Laravel (both work due to snake_case attributes)
 - Standardize frontend to use `formatDuration` (matches JavaScript convention)
-**Warning signs:** Duration displays as "0:00" or empty, console shows undefined
+  **Warning signs:** Duration displays as "0:00" or empty, console shows undefined
 
 ### Pitfall 2: Missing Placeholder Images
+
 **What goes wrong:** Tests pass but production shows broken image icons
 **Why it happens:** Test data references `/images/video-placeholder-1.jpg` but files don't exist
 **How to avoid:** Create actual placeholder image file in `public/images/`
 **Warning signs:** Browser console shows 404s for placeholder images
 
 ### Pitfall 3: Lazy Loading Without Loading State
+
 **What goes wrong:** Images pop in abruptly, causing layout shift
 **Why it happens:** Using native `loading="lazy"` without reserved space
 **How to avoid:** Always set explicit dimensions or aspect ratio container
 **Warning signs:** Layout shifts when scrolling, CLS (Cumulative Layout Shift) metric suffers
 
 ### Pitfall 4: Not Handling Missing Thumbnails
+
 **What goes wrong:** Videos without thumbnails show broken image icon
 **Why it happens:** `thumbnail_url` is nullable in database, but no fallback logic
 **How to avoid:** Add accessor with fallback or use `on:error` handler
 **Warning signs:** Any video with NULL `thumbnail_url` breaks the grid
 
 ### Pitfall 5: Accessibility Gaps
+
 **What goes wrong:** Screen readers announce "image 3829" or nothing at all
 **Why it happens:** Missing or generic alt attributes
 **How to avoid:** Use descriptive alt text: `{video.title}` or `{video.title} thumbnail`
@@ -167,6 +185,7 @@ Problems that look simple but have existing solutions:
 Verified patterns from the codebase:
 
 ### Video Model Accessor (PHP)
+
 ```php
 // Modules/PublicPage/app/Models/Video.php
 
@@ -185,6 +204,7 @@ public function getFormatDurationAttribute(): string
 **Usage in frontend:** Laravel serializes this as `format_duration` by default, but can also access as `formatDuration` in some contexts. Need to standardize.
 
 ### LazyThumbnail Component (Svelte)
+
 ```svelte
 // Modules/PublicPage/resources/js/Pages/Components/LazyThumbnail.svelte
 
@@ -257,6 +277,7 @@ public function getFormatDurationAttribute(): string
 ### Current Component Usage Examples
 
 **EventVideosGrid.svelte** (line 56):
+
 ```svelte
 <!-- CURRENT: Basic img tag, no error handling -->
 <img src={video.thumbnail_url} alt={video.title} loading="lazy" />
@@ -265,6 +286,7 @@ public function getFormatDurationAttribute(): string
 ```
 
 **EventsGrid.svelte** (line 93):
+
 ```svelte
 <!-- CURRENT: Basic img tag, no error handling -->
 <img src={video.thumbnail_url} alt={video.title} loading="lazy" />
@@ -273,6 +295,7 @@ public function getFormatDurationAttribute(): string
 ```
 
 **SupportingVideoGrid.svelte** (lines 32-37):
+
 ```svelte
 <!-- CURRENT: Uses LazyThumbnail correctly! -->
 <LazyThumbnail
@@ -286,6 +309,7 @@ public function getFormatDurationAttribute(): string
 ```
 
 ### Storage URL Pattern (PHP)
+
 ```php
 // VideoThumbnailService stores thumbnails at:
 Storage::disk('public')->url('videos/thumbnails/{uuid}_{size}.jpg');
@@ -296,14 +320,15 @@ Storage::disk('public')->url('videos/thumbnails/{uuid}_{size}.jpg');
 
 ## State of the Art
 
-| Old Approach | Current Approach | When Changed | Impact |
-|--------------|------------------|--------------|--------|
-| Scroll event listeners | IntersectionObserver API | ~2020 | Better performance, less jank |
-| Fixed height/width | Aspect ratio containers | ~2021 | Responsive design, no layout shift |
-| No loading states | Skeleton/placeholder | ~2022 | Better perceived performance |
-| Manual lazy loading | Native `loading="lazy"` | ~2023 | Progressive enhancement, works without JS |
+| Old Approach           | Current Approach         | When Changed | Impact                                    |
+| ---------------------- | ------------------------ | ------------ | ----------------------------------------- |
+| Scroll event listeners | IntersectionObserver API | ~2020        | Better performance, less jank             |
+| Fixed height/width     | Aspect ratio containers  | ~2021        | Responsive design, no layout shift        |
+| No loading states      | Skeleton/placeholder     | ~2022        | Better perceived performance              |
+| Manual lazy loading    | Native `loading="lazy"`  | ~2023        | Progressive enhancement, works without JS |
 
 **Deprecated/outdated:**
+
 - **Scroll event listeners**: Too expensive, cause layout thrashing
 - **Fixed image dimensions**: Break responsive layouts
 - **jQuery lazyload plugins**: Unnecessary in 2026, browser-native is sufficient
@@ -328,6 +353,7 @@ Storage::disk('public')->url('videos/thumbnails/{uuid}_{size}.jpg');
 ## Sources
 
 ### Primary (HIGH confidence)
+
 - **Codebase analysis** - Direct inspection of:
   - `/Modules/PublicPage/app/Models/Video.php` - Model accessor definition
   - `/Modules/PublicPage/resources/js/Pages/Components/LazyThumbnail.svelte` - Existing component
@@ -338,6 +364,7 @@ Storage::disk('public')->url('videos/thumbnails/{uuid}_{size}.jpg');
   - `/config/filesystems.php` - Storage configuration
 
 ### Secondary (MEDIUM confidence)
+
 - [Native Lazy Loading with Intersection Observer in React](https://www.dewasemadi.com/blog/native-lazy-loading-intersection-observer) - January 4, 2026
 - [HTML Image Lazy Loading: Optimize Page Performance](https://www.debugbear.com/blog/image-lazy-loading) - January 2026 (7 days ago)
 - [Intersection Observer API - MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) - January 12, 2026
@@ -345,12 +372,14 @@ Storage::disk('public')->url('videos/thumbnails/{uuid}_{size}.jpg');
 - [Optimizing Svelte Applications Best Practices](https://moldstud.com/articles/p-best-practices-for-optimizing-svelte-applications-common-issues-solutions) - June 2025
 
 ### Tertiary (LOW confidence)
+
 - [Lazy Loading Images in Svelte - Dev.to](https://dev.to/collardeau/lazy-loading-images-in-svelte-1mk6) - November 2019
 - Reddit discussion on Svelte lazy loading - Community examples
 
 ## Metadata
 
 **Confidence breakdown:**
+
 - Standard stack: HIGH - Direct codebase inspection, no new libraries needed
 - Architecture: HIGH - Existing components analyzed, patterns identified
 - Pitfalls: HIGH - Issues discovered through code inspection and testing patterns
