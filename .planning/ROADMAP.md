@@ -50,13 +50,13 @@ Plans:
 2. Clicking video in media showcase grid modal plays the video
 3. Clicking video in timeline supporting video list plays the video
 4. Video titles display correctly in timeline supporting video list
-   **Plans**: TBD
+   **Plans**: 3 planned (see `.planning/phases/02-fix-video-playback/plans/`)
 
 Plans:
 
-- [ ] 02-01: Add {#key} blocks for timeline video re-rendering
-- [ ] 02-02: Fix modal playback timing (setTimeout or canplay event)
-- [ ] 02-03: Add playsinline attribute for iOS compatibility
+- [ ] 02-01: Timeline reactivity with {#key} blocks - Wave 1
+- [ ] 02-02: Modal autoplay with canplay event - Wave 2
+- [ ] 02-03: Mobile compatibility and error handling - Wave 3 (depends on 02-02)
 
 ### Phase 3: Custom Thumbnail Upload
 
