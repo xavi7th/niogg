@@ -1,4 +1,5 @@
 <script>
+  import { Link } from '@inertiajs/svelte';
   import { modalRoot } from "@/stores";
   import { Portal } from "svelte-teleport";
   import LazyThumbnail from "./LazyThumbnail.svelte";
@@ -114,12 +115,24 @@
 
   $: filteredVideos = getFilteredVideos();
 
+  $: currentSort = $page.url.searchParams.get('sort') || 'newest';
+
 
 </script>
 
 <div class="events-grid-view">
   <div class="grid-header">
     <button on:click={onBackToTimeline} class="btn-back">← Back to Timeline</button>
+    <div class="sort-controls">
+      <span class="sort-label">Sort events:</span>
+      <Link href="?sort=newest" class:active={currentSort === 'newest'} aria-current={currentSort === 'newest' ? 'true' : undefined}>
+        Newest
+      </Link>
+      <span class="sort-divider">/</span>
+      <Link href="?sort=oldest" class:active={currentSort === 'oldest'} aria-current={currentSort === 'oldest' ? 'true' : undefined}>
+        Oldest
+      </Link>
+    </div>
   </div>
 
   <div class="filter-tabs">
@@ -254,6 +267,39 @@
 
   .btn-back:hover {
     color: #e66d06;
+  }
+
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .sort-label {
+    color: #666;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .sort-controls a {
+    color: #666;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .sort-controls a:hover {
+    color: #ff7607;
+  }
+
+  .sort-controls a.active {
+    color: #ff7607;
+    text-decoration: underline;
+  }
+
+  .sort-divider {
+    color: #ccc;
   }
 
   .filter-tabs {
