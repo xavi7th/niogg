@@ -68,13 +68,13 @@ Plans:
 1. Admin can upload custom thumbnail image on video edit page
 2. System auto-generates thumbnail when no custom thumbnail provided
 3. Custom thumbnails display correctly in all video views
-   **Plans**: TBD
+   **Plans**: 3 planned (see `.planning/phases/03-custom-thumbnail-upload/plans/`)
 
 Plans:
 
-- [ ] 03-01: Add custom_thumbnail_url column to videos table
-- [ ] 03-02: Create thumbnail upload handler and storage
-- [ ] 03-03: Implement accessor (custom -> auto-generated -> placeholder)
+- [ ] 03-01: Add database column and model accessor with fallback chain - Wave 1
+- [ ] 03-02: Create backend upload handler with validation and storage - Wave 2 (depends on 03-01)
+- [ ] 03-03: Add admin upload UI to VideoEditModal - Wave 3 (depends on 03-02)
 
 ### Phase 4: Event Sorting
 
@@ -115,7 +115,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase                      | Plans Complete | Status      | Completed    |
 | -------------------------- | -------------- | ----------- | ------------ |
