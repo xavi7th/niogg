@@ -86,13 +86,13 @@ Plans:
 1. User can toggle between newest-first and oldest-first sorting
 2. Sort preference persists across page navigation via URL query param
 3. Sort control applies to both timeline and grid views
-   **Plans**: TBD
+   **Plans**: 3 planned (see `.planning/phases/04-event-sorting/plans/`)
 
 Plans:
 
-- [ ] 04-01: Update Event::scopeOrdered() to accept direction parameter
-- [ ] 04-02: Add sort toggle component with router.get() and replace: true
-- [ ] 04-03: Pass sort param from URL to backend queries
+- [ ] 04-01: Modify Event::ordered() scope to accept direction parameter - Wave 1
+- [ ] 04-02: Add sort parameter handling to EventsMediaShowcaseController - Wave 2 (depends on 04-01)
+- [ ] 04-03: Add sort toggle controls to EventTimeline and EventsGrid - Wave 3 (depends on 04-02)
 
 ### Phase 5: Mobile UX
 
