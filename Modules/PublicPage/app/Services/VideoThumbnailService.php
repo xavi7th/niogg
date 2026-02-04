@@ -6,6 +6,7 @@ use FFMpeg\FFMpeg;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use FFMpeg\Coordinate\TimeCode;
+use Illuminate\Http\UploadedFile;
 use Intervention\Image\ImageManager;
 use Modules\PublicPage\Models\Video;
 use Illuminate\Support\Facades\Storage;
@@ -32,7 +33,7 @@ class VideoThumbnailService
 
   public function __construct()
   {
-    $this->imageManager = new ImageManager(new Driver());
+    $this->imageManager = new ImageManager(new Driver);
   }
 
   /**
@@ -191,5 +192,55 @@ class VideoThumbnailService
     }
 
     return $urls;
+  }
+
+  /**
+   * Store custom thumbnail for a video
+   *
+   * @param  UploadedFile  $file  Uploaded thumbnail file
+   * @param  Video  $video  Video model
+   * @return string Full URL to stored file
+   */
+  public function storeCustomThumbnail(UploadedFile $file, Video $video): string
+  {
+    // Delete old custom thumbnail if exists
+    if ( ! empty($video->custom_thumbnail_url)) {
+      $this->deleteCustomThumbnail($video->custom_thumbnail_url);
+    }
+
+    // Generate UUID-based filename preserving original extension
+    $extension = $file->getClientOriginalExtension();
+    $filename = Str::uuid()->toString() . '.' . $extension;
+    $path = self::THUMBNAIL_PATH . '/custom/' . $filename;
+
+    // Store file
+    Storage::disk(self::STORAGE_DISK)->put(
+        $path,
+        file_get_contents($file->getRealPath())
+    );
+
+    return Storage::disk(self::STORAGE_DISK)->url($path);
+  }
+
+  /**
+   * Delete custom thumbnail file
+   *
+   * @param  string|null  $customThumbnailUrl  URL of custom thumbnail
+   */
+  public function deleteCustomThumbnail(?string $customThumbnailUrl): void
+  {
+    if (empty($customThumbnailUrl)) {
+      return;
+    }
+
+    $thumbnailPath = str_replace(
+        Storage::disk(self::STORAGE_DISK)->url(''),
+        '',
+        $customThumbnailUrl
+    );
+
+    if (Storage::disk(self::STORAGE_DISK)->exists($thumbnailPath)) {
+      Storage::disk(self::STORAGE_DISK)->delete($thumbnailPath);
+    }
   }
 }
