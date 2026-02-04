@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Fix Thumbnail Display** - Restore thumbnail images across all video views (Completed 2026-02-03)
 - [x] **Phase 2: Fix Video Playback** - Restore video playback functionality across all views (Completed 2026-02-03)
-- [ ] **Phase 3: Custom Thumbnail Upload** - Enable admins to upload custom thumbnails
+- [x] **Phase 3: Custom Thumbnail Upload** - Enable admins to upload custom thumbnails (Completed 2026-02-04)
 - [ ] **Phase 4: Event Sorting** - Add global sort control for event date ordering
 - [ ] **Phase 5: Mobile UX** - Ensure mobile timeline and playback work correctly
 
@@ -72,9 +72,9 @@ Plans:
 
 Plans:
 
-- [ ] 03-01: Add database column and model accessor with fallback chain - Wave 1
-- [ ] 03-02: Create backend upload handler with validation and storage - Wave 2 (depends on 03-01)
-- [ ] 03-03: Add admin upload UI to VideoEditModal - Wave 3 (depends on 03-02)
+- [x] 03-01: Add database column and model accessor with fallback chain - Wave 1
+- [x] 03-02: Create backend upload handler with validation and storage - Wave 2 (depends on 03-01)
+- [x] 03-03: Add admin upload UI to VideoEditModal - Wave 3 (depends on 03-02)
 
 ### Phase 4: Event Sorting
 
@@ -121,6 +121,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | -------------------------- | -------------- | ----------- | ------------ |
 | 1. Fix Thumbnail Display   | 3/3            | Verified    | 2026-02-03   |
 | 2. Fix Video Playback      | 3/3            | Verified    | 2026-02-03   |
-| 3. Custom Thumbnail Upload | 0/3            | Not started | -            |
+| 3. Custom Thumbnail Upload | 3/3            | Verified    | 2026-02-04   |
 | 4. Event Sorting           | 0/3            | Not started | -            |
 | 5. Mobile UX               | 0/3            | Not started | -            |

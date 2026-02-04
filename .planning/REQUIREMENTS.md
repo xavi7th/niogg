@@ -17,9 +17,9 @@
 
 ### Custom Uploads
 
-- [ ] **CUSTOM-01**: Admin can upload custom thumbnail image on video edit page
-- [ ] **CUSTOM-02**: System auto-generates thumbnail when no custom thumbnail provided
-- [ ] **CUSTOM-03**: Custom thumbnail displays correctly in all video views
+- [x] **CUSTOM-01**: Admin can upload custom thumbnail image on video edit page
+- [x] **CUSTOM-02**: System auto-generates thumbnail when no custom thumbnail provided
+- [x] **CUSTOM-03**: Custom thumbnail displays correctly in all video views
 
 ### Sorting
 
@@ -64,9 +64,9 @@ Explicitly excluded.
 | THUMB-05    | Phase 2 | Pending |
 | THUMB-06    | Phase 2 | Pending |
 | THUMB-07    | Phase 2 | Pending |
-| CUSTOM-01   | Phase 3 | Pending |
-| CUSTOM-02   | Phase 3 | Pending |
-| CUSTOM-03   | Phase 3 | Pending |
+| CUSTOM-01   | Phase 3 | Complete |
+| CUSTOM-02   | Phase 3 | Complete |
+| CUSTOM-03   | Phase 3 | Complete |
 | SORT-01     | Phase 4 | Pending |
 | SORT-02     | Phase 4 | Pending |
 | SORT-03     | Phase 4 | Pending |
@@ -83,4 +83,4 @@ Explicitly excluded.
 ---
 
 _Requirements defined: 2026-02-02_
-_Last updated: 2026-02-03 after Phase 1 completion_
+_Last updated: 2026-02-04 after Phase 3 completion_
