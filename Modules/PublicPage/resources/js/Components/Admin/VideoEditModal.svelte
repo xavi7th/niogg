@@ -7,6 +7,17 @@
 
 	let isSubmitting = false;
 
+	// Thumbnail upload state
+	let thumbnailFile = null;
+	let thumbnailPreview = null;
+	let uploadingThumbnail = false;
+	let thumbnailProgress = 0;
+	let thumbnailError = null;
+	let fileInput;
+
+	// Current thumbnail URL (custom > auto > placeholder)
+	$: currentThumbnail = video.custom_thumbnail_url || video.thumbnail_url || '/images/video-placeholder-default.jpg';
+
 	function close() {
 		open = false;
 		isSubmitting = false;
