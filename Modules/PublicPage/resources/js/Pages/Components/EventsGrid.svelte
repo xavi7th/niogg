@@ -1,5 +1,5 @@
 <script>
-  import { Link } from '@inertiajs/svelte';
+  import { Link, page } from '@inertiajs/svelte';
   import { modalRoot } from "@/stores";
   import { Portal } from "svelte-teleport";
   import LazyThumbnail from "./LazyThumbnail.svelte";
@@ -125,11 +125,11 @@
     <button on:click={onBackToTimeline} class="btn-back">← Back to Timeline</button>
     <div class="sort-controls">
       <span class="sort-label">Sort events:</span>
-      <Link href="?sort=newest" class:active={currentSort === 'newest'} aria-current={currentSort === 'newest' ? 'true' : undefined}>
+      <Link href="?sort=newest" class="sort-link {currentSort === 'newest' ? 'active' : ''}" aria-current={currentSort === 'newest' ? 'true' : undefined}>
         Newest
       </Link>
       <span class="sort-divider">/</span>
-      <Link href="?sort=oldest" class:active={currentSort === 'oldest'} aria-current={currentSort === 'oldest' ? 'true' : undefined}>
+      <Link href="?sort=oldest" class="sort-link {currentSort === 'oldest' ? 'active' : ''}" aria-current={currentSort === 'oldest' ? 'true' : undefined}>
         Oldest
       </Link>
     </div>
