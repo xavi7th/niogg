@@ -1,4 +1,5 @@
 <script>
+  import { Link } from '@inertiajs/svelte';
   import EventHeader from '@publicpage-pages/Components/EventHeader.svelte';
   import VideoPlayer from '@publicpage-pages/Components/VideoPlayer.svelte';
   import SupportingVideoGrid from '@publicpage-pages/Components/SupportingVideoGrid.svelte';
@@ -29,9 +30,21 @@
     const videoId = selectedVideos.get(eventId);
     return events.find((e) => e.id === eventId)?.videos?.find((v) => v.id === videoId);
   };
+
+  $: currentSort = $page.url.searchParams.get('sort') || 'newest';
 </script>
 
 <div class="event-timeline">
+  <div class="sort-controls">
+    <span class="sort-label">Sort events:</span>
+    <Link href="?sort=newest" class:active={currentSort === 'newest'} aria-current={currentSort === 'newest' ? 'true' : undefined}>
+      Newest
+    </Link>
+    <span class="sort-divider">/</span>
+    <Link href="?sort=oldest" class:active={currentSort === 'oldest'} aria-current={currentSort === 'oldest' ? 'true' : undefined}>
+      Oldest
+    </Link>
+  </div>
   {#each events as event, idx (event.id)}
     <section class="event-section" style={`background-color: ${idx % 2 === 0 ? '#ffffff' : '#f9f9f9'}`}>
       <div class="event-container">
@@ -74,6 +87,40 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+  }
+
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+
+  .sort-label {
+    color: #666;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .sort-controls a {
+    color: #666;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .sort-controls a:hover {
+    color: #ff7607;
+  }
+
+  .sort-controls a.active {
+    color: #ff7607;
+    text-decoration: underline;
+  }
+
+  .sort-divider {
+    color: #ccc;
   }
 
   .featured-player-section {
