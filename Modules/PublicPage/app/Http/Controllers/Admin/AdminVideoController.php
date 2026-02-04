@@ -11,16 +11,23 @@ use Modules\PublicPage\Models\Video;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Modules\PublicPage\Services\VideoUploadService;
+use Modules\PublicPage\Services\VideoThumbnailService;
 use Modules\PublicPage\Http\Requests\Admin\VideoFormRequest;
 use Modules\PublicPage\Http\Requests\Admin\VideoUploadRequest;
+use Modules\PublicPage\Http\Requests\Admin\VideoThumbnailRequest;
 
 class AdminVideoController extends Controller
 {
   private VideoUploadService $uploadService;
 
-  public function __construct(VideoUploadService $uploadService)
-  {
+  private VideoThumbnailService $thumbnailService;
+
+  public function __construct(
+      VideoUploadService $uploadService,
+      VideoThumbnailService $thumbnailService
+  ) {
     $this->uploadService = $uploadService;
+    $this->thumbnailService = $thumbnailService;
   }
 
   /**
@@ -203,6 +210,28 @@ class AdminVideoController extends Controller
     } catch (Exception $e) {
       return response()->json([
         'message' => 'Failed to reorder videos. Please try again.',
+        'error' => config('app.debug') ? $e->getMessage() : NULL,
+      ], 500);
+    }
+  }
+
+  /**
+   * Upload custom thumbnail for a video
+   */
+  public function uploadThumbnail(VideoThumbnailRequest $request, Video $video): \Illuminate\Http\JsonResponse
+  {
+    try {
+      $file = $request->file('thumbnail');
+      $thumbnailUrl = $this->thumbnailService->storeCustomThumbnail($file, $video);
+
+      $video->update(['custom_thumbnail_url' => $thumbnailUrl]);
+
+      return response()->json([
+        'video' => $video,
+      ]);
+    } catch (Exception $e) {
+      return response()->json([
+        'message' => 'Failed to upload thumbnail. Please try again.',
         'error' => config('app.debug') ? $e->getMessage() : NULL,
       ], 500);
     }

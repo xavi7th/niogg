@@ -45,6 +45,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/upload/{event}', [AdminVideoController::class, 'upload'])->name('upload');
         Route::post('/events/{event}', [AdminVideoController::class, 'store'])->name('store');
         Route::post('/events/{event}/reorder', [AdminVideoController::class, 'reorder'])->name('reorder');
+        Route::post('/{video}/thumbnail', [AdminVideoController::class, 'uploadThumbnail'])->name('thumbnail');
         Route::get('/{video}/edit', [AdminVideoController::class, 'edit'])->name('edit');
         Route::put('/{video}', [AdminVideoController::class, 'update'])->name('update');
         Route::delete('/{video}', [AdminVideoController::class, 'destroy'])->name('destroy');
