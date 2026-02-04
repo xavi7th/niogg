@@ -22,6 +22,7 @@ class Video extends Model
     'description',
     'video_url',
     'thumbnail_url',
+    'custom_thumbnail_url',
     'duration_seconds',
     'is_featured',
     'sort_order',
@@ -33,6 +34,13 @@ class Video extends Model
     'conversion_started_at',
     'conversion_completed_at',
     'conversion_error',
+  ];
+
+  /**
+   * The accessors to append to the model's array form.
+   */
+  protected $appends = [
+    'thumbnail_url',
   ];
 
   protected $casts = [
@@ -77,5 +85,31 @@ class Video extends Model
     $seconds = $this->duration_seconds % 60;
 
     return sprintf('%d:%02d', $minutes, $seconds);
+  }
+
+  /**
+   * Get thumbnail URL with fallback chain and cache busting (Accessor)
+   *
+   * Priority: Custom -> Auto-generated -> Placeholder
+   * Applies cache-busting (?v={timestamp}) to dynamic thumbnails
+   */
+  public function getThumbnailUrlAttribute(): string
+  {
+    // Priority 1: Custom thumbnail
+    if ( ! empty($this->attributes['custom_thumbnail_url'] ?? NULL)) {
+      $url = $this->attributes['custom_thumbnail_url'];
+
+      return strtok($url, '?') . '?v=' . $this->updated_at->timestamp;
+    }
+
+    // Priority 2: Auto-generated thumbnail
+    if ( ! empty($this->attributes['thumbnail_url'] ?? NULL)) {
+      $url = $this->attributes['thumbnail_url'];
+
+      return strtok($url, '?') . '?v=' . $this->updated_at->timestamp;
+    }
+
+    // Priority 3: Placeholder (no cache busting needed)
+    return '/images/video-placeholder-default.jpg';
   }
 }
