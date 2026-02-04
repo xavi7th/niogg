@@ -5,24 +5,24 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Users can view event videos with working thumbnails and playback
-**Current focus:** Phase 4, Wave 2
+**Current focus:** Phase 4 complete, Wave 3 complete
 
 ## Current Position
 
 Phase: 4 of 5 (Event Sorting)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-04 — Completed 04-02
+Plan: 3 of 3 (Phase complete)
+Status: Phase complete
+Last activity: 2026-02-04 — Completed 04-03
 
-Progress: [██████████] 67%
+Progress: [██████████] 80%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 13
-- Average duration: 5 min
-- Total execution time: 1.2 hours
+- Total plans completed: 15
+- Average duration: 4 min
+- Total execution time: 1.3 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [██████████] 67%
 | 01    | 3     | 3     | 10 min   |
 | 02    | 3     | 3     | 5 min    |
 | 03    | 3     | 3     | 2 min    |
-| 04    | 2     | 3     | 1 min    |
+| 04    | 3     | 3     | 2 min    |
 
 **Recent Trend:**
 
-- Last 5 plans: 04-02 (2 min), 04-01 (1 min), 03-03 (3 min), 03-02 (3 min), 03-01 (1 min)
+- Last 5 plans: 04-03 (3 min), 04-02 (2 min), 04-01 (1 min), 03-03 (3 min), 03-02 (3 min)
 - Trend: Steady progress
 
 _Updated after each plan completion_
@@ -61,6 +61,7 @@ Recent decisions affecting current work:
 - **Admin upload UI:** FormData upload via Inertia router with forceFormData, client-side validation (image type, 5MB max), instant preview with URL.createObjectURL (03-03)
 - **Optional scope parameters:** Use ?string type with default value for backward compatibility (04-01)
 - **Sort query param whitelisting:** Use ternary to map 'newest'->'desc', 'oldest'->'asc' (04-02)
+- **URL-driven sort state:** Use Inertia Link with ?sort= query params for shareable URLs (04-03)
 
 ### Pending Todos
 
@@ -73,7 +74,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-04
-Stopped at: Completed 04-02-PLAN.md
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
 
 Config:
