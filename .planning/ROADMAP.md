@@ -104,13 +104,13 @@ Plans:
 1. Timeline view on mobile shows featured video only
 2. "Show all videos from this event" button navigates to filtered grid view
 3. Videos play correctly on mobile devices (iOS/Android)
-   **Plans**: TBD
+   **Plans**: 3 planned (see `.planning/phases/05-mobile-ux/plans/`)
 
 Plans:
 
-- [ ] 05-01: Verify mobile timeline layout (featured only)
-- [ ] 05-02: Add navigation button to filtered grid view
-- [ ] 05-03: Test playback on iOS and Android devices
+- [ ] 05-01: Verify mobile timeline layout (featured only) - Wave 1
+- [ ] 05-02: Verify navigation button to filtered grid view - Wave 1
+- [ ] 05-03: Test playback on iOS and Android devices - Wave 1
 
 ## Progress
 
