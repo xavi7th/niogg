@@ -23,9 +23,9 @@
 
 ### Sorting
 
-- [ ] **SORT-01**: Users can toggle event sort order (newest first / oldest first)
-- [ ] **SORT-02**: Sort preference persists across page navigation via URL query param
-- [ ] **SORT-03**: Sort control applies to both timeline and grid views
+- [x] **SORT-01**: Users can toggle event sort order (newest first / oldest first)
+- [x] **SORT-02**: Sort preference persists across page navigation via URL query param
+- [x] **SORT-03**: Sort control applies to both timeline and grid views
 
 ### Mobile
 
@@ -67,9 +67,9 @@ Explicitly excluded.
 | CUSTOM-01   | Phase 3 | Complete |
 | CUSTOM-02   | Phase 3 | Complete |
 | CUSTOM-03   | Phase 3 | Complete |
-| SORT-01     | Phase 4 | Pending |
-| SORT-02     | Phase 4 | Pending |
-| SORT-03     | Phase 4 | Pending |
+| SORT-01     | Phase 4 | Complete |
+| SORT-02     | Phase 4 | Complete |
+| SORT-03     | Phase 4 | Complete |
 | MOBILE-01   | Phase 5 | Pending |
 | MOBILE-02   | Phase 5 | Pending |
 | MOBILE-03   | Phase 5 | Pending |
@@ -83,4 +83,4 @@ Explicitly excluded.
 ---
 
 _Requirements defined: 2026-02-02_
-_Last updated: 2026-02-04 after Phase 3 completion_
+_Last updated: 2026-02-04 after Phase 4 completion_

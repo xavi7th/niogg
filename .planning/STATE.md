@@ -4,15 +4,15 @@
 
 See: .planning/PROJECT.md (updated 2026-02-02)
 
-**Core value:** Users can view event videos with working thumbnails and playback
-**Current focus:** Phase 4 complete, Wave 3 complete
+**Core value:** Users can view event videos with working thumbnails and playback, with sorting
+**Current focus:** Phase 4 verified complete
 
 ## Current Position
 
 Phase: 4 of 5 (Event Sorting)
 Plan: 3 of 3 (Phase complete)
-Status: Phase complete
-Last activity: 2026-02-04 — Completed 04-03
+Status: Phase verified complete
+Last activity: 2026-02-04 — Phase 4 verified complete (3/3 must-haves)
 
 Progress: [██████████] 80%
 

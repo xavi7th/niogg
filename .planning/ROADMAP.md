@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Fix Thumbnail Display** - Restore thumbnail images across all video views (Completed 2026-02-03)
 - [x] **Phase 2: Fix Video Playback** - Restore video playback functionality across all views (Completed 2026-02-03)
 - [x] **Phase 3: Custom Thumbnail Upload** - Enable admins to upload custom thumbnails (Completed 2026-02-04)
-- [ ] **Phase 4: Event Sorting** - Add global sort control for event date ordering
+- [x] **Phase 4: Event Sorting** - Add global sort control for event date ordering (Completed 2026-02-04)
 - [ ] **Phase 5: Mobile UX** - Ensure mobile timeline and playback work correctly
 
 ## Phase Details
@@ -90,9 +90,9 @@ Plans:
 
 Plans:
 
-- [ ] 04-01: Modify Event::ordered() scope to accept direction parameter - Wave 1
-- [ ] 04-02: Add sort parameter handling to EventsMediaShowcaseController - Wave 2 (depends on 04-01)
-- [ ] 04-03: Add sort toggle controls to EventTimeline and EventsGrid - Wave 3 (depends on 04-02)
+- [x] 04-01: Modify Event::ordered() scope to accept direction parameter - Wave 1
+- [x] 04-02: Add sort parameter handling to EventsMediaShowcaseController - Wave 2 (depends on 04-01)
+- [x] 04-03: Add sort toggle controls to EventTimeline and EventsGrid - Wave 3 (depends on 04-02)
 
 ### Phase 5: Mobile UX
 
@@ -122,5 +122,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Fix Thumbnail Display   | 3/3            | Verified    | 2026-02-03   |
 | 2. Fix Video Playback      | 3/3            | Verified    | 2026-02-03   |
 | 3. Custom Thumbnail Upload | 3/3            | Verified    | 2026-02-04   |
-| 4. Event Sorting           | 0/3            | Not started | -            |
+| 4. Event Sorting           | 3/3            | Verified    | 2026-02-04   |
 | 5. Mobile UX               | 0/3            | Not started | -            |
