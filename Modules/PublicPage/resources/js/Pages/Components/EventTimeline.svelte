@@ -31,7 +31,7 @@
     return events.find((e) => e.id === eventId)?.videos?.find((v) => v.id === videoId);
   };
 
-  $: currentSort = $page.url.searchParams.get('sort') || 'newest';
+  $: currentSort = $page.url?.searchParams.get('sort') || 'newest';
 </script>
 
 <div class="event-timeline">

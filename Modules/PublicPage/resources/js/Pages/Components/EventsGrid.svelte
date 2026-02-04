@@ -115,7 +115,7 @@
 
   $: filteredVideos = getFilteredVideos();
 
-  $: currentSort = $page.url.searchParams.get('sort') || 'newest';
+  $: currentSort = $page.url?.searchParams.get('sort') || 'newest';
 
 
 </script>
