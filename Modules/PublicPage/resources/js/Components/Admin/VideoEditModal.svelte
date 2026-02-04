@@ -35,6 +35,44 @@
 		});
 	}
 
+	function uploadThumbnail() {
+		if (!thumbnailFile) {
+			thumbnailError = 'Please select a file to upload';
+			return;
+		}
+
+		uploadingThumbnail = true;
+		thumbnailError = null;
+		thumbnailProgress = 0;
+
+		const formData = new FormData();
+		formData.append('thumbnail', thumbnailFile);
+
+		router.post(`/admin/videos/${video.id}/thumbnail`, formData, {
+			forceFormData: true,
+			onProgress: (progress) => {
+				thumbnailProgress = Math.round(progress.detail.progress);
+			},
+			onSuccess: () => {
+				// Reload to get updated video data with new thumbnail
+				router.reload({
+					onSuccess: () => {
+						// Reset state after successful reload
+						uploadingThumbnail = false;
+						thumbnailFile = null;
+						thumbnailPreview = null;
+						thumbnailProgress = 0;
+					},
+				});
+			},
+			onError: (errors) => {
+				uploadingThumbnail = false;
+				thumbnailError = errors.thumbnail || 'Failed to upload thumbnail';
+				thumbnailProgress = 0;
+			},
+		});
+	}
+
 	function onBackdropClick(e) {
 		if (e.target === e.currentTarget) {
 			close();
