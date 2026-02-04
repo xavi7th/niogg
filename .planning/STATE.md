@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2026-02-02)
 
 ## Current Position
 
-Phase: 3 of 5 (Custom Thumbnail Upload)
-Plan: 3 of 3 in current phase
-Status: Phase complete, verified
-Last activity: 2026-02-04 — Phase 3 verified complete (6/6 must-haves)
+Phase: 4 of 5 (Event Sorting)
+Plan: 1 of 3 in current phase
+Status: In progress
+Last activity: 2026-02-04 — Completed 04-01-PLAN.md
 
 Progress: [████████░░] 60%
 
@@ -20,9 +20,9 @@ Progress: [████████░░] 60%
 
 **Velocity:**
 
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 5 min
-- Total execution time: 1.1 hours
+- Total execution time: 1.2 hours
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: [████████░░] 60%
 | 01    | 3     | 3     | 10 min   |
 | 02    | 3     | 3     | 5 min    |
 | 03    | 3     | 3     | 2 min    |
+| 04    | 1     | 3     | 1 min    |
 
 **Recent Trend:**
 
-- Last 5 plans: 03-03 (3 min), 03-02 (3 min), 03-01 (1 min), 02-03 (8 min), 02-02 (2 min)
+- Last 5 plans: 04-01 (1 min), 03-03 (3 min), 03-02 (3 min), 03-01 (1 min), 02-03 (8 min)
 - Trend: Steady progress
 
 _Updated after each plan completion_
@@ -58,6 +59,7 @@ Recent decisions affecting current work:
 - **Cache-busting pattern:** Use `strtok($url, '?')` to strip existing query strings before appending cache buster (03-01)
 - **Custom thumbnail storage:** UUID filenames in videos/thumbnails/custom/, old file auto-cleanup (03-02)
 - **Admin upload UI:** FormData upload via Inertia router with forceFormData, client-side validation (image type, 5MB max), instant preview with URL.createObjectURL (03-03)
+- **Optional scope parameters:** Use ?string type with default value for backward compatibility (04-01)
 
 ### Pending Todos
 
@@ -70,7 +72,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-04
-Stopped at: Completed 03-03-PLAN.md
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
 
 Config:
