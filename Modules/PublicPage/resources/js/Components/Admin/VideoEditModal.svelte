@@ -78,6 +78,39 @@
 			close();
 		}
 	}
+
+	function handleFileSelect(e) {
+		const file = e.target.files[0];
+		if (!file) {
+			thumbnailFile = null;
+			thumbnailPreview = null;
+			thumbnailError = null;
+			return;
+		}
+
+		// Validate file type
+		if (!file.type.startsWith('image/')) {
+			thumbnailError = 'Please select an image file';
+			thumbnailFile = null;
+			thumbnailPreview = null;
+			return;
+		}
+
+		// Validate file size (5MB max)
+		const maxSize = 5 * 1024 * 1024;
+		if (file.size > maxSize) {
+			thumbnailError = 'File size must be less than 5MB';
+			thumbnailFile = null;
+			thumbnailPreview = null;
+			return;
+		}
+
+		thumbnailFile = file;
+		thumbnailError = null;
+
+		// Create preview URL
+		thumbnailPreview = URL.createObjectURL(file);
+	}
 </script>
 
 {#if open && video}
@@ -118,6 +151,128 @@
 							class="w-full px-3 py-2 border border-[#eaeaea] rounded-lg focus:ring-2 focus:ring-[#ff7607] outline-none"
 							placeholder="Video title"
 						/>
+					</div>
+
+					<!-- Custom Thumbnail -->
+					<div>
+						<label class="block text-sm font-medium text-[#1b1a1a] mb-1">
+							Custom Thumbnail
+						</label>
+
+						<!-- Current/Preview Thumbnail -->
+						<div class="mb-3">
+							<img
+								src={thumbnailPreview || currentThumbnail}
+								alt="Video thumbnail"
+								class="max-h-48 w-full object-cover rounded-lg border-2 {video.custom_thumbnail_url
+									? 'border-[#ff7607]'
+									: 'border-[#eaeaea]'}"
+							/>
+							{#if video.custom_thumbnail_url}
+								<p class="text-xs text-[#9b9b9b] mt-1">Custom thumbnail active</p>
+							{/if}
+						</div>
+
+						<!-- Upload Controls -->
+						<input
+							type="file"
+							bind:this={fileInput}
+							on:change={handleFileSelect}
+							accept="image/*"
+							class="hidden"
+						/>
+
+						{#if uploadingThumbnail}
+							<!-- Loading State -->
+							<div class="flex items-center justify-center gap-2 py-3 border border-[#eaeaea] rounded-lg">
+								<svg
+									class="animate-spin h-5 w-5 text-[#ff7607]"
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+								>
+									<circle
+										class="opacity-25"
+										cx="12"
+										cy="12"
+										r="10"
+										stroke="currentColor"
+										stroke-width="4"
+									></circle>
+									<path
+										class="opacity-75"
+										fill="currentColor"
+										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+									></path>
+								</svg>
+								<span class="text-sm text-[#1b1a1a]">Uploading {thumbnailProgress}%</span>
+							</div>
+						{:else}
+							{#if thumbnailFile}
+								<!-- File Selected State -->
+								<div class="space-y-2">
+									<div class="flex items-center justify-between p-3 bg-[#f9f9f9] border border-[#eaeaea] rounded-lg">
+										<div class="flex-1 min-w-0">
+											<p class="text-sm font-medium text-[#1b1a1a] truncate">{thumbnailFile.name}</p>
+											<p class="text-xs text-[#9b9b9b]">
+												{(thumbnailFile.size / 1024 / 1024).toFixed(2)} MB
+											</p>
+										</div>
+										<button
+											type="button"
+											on:click={() => {
+												thumbnailFile = null;
+												thumbnailPreview = null;
+												thumbnailError = null;
+												if (fileInput) fileInput.value = '';
+											}}
+											class="ml-3 text-[#9b9b9b] hover:text-[#ef4444] transition-colors"
+										>
+											<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path
+													stroke-linecap="round"
+													stroke-linejoin="round"
+													stroke-width="2"
+													d="M6 18L18 6M6 6l12 12"
+												/>
+											</svg>
+										</button>
+									</div>
+									<button
+										type="button"
+										on:click={uploadThumbnail}
+										class="w-full px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm"
+									>
+										Upload Thumbnail
+									</button>
+								</div>
+							{:else}
+								<!-- Default State -->
+								<button
+									type="button"
+									on:click={() => fileInput?.click()}
+									class="w-full px-4 py-2 border-2 border-dashed border-[#eaeaea] rounded-lg hover:border-[#ff7607] hover:bg-[#fff9f5] transition-colors"
+								>
+									<div class="flex flex-col items-center gap-1">
+										<svg class="w-8 h-8 text-[#9b9b9b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+											/>
+										</svg>
+										<span class="text-sm font-medium text-[#1b1a1a]">Choose Image</span>
+										<span class="text-xs text-[#9b9b9b]">JPG, PNG, WebP up to 5MB</span>
+									</div>
+								</button>
+							{/if}
+						{/if}
+
+						<!-- Error Display -->
+						{#if thumbnailError}
+							<p class="text-sm text-[#ef4444] mt-1">{thumbnailError}</p>
+						{/if}
 					</div>
 
 					<div>
