@@ -5,24 +5,24 @@
 See: .planning/PROJECT.md (updated 2026-02-02)
 
 **Core value:** Users can view event videos with working thumbnails and playback, with sorting
-**Current focus:** Phase 4 verified complete
+**Current focus:** Phase 5 mobile UX verification
 
 ## Current Position
 
-Phase: 4 of 5 (Event Sorting)
-Plan: 3 of 3 (Phase complete)
-Status: Phase verified complete
-Last activity: 2026-02-04 — Phase 4 verified complete (3/3 must-haves)
+Phase: 5 of 5 (Mobile UX)
+Plan: 1 of 1
+Status: In progress
+Last activity: 2026-02-04 — Completed 05-01 mobile timeline layout verification
 
-Progress: [██████████] 80%
+Progress: [████████░░] 85%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: 4 min
-- Total execution time: 1.3 hours
+- Total execution time: 1.4 hours
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [██████████] 80%
 | 02    | 3     | 3     | 5 min    |
 | 03    | 3     | 3     | 2 min    |
 | 04    | 3     | 3     | 2 min    |
+| 05    | 1     | 1+    | 3 min    |
 
 **Recent Trend:**
 
-- Last 5 plans: 04-03 (3 min), 04-02 (2 min), 04-01 (1 min), 03-03 (3 min), 03-02 (3 min)
+- Last 5 plans: 05-01 (3 min), 04-03 (3 min), 04-02 (2 min), 04-01 (1 min), 03-03 (3 min)
 - Trend: Steady progress
 
 _Updated after each plan completion_
@@ -62,6 +63,7 @@ Recent decisions affecting current work:
 - **Optional scope parameters:** Use ?string type with default value for backward compatibility (04-01)
 - **Sort query param whitelisting:** Use ternary to map 'newest'->'desc', 'oldest'->'asc' (04-02)
 - **URL-driven sort state:** Use Inertia Link with ?sort= query params for shareable URLs (04-03)
+- **Mobile/desktop CSS split:** Use `@media (max-width: 768px)` with `display: none/block` to control component visibility (05-01)
 
 ### Pending Todos
 
@@ -74,7 +76,7 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-04
-Stopped at: Completed 04-03-PLAN.md
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
 
 Config:
