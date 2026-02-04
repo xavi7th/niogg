@@ -71,10 +71,14 @@ class Event extends Model
     }
 
     /**
-     * Order by event_date descending
+     * Order events by date
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string|null $direction Sort direction: 'asc' (oldest first) or 'desc' (newest first)
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOrdered($query)
+    public function scopeOrdered($query, ?string $direction = 'desc')
     {
-        return $query->orderBy('event_date', 'desc');
+        return $query->orderBy('event_date', $direction);
     }
 }
