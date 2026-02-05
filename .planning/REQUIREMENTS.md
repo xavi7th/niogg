@@ -10,10 +10,10 @@
 - [x] **THUMB-01**: Videos display thumbnails in event grid view (EventVideosGrid.svelte)
 - [x] **THUMB-02**: Videos display thumbnails in media showcase grid view (EventsGrid.svelte)
 - [x] **THUMB-03**: Videos display thumbnails in timeline supporting video list (SupportingVideoGrid.svelte)
-- [ ] **THUMB-04**: Videos play when clicked in event view modal (EventVideosGrid.svelte)
-- [ ] **THUMB-05**: Videos play when clicked in grid view modal (EventsGrid.svelte)
-- [ ] **THUMB-06**: Videos play when clicked in timeline supporting video list (EventTimeline.svelte)
-- [ ] **THUMB-07**: Video titles display correctly in timeline supporting video list
+- [x] **THUMB-04**: Videos play when clicked in event view modal (EventVideosGrid.svelte)
+- [x] **THUMB-05**: Videos play when clicked in grid view modal (EventsGrid.svelte)
+- [x] **THUMB-06**: Videos play when clicked in timeline supporting video list (EventTimeline.svelte)
+- [x] **THUMB-07**: Video titles display correctly in timeline supporting video list
 
 ### Custom Uploads
 
@@ -29,9 +29,9 @@
 
 ### Mobile
 
-- [ ] **MOBILE-01**: Timeline view on mobile shows featured video only
-- [ ] **MOBILE-02**: "Show all videos from this event" button navigates to filtered grid view
-- [ ] **MOBILE-03**: Videos play correctly on mobile devices (iOS/Android)
+- [x] **MOBILE-01**: Timeline view on mobile shows featured video only
+- [x] **MOBILE-02**: "Show all videos from this event" button navigates to filtered grid view
+- [x] **MOBILE-03**: Videos play correctly on mobile devices (iOS/Android)
 
 ## v2 Requirements
 
@@ -60,19 +60,19 @@ Explicitly excluded.
 | THUMB-01    | Phase 1 | Complete |
 | THUMB-02    | Phase 1 | Complete |
 | THUMB-03    | Phase 1 | Complete |
-| THUMB-04    | Phase 2 | Pending |
-| THUMB-05    | Phase 2 | Pending |
-| THUMB-06    | Phase 2 | Pending |
-| THUMB-07    | Phase 2 | Pending |
+| THUMB-04    | Phase 2 | Complete |
+| THUMB-05    | Phase 2 | Complete |
+| THUMB-06    | Phase 2 | Complete |
+| THUMB-07    | Phase 2 | Complete |
 | CUSTOM-01   | Phase 3 | Complete |
 | CUSTOM-02   | Phase 3 | Complete |
 | CUSTOM-03   | Phase 3 | Complete |
 | SORT-01     | Phase 4 | Complete |
 | SORT-02     | Phase 4 | Complete |
 | SORT-03     | Phase 4 | Complete |
-| MOBILE-01   | Phase 5 | Pending |
-| MOBILE-02   | Phase 5 | Pending |
-| MOBILE-03   | Phase 5 | Pending |
+| MOBILE-01   | Phase 5 | Complete |
+| MOBILE-02   | Phase 5 | Complete |
+| MOBILE-03   | Phase 5 | Complete |
 
 **Coverage:**
 
@@ -83,4 +83,4 @@ Explicitly excluded.
 ---
 
 _Requirements defined: 2026-02-02_
-_Last updated: 2026-02-04 after Phase 4 completion_
+_Last updated: 2026-02-05 after Phase 5 completion_
