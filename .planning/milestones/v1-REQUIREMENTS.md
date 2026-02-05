@@ -1,3 +1,12 @@
+# Requirements Archive: v1 Video Display & Playback Fixes
+
+**Archived:** 2026-02-05
+**Status:** ✅ SHIPPED
+
+This is the archived requirements specification for v1. For current requirements, see `.planning/REQUIREMENTS.md` (created for next milestone).
+
+---
+
 # Requirements: Video Display & Playback Fixes
 
 **Defined:** 2026-02-02
@@ -80,7 +89,12 @@ Explicitly excluded.
 - Mapped to phases: 15
 - Unmapped: 0
 
+## Milestone Summary
+
+**Shipped:** 15 of 15 v1 requirements
+**Adjusted:** None
+**Dropped:** None
+
 ---
 
-_Requirements defined: 2026-02-02_
-_Last updated: 2026-02-05 after Phase 5 completion_
+_Archived: 2026-02-05 as part of v1 milestone completion_

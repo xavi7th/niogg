@@ -22,18 +22,24 @@ Fix broken video thumbnails, playback issues, and add sorting/thumbnail upload f
 - ✓ Featured video selection per event — existing
 - ✓ Event ordering by date (DESC) — existing
 
+### Validated
+
+<!-- Shipped and confirmed valuable. -->
+
+- ✓ **THUMB-01**: Thumbnails display in all video views (event grid, timeline, media showcase grid) — v1
+- ✓ **THUMB-02**: Videos play when clicked in modal (event view, grid view) — v1
+- ✓ **THUMB-03**: Videos play when clicked in timeline supporting video list (desktop) — v1
+- ✓ **THUMB-04**: Video titles display correctly in timeline supporting video list — v1
+- ✓ **CUSTOM-01**: Admin can upload custom thumbnail on video edit page — v1
+- ✓ **CUSTOM-02**: System auto-generates thumbnail when no custom thumbnail provided — v1
+- ✓ **SORT-01**: Global sort toggle for events (newest/oldest by event date) — v1
+- ✓ **MOBILE-01**: Timeline view on mobile shows featured video only with button to grid — v1
+
 ### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] **THUMB-01**: Thumbnails display in all video views (event grid, timeline, media showcase grid)
-- [ ] **THUMB-02**: Videos play when clicked in modal (event view, grid view)
-- [ ] **THUMB-03**: Videos play when clicked in timeline supporting video list (desktop)
-- [ ] **THUMB-04**: Video titles display correctly in timeline supporting video list
-- [ ] **CUSTOM-01**: Admin can upload custom thumbnail on video edit page
-- [ ] **CUSTOM-02**: System auto-generates thumbnail when no custom thumbnail provided
-- [ ] **SORT-01**: Global sort toggle for events (newest/oldest by event date)
-- [ ] **MOBILE-01**: Timeline view on mobile shows featured video only with button to grid
+(None — next milestone to be defined)
 
 ### Out of Scope
 
@@ -92,4 +98,4 @@ Fix broken video thumbnails, playback issues, and add sorting/thumbnail upload f
 
 ---
 
-_Last updated: 2026-02-02 after initialization_
+_Last updated: 2026-02-05 after v1 milestone_
