@@ -4,7 +4,6 @@ import { defineConfig } from "vite";
 import concat from "rollup-plugin-concat";
 import laravel from "laravel-vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import { enhancedImages } from "@sveltejs/enhanced-img";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import collectModuleAssetsPaths from "./vite-module-loader.js";
 
@@ -43,8 +42,7 @@ async function getConfig() {
         input: modulesConfig.paths,
         // refresh: true,
       }),
-      enhancedImages(),
-      svelte({}),
+      svelte(),
     ],
     css: {
       preprocessorOptions: {
