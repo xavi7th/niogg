@@ -47,5 +47,6 @@ tasks/*
 .ralph/.last-branch
 test-results/*
 storage/logs/*
+storage/pail/*
 .cache/*
 .claude/data/*
