@@ -23,6 +23,7 @@
   "require-dev": {
     "fakerphp/faker": "^1.9.1",
     "larastan/larastan": "^2.0",
+    "laravel/pail": "^1.2",
     "laravel/boost": "^1.8",
     "laravel/breeze": "^1.29",
     "laravel/pint": "^1.17",
@@ -78,6 +79,10 @@
     ],
     "lint": "vendor/bin/pint --test && vendor/bin/phpcbf -nv",
     "lint-check": "vendor/bin/pint && vendor/bin/phpcs -v",
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "bash scripts/dev.sh"
+    ],
     "test": [
       "./scripts/test.sh"
     ],

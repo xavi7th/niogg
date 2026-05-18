@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Backend:** Laravel 10 (PHP 8.1+) with Nwidart Laravel Modules, Inertia.js, Laravel Sanctum, Ziggy
 **Frontend:** Svelte (via Inertia adapter, not SvelteKit), Vite 5, Tailwind CSS 3
 **Database:** MariaDB 10 (with Redis for caching/sessions)
-**DevOps:** Docker Compose + Laravel Sail, Docker-sync (MacOS optimization)
+**DevOps:** Docker Compose + Laravel Sail
 
 ## Architecture: Modular Monolith
 
@@ -37,21 +37,27 @@ Modules/{ModuleName}/
 
 **Development:**
 
+**Unified dev server (recommended):**
 ```bash
-# Docker (MacOS with docker-sync optimization)
-make start_dev   # Start docker-sync + Sail
-make stop_dev    # Stop containers + docker-sync
+composer dev      # Docker + Vite + queue + logs + scheduler — all in one
+```
+
+**Manual Docker startup (backup):**
+```bash
+make start_dev   # Containers only (detached)
+make watch_dev   # Containers (foreground) + log tail
+make stop_dev    # Stop containers
 make kill_dev    # Clean everything for fresh start
+```
 
-# Standard Docker
-./vendor/bin/sail up -d
-./vendor/bin/sail down
+**Frontend:**
+```bash
+bun run dev      # Vite dev server + HMR + pre-commit hooks
+bun run build    # Build for production
+```
 
-# Frontend dev (includes git hook setup)
-npm run dev      # Vite dev server + HMR + pre-commit hooks
-
-# Build for production
-npm run build
+**Build for production:**
+```bash
 composer recompile   # Clear caches, optimize Laravel
 ```
 
@@ -137,7 +143,6 @@ Pre-commit hooks auto-installed via `npm run dev`. Includes linting and formatti
 
 ## Development Notes
 
-- **Docker-sync (MacOS only):** Improves volume mount performance. Line must be uncommented in `docker-compose.yml` to use.
 - **Modules testing:** Each module has isolated test suites. Main phpunit.xml only covers `/app` directory.
 - **Asset concatenation:** Legacy jQuery/plugins concatenated via Rollup plugin to `public/build/assets/` for backward compatibility with existing templates.
 
