@@ -1,3 +1,7 @@
+<script>
+  import { getImgUrl } from '@/helpers';
+</script>
+
 <section id="projectsCarousel3" class="projects-carousel-3 pt-120 pb-90">
   <div class="container">
     <div class="row">
@@ -15,7 +19,7 @@
           data-autoplay="true" data-nav="false" data-dots="true" data-space="30" data-loop="true" data-speed="800">
           <div class="project-item">
             <div class="project__img">
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/1.jpg?enhanced&h=350" alt="project img"/>
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/1.jpg')} alt="project img"/>
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Floride Chemicals Factory</a></h4>
@@ -31,7 +35,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/2.jpg?enhanced&h=350" alt="project img"/>
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/2.jpg')} alt="project img"/>
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Highway Energy Station</a></h4>
@@ -48,7 +52,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/3.jpg?enhanced&h=350" alt="project img"/>
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/3.jpg')} alt="project img"/>
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Villy Manufacturing Inc</a></h4>
@@ -64,7 +68,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/5.jpg?enhanced&h=350" alt="project img"/>
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/5.jpg')} alt="project img"/>
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Documents & Electronic Data</a></h4>
@@ -81,7 +85,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/6.jpg?enhanced&h=350" alt="project img"/>
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/6.jpg')} alt="project img"/>
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Floride Chemicals Factory</a></h4>
@@ -97,7 +101,7 @@
           </div>
           <div class="project-item">
             <div class="project__img">
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/4.jpg?enhanced&h=350" alt="project img"/>
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/4.jpg')} alt="project img"/>
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Role of the Importer</a></h4>

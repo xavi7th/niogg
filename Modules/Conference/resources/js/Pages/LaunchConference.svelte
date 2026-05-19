@@ -31,14 +31,14 @@
           <div class="sponsor-imgs mb-50">
             <!-- <img src="{getImgUrl('Modules/PublicPage/resources/template/assets/images/sidebar/1.jpg')}" alt="background"> -->
 
-            <enhanced:img src="@publicpage-template/images/sidebar/niogg-flyer.jpg?enhanced" class="w-full" alt="background">
+            <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/sidebar/niogg-flyer.jpg')} class="w-full" alt="background"/>
           </div>
 
           <div class="widget">
             <h5 class="widget__title capitalize">Key Sponsors</h5>
             <div class="widget__content">
               <a href="#" class="btn btn__block btn__hover3 mb-20">
-                <enhanced:img src="@publicpage-template/images/logo/logo-dark.png?enhanced" alt="pdf" />
+                <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/logo/logo-dark.png')} alt="pdf" />
               </a>
             </div>
           </div>
@@ -256,7 +256,7 @@
           <div class="project-item">
             <div class="project__img">
               <!-- <img src="assets/images/case-studies/grid/1.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/1.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/1.jpg')} class="w-full !rounded-3xl" alt="project-img" />
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">John Doe</a></h4>
@@ -268,7 +268,7 @@
           <div class="project-item">
             <div class="project__img">
               <!-- <img src="assets/images/case-studies/grid/2.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/2.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/2.jpg')} class="w-full !rounded-3xl" alt="project-img" />
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Sarah Pinkett</a></h4>
@@ -280,7 +280,7 @@
           <div class="project-item">
             <div class="project__img">
               <!-- <img src="assets/images/case-studies/grid/3.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/3.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/3.jpg')} class="w-full !rounded-3xl" alt="project-img" />
             </div>
             <div class="project__content">
               <h4 class="project__title"><a href="#">Allen Poe</a></h4>
@@ -292,7 +292,7 @@
           <div class="project-item">
             <div class="project__img">
               <!-- <img src="assets/images/case-studies/grid/4.jpg" alt="project img"> -->
-              <enhanced:img src="@publicpage-template/images/case-studies/grid/4.jpg?enhanced" class="w-full !rounded-3xl" alt="project-img" />
+              <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/case-studies/grid/4.jpg')} class="w-full !rounded-3xl" alt="project-img" />
               <a href="#" class="zoom__icon"></a>
             </div>
             <div class="project__content">

@@ -1,3 +1,7 @@
+<script>
+  import { getImgUrl } from '@/helpers';
+</script>
+
 <section id="clients" class="clients clients-1 border-top">
   <div class="container">
     <div class="row">
@@ -11,27 +15,27 @@
         <div class="carousel owl-carousel" data-slide="6" data-slide-md="4" data-slide-sm="2" data-autoplay="true"
           data-nav="false" data-dots="false" data-space="20" data-loop="true" data-speed="700">
           <div class="client">
-            <a href="#"><enhanced:img src="@publicpage-template/images/clients/nnpc.jpg?enhanced&h=150&w=150" alt="partner thumb"/></a>
+            <a href="#"><img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/clients/nnpc.jpg')} alt="partner thumb"/></a>
           </div>
 
           <div class="client">
-            <a href="#"><enhanced:img src="@publicpage-template/images/clients/12.png?enhanced&h=150&w=150" alt="partner thumb"/></a>
+            <a href="#"><img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/clients/12.png')} alt="partner thumb"/></a>
           </div>
 
           <div class="client">
-            <a href="#"><enhanced:img src="@publicpage-template/images/clients/icpc.jpeg?enhanced&h=150&w=150" alt="partner thumb"/></a>
+            <a href="#"><img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/clients/icpc.jpeg')} alt="partner thumb"/></a>
           </div>
 
           <div class="client">
-            <a href="#"><enhanced:img src="@publicpage-template/images/clients/13.png?enhanced&h=150&w=150" alt="partner thumb"/></a>
+            <a href="#"><img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/clients/13.png')} alt="partner thumb"/></a>
           </div>
 
           <div class="client">
-            <a href="#"><enhanced:img src="@publicpage-template/images/clients/education-ministry.png?enhanced&h=150&w=150" alt="partner thumb"/></a>
+            <a href="#"><img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/clients/education-ministry.png')} alt="partner thumb"/></a>
           </div>
 
           <div class="client">
-            <a href="#"><enhanced:img src="@publicpage-template/images/clients/11.png?enhanced&h=150&w=150" alt="partner thumb"/></a>
+            <a href="#"><img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/clients/11.png')} alt="partner thumb"/></a>
           </div>
 
         </div>

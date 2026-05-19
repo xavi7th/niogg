@@ -6,6 +6,7 @@
 <script>
   import { page } from "@inertiajs/svelte";
   import PageTitle from '@publicpage-partials/PageTitle.svelte';
+  import { getImgUrl } from '@/helpers';
 
   $: ({ app } = $page.props);
 
@@ -47,7 +48,7 @@
               <div class="blog-item">
                 <div class="blog__img">
                   <a href="#">
-                    <enhanced:img src="@publicpage-template/images/blog/grid/1.jpg?enhanced&w=350&aspect=350:230" alt="blog thumb"/>
+                    <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/blog/grid/1.jpg')} alt="blog thumb"/>
                   </a>
                 </div>
                 <div class="blog__content">

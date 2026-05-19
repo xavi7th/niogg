@@ -26,7 +26,7 @@
                   {#await getImgModule(t.img_url, 'w=60&h=60')}
                     <p>loading...</p>
                   {:then src}
-                    <enhanced:img src="{ src.default }" class="logo-light" alt="logo" />
+                    <img src="{ src.default }" class="logo-light" alt="logo" />
                   {/await}
                 </div>
                 <h5 class="testimonial__meta-title">{t.name}</h5>

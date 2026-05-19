@@ -36,7 +36,7 @@
             </a>
           </div>
           <div class="service__img">
-            <enhanced:img src="@publicpage-template/images/services/judiciary.webp?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>
+            <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/services/judiciary.webp')} class="img-fluid" alt="service"/>
             <div class="service__overlay"><a href="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/services/judiciary.webp') }" class="zoom__icon"></a></div>
           </div>
         </div>
@@ -55,7 +55,7 @@
             </a>
           </div>
           <div class="service__img">
-            <enhanced:img src="@publicpage-template/images/services/youth.png?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>
+            <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/services/youth.png')} class="img-fluid" alt="service"/>
             <div class="service__overlay"><a href="#" class="zoom__icon"></a></div>
           </div>
         </div>
@@ -74,7 +74,7 @@
             </a>
           </div>
           <div class="service__img">
-            <enhanced:img src="@publicpage-template/images/services/poverty-eradication.jpg?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>
+            <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/services/poverty-eradication.jpg')} class="img-fluid" alt="service"/>
             <div class="service__overlay"><a href="#" class="zoom__icon"></a></div>
           </div>
         </div>
@@ -93,7 +93,7 @@
             </a>
           </div>
           <div class="service__img">
-            <enhanced:img src="@publicpage-template/images/services/resources.jpg?h=250;300&w=300;450&blur=2&fit=cover" class="img-fluid" alt="service"/>
+            <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/services/resources.jpg')} class="img-fluid" alt="service"/>
             <div class="service__overlay"><a href="#" class="zoom__icon"></a></div>
           </div>
         </div>
