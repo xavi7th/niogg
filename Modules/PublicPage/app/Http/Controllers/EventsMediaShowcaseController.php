@@ -2,8 +2,8 @@
 
 namespace Modules\PublicPage\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Modules\PublicPage\Models\Event;
 
@@ -17,7 +17,8 @@ class EventsMediaShowcaseController extends Controller
         $sort = $request->input('sort', 'newest');
         $direction = $sort === 'newest' ? 'desc' : 'asc';
 
-        $events = Event::with('videos')
+        $events = Event::withCount(['videos', 'photos'])
+            ->with('videos')
             ->published()
             ->ordered($direction)
             ->get();
@@ -30,18 +31,24 @@ class EventsMediaShowcaseController extends Controller
     }
 
     /**
-     * Display single event with paginated videos
+     * Display single event with photos and videos
      */
     public function show(Event $event)
     {
-        $videos = $event->videos()
-            ->ordered()
-            ->paginate(12);
+        abort_if( ! $event->is_published, 404);
 
-        return Inertia::render('PublicPage::EventVideosGrid', [
-        'event' => $event,
-        'videos' => $videos,
-        'pageTitle' => $event->name,
+        $event->load([
+            'photos' => function ($query): void {
+                $query->ordered();
+            },
+            'videos' => function ($query): void {
+                $query->ordered();
+            },
+        ]);
+
+        return Inertia::render('PublicPage::EventDetail', [
+            'event' => $event,
+            'pageTitle' => $event->name,
         ]);
     }
 

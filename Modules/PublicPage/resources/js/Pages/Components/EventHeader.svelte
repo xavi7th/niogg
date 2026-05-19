@@ -34,6 +34,27 @@
           {event.description}
         </p>
       {/if}
+
+      {#if event.photos_count > 0 || event.videos_count > 0}
+        <span class="media-counts">
+          {#if event.photos_count > 0}
+            <span class="media-count-item">
+              <svg class="media-count-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {event.photos_count}
+            </span>
+          {/if}
+          {#if event.videos_count > 0}
+            <span class="media-count-item">
+              <svg class="media-count-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              {event.videos_count}
+            </span>
+          {/if}
+        </span>
+      {/if}
     </div>
   </div>
 </div>
@@ -105,6 +126,26 @@
     line-height: 1.6;
     max-width: 800px;
     margin: 0;
+  }
+
+  .media-counts {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #9b9b9b;
+  }
+
+  .media-count-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .media-count-icon {
+    width: 1rem;
+    height: 1rem;
   }
 
   @media (max-width: 768px) {

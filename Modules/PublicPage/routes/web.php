@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\PublicPage\Http\Controllers\PublicBlogController;
 use Modules\PublicPage\Http\Controllers\PublicPageController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminEventController;
+use Modules\PublicPage\Http\Controllers\Admin\AdminPhotoController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminVideoController;
 use Modules\PublicPage\Http\Controllers\EventsMediaShowcaseController;
 use Modules\PublicPage\Http\Controllers\Admin\AdminDashboardController;
@@ -38,6 +39,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/{event}/edit', [AdminEventController::class, 'edit'])->name('edit');
         Route::put('/{event}', [AdminEventController::class, 'update'])->name('update');
         Route::delete('/{event}', [AdminEventController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('events')->name('events.')->group(function (): void {
+        Route::post('/{event}/photos', [AdminPhotoController::class, 'store'])->name('photos.store');
+        Route::post('/{event}/photos/reorder', [AdminPhotoController::class, 'reorder'])->name('photos.reorder');
+    });
+
+    Route::prefix('photos')->name('photos.')->group(function (): void {
+        Route::put('/{photo}', [AdminPhotoController::class, 'update'])->name('update');
+        Route::delete('/{photo}', [AdminPhotoController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('videos')->name('videos.')->group(function (): void {

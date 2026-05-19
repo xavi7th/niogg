@@ -120,16 +120,34 @@ class PublicPageController extends Controller
     ]);
   }
 
-  public function gallery()
+  public function gallery(): \Inertia\Response
   {
+    $category = request('category');
+
+    $photos = \Modules\PublicPage\Models\EventPhoto::query()
+        ->whereHas('event', fn ($q) => $q->published())
+        ->with('event:id,name,slug,category')
+        ->when($category, fn ($q, $c) => $q->whereHas('event', fn ($inner) => $inner->where('category', $c)))
+        ->ordered()
+        ->latest()
+        ->paginate(24);
+
+    $categories = \Modules\PublicPage\Models\Event::published()
+        ->whereHas('photos')
+        ->distinct()
+        ->orderBy('category')
+        ->pluck('category');
+
     return Inertia::render('PublicPage::Gallery', [
-      'pageTitle' => 'Images speeaks thousand words',
+      'pageTitle' => 'Images speaks thousand words',
+      'photos' => $photos,
+      'categories' => $categories,
+      'activeCategory' => $category,
     ])->withViewData([
-      'pageTitle' => 'Images speeaks thousand words',
-      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
-            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
-      'ogUrl' => route('app.careers'),
-      'canonical' => route('app.careers'),
+      'pageTitle' => 'Images speaks thousand words',
+      'metaDesc' => config('app.alt_name') . ' photo gallery showcasing our events and activities.',
+      'ogUrl' => route('app.gallery'),
+      'canonical' => route('app.gallery'),
     ]);
   }
 
