@@ -4,7 +4,7 @@
 	import { router } from '@inertiajs/svelte';
 	import AdminSidebar from '../../../Components/Admin/AdminSidebar.svelte';
 
-	$: ({ auth, errors, event } = $page.props);
+	$: ({ auth, errors, event, categories } = $page.props);
 
 	let formData = {};
 
@@ -173,12 +173,9 @@
 									class:border-[#ef4444]={errors.category}
 								>
 									<option value="">Select category</option>
-									<option>Conference</option>
-									<option>Workshop</option>
-									<option>Entertainment</option>
-									<option>Sports</option>
-									<option>Education</option>
-									<option>Other</option>
+									{#each categories || [] as cat}
+										<option value={cat}>{cat}</option>
+									{/each}
 								</select>
 								{#if errors.category}
 									<p class="text-sm text-[#ef4444] mt-1">{errors.category}</p>

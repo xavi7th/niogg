@@ -62,6 +62,11 @@ class Event extends Model
         return $this->hasMany(Video::class);
     }
 
+    public function photos(): HasMany
+    {
+        return $this->hasMany(EventPhoto::class)->ordered();
+    }
+
     /**
      * Get published events
      */
@@ -73,8 +78,8 @@ class Event extends Model
     /**
      * Order events by date
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string|null $direction Sort direction: 'asc' (oldest first) or 'desc' (newest first)
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string|null  $direction  Sort direction: 'asc' (oldest first) or 'desc' (newest first)
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOrdered($query, ?string $direction = 'desc')

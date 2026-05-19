@@ -776,9 +776,9 @@
 						class="border-2 border-dashed rounded-lg p-8 sm:p-12 text-center transition-colors cursor-pointer block {dropZoneActive
 							? 'border-[#ff7607] bg-[#fff3e6]'
 							: 'border-[#eaeaea] hover:border-[#ff7607]'}"
-						ondragover={handleDragOver}
-						ondragleave={handleDragLeave}
-						ondrop={handleDrop}
+						on:dragover={handleDragOver}
+						on:dragleave={handleDragLeave}
+						on:drop={handleDrop}
 					>
 						<svg
 							class="mx-auto h-16 w-16 text-[#9b9b9b] mb-4"
@@ -1030,7 +1030,7 @@
 														<input
 															type="text"
 															bind:value={item.title}
-															oninput={(e) => updateMetadata(item, 'title', e.target.value)}
+															on:input={(e) => updateMetadata(item, 'title', e.target.value)}
 															class="w-full px-2 py-1 text-sm border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] outline-none"
 															placeholder="Video title"
 														/>
@@ -1042,7 +1042,7 @@
 														<input
 															type="number"
 															bind:value={item.sort_order}
-															oninput={(e) => updateMetadata(item, 'sort_order', parseInt(e.target.value) || 0)}
+															on:input={(e) => updateMetadata(item, 'sort_order', parseInt(e.target.value) || 0)}
 															class="w-full px-2 py-1 text-sm border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] outline-none"
 															placeholder="0"
 														/>
@@ -1053,7 +1053,7 @@
 														>
 														<textarea
 															bind:value={item.description}
-															oninput={(e) => updateMetadata(item, 'description', e.target.value)}
+															on:input={(e) => updateMetadata(item, 'description', e.target.value)}
 															rows="2"
 															class="w-full px-2 py-1 text-sm border border-[#eaeaea] rounded focus:ring-2 focus:ring-[#ff7607] outline-none resize-none"
 															placeholder="Video description (optional)"

@@ -4,9 +4,11 @@
 	import AdminSidebar from '../../../Components/Admin/AdminSidebar.svelte';
 	import VideoEditModal from '../../../Components/Admin/VideoEditModal.svelte';
 	import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog.svelte';
+	import AdminPhotosTab from '@publicpage-components/Admin/AdminPhotosTab.svelte';
 
 	$: ({ event, auth } = $page.props);
 
+	let activeTab = 'videos';
 	let videoFilter = 'all'; // all, featured
 	let showEditModal = false;
 	let selectedVideo = null;
@@ -315,6 +317,35 @@
 					</div>
 				</div>
 
+				<!-- Tab Switcher -->
+				<div class="border-b border-[#eaeaea] mb-6">
+					<nav class="flex gap-6">
+						<button
+							class="py-3 border-b-2 font-medium text-sm transition-colors"
+							class:border-[#ff7607]={activeTab === 'videos'}
+							class:border-transparent={activeTab !== 'videos'}
+							class:text-[#ff7607]={activeTab === 'videos'}
+							class:text-[#9b9b9b]={activeTab !== 'videos'}
+							on:click={() => (activeTab = 'videos')}
+							type="button"
+						>
+							Videos ({sortedVideos.length})
+						</button>
+						<button
+							class="py-3 border-b-2 font-medium text-sm transition-colors"
+							class:border-[#ff7607]={activeTab === 'photos'}
+							class:border-transparent={activeTab !== 'photos'}
+							class:text-[#ff7607]={activeTab === 'photos'}
+							class:text-[#9b9b9b]={activeTab !== 'photos'}
+							on:click={() => (activeTab = 'photos')}
+							type="button"
+						>
+							Photos ({event?.photos?.length || 0})
+						</button>
+					</nav>
+				</div>
+
+				{#if activeTab === 'videos'}
 				<!-- Videos Section -->
 				<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
 					<div class="w-full sm:w-auto">
@@ -481,6 +512,12 @@
 						{/if}
 					</div>
 				{/if}
+			{/if}
+
+			{#if activeTab === 'photos'}
+				<AdminPhotosTab {event} />
+			{/if}
+
 			{:else}
 				<!-- Event not found -->
 				<div class="bg-white rounded-lg border border-[#eaeaea] p-12 text-center">

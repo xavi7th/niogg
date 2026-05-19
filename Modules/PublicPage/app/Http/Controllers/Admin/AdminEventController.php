@@ -37,7 +37,9 @@ class AdminEventController extends Controller
      */
     public function create(): \Inertia\Response
     {
-        return Inertia::render('PublicPage::Admin/Events/Create');
+        return Inertia::render('PublicPage::Admin/Events/Create', [
+            'categories' => config('event_categories'),
+        ]);
     }
 
     /**
@@ -45,9 +47,14 @@ class AdminEventController extends Controller
      */
     public function show(Event $event): \Inertia\Response
     {
-        $event->load(['videos' => function ($query): void {
-            $query->orderBy('sort_order')->orderBy('created_at');
-        }]);
+        $event->load([
+            'videos' => function ($query): void {
+                $query->orderBy('sort_order')->orderBy('created_at');
+            },
+            'photos' => function ($query): void {
+                $query->ordered();
+            },
+        ]);
 
         return Inertia::render('PublicPage::Admin/Events/Show', [
             'event' => $event,
@@ -60,6 +67,7 @@ class AdminEventController extends Controller
     public function edit(Event $event): \Inertia\Response
     {
         return Inertia::render('PublicPage::Admin/Events/Edit', [
+            'categories' => config('event_categories'),
             'event' => [
                 'id' => $event->id,
                 'name' => $event->name,
