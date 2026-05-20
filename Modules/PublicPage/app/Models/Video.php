@@ -3,6 +3,7 @@
 namespace Modules\PublicPage\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\ResponseCache\Facades\ResponseCache;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\PublicPage\Database\Factories\VideoFactory;
@@ -51,6 +52,12 @@ class Video extends Model
     'conversion_started_at' => 'datetime',
     'conversion_completed_at' => 'datetime',
   ];
+
+  protected static function booted(): void
+  {
+    static::saved(fn () => ResponseCache::clear());
+    static::deleted(fn () => ResponseCache::clear());
+  }
 
   /**
    * Event relationship with cascade delete

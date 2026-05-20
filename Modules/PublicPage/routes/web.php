@@ -49,6 +49,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::prefix('photos')->name('photos.')->group(function (): void {
         Route::put('/{photo}', [AdminPhotoController::class, 'update'])->name('update');
         Route::delete('/{photo}', [AdminPhotoController::class, 'destroy'])->name('destroy');
+        Route::post('/{photo}/retry-thumbnail', [AdminPhotoController::class, 'retryThumbnail'])
+            ->name('retry-thumbnail');
     });
 
     Route::prefix('videos')->name('videos.')->group(function (): void {

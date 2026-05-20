@@ -4,6 +4,7 @@ namespace Modules\PublicPage\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\ResponseCache\Facades\ResponseCache;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\PublicPage\Database\Factories\EventFactory;
@@ -18,18 +19,18 @@ class Event extends Model
     }
 
     protected $fillable = [
-        'name',
-        'description',
-        'icon',
-        'category',
-        'event_date',
-        'slug',
-        'is_published',
+      'name',
+      'description',
+      'icon',
+      'category',
+      'event_date',
+      'slug',
+      'is_published',
     ];
 
     protected $casts = [
-        'event_date' => 'date',
-        'is_published' => 'boolean',
+      'event_date' => 'date',
+      'is_published' => 'boolean',
     ];
 
     protected static function boot(): void
@@ -41,6 +42,9 @@ class Event extends Model
                 $model->slug = static::generateUniqueSlug($model->name);
             }
         });
+
+        static::saved(fn () => ResponseCache::clear());
+        static::deleted(fn () => ResponseCache::clear());
     }
 
     /**

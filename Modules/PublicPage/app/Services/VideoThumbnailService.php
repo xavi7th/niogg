@@ -10,7 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Intervention\Image\ImageManager;
 use Modules\PublicPage\Models\Video;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Drivers\Imagick\Driver;
 
 class VideoThumbnailService
 {
@@ -33,7 +33,7 @@ class VideoThumbnailService
 
   public function __construct()
   {
-    $this->imageManager = new ImageManager(new Driver);
+    $this->imageManager = new ImageManager(new Driver());
   }
 
   /**
@@ -48,7 +48,7 @@ class VideoThumbnailService
     $fullVideoPath = Storage::disk(self::STORAGE_DISK)->path($videoPath);
 
     if ( ! file_exists($fullVideoPath)) {
-      throw new InvalidArgumentException("Video file not found: {$videoPath}");
+      throw new InvalidArgumentException('Video file not found: ' . $videoPath);
     }
 
     $ffmpeg = FFMpeg::create();
@@ -74,7 +74,7 @@ class VideoThumbnailService
     $thumbnailBaseName = Str::uuid()->toString();
 
     foreach (self::SIZES as $size => list($width, $height)) {
-      $thumbnailFilename = "{$thumbnailBaseName}_{$size}.jpg";
+      $thumbnailFilename = $thumbnailBaseName . '_' . $size . '.jpg';
       $thumbnailPath = self::THUMBNAIL_PATH . '/' . $thumbnailFilename;
 
       // Resize and save thumbnail
@@ -153,7 +153,7 @@ class VideoThumbnailService
 
     // Delete all size variants
     foreach (self::SIZES as $size => list($width, $height)) {
-      $sizePath = self::THUMBNAIL_PATH . '/' . $baseName . "_{$size}.jpg";
+      $sizePath = self::THUMBNAIL_PATH . '/' . $baseName . '_' . $size . '.jpg';
       if (Storage::disk(self::STORAGE_DISK)->exists($sizePath)) {
         Storage::disk(self::STORAGE_DISK)->delete($sizePath);
       }
@@ -187,7 +187,7 @@ class VideoThumbnailService
 
     $urls = [];
     foreach (self::SIZES as $size => list($width, $height)) {
-      $sizePath = self::THUMBNAIL_PATH . '/' . $baseName . "_{$size}.jpg";
+      $sizePath = self::THUMBNAIL_PATH . '/' . $baseName . '_' . $size . '.jpg';
       $urls[$size] = Storage::disk(self::STORAGE_DISK)->url($sizePath);
     }
 

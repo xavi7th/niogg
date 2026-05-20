@@ -136,6 +136,22 @@
     newPhotoPreviews = [];
   }
 
+  async function retryThumbnail(photoId) {
+    try {
+      const response = await fetch(`/admin/photos/${photoId}/retry-thumbnail`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+        },
+      });
+      if (response.ok) {
+        window.ToastLarge.fire({ title: 'Queued', html: 'Thumbnail generation queued.', icon: 'info', timer: 3000 });
+      }
+    } catch (err) {
+      console.error('Retry thumbnail failed', err);
+    }
+  }
+
   async function updatePhotoAltText(photoId, altText) {
     try {
       await fetch(`/admin/photos/${photoId}`, {
@@ -205,7 +221,20 @@
         class:ring-2={photoDragOverId === photo.id}
         class:ring-[#ff7607]={photoDragOverId === photo.id}
       >
-        <img src={photo.thumbnail_url} alt={photo.alt_text || ''} class="w-full h-full object-cover" loading="lazy" />
+        {#if photo.thumbnail_url}
+          <img src={photo.thumbnail_url} alt={photo.alt_text || ''} class="w-full h-full object-cover" loading="lazy" />
+        {:else}
+          <div class="w-full h-full flex flex-col items-center justify-center gap-1 p-2">
+            <svg class="w-8 h-8 text-[#9b9b9b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <button
+              on:click|stopPropagation={() => retryThumbnail(photo.id)}
+              type="button"
+              class="text-xs text-[#ff7607] underline"
+            >Retry</button>
+          </div>
+        {/if}
 
         <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
           <button

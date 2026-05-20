@@ -48,6 +48,11 @@ EXCLUDES=(
   "--exclude=/tests/"
   "--exclude=/test-results/"
   "--exclude=/vendor/"
+  "--exclude=/.cache/"
+  "--exclude=/bootstrap/cache/*.php"
+  "--exclude=/public/storage/"
+  "--exclude=/public/hot/"
+  "--exclude=/.planning/"
   "--exclude=/storage/"
   "--exclude=/.env"
   "--exclude=/node_modules/"
@@ -153,6 +158,9 @@ rm -rf "\$REL/vendor"
 ln -sfn "\$BASE/shared/vendor" "\$REL/vendor"
 
 cd "\$REL"
+
+# Ensure bootstrap/cache exists before composer runs
+mkdir -p bootstrap/cache
 
 # Install dependencies
 echo "  → Installing Compoesr dependencies..."

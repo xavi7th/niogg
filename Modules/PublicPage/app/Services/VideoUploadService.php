@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Bus;
 use Modules\PublicPage\Models\Video;
 use Illuminate\Support\Facades\Storage;
 use Modules\PublicPage\Jobs\ConvertVideoToMp4;
+use Modules\PublicPage\Jobs\GenerateVideoThumbnail;
 
 class VideoUploadService
 {
@@ -60,7 +61,7 @@ class VideoUploadService
       'status' => 'initialized',
     ];
 
-    cache()->put("upload:{$uploadId}", $metadata, now()->addHours(24));
+    cache()->put('upload:' . $uploadId, $metadata, now()->addHours(24));
 
     return [
       'upload_id' => $uploadId,
@@ -78,7 +79,7 @@ class VideoUploadService
       int $chunkIndex,
       int $totalChunks
   ): array {
-    $metadata = cache()->get("upload:{$uploadId}");
+    $metadata = cache()->get('upload:' . $uploadId);
 
     if ( ! $metadata) {
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
@@ -87,7 +88,7 @@ class VideoUploadService
     // Validate chunk index is within expected range
     $expectedChunks = (int) ceil($metadata['total_size'] / self::CHUNK_SIZE);
     if ($chunkIndex < 0 || $chunkIndex >= $expectedChunks) {
-      throw new InvalidArgumentException("Invalid chunk index {$chunkIndex}. Expected range: 0 to " . ($expectedChunks - 1));
+      throw new InvalidArgumentException('Invalid chunk index ' . $chunkIndex . '. Expected range: 0 to ' . ($expectedChunks - 1));
     }
 
     // Validate chunk size
@@ -97,20 +98,20 @@ class VideoUploadService
 
     // Store chunk
     $chunkPath = $this->getChunkPath($uploadId);
-    $chunkFilename = "chunk_{$chunkIndex}";
+    $chunkFilename = 'chunk_' . $chunkIndex;
     Storage::disk(self::STORAGE_DISK)->put(
-        "{$chunkPath}/{$chunkFilename}",
+        $chunkPath . '/' . $chunkFilename,
         file_get_contents($chunk->getRealPath())
     );
 
     // Use cache lock for thread-safe counter updates
-    $lock = cache()->lock("upload:{$uploadId}:lock", 10);
+    $lock = cache()->lock('upload:' . $uploadId . ':lock', 10);
 
     try {
       $lock->block(5);
 
       // Get fresh metadata
-      $metadata = cache()->get("upload:{$uploadId}");
+      $metadata = cache()->get('upload:' . $uploadId);
 
       // Atomically increment bytes received
       $metadata['bytes_received'] = ($metadata['bytes_received'] ?? 0) + $chunk->getSize();
@@ -130,7 +131,7 @@ class VideoUploadService
       $metadata['status'] = $status;
       $metadata['last_chunk_index'] = $chunkIndex;
 
-      cache()->put("upload:{$uploadId}", $metadata, now()->addHours(24));
+      cache()->put('upload:' . $uploadId, $metadata, now()->addHours(24));
 
       // Calculate progress percentage
       $progress = (int) min(100, ($chunksReceived / $expectedChunks) * 100);
@@ -155,7 +156,7 @@ class VideoUploadService
    */
   public function finalizeUpload(string $uploadId, array $videoData): Video
   {
-    $metadata = cache()->get("upload:{$uploadId}");
+    $metadata = cache()->get('upload:' . $uploadId);
 
     if ( ! $metadata) {
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
@@ -170,7 +171,7 @@ class VideoUploadService
       // Find missing chunks
       $missingChunks = array_diff(range(0, $expectedChunks - 1), $receivedIndices);
       throw new InvalidArgumentException(
-          "Upload is not complete. Expected {$expectedChunks} chunks, but only {$actualChunks} received. " .
+          'Upload is not complete. Expected ' . $expectedChunks . ' chunks, but only ' . $actualChunks . ' received. ' .
           'Missing chunks: ' . implode(', ', $missingChunks)
       );
     }
@@ -200,14 +201,9 @@ class VideoUploadService
       'conversion_status' => $isMp4 ? 'completed' : 'pending',
     ]);
 
-    // Generate thumbnail automatically if not provided
+    // Dispatch thumbnail generation asynchronously if not provided
     if (empty($videoData['thumbnail_url'])) {
-      try {
-        $this->thumbnailService->generateForVideo($video);
-      } catch (Exception $e) {
-        // Log error but don't fail the upload
-        // Thumbnail generation can be retried later
-      }
+        GenerateVideoThumbnail::dispatch($video);
     }
 
     // Dispatch conversion job for non-MP4 videos
@@ -216,7 +212,7 @@ class VideoUploadService
     }
 
     // Clear upload metadata from cache
-    cache()->forget("upload:{$uploadId}");
+    cache()->forget('upload:' . $uploadId);
 
     return $video;
   }
@@ -226,7 +222,7 @@ class VideoUploadService
    */
   public function resumeUpload(string $uploadId): array
   {
-    $metadata = cache()->get("upload:{$uploadId}");
+    $metadata = cache()->get('upload:' . $uploadId);
 
     if ( ! $metadata) {
       throw new InvalidArgumentException('Invalid upload ID. Upload session may have expired.');
@@ -266,7 +262,7 @@ class VideoUploadService
   public function cancelUpload(string $uploadId): void
   {
     $this->cleanupChunks($uploadId);
-    cache()->forget("upload:{$uploadId}");
+    cache()->forget('upload:' . $uploadId);
   }
 
   /**

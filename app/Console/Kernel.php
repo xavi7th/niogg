@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     $schedule->command('queue:work --queue=default --stop-when-empty')->cron('*/5 * * * *')->withoutOverlapping();
     $schedule->command('queue:work --queue=video-conversion --stop-when-empty')->cron('*/5 * * * *')->withoutOverlapping();
     $schedule->command('videos:convert-pending')->hourly()->withoutOverlapping();
+    $schedule->command('photos:retry-failed-thumbnails')->everyThirtyMinutes()->withoutOverlapping();
   }
 
   /**

@@ -18,6 +18,7 @@
     "nwidart/laravel-modules": "11.0.10",
     "opcodesio/log-viewer": "^3.8",
     "pbmedia/laravel-ffmpeg": "^8.7",
+    "spatie/laravel-responsecache": "^7.7",
     "tightenco/ziggy": "^2.0"
   },
   "require-dev": {

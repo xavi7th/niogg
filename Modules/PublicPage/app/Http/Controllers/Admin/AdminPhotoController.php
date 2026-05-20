@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Modules\PublicPage\Models\Event;
 use Modules\PublicPage\Models\EventPhoto;
+use Modules\PublicPage\Jobs\GeneratePhotoThumbnail;
 use Modules\PublicPage\Services\EventPhotoUploadService;
 use Modules\PublicPage\Http\Requests\Admin\StoreEventPhotosRequest;
 use Modules\PublicPage\Http\Requests\Admin\UpdateEventPhotoRequest;
@@ -35,8 +36,8 @@ class AdminPhotoController extends Controller
         }
 
         return response()->json([
-            'message' => count($photos) . ' photo(s) uploaded successfully.',
-            'photos' => $photos,
+          'message' => count($photos) . ' photo(s) uploaded successfully.',
+          'photos' => $photos,
         ]);
     }
 
@@ -45,16 +46,16 @@ class AdminPhotoController extends Controller
         $photo->update($request->validated());
 
         return response()->json([
-            'message' => 'Photo updated.',
-            'photo' => $photo->fresh(),
+          'message' => 'Photo updated.',
+          'photo' => $photo->fresh(),
         ]);
     }
 
     public function reorder(Request $request, Event $event): JsonResponse
     {
         $request->validate([
-            'photo_ids' => ['required', 'array'],
-            'photo_ids.*' => ['integer', 'exists:event_photos,id'],
+          'photo_ids' => ['required', 'array'],
+          'photo_ids.*' => ['integer', 'exists:event_photos,id'],
         ]);
 
         foreach ($request->photo_ids as $index => $photoId) {
@@ -70,5 +71,16 @@ class AdminPhotoController extends Controller
         $photo->delete();
 
         return response()->json(['message' => 'Photo deleted.']);
+    }
+
+    public function retryThumbnail(EventPhoto $photo): JsonResponse
+    {
+        if ($photo->thumbnail_url) {
+            return response()->json(['message' => 'Thumbnail already exists.']);
+        }
+
+        GeneratePhotoThumbnail::dispatch($photo);
+
+        return response()->json(['message' => 'Thumbnail generation queued.']);
     }
 }
