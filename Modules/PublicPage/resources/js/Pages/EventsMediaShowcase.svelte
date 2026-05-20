@@ -44,15 +44,6 @@
 <style>
   .events-media-showcase {
     width: 100%;
-    will-change: transform;
-    transform: translateZ(0);
-    contain: layout style paint;
-  }
-
-  /* Improve rendering performance */
-  .events-media-showcase {
-    content-visibility: auto;
-    contain-intrinsic-size: 2000px;
   }
 
   /* Enhanced mobile touch targets */

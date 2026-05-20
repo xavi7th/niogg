@@ -1,13 +1,10 @@
 <script>
   import { Link, page } from '@inertiajs/svelte';
-  import { modalRoot } from "@/stores";
-  import { Portal } from "svelte-teleport";
   import LazyThumbnail from "./LazyThumbnail.svelte";
 
   export let events = [];
   export let onBackToTimeline = () => {};
 
-  let pageModals = null;
   let modalVideo = null;
   let selectedCategory = 'all';
   let modalVideoElement = null;
@@ -58,9 +55,6 @@
     videoError = null;
     retryCount = 0;
 
-    setTimeout(() => {
-      pageModals.teleport_to($modalRoot);
-    }, 300);
   };
 
   const handleCanPlay = () => {
@@ -209,44 +203,42 @@
 
 <!-- Video Modal -->
 {#if modalVideo}
-  <Portal bind:this={pageModals}>
-    <div class="video-modal" on:click={closeVideoModal} on:keydown={(e) => e.key === 'Escape' && closeVideoModal()} role="dialog" aria-modal="true">
-      <div class="modal-content" on:click|stopPropagation>
-        <button class="modal-close" on:click={closeVideoModal} aria-label="Close modal">×</button>
-        <div class="modal-video-wrapper">
-          {#if videoError}
-            <div class="video-error-overlay">
-              <p class="error-message">{videoError.message}</p>
-              {#if videoError.retryable && retryCount < MAX_RETRIES}
-                <button on:click={handleRetry} class="btn-retry">Retry</button>
-              {/if}
-            </div>
-          {/if}
-          <video
-            bind:this={modalVideoElement}
-            src={modalVideo.video_url}
-            poster={modalVideo.thumbnail_url}
-            controls
-            autoplay
-            muted
-            playsinline
-            on:canplay={handleCanPlay}
-            on:error={handleVideoError}
-            preload="metadata"
-            class="modal-video-element"
-          >
-            <p>Your browser does not support HTML5 video.</p>
-          </video>
-        </div>
-        <div class="modal-info">
-          <h3 class="modal-title">{modalVideo.title}</h3>
-          {#if modalVideo.description}
-            <p class="modal-description">{modalVideo.description}</p>
-          {/if}
-        </div>
+  <div class="video-modal" on:click={closeVideoModal} on:keydown={(e) => e.key === 'Escape' && closeVideoModal()} role="dialog" aria-modal="true">
+    <div class="modal-content" on:click|stopPropagation>
+      <button class="modal-close" on:click={closeVideoModal} aria-label="Close modal">×</button>
+      <div class="modal-video-wrapper">
+        {#if videoError}
+          <div class="video-error-overlay">
+            <p class="error-message">{videoError.message}</p>
+            {#if videoError.retryable && retryCount < MAX_RETRIES}
+              <button on:click={handleRetry} class="btn-retry">Retry</button>
+            {/if}
+          </div>
+        {/if}
+        <video
+          bind:this={modalVideoElement}
+          src={modalVideo.video_url}
+          poster={modalVideo.thumbnail_url}
+          controls
+          autoplay
+          muted
+          playsinline
+          on:canplay={handleCanPlay}
+          on:error={handleVideoError}
+          preload="metadata"
+          class="modal-video-element"
+        >
+          <p>Your browser does not support HTML5 video.</p>
+        </video>
+      </div>
+      <div class="modal-info">
+        <h3 class="modal-title">{modalVideo.title}</h3>
+        {#if modalVideo.description}
+          <p class="modal-description">{modalVideo.description}</p>
+        {/if}
       </div>
     </div>
-  </Portal>
+  </div>
 {/if}
 
 <style>

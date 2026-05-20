@@ -1,14 +1,15 @@
 <script>
-  import { modalRoot } from "@/stores";
-  import { Portal } from "svelte-teleport";
   import { router } from '@inertiajs/svelte';
   import EventHeader from '@publicpage-pages/Components/EventHeader.svelte';
 
   export let events = [];
   export let onViewToggle = () => {};
 
+  const getFeaturedVideo = (event) => {
+    return event.videos?.find((v) => v.is_featured) ?? event.videos?.[0] ?? null;
+  };
+
   let modalVideo = null;
-  let pageModals = undefined;
   let modalVideoElement = null;
   let playAttempted = false;
   let videoError = null;
@@ -24,10 +25,6 @@
     playAttempted = false;
     videoError = null;
     retryCount = 0;
-
-    setTimeout(() => {
-      pageModals.teleport_to($modalRoot);
-    }, 300);
   };
 
   const handleCanPlay = () => {
@@ -92,30 +89,30 @@
         <EventHeader {event} />
 
         <div class="featured-player-section">
-          {#if event.videos && event.videos.length > 0}
-            {#if event.videos.find((v) => v.is_featured)}
-              {@const featuredVideo = event.videos.find((v) => v.is_featured)}
-              <div class="featured-video-card" on:click={() => openVideoModal(featuredVideo)} role="button" tabindex="0">
-                <div class="card-image">
-                  <img src={featuredVideo.thumbnail_url} alt={featuredVideo.title} loading="lazy" />
-                  <div class="play-button">
-                    <svg width="50" height="50" viewBox="0 0 100 100" fill="currentColor">
-                      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="2" />
-                      <polygon points="35,20 35,80 80,50" fill="currentColor" />
-                    </svg>
-                  </div>
+          {#if getFeaturedVideo(event)}
+            {@const displayVideo = getFeaturedVideo(event)}
+            <div class="featured-video-card" on:click={() => openVideoModal(displayVideo)} role="button" tabindex="0">
+              <div class="card-image">
+                <img src={displayVideo.thumbnail_url} alt={displayVideo.title} loading="lazy" />
+                <div class="play-button">
+                  <svg width="50" height="50" viewBox="0 0 100 100" fill="currentColor">
+                    <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="2" />
+                    <polygon points="35,20 35,80 80,50" fill="currentColor" />
+                  </svg>
+                </div>
+                {#if displayVideo.is_featured}
                   <span class="featured-badge">Featured</span>
-                </div>
-                <div class="card-content">
-                  <h4 class="card-title">{featuredVideo.title}</h4>
-                  {#if featuredVideo.format_duration}
-                    <div class="card-info">
-                      <span class="duration">{featuredVideo.format_duration}</span>
-                    </div>
-                  {/if}
-                </div>
+                {/if}
               </div>
-            {/if}
+              <div class="card-content">
+                <h4 class="card-title">{displayVideo.title}</h4>
+                {#if displayVideo.format_duration}
+                  <div class="card-info">
+                    <span class="duration">{displayVideo.format_duration}</span>
+                  </div>
+                {/if}
+              </div>
+            </div>
           {/if}
         </div>
 
@@ -134,7 +131,6 @@
 
 <!-- Video Modal -->
 {#if modalVideo}
-<Portal bind:this={pageModals}>
   <div class="video-modal" on:click={closeVideoModal} on:keydown={(e) => e.key === 'Escape' && closeVideoModal()} role="dialog" aria-modal="true">
     <div class="modal-content" on:click|stopPropagation>
       <button class="modal-close" on:click={closeVideoModal} aria-label="Close modal">×</button>
@@ -171,7 +167,6 @@
       </div>
     </div>
   </div>
-</Portal>
 {/if}
 
 <style>

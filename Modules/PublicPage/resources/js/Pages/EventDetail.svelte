@@ -30,11 +30,11 @@
 
 <section class="py-12 bg-gray-50">
   <div class="container">
-    {#if event?.description}
+    <!-- {#if event?.description}
       <div class="mb-10 max-w-3xl">
         <p class="text-lg text-[#555] leading-relaxed">{event.description}</p>
       </div>
-    {/if}
+    {/if} -->
 
     {#if sortedPhotos.length > 0}
       <div class="mb-12">
