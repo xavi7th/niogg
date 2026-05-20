@@ -92,16 +92,20 @@
     {/if}
 
     {#if !isPlaying}
-      <div class="play-button-overlay" on:click={handlePlayClick} role="button" tabindex="0">
+      <div class="play-button-overlay">
         <svg
+          on:click={handlePlayClick}
           width={playButtonSize}
           height={playButtonSize}
           viewBox="0 0 100 100"
           class="play-icon"
-          aria-hidden="true"
+          role="button"
+          tabindex="0"
+          aria-label="Play video"
+          on:keydown={(e) => e.key === 'Enter' && handlePlayClick()}
         >
-          <circle cx="50" cy="50" r="48" fill="#222222" />
-          <polygon points="35,20 35,80 80,50" fill="#ff7607" />
+          <circle cx="50" cy="50" r="48" fill="rgba(0,0,0,0.55)" />
+          <polygon points="35,20 35,80 80,50" fill="white" />
         </svg>
       </div>
     {/if}
@@ -206,34 +210,30 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #222;
+    background: rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    pointer-events: none;
+    transition: background 0.2s ease;
   }
 
   .play-button-overlay:hover {
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.45);
   }
 
   .play-icon {
-    background: #ff7607;
     border-radius: 50%;
     padding: 10px;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
-    transition: all 0.2s ease;
+    filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.5));
+    transition: transform 0.2s ease;
+    pointer-events: auto;
+    cursor: pointer;
   }
 
   .play-button-overlay:hover .play-icon {
-    background: rgba(255, 255, 255, 0.9);
     transform: scale(1.1);
-  }
-
-  .play-button-overlay:hover .play-icon polygon {
-    fill: #ff7607;
   }
 
   .play-icon polygon {
@@ -257,6 +257,7 @@
     color: white;
     padding: 30px;
     z-index: 3;
+    pointer-events: none;
   }
 
   .featured-badge {
