@@ -7,8 +7,8 @@
   <nav class="navbar navbar-expand-lg sticky-navbar">
     <div class="container">
       <a class="navbar-brand" href="/">
-        <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/logo/niogg-logo-light.png')} class="logo-light" alt="logo"/>
-        <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/logo/niogg-logo-dark.png')} class="logo-dark" alt="logo"/>
+        <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/logo/niogg-logo-light.png')} class="logo-light !max-w-16" alt="logo"/>
+        <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/logo/niogg-logo-dark.png')} class="logo-dark !max-w-16" alt="logo"/>
       </a>
       <button class="navbar-toggler" type="button">
         <span class="menu-lines"><span></span></span>

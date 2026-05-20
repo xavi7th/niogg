@@ -5,7 +5,7 @@
 
 <section id="pageTitle" class="page-title bg-overlay bg-parallax mb-24">
   <div class="bg-img">
-    <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/page-titles/1.jpg') }" alt="background" />
+    <img src="{ getImgUrl('Modules/PublicPage/resources/template/assets/images/page-titles/1.jpg') }" alt="background" class="max-w-80"/>
   </div>
   <div class="container">
     <div class="row justify-content-center">
