@@ -1,3 +1,4 @@
+import { mount } from "svelte";
 import "@publicpage-assets/sass/app.scss";
 import { createInertiaApp } from "@inertiajs/svelte";
 
@@ -211,7 +212,7 @@ createInertiaApp({
   },
 
   setup({ el, App, props }) {
-    new App({ target: el, props });
+    mount(App, { target: el, props });
   },
 
   progress: {

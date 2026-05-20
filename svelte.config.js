@@ -6,8 +6,6 @@ export default {
   // svelte options
   extensions: [".svelte"],
 
-  compilerOptions: {},
-
   // @see https://kit.svelte.dev/docs/integrations
   // This is faster but has no support for :global{ //selectors }
   // This alos has no support for template tags wrapping HTML code in svelte files
