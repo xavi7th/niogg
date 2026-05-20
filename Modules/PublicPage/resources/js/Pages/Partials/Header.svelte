@@ -1,6 +1,19 @@
 <script>
   import { getImgUrl } from '@/helpers';
   export let appPhone = '';
+
+  let aboutOpen = false;
+  let newsOpen = false;
+
+  function toggleAbout() {
+    aboutOpen = !aboutOpen;
+    newsOpen = false;
+  }
+
+  function toggleNews() {
+    newsOpen = !newsOpen;
+    aboutOpen = false;
+  }
 </script>
 
 <header id="header" class="header header-transparent">
@@ -18,23 +31,27 @@
           <li class="nav__item">
             <a href="{ window.route('app.index') }" class="nav__item-link active">Home</a>
           </li>
-          <li class="nav__item with-dropdown">
-            <a href="{ window.route('app.about') }" class="dropdown-toggle nav__item-link">About Us</a>
-            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
-            <ul class="dropdown-menu">
+          <li class="nav__item with-dropdown" class:opened={aboutOpen}>
+            <a href="javascript:void(0)" class="dropdown-toggle nav__item-link !flex items-center justify-between pr-2" on:click|preventDefault={toggleAbout}>
+              <span>About Us</span>
+              <i class="fa fa-angle-right" on:click|preventDefault={toggleAbout}></i>
+            </a>
+            <ul class="dropdown-menu" class:show={aboutOpen}>
               <li class="nav__item"><a href="{ window.route('app.about') }" class="nav__item-link">Who We Are</a></li>
               <li class="nav__item"><a href="{ window.route('app.vision-and-values') }" class="nav__item-link">Vision &amp; Values</a></li>
               <li class="nav__item"><a href="{ window.route('app.careers') }" class="nav__item-link">Career</a></li>
             </ul>
           </li>
-          <li class="nav__item with-dropdown">
-            <a href="{ window.route('app.gallery') }" class="dropdown-toggle nav__item-link">News & Media</a>
-            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
-            <ul class="dropdown-menu">
-              <li class="nav__item"><a href="{ window.route('app.awards') }" class="nav__item-link">Awards and Recognitions</a></li>
-              <li class="nav__item"><a href="{ window.route('app.gallery') }" class="nav__item-link">Gallery</a></li>
-              <li class="nav__item"><a href="{ window.route('app.blog.index') }" class="nav__item-link">News & Articles</a></li>
+          <li class="nav__item with-dropdown" class:opened={newsOpen}>
+            <a href="javascript:void(0)" class="dropdown-toggle nav__item-link !flex items-center justify-between pr-2" on:click|preventDefault={toggleNews}>
+              <span>News & Media</span>
+              <i class="fa fa-angle-right" on:click|preventDefault={toggleNews}></i>
+            </a>
+            <ul class="dropdown-menu" class:show={newsOpen}>
               <li class="nav__item"><a href="{ window.route('events.media-showcase') }" class="nav__item-link">Media Showcase</a></li>
+              <li class="nav__item"><a href="{ window.route('app.gallery') }" class="nav__item-link">Gallery</a></li>
+              <li class="nav__item"><a href="{ window.route('app.awards') }" class="nav__item-link">Awards and Recognitions</a></li>
+              <li class="nav__item"><a href="{ window.route('app.blog.index') }" class="nav__item-link">News & Articles</a></li>
             </ul>
           </li>
           <li class="nav__item">
