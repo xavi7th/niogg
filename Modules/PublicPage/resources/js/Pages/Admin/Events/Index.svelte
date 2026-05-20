@@ -26,27 +26,34 @@
 		? [...new Set(events.data.map((e) => e.category).filter(Boolean))]
 		: [];
 
-	// Filter events client-side
+	// Filter events client-side and sort by created_at desc, then by id desc
 	$: filteredEvents = events?.data
-		? events.data.filter((event) => {
-				// Status filter
-				if (statusFilter === 'published' && !event.is_published) return false;
-				if (statusFilter === 'draft' && event.is_published) return false;
+		? events.data
+				.filter((event) => {
+					// Status filter
+					if (statusFilter === 'published' && !event.is_published) return false;
+					if (statusFilter === 'draft' && event.is_published) return false;
 
-				// Category filter
-				if (categoryFilter !== 'all' && event.category !== categoryFilter) return false;
+					// Category filter
+					if (categoryFilter !== 'all' && event.category !== categoryFilter) return false;
 
-				// Search filter
-				if (
-					searchQuery &&
-					!event.name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
-					!event.description?.toLowerCase().includes(searchQuery.toLowerCase())
-				) {
-					return false;
-				}
+					// Search filter
+					if (
+						searchQuery &&
+						!event.name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
+						!event.description?.toLowerCase().includes(searchQuery.toLowerCase())
+					) {
+						return false;
+					}
 
-				return true;
-		  })
+					return true;
+				})
+				.sort((a, b) => {
+					const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+					const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+					if (dateB !== dateA) return dateB - dateA;
+					return b.id - a.id;
+				})
 		: [];
 
 	// Update select all state based on filtered events

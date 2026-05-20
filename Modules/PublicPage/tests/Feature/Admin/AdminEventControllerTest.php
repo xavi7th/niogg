@@ -69,15 +69,15 @@ class AdminEventControllerTest extends TestCase
         });
     }
 
-    public function test_index_orders_events_by_date_descending(): void
+    public function test_index_orders_events_by_created_at_descending(): void
     {
         $user = User::factory()->create([
             'is_admin' => TRUE,
         ]);
 
-        $event1 = Event::factory()->create(['event_date' => '2025-01-15']);
-        $event2 = Event::factory()->create(['event_date' => '2025-02-01']);
-        $event3 = Event::factory()->create(['event_date' => '2025-01-01']);
+        $event1 = Event::factory()->create(['created_at' => now()->subDays(5)]);
+        $event2 = Event::factory()->create(['created_at' => now()->subDays(1)]);
+        $event3 = Event::factory()->create(['created_at' => now()->subDays(10)]);
 
         $response = $this->actingAs($user)->get('/admin/events');
 

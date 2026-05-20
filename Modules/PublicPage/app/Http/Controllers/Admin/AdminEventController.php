@@ -24,7 +24,7 @@ class AdminEventController extends Controller
         $cacheKey = "admin.events.list:page:{$page}:per_page:{$perPage}";
 
         $events = Cache::remember($cacheKey, 3600, fn () => Event::with('videos')
-            ->orderBy('event_date', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(15));
 
         return Inertia::render('PublicPage::Admin/Events/Index', [
