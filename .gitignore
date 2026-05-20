@@ -50,3 +50,4 @@ storage/logs/*
 storage/pail/*
 .cache/*
 .claude/data/*
+/db_backups/*
