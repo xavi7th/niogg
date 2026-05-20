@@ -128,7 +128,6 @@ class PublicPageController extends Controller
         ->whereHas('event', fn ($q) => $q->published())
         ->with('event:id,name,slug,category')
         ->when($category, fn ($q, $c) => $q->whereHas('event', fn ($inner) => $inner->where('category', $c)))
-        ->ordered()
         ->latest()
         ->paginate(24);
 

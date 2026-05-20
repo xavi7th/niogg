@@ -24,7 +24,20 @@
     router.get(
       route('app.gallery', category ? { category } : {}),
       {},
-      { preserveState: true, preserveScroll: true, only: ['photos', 'activeCategory'] }
+      {
+        preserveState: true,
+        preserveScroll: false,
+        only: ['photos', 'activeCategory'],
+        onSuccess: () => {
+          const mixer = window.$?.('#filtered-items-wrap')?.data('mixItUp');
+          if (mixer) {
+            setTimeout(() => {
+              mixer.destroy();
+              window.$?.('#filtered-items-wrap').mixItUp();
+            }, 600);
+          }
+        },
+      }
     );
   }
 
@@ -108,11 +121,15 @@
         <div class="col-sm-6 col-md-6 col-lg-4 mix">
           <div class="project-item">
             <div class="project__img">
-              <button on:click={() => openLightbox(i)} type="button" class="w-full">
-                <img src={photo.thumbnail_url} alt={photo.alt_text || ''} class="img-fluid w-full" loading="lazy" />
-              </button>
-              <div class="service__overlay">
-                <a href={route('events.show', { event: photo.event?.slug })} class="zoom__icon">
+              <img
+                src={photo.thumbnail_url}
+                alt={photo.alt_text || ''}
+                class="img-fluid w-full cursor-pointer"
+                loading="lazy"
+                on:click={() => openLightbox(i)}
+              />
+              <div class="service__overlay" style="pointer-events: none;">
+                <a href="#" on:click|preventDefault={() => openLightbox(i)} class="zoom__icon" style="pointer-events: auto;" on:click|stopPropagation>
                   <i class="icon-link"></i>
                 </a>
               </div>
