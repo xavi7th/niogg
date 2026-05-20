@@ -25,7 +25,9 @@
       return events.flatMap((e) =>
         (e.videos || []).map((v) => ({
           ...v,
-          eventCategory: e.category || 'Uncategorized'
+          eventCategory: e.category || 'Uncategorized',
+          eventSlug: e.slug,
+          eventName: e.name,
         }))
       );
     }
@@ -34,7 +36,9 @@
       .flatMap((e) =>
         (e.videos || []).map((v) => ({
           ...v,
-          eventCategory: e.category || 'Uncategorized'
+          eventCategory: e.category || 'Uncategorized',
+          eventSlug: e.slug,
+          eventName: e.name,
         }))
       );
   };
@@ -182,6 +186,11 @@
               <span class="category">{getCategoryLabel(video.eventCategory)}</span>
             {/if}
           </div>
+          {#if video.eventSlug}
+            <a href="/events/{video.eventSlug}" class="card-event-link" on:click|stopPropagation>
+              View event →
+            </a>
+          {/if}
         </div>
       </div>
     {/each}
@@ -415,6 +424,21 @@
     color: #9b9b9b;
     display: flex;
     gap: 1rem;
+  }
+
+  .card-event-link {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #ff7607;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .card-event-link:hover {
+    color: #e66d06;
+    text-decoration: underline;
   }
 
   .empty-state {

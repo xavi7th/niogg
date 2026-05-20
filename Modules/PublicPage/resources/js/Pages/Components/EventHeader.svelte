@@ -10,7 +10,7 @@
   };
 </script>
 
-<div class="event-header">
+<div class="event-header pt-80">
   <div class="header-top">
     <div class="icon-container">
       <div class="icon" aria-hidden="true">
@@ -30,13 +30,13 @@
       </h2>
 
       {#if event.description}
-        <p class="event-description">
+        <p class="event-description px-2">
           {event.description}
         </p>
       {/if}
 
       {#if event.photos_count > 0 || event.videos_count > 0}
-        <span class="media-counts">
+        <a href="/events/{event.slug}" class="media-counts">
           {#if event.photos_count > 0}
             <span class="media-count-item">
               <svg class="media-count-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@
               {event.videos_count}
             </span>
           {/if}
-        </span>
+        </a>
       {/if}
     </div>
   </div>
@@ -135,6 +135,12 @@
     margin-top: 0.5rem;
     font-size: 0.875rem;
     color: #9b9b9b;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .media-counts:hover {
+    color: #ff7607;
   }
 
   .media-count-item {

@@ -15,8 +15,8 @@
   let retryCount = 0;
   const MAX_RETRIES = 3;
 
-  const navigateToEventGrid = (eventSlug) => {
-    router.visit(`/events/${eventSlug}/videos`);
+  const navigateToEventDetail = (eventSlug) => {
+    router.visit(`/events/${eventSlug}`);
   };
 
   const openVideoModal = (video) => {
@@ -121,7 +121,7 @@
 
         <div class="see-more-button">
           <button
-            on:click={() => navigateToEventGrid(event.slug)}
+            on:click={() => navigateToEventDetail(event.slug)}
             class="btn-see-more"
           >
             See more from {event.name}

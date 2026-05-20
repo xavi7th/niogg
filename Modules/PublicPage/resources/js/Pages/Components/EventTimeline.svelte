@@ -67,6 +67,15 @@
             />
           </div>
         {/if}
+
+        <div class="view-event-link">
+          <a href="/events/{event.slug}" class="btn-view-event">
+            View Event Details
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </section>
   {/each}
@@ -129,6 +138,33 @@
 
   .supporting-videos-section {
     margin: 0 0 2rem 0;
+  }
+
+  .view-event-link {
+    margin-top: 1.5rem;
+  }
+
+  .btn-view-event {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #ff7607;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    min-height: 48px;
+  }
+
+  .btn-view-event:hover {
+    background-color: #e66d06;
+  }
+
+  .btn-view-event:active {
+    background-color: #d55b04;
   }
 
   .btn-primary {
