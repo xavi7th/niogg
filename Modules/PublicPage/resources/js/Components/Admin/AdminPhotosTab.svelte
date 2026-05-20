@@ -2,11 +2,11 @@
   import { router } from '@inertiajs/svelte';
 
   export let event = null;
+  export let showPhotoUpload = false;
 
   let photoDragId = null;
   let photoDragOverId = null;
   let isPhotoReordering = false;
-  let showPhotoUpload = false;
   let photoFileInput;
   let newPhotoFiles = [];
   let newPhotoPreviews = [];
@@ -189,16 +189,6 @@
       <p class="text-sm text-[#9b9b9b] mt-1">Drag photos to reorder them</p>
     {/if}
   </div>
-  <button
-    on:click={() => (showPhotoUpload = true)}
-    class="px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm flex items-center gap-2"
-    type="button"
-  >
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-    </svg>
-    Add Photos
-  </button>
 </div>
 
 {#if sortedPhotos.length > 0}

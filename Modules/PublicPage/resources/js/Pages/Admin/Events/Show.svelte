@@ -14,6 +14,11 @@
 	let selectedVideo = null;
 	let showDeleteDialog = false;
 	let videoToDelete = null;
+	let showPhotoUpload = false;
+
+	function openPhotoUpload() {
+		showPhotoUpload = true;
+	}
 
 	// Drag-drop state
 	let draggedVideoId = null;
@@ -225,6 +230,18 @@
 						</svg>
 						Add Video
 					</a>
+					{#if activeTab === 'photos'}
+						<button
+							on:click={openPhotoUpload}
+							class="px-4 py-2 bg-[#ff7607] text-white rounded-lg hover:bg-[#e56a00] font-medium text-sm flex items-center gap-2"
+							type="button"
+						>
+							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+							</svg>
+							Add Photos
+						</button>
+					{/if}
 				</div>
 			</div>
 		</header>
@@ -515,7 +532,7 @@
 			{/if}
 
 			{#if activeTab === 'photos'}
-				<AdminPhotosTab {event} />
+				<AdminPhotosTab {event} bind:showPhotoUpload />
 			{/if}
 
 			{:else}

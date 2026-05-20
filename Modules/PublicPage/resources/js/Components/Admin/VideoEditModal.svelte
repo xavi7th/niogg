@@ -16,7 +16,7 @@
 	let fileInput;
 
 	// Current thumbnail URL (custom > auto > placeholder)
-	$: currentThumbnail = video.custom_thumbnail_url || video.thumbnail_url || '/images/video-placeholder-default.jpg';
+	$: currentThumbnail = video?.custom_thumbnail_url || video?.thumbnail_url || '/images/video-placeholder-default.jpg';
 
 	function close() {
 		open = false;
@@ -164,11 +164,11 @@
 							<img
 								src={thumbnailPreview || currentThumbnail}
 								alt="Video thumbnail"
-								class="max-h-48 w-full object-cover rounded-lg border-2 {video.custom_thumbnail_url
+								class="max-h-48 w-full object-cover rounded-lg border-2 {video?.custom_thumbnail_url
 									? 'border-[#ff7607]'
 									: 'border-[#eaeaea]'}"
 							/>
-							{#if video.custom_thumbnail_url}
+							{#if video?.custom_thumbnail_url}
 								<p class="text-xs text-[#9b9b9b] mt-1">Custom thumbnail active</p>
 							{/if}
 						</div>
