@@ -8,6 +8,8 @@
   let playerRef;
   let playerColumnHeight = 0;
   let playlistItemRefs = {};
+  let videoEl;
+  let shouldAutoplay = false;
 
   $: activeVideo = videos.find((v) => v.id === activeVideoId) ?? videos[0] ?? null;
 
@@ -25,6 +27,7 @@
   }
 
   function setActiveVideo(video) {
+    shouldAutoplay = true;
     activeVideoId = video.id;
     videoError = null;
     retryCount = 0;
@@ -34,6 +37,7 @@
   }
 
   function nextVideo() {
+    shouldAutoplay = true;
     const idx = videos.findIndex((v) => v.id === activeVideoId);
     if (idx < videos.length - 1) {
       activeVideoId = videos[idx + 1].id;
@@ -93,15 +97,19 @@
             {/if}
           </div>
         {:else}
-          <video
-            controls
-            class="w-full aspect-video"
-            poster={activeVideo.thumbnail_url}
-            on:ended={nextVideo}
-            on:error={handleVideoError}
-          >
-            <source src={activeVideo.video_url} type={activeVideo.mime_type || 'video/mp4'} />
-          </video>
+          {#key activeVideoId}
+            <video
+              bind:this={videoEl}
+              controls
+              class="w-full aspect-video"
+              poster={activeVideo.thumbnail_url}
+              on:loadeddata={() => { if (shouldAutoplay) videoEl?.play(); }}
+              on:ended={nextVideo}
+              on:error={handleVideoError}
+            >
+              <source src={activeVideo.video_url} type={activeVideo.mime_type || 'video/mp4'} />
+            </video>
+          {/key}
         {/if}
       </div>
       <div class="mt-4">
