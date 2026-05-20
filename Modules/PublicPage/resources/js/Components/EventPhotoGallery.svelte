@@ -35,11 +35,11 @@
 
 <h2 class="text-2xl font-bold text-[#1b1a1a] mb-6">Photo Gallery</h2>
 
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-3">
   {#each photos.slice(0, PREVIEW_CAP) as photo, i}
     <button
       on:click={() => openLightbox(i)}
-      class="aspect-square rounded-xl overflow-hidden hover:ring-2 hover:ring-[#ff7607] transition-all cursor-pointer bg-gray-100"
+      class="aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:ring-2 hover:ring-[#ff7607] transition-all cursor-pointer bg-gray-100"
       type="button"
     >
       <img
