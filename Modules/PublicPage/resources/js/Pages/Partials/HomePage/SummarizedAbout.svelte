@@ -3,7 +3,7 @@
   export let appName = '', appAltName = ''
 </script>
 
-<section id="about2" class="about about-2 pt-0 pb-90">
+<section id="about2" class="about about-2 pt-80 pb-90">
   <div class="container">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-12 col-xl-9 offset-xl-1 ">

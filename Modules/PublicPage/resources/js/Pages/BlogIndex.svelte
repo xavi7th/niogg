@@ -12,7 +12,7 @@
 
   let articles = [];
 
-  fetch(`https://newsapi.org/v2/everything?q=nigeria&searchIn=title,description&language=en&pageSize=15&page=${Math.floor(Math.random() * 3)}&apiKey=84abb2477ec840bf8cd3073622e72058`)
+  fetch(`https://newsapi.org/v2/everything?q=nigeria&searchIn=title,description&language=en&pageSize=15&page=${Math.floor(Math.random() * 5) || 1}&apiKey=84abb2477ec840bf8cd3073622e72058`)
     .then(res => res.json())
     .then(data => articles = data.articles.filter(x => x.author).filter(x => x.description))
     .catch(err => {
@@ -26,7 +26,7 @@
 
 
 {#if articles?.length}
-  <section id="blogGrid" class="blog blog-grid pt-0 pb-70">
+  <section id="blogGrid" class="blog blog-grid pt-80 pb-70">
     <div class="container">
       <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
@@ -48,7 +48,7 @@
               <div class="blog-item">
                 <div class="blog__img">
                   <a href="#">
-                    <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/blog/grid/1.jpg')} alt="blog thumb"/>
+                    <img src="{article.urlToImage ?? getImgUrl('Modules/PublicPage/resources/template/assets/images/blog/grid/1.jpg')}" alt="blog thumb"/>
                   </a>
                 </div>
                 <div class="blog__content">
