@@ -2,33 +2,12 @@
   import { Link, page } from '@inertiajs/svelte';
   import EventHeader from '@publicpage-pages/Components/EventHeader.svelte';
   import VideoPlayer from '@publicpage-pages/Components/VideoPlayer.svelte';
-  import SupportingVideoGrid from '@publicpage-pages/Components/SupportingVideoGrid.svelte';
 
   export let events = [];
   export let onViewToggle = () => {};
 
-  let selectedVideos = new Map();
-
-  $: events.forEach((event) => {
-    if (!selectedVideos.has(event.id)) {
-      const featured = event.videos?.find((v) => v.is_featured);
-      selectedVideos.set(event.id, featured?.id);
-    }
-  });
-
-  const handleVideoSelect = (eventId, videoId) => {
-    selectedVideos.set(eventId, videoId);
-    selectedVideos = selectedVideos;
-
-    const playerElement = document.querySelector(`[data-event-player="${eventId}"]`);
-    if (playerElement) {
-      playerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const getSelectedVideo = (eventId) => {
-    const videoId = selectedVideos.get(eventId);
-    return events.find((e) => e.id === eventId)?.videos?.find((v) => v.id === videoId);
+  const getFeaturedVideo = (event) => {
+    return event.videos?.find((v) => v.is_featured) ?? event.videos?.[0] ?? null;
   };
 
   $: currentSort = $page.url?.searchParams?.get('sort') || 'newest';
@@ -50,23 +29,13 @@
       <div class="event-container">
         <EventHeader {event} />
 
-        <div data-event-player={event.id} class="featured-player-section">
-          {#if getSelectedVideo(event.id)}
-            {#key getSelectedVideo(event.id)?.id || 'empty'}
-              <VideoPlayer video={getSelectedVideo(event.id)} size="large" />
+        <div class="featured-player-section">
+          {#if getFeaturedVideo(event)}
+            {#key getFeaturedVideo(event)?.id}
+              <VideoPlayer video={getFeaturedVideo(event)} size="large" />
             {/key}
           {/if}
         </div>
-
-        {#if event.videos && event.videos.length > 1}
-          <div class="supporting-videos-section">
-            <SupportingVideoGrid
-              videos={event.videos.filter((v) => !v.is_featured)}
-              currentlyPlaying={selectedVideos.get(event.id)}
-              onVideoSelect={(video) => handleVideoSelect(event.id, video.id)}
-            />
-          </div>
-        {/if}
 
         <div class="view-event-link">
           <a href="/events/{event.slug}" class="btn-view-event">
@@ -134,10 +103,6 @@
 
   .featured-player-section {
     margin: 2rem 0;
-  }
-
-  .supporting-videos-section {
-    margin: 0 0 2rem 0;
   }
 
   .view-event-link {
