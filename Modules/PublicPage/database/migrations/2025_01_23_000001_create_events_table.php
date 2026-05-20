@@ -18,6 +18,7 @@ return new class extends Migration
       $table->string('slug')->unique();
       $table->boolean('is_published')->default(TRUE);
       $table->timestamps();
+      $table->engine('InnoDB');
 
       $table->index('slug');
       $table->index('category');

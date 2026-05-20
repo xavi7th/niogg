@@ -19,6 +19,7 @@ return new class extends Migration
       $table->boolean('is_featured')->default(FALSE);
       $table->integer('sort_order')->default(0);
       $table->timestamps();
+      $table->engine('InnoDB');
 
       $table->index('event_id');
       $table->index('is_featured');
