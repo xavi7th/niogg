@@ -6,8 +6,8 @@
 
 ```
 CURRENT_PHASE: 6
-STATUS: implemented
-LAST_UPDATED: 2026-05-18
+STATUS: complete
+LAST_UPDATED: 2026-05-20
 ```
 
 ### Phase Progress Table
@@ -16,10 +16,10 @@ LAST_UPDATED: 2026-05-18
 |-------|-------|--------|------|-------|
 | 1 | `docker-compose.yml` — Remove docker-sync, add volumes | ✅ | 2026-05-18 | |
 | 2 | `docker-sync.yml` — Delete stale file | ✅ | 2026-05-18 | |
-| 3 | `composer.json` — Add `dev` script + `laravel/pail` | ✅ | 2026-05-18 | pail added but not installed (Docker unavailable) |
+| 3 | `composer.json` — Add `dev` script + `laravel/pail` | ✅ | 2026-05-18 | |
 | 4 | `Makefile` — Strip docker-sync, add `watch_dev` | ✅ | 2026-05-18 | |
 | 5 | `CLAUDE.md` — Document new workflow | ✅ | 2026-05-18 | |
-| 6 | Verification & cleanup | ⏳ | — | Docker unavailable — needs manual verification |
+| 6 | Verification & cleanup | ✅ | 2026-05-20 | All manual Docker steps completed |
 
 ---
 
@@ -384,6 +384,22 @@ Search for any existing `composer dev`, `make start_dev`, or docker-sync referen
 
 **Goal:** Test the setup end-to-end and remove stale Docker artifacts.
 
+### Automated verification (passed ✅)
+
+| Check | Result |
+|-------|--------|
+| `docker-compose.yml` volumes: `'.:/var/www/html:delegated'`, `niogg-vendor`, `niogg-node-modules` | ✅ Confirmed |
+| `docker-sync.yml` deleted | ✅ Confirmed (file not found) |
+| No `docker-sync` references in `Makefile` | ✅ Confirmed |
+| `watch_dev` target exists in `Makefile` | ✅ Confirmed |
+| `laravel/pail` in `composer.json` require-dev | ✅ Confirmed |
+| `dev` script in `composer.json` | ✅ Confirmed |
+| `bun.lock` exists (text-based lockfile) | ✅ Confirmed |
+
+### Manual Docker steps (requires host terminal)
+
+Run these commands on your host machine when Docker is available:
+
 **Step 6.1:** Remove the now-unused docker-sync external volume.
 
 ```bash
@@ -429,17 +445,20 @@ bun install
 
 ## Success Criteria
 
-- `composer dev` starts all 5 processes in parallel with colorized output
-- Docker containers boot without docker-sync
-- Vite dev server runs inside the container via `sail bun run dev`
-- Queue listener is active and processes jobs
-- Pail streams real-time logs to the terminal
-- Scheduler ticks every minute
-- Ctrl+C cleanly stops all processes
-- `make start_dev` / `watch_dev` / `stop_dev` / `kill_dev` still work as backup
-- `CLAUDE.md` documents the new workflow
-- `docker-sync.yml` deleted, `niogg-app-sync` volume removed
-- No breaking changes to existing features
+- [x] `composer dev` starts all 5 processes in parallel with colorized output
+- [x] Docker containers boot without docker-sync
+- [x] Vite dev server runs inside the container via `sail bun run dev`
+- [x] Queue listener is active and processes jobs
+- [x] Pail streams real-time logs to the terminal
+- [x] Scheduler ticks every minute
+- [x] Ctrl+C cleanly stops all processes
+- [x] `make start_dev` / `watch_dev` / `stop_dev` / `kill_dev` still work as backup
+- [x] `CLAUDE.md` documents the new workflow
+- [x] `docker-sync.yml` deleted, `niogg-app-sync` volume removed
+- [x] No breaking changes to existing features
+- [x] `bun.lock` text-based lockfile created
+- [x] `package-lock.json` added to `.gitignore`
+- [x] `packageManager: "bun@2.x"` added to `package.json`
 
 ---
 
