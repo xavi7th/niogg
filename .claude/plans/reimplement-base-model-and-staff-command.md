@@ -5,8 +5,8 @@
 ## SESSION STATE (UPDATE AFTER EACH SESSION)
 
 ```
-CURRENT_PHASE: 0
-STATUS: not started
+CURRENT_PHASE: 9
+STATUS: completed
 LAST_UPDATED: 2026-05-21
 ```
 
@@ -14,15 +14,15 @@ LAST_UPDATED: 2026-05-21
 
 | Phase | Title | Status | Date | Notes |
 |-------|-------|--------|------|-------|
-| 1 | Create `app/Models/BaseModel.php` | ⏳ | — | |
-| 2 | Create `tests/Unit/Models/BaseModelTest.php` | ⏳ | — | |
-| 3 | Update models to extend BaseModel | ⏳ | — | |
-| 4 | Fix `AuthenticationTest` role-based redirect | ⏳ | — | |
-| 5 | Create `Modules/UserAuth/app/Console/CreateStaffAccount.php` | ⏳ | — | |
-| 6 | Create `Modules/UserAuth/app/Notifications/StaffAccountCreated.php` | ⏳ | — | |
-| 7 | Register command in `UserAuthServiceProvider` | ⏳ | — | |
-| 8 | Create `tests/Feature/Commands/CreateStaffAccountCommandTest.php` | ⏳ | — | |
-| 9 | Final verification pass | ⏳ | — | |
+| 1 | Create `app/Models/BaseModel.php` | ✅ | 2026-05-21 | Pint fixed formatting |
+| 2 | Create `tests/Unit/Models/BaseModelTest.php` | ✅ | 2026-05-21 | Fixed assertContains for bindings, ReflectionMethod for protected access, static flag reset in setUp |
+| 3 | Update models to extend BaseModel | ✅ | 2026-05-21 | Event, Video, EventPhoto updated |
+| 4 | Fix `AuthenticationTest` role-based redirect | ✅ | 2026-05-21 | Changed to route('appuser.dashboard'), removed RouteServiceProvider import. Fixed .env.testing DB_HOST=mariadb |
+| 5 | Create `Modules/UserAuth/app/Console/CreateStaffAccount.php` | ✅ | 2026-05-21 | Fixed email_verified_at not fillable — set after create |
+| 6 | Create `Modules/UserAuth/app/Notifications/StaffAccountCreated.php` | ✅ | 2026-05-21 | |
+| 7 | Register command in `UserAuthServiceProvider` | ✅ | 2026-05-21 | |
+| 8 | Create `tests/Feature/Commands/CreateStaffAccountCommandTest.php` | ✅ | 2026-05-21 | Added expectsConfirmation for non-flag tests |
+| 9 | Final verification pass | ✅ | 2026-05-21 | 19 new/modified tests pass, 0 regressions |
 
 ---
 
