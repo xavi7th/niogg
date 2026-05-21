@@ -29,4 +29,18 @@ class VideoFactory extends Factory
             'is_featured' => TRUE,
         ]);
     }
+
+    public function forEvent(\Modules\PublicPage\Models\Event $event): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'event_id' => $event->id,
+        ]);
+    }
+
+    public function withDuration(int $seconds): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'duration_seconds' => $seconds,
+        ]);
+    }
 }

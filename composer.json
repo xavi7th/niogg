@@ -87,6 +87,18 @@
     "test": [
       "./scripts/test.sh"
     ],
+    "test-coverage": [
+      "./vendor/bin/sail php vendor/bin/phpunit --coverage-html=coverage/html --coverage-clover=coverage/clover.xml"
+    ],
+    "test-compact": [
+      "./vendor/bin/sail artisan test --compact"
+    ],
+    "test-feature": [
+      "./vendor/bin/sail artisan test --compact --testsuite=Feature"
+    ],
+    "test-unit": [
+      "./vendor/bin/sail artisan test --compact --testsuite=Unit"
+    ],
     "e2e": "vendor/bin/sail npx playwright test 2>/dev/null || npx playwright test 2>/dev/null || echo 'No e2e tests found'",
     "e2e-headed": "vendor/bin/sail npx playwright test --headed 2>/dev/null || npx playwright test --headed 2>/dev/null || echo 'No e2e tests found'",
     "e2e-ui": "vendor/bin/sail npx playwright test --ui 2>/dev/null || npx playwright test --ui 2>/dev/null || echo 'No e2e tests found'"

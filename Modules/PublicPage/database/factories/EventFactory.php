@@ -35,4 +35,25 @@ class EventFactory extends Factory
             'is_published' => FALSE,
         ]);
     }
+
+    public function charityEvent(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'category' => 'Charity Drive',
+        ]);
+    }
+
+    public function conferenceEvent(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'category' => 'Conference',
+        ]);
+    }
+
+    public function protestEvent(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'category' => 'Protests',
+        ]);
+    }
 }

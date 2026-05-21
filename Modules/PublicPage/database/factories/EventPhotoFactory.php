@@ -20,4 +20,11 @@ class EventPhotoFactory extends Factory
             'sort_order' => 0,
         ];
     }
+
+    public function sortOrder(int $order): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'sort_order' => $order,
+        ]);
+    }
 }
