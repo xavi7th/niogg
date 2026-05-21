@@ -87,9 +87,9 @@
         </div>
         <div class="col-sm-12 col-md-3 col-lg-3 d-flex align-items-center">
           <div class="social__icons justify-content-end w-100">
-            <a href="https://www.facebook.com/profile.php?id=61563097853769&mibextid=ZbWKwL" target="_blank" referrerpolicy="origin"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.facebook.com/share/17Z6NEftZH/?mibextid=wwXIfr" target="_blank" referrerpolicy="origin"><i class="fa fa-facebook"></i></a>
             <a href="https://x.com/InsightNig40403?t=idIVOXJgeRXutGyBLTfcSg&s=09" target="_blank" referrerpolicy="origin"><i class="fa fa-twitter"></i></a>
-            <a href="https://www.instagram.com/nigeriainsight/" target="_blank" referrerpolicy="origin"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.instagram.com/niogg_insight?igsh=ZjUzazZ0bGNuZmpo&utm_source=qr" target="_blank" referrerpolicy="origin"><i class="fa fa-instagram"></i></a>
           </div>
         </div>
       </div>
