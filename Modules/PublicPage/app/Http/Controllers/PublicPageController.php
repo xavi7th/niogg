@@ -165,10 +165,17 @@ class PublicPageController extends Controller
 
   public function contactUs(Request $request)
   {
+    $validated = $request->validate([
+      'name' => ['required', 'string', 'max:255'],
+      'email' => ['required', 'email', 'max:255'],
+      'phone' => ['nullable', 'string', 'max:20'],
+      'message' => ['required', 'string'],
+    ]);
+
     $message = ContactFormMessageDTO::fromRequest($request);
 
     Mail::to([config('app.name') => config('app.email')])->send(new NewContactFormMessage($message));
 
-    return back()->withFlash(['success' => 'Thank you for reaching out to us. We will get back to you shortly.']);
+    return back()->with('flash', ['success' => 'Thank you for reaching out to us. We will get back to you shortly.']);
   }
 }
