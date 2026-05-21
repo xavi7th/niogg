@@ -213,9 +213,22 @@ Route::get('/users', function () {
 
 ### Testing
 
+- All tests MUST be written in Pest. Use `test()` closures, not PHPUnit classes.
+- Use `expect()` for simple assertions. Keep Laravel's `assertX()` for response assertions.
+- Each test directory should have a `Pest.php` with `uses()` for TestCase and common traits.
 - When creating models for tests, use the factories for the models. Check if the factory has custom states that can be used before manually setting up the model.
-- Faker: Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to use `$this->faker` or `fake()`.
-- When creating tests, make use of `vendor/bin/sail artisan make:test [options] {name}` to create a feature test, and pass `--unit` to create a unit test. Most tests should be feature tests.
+- Faker: Use methods such as `fake()->word()` or `fake()->randomDigit()`.
+- Every time a test has been updated, run that singular test.
+- When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
+- Tests should test all of the happy paths, failure paths, and weird paths.
+- You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files; these are core to the application.
+
+### Running Tests
+
+- Run the minimal number of tests, using an appropriate filter, before finalizing.
+- To run all tests: `vendor/bin/sail pest --compact`.
+- To run all tests in a file: `vendor/bin/sail pest --compact tests/Feature/ExampleTest.php`.
+- To filter on a particular test name: `vendor/bin/sail pest --compact --filter=testName` (recommended after making a change to a related file).
 
 ### Vite Error
 
@@ -241,21 +254,12 @@ Route::get('/users', function () {
 - You must run `vendor/bin/sail bin pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/sail bin pint --test`, simply run `vendor/bin/sail bin pint` to fix any formatting issues.
 
-=== phpunit/core rules ===
+=== pest/core rules ===
 
-## PHPUnit
+## Pest
 
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `vendor/bin/sail artisan make:test --phpunit {name}` to create a new test.
-- If you see a test using "Pest", convert it to PHPUnit.
+- This application uses Pest for testing. All tests must be written as Pest test closures using `test()`.
+- Use `vendor/bin/sail pest` to run tests.
 - Every time a test has been updated, run that singular test.
 - When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
-- Tests should test all of the happy paths, failure paths, and weird paths.
-- You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files; these are core to the application.
-
-### Running Tests
-
-- Run the minimal number of tests, using an appropriate filter, before finalizing.
-- To run all tests: `vendor/bin/sail artisan test --compact`.
-- To run all tests in a file: `vendor/bin/sail artisan test --compact tests/Feature/ExampleTest.php`.
-- To filter on a particular test name: `vendor/bin/sail artisan test --compact --filter=testName` (recommended after making a change to a related file).
   </laravel-boost-guidelines>

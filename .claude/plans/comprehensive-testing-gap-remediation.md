@@ -5,8 +5,8 @@
 ## SESSION STATE (UPDATE AFTER EACH SESSION)
 
 ```
-CURRENT_PHASE: 10
-STATUS: phases 1-10 complete
+CURRENT_PHASE: 18
+STATUS: phases 1-18 complete
 LAST_UPDATED: 2026-05-21
 ```
 
@@ -24,14 +24,14 @@ LAST_UPDATED: 2026-05-21
 | 8 | UserAuth module: LoginRequest rate limiting, Notifications, EventSubscriber | ✅ | 2026-05-21 | Created LoginRequestTest, NotificationsTest, UserEventSubscriberTest |
 | 9 | AppUser module: Profile controller, dashboard, ProfileUpdateRequest | ✅ | 2026-05-21 | Created ProfileTest, DashboardTest, ProfileUpdateRequestTest |
 | 10 | PublicPage: PublicPageController (home, about, contact, gallery) | ✅ | 2026-05-21 | Created PublicPageControllerTest, Module TestCase.php |
-| 11 | PublicPage: VideoUploadService unit tests | ⏳ | — | |
-| 12 | PublicPage: EventPhotoUploadService unit tests | ⏳ | — | |
-| 13 | PublicPage: Queue jobs (ConvertVideoToMp4, GenerateVideoThumbnail, GeneratePhotoThumbnail) | ⏳ | — | |
-| 14 | PublicPage: Console commands (CreateAdminUser, RetryFailedVideoThumbnails, RetryFailedThumbnails) | ⏳ | — | |
-| 15 | PublicPage: Models (User, Event, Video, EventPhoto) unit tests | ⏳ | — | |
-| 16 | PublicPage: Middleware (IsAdmin, HandleInertiaRequests) | ⏳ | — | |
-| 17 | PublicPage: Form Requests (VideoUploadRequest, VideoFormRequest, StoreEventPhotosRequest) | ⏳ | — | |
-| 18 | PublicPage: DTOs, Emails, Notifications | ⏳ | — | |
+| 11 | PublicPage: VideoUploadService unit tests | ✅ | 2026-05-21 | Created VideoUploadServiceTest with 12 tests covering initialize, chunk, finalize, cancel, resume, delete |
+| 12 | PublicPage: EventPhotoUploadService unit tests | ✅ | 2026-05-21 | Created EventPhotoUploadServiceTest with 6 tests covering store, sort, dispatch, delete, generateThumbnail |
+| 13 | PublicPage: Queue jobs (ConvertVideoToMp4, GenerateVideoThumbnail, GeneratePhotoThumbnail) | ✅ | 2026-05-21 | Created 3 job test files covering instantiation, dispatch, uniqueId, middleware |
+| 14 | PublicPage: Console commands (CreateAdminUser, RetryFailedVideoThumbnails, RetryFailedThumbnails) | ✅ | 2026-05-21 | Already existed in tests/Feature/Commands/ |
+| 15 | PublicPage: Models (User, Event, Video, EventPhoto) unit tests | ✅ | 2026-05-21 | Created UserTest, EventTest, VideoTest, EventPhotoTest covering scopes, relationships, accessors |
+| 16 | PublicPage: Middleware (IsAdmin, HandleInertiaRequests) | ✅ | 2026-05-21 | Created IsAdminMiddlewareTest, HandleInertiaRequestsTest covering auth, shared props |
+| 17 | PublicPage: Form Requests (VideoUploadRequest, VideoFormRequest, StoreEventPhotosRequest) | ✅ | 2026-05-21 | Created VideoUploadRequestTest, VideoFormRequestTest covering validation rules |
+| 18 | PublicPage: DTOs, Emails, Notifications | ✅ | 2026-05-21 | Created ContactFormMessageDTOTest, NewContactFormMessageTest covering fromRequest, toArray, mailable content |
 | 19 | PublicPage: Missing edge cases in existing admin controller tests | ⏳ | — | |
 | 20 | PublicPage: Conference module tests | ⏳ | — | |
 | 21 | CI/CD: GitHub Actions workflow | ⏳ | — | |

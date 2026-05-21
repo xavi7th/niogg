@@ -9,7 +9,7 @@
 
 ### 1. Authentication & Onboarding
 
-*   **Register:** User navigates to /register, fills name, email, password, clicks "Create Account", receives verification email, confirms, redirected to dashboard.
+*   ~~**Register:** User navigates to /register, fills name, email, password, clicks "Create Account", receives verification email, confirms, redirected to dashboard.~~ *(disabled — registration via admin only)*
 *   **Login:** User navigates to /login, enters email, password, optionally checks "Remember me", clicks "Sign In", redirected to dashboard.
 *   **Forgot Password:** User clicks "Forgot password?" on login page, enters email, clicks "Send Reset Link", receives email, follows link, sets new password.
 *   **Reset Password:** User follows reset link /reset-password/{token}, enters new password, clicks "Reset Password", password updated, redirected to login.
