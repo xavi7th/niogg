@@ -4,6 +4,8 @@ namespace Modules\PublicPage\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\PublicPage\Console\Commands\CreateEventCommand;
+use Modules\PublicPage\Console\Commands\ConvertPendingVideos;
 
 class PublicPageServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class PublicPageServiceProvider extends ServiceProvider
 
   public function boot(): void
   {
-    // $this->registerCommands();
+    $this->registerCommands();
     $this->registerConfig();
     $this->registerViews();
     $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
@@ -65,6 +67,9 @@ class PublicPageServiceProvider extends ServiceProvider
    */
   protected function registerCommands(): void
   {
-    // $this->commands([]);
+    $this->commands([
+      CreateEventCommand::class,
+      ConvertPendingVideos::class,
+    ]);
   }
 }

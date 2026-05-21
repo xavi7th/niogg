@@ -6,11 +6,12 @@ export const aliases = {
   "@publicpage-components": "/Modules/PublicPage/resources/js/Components",
   "@publicpage-partials": "/Modules/PublicPage/resources/js/Pages/Partials",
   "@publicpage-assets": "/Modules/PublicPage/resources",
+  "@publicpage-template": "/Modules/PublicPage/resources/template/assets",
 };
 
 export const concatFiles = [
   {
-    files: ["Modules/PublicPage/resources/template/assets/js/jquery-3.3.1.min.js", "Modules/PublicPage/resources/template/assets/js/plugins.js", "Modules/PublicPage/resources/js/vendor/videojs/video-js.min.js"],
+    files: ["Modules/PublicPage/resources/template/assets/js/jquery-3.3.1.min.js", "Modules/PublicPage/resources/template/assets/js/plugins.js"],
     outputFile: "public/build/assets/app.js",
   },
   {
@@ -21,7 +22,7 @@ export const concatFiles = [
 
 export const publicFiles = [
   {
-    src: "Modules/PublicPage/resources/images/static",
+    src: "Modules/PublicPage/resources/images",
     dest: "./",
     rename: "img",
   },

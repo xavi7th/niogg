@@ -7,6 +7,7 @@
 <script>
   import { page } from "@inertiajs/svelte";
   import PageTitle from '@publicpage-partials/PageTitle.svelte';
+  import { getImgUrl } from '@/helpers';
 
   $: ({ app } = $page.props);
 </script>
@@ -22,8 +23,8 @@
       <div class="col-sm-12 col-md-12 col-lg-7">
         <div class="carousel-wrap">
           <div class="carousel owl-carousel carousel-arrows" data-slide="1" data-slide-md="1" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="0" data-loop="true" data-speed="700">
-            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/backgrounds/equal-opportunity.jpg?enhanced&w=670&aspect=670:450" alt="about thumb"/>
-            <enhanced:img class="img-fluid" src="@publicpage-assets/images/src/backgrounds/one-nigeria.png?enhanced&w=670&aspect=670:450&position=top" alt="about thumb"/>
+            <img class="img-fluid" src={getImgUrl('Modules/PublicPage/resources/template/assets/images/backgrounds/equal-opportunity.jpg')} alt="about thumb"/>
+            <img class="img-fluid" src={getImgUrl('Modules/PublicPage/resources/template/assets/images/backgrounds/one-nigeria.png')} alt="about thumb"/>
           </div>
           <div class="counter-item counters-white">
             <div class="counter__icon"><i class="icon-worker-1"></i></div>

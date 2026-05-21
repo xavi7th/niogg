@@ -13,7 +13,7 @@ class SendPasswordResetNotification extends Notification implements ShouldQueue
 {
   use Queueable;
 
-  protected $token;
+  public $token;
 
   public function __construct($token)
   {

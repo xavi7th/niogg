@@ -20,6 +20,8 @@ class User extends Authenticatable // implements MustVerifyEmail
     'name',
     'email',
     'password',
+    'is_admin',
+    'is_super_admin',
   ];
 
   protected $hidden = [
@@ -30,6 +32,8 @@ class User extends Authenticatable // implements MustVerifyEmail
   protected $casts = [
     'email_verified_at' => 'datetime',
     'password' => 'hashed',
+    'is_admin' => 'boolean',
+    'is_super_admin' => 'boolean',
   ];
 
   public function getType(): string
@@ -60,5 +64,28 @@ class User extends Authenticatable // implements MustVerifyEmail
   public function sendEmailVerificationNotification(): void
   {
     $this->notify(new VerifyEmail());
+  }
+
+  public function isAdmin(): bool
+  {
+    return $this->is_admin || $this->is_super_admin;
+  }
+
+  public function isSuperAdmin(): bool
+  {
+    return $this->is_super_admin;
+  }
+
+  public function getType(): string
+  {
+    if ($this->is_super_admin) {
+      return 'SuperAdmin';
+    }
+
+    if ($this->is_admin) {
+      return 'Admin';
+    }
+
+    return 'AppUser';
   }
 }

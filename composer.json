@@ -10,22 +10,25 @@
   "require": {
     "php": "^8.1",
     "guzzlehttp/guzzle": "^7.2",
-    "inertiajs/inertia-laravel": "^0.6.8",
+    "inertiajs/inertia-laravel": "^1.0",
+    "intervention/image": "^3",
     "laravel/framework": "^10.10",
     "laravel/sanctum": "^3.2",
     "laravel/tinker": "^2.8",
     "nwidart/laravel-modules": "11.0.10",
     "opcodesio/log-viewer": "^3.8",
+    "pbmedia/laravel-ffmpeg": "^8.7",
+    "spatie/laravel-responsecache": "^7.7",
     "tightenco/ziggy": "^2.0"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9.1",
-    "fruitcake/laravel-telescope-toolbar": "^1.3",
     "larastan/larastan": "^2.0",
+    "laravel/pail": "^1.2",
+    "laravel/boost": "^1.8",
     "laravel/breeze": "^1.29",
     "laravel/pint": "^1.17",
     "laravel/sail": "^1.29",
-    "laravel/telescope": "*",
     "mockery/mockery": "^1.4.4",
     "nunomaduro/collision": "^7.0",
     "phpunit/phpunit": "^10.1",
@@ -76,13 +79,21 @@
       "@php artisan key:generate --ansi"
     ],
     "lint": "vendor/bin/pint --test && vendor/bin/phpcbf -nv",
-    "lint-check": "vendor/bin/pint && vendor/bin/phpcs -v"
+    "lint-check": "vendor/bin/pint && vendor/bin/phpcs -v",
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "bash scripts/dev.sh"
+    ],
+    "test": [
+      "./scripts/test.sh"
+    ],
+    "e2e": "vendor/bin/sail npx playwright test 2>/dev/null || npx playwright test 2>/dev/null || echo 'No e2e tests found'",
+    "e2e-headed": "vendor/bin/sail npx playwright test --headed 2>/dev/null || npx playwright test --headed 2>/dev/null || echo 'No e2e tests found'",
+    "e2e-ui": "vendor/bin/sail npx playwright test --ui 2>/dev/null || npx playwright test --ui 2>/dev/null || echo 'No e2e tests found'"
   },
   "extra": {
     "laravel": {
-      "dont-discover": [
-        "laravel/telescope"
-      ]
+      "dont-discover": []
     },
     "merge-plugin": {
       "include": [

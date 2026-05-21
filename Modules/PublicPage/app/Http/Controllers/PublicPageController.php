@@ -3,7 +3,11 @@
 namespace Modules\PublicPage\Http\Controllers;
 
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use Modules\PublicPage\DTOs\ContactFormMessageDTO;
+use Modules\PublicPage\Emails\NewContactFormMessage;
 
 class PublicPageController extends Controller
 {
@@ -14,31 +18,31 @@ class PublicPageController extends Controller
         'name' => 'Nelson Mandela',
         'country' => 'South Africa',
         'testimonial' => 'A fundamental concern for others in our individual and community lives would go a long way in making the world the better place we so passionately dreamt of.',
-        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/nelson-mandela.jpg',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/nelson-mandela.jpg',
       ],
       [
         'name' => 'Chinua Achebe',
         'country' => 'Nigeria',
         'testimonial' => 'Democracy is the worst form of government except for all those other forms that have been tried from time to time.',
-        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/china-achuebe.jpg',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/china-achuebe.jpg',
       ],
       [
         'name' => 'Dr. Akinwumi Adesina',
         'country' => 'Nigeria',
         'testimonial' => 'Proper management of our natural resources is vital for Nigeria\'s development. It ensures sustainable growth, environmental balance, and the well-being of future generations',
-        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/adesina-a-akinwumi.jpg',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/adesina-a-akinwumi.jpg',
       ],
       [
         'name' => 'Peter Drucker',
         'country' => 'Austria',
         'testimonial' => 'The best way to predict the future is to create it. Good governance lays the foundation for a sustainable future.',
-        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/peter-drucker.jpg',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/peter-drucker.jpg',
       ],
       [
         'name' => 'Ban Ki-moon',
         'country' => 'South Korea',
         'testimonial' => 'Corruption erodes trust, destroys institutions, and stifles progress, making it one of the greatest threats to development and democracy.',
-        'img_url' => 'Modules/PublicPage/resources/images/src/testimonials/thumbs/ban-ki-moon.webp',
+        'img_url' => 'Modules/PublicPage/resources/template/assets/images/testimonials/thumbs/ban-ki-moon.webp',
       ],
     ];
 
@@ -58,45 +62,12 @@ class PublicPageController extends Controller
   {
     $teams = [
       [
-        'name' => 'Comrade Activist Asuke Robinson',
-        'position' => 'C.E.O. / Founder',
-        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/man.avif',
-        'desc' => 'Comrade auke Robinson,hails from isoko north LGA ozoro delta state university,abraka delta state is a versatile personality with great idea and business accumen.
+        'name' => 'Comrade Asuke Robinson',
+        'position' => 'Co-Founder',
+        'imgUrl' => 'Modules/PublicPage/resources/template/assets/images/team/2.jpg',
+        'desc' => 'Comrade Asuke Robinson, hails from Isoko North LGA Ozoro Delta State University, Abraka Delta State is a versatile personality with great idea and business acumen.
                   He is a visionary writer, an activist , a human resources development personnel, a motivational speaker, multiple award winning, a real estate and property
-                  manager a mentor whose examplary behavior is outstanding.above all he is a philanthropist.',
-      ],
-      [
-        'name' => 'Chief Victor Ukiri',
-        'position' => 'Chairman',
-        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/woman.jpeg',
-        'desc' => 'Chief (Sir) Toranmah Victor Ukin (KSM) is from Alaka Quarters in Effurun, Uvwie L. G. A. He attended St. Mary Rrivate Schools, Lagos, Lagos State. Government College Ughell, Delta
-            State and Anambra State Polytechnic Oko, Anambra State. He has served in the public domain for over 30 years as an architect, builder, project and design supervisor.
-            He is happily married to his loving wife and they are blessed with children. He is a member of the Uvwe traditional council as a titled chief of the kingdom.
-            He is an ambassador of the International Association of World Peace Advocate.',
-      ],
-      [
-        'name' => 'Barrister Okiemute Akpofure Esq.',
-        'position' => 'Legal Adviser',
-        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/man.avif',
-        'desc' => '',
-      ],
-      [
-        'name' => 'Ebenezer Emunarhine',
-        'position' => 'P.R.O.',
-        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/woman.jpeg',
-        'desc' => '',
-      ],
-      [
-        'name' => 'Ognenevwegba Merit',
-        'position' => 'Treasurer',
-        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/man.avif',
-        'desc' => '',
-      ],
-      [
-        'name' => 'Musa khairat',
-        'position' => 'Secretary / Admin',
-        'imgUrl' => 'Modules/PublicPage/resources/images/src/team/woman.jpeg',
-        'desc' => '',
+                  manager a mentor whose exemplary behavior is outstanding.above all he is a philanthropist.',
       ],
     ];
 
@@ -105,9 +76,7 @@ class PublicPageController extends Controller
       'teams' => $teams,
     ])->withViewData([
       'pageTitle' => 'About ' . config('app.name'),
-      'metaDesc' => config('app.name') . ' (NIOGG) is a vibrant civil society organization promoting economic development, youth leadership, and responsible governance in Nigeria. ' .
-                    'Through initiatives like entrepreneurship training, free medical outreach, charity donations, and civic education, NIOGG empowers citizens and advocates for ' .
-                    'transparency, accountability, and adherence to the Nigerian Constitution.',
+      'metaDesc' => 'At ' . config('app.name') . ' we envision a society where the government is transparent and accountable to her citizens.',
       'ogUrl' => route('app.about'),
       'canonical' => route('app.about'),
     ]);
@@ -140,29 +109,66 @@ class PublicPageController extends Controller
 
   public function awards()
   {
-    return Inertia::render('PublicPage::Awardees', [
-      'pageTitle' => 'NIOGG Achievers Icon/Merit Awards 2024 – Celebrating Champions of Good Governance',
+    return Inertia::render('PublicPage::Awards', [
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
     ])->withViewData([
-      'pageTitle' => 'NIOGG Achievers Icon/Merit Awards 2024 – Celebrating Champions of Good Governance',
-      'metaDesc' => 'Get full details on the ' . config('app.name') . ' (NIOGG) Achievers Icon/Merit Awards 2024 — a prestigious conference celebrating individuals ' .
-                    'and organizations driving positive change, good governance, and community development across Nigeria. This event is scheduled for May 23rd, 2025 ' .
-                    'and is a brilliant opportunity to connect with visionary leaders, policymakers, industry experts, and youth advocates. By partnering with us, your ' .
-                    'company/brand can play a significant role in advancing transparency, accountability, and effective leadership in our nation.',
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
+            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
       'ogUrl' => route('app.careers'),
       'canonical' => route('app.careers'),
     ]);
   }
 
-  public function gallery()
+  public function gallery(): \Inertia\Response
   {
+    $category = request('category');
+
+    $photos = \Modules\PublicPage\Models\EventPhoto::query()
+        ->whereHas('event', fn ($q) => $q->published())
+        ->with('event:id,name,slug,category')
+        ->when($category, fn ($q, $c) => $q->whereHas('event', fn ($inner) => $inner->where('category', $c)))
+        ->latest()
+        ->paginate(24);
+
+    $categories = \Modules\PublicPage\Models\Event::published()
+        ->whereHas('photos')
+        ->distinct()
+        ->orderBy('category')
+        ->pluck('category');
+
     return Inertia::render('PublicPage::Gallery', [
       'pageTitle' => 'Images speaks thousand words',
+      'photos' => $photos,
+      'categories' => $categories,
+      'activeCategory' => $category,
     ])->withViewData([
       'pageTitle' => 'Images speaks thousand words',
-      'metaDesc' => 'Explore the impact of ' . config('app.name') . ' (NIOGG) through our gallery — featuring highlights from our entrepreneurship trainings, ' .
-                    'medical outreaches, charity events, youth leadership programs, and community development awards.',
+      'metaDesc' => config('app.alt_name') . ' photo gallery showcasing our events and activities.',
+      'ogUrl' => route('app.gallery'),
+      'canonical' => route('app.gallery'),
+    ]);
+  }
+
+  public function contact()
+  {
+    return Inertia::render('PublicPage::ContactUs', [
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+    ])->withViewData([
+      'pageTitle' => 'Career opportunities available at ' . config('app.name'),
+      'metaDesc' => config('app.alt_name') . ' is an equal opportunity employer. ' . config('app.alt_name') . ' does not discriminate on the basis of race,
+            religion, colour, sex, age, non-disqualifying physical or mental disability, state of origin, or  any other basis covered by appropriate law. ',
       'ogUrl' => route('app.careers'),
       'canonical' => route('app.careers'),
     ]);
+  }
+
+  public function contactUs(Request $request)
+  {
+    $message = ContactFormMessageDTO::fromRequest($request);
+
+    Mail::to([config('app.name') => config('app.email')])->send(new NewContactFormMessage($message));
+
+    return back()->withFlash(['success' => 'Thank you for reaching out to us. We will get back to you shortly.']);
   }
 }

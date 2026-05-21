@@ -67,6 +67,10 @@
     "trim_array_spaces": true,
     "use_arrow_functions": true,
     "visibility_required": true,
-    "void_return": true
+    "void_return": true,
+    "new_with_parentheses": {
+      "named_class": true,
+      "anonymous_class": false
+    }
   }
 }

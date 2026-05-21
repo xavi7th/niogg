@@ -1,4 +1,5 @@
 <script>
+  import { getImgUrl } from '@/helpers';
   export let app;
 </script>
 
@@ -8,7 +9,7 @@
       <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-4 footer__widget footer__widget-about  mb-30">
           <div class="footer__widget-content">
-            <enhanced:img src="@publicpage-assets/images/src/logo/niogg-logo-footer.png?enhanced&w=100" alt="logo"/>
+            <img src={getImgUrl('Modules/PublicPage/resources/template/assets/images/logo/niogg-logo-footer.png')} alt="logo" class="max-w-20"/>
             <p>{@html app.address}</p>
             <p>Mail: <a href="mailto:{app.email}" class="font-weight-bold">{app.email}</a></p>
             <p>Mail: <a href="mailto:{app.alt_email}" class="font-weight-bold">{app.alt_email}</a></p>

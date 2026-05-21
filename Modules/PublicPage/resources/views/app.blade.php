@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title> {{ $pageTitle . ' - ' ?? '' }} {{ config('app.alt_name') }}</title>
+    <title> {{ ($pageTitle ?? '') . ' - ' }} {{ config('app.alt_name') }}</title>
 
     <meta name="author" content="{{ $author ?? '' }}">
     <meta name="keywords" content="{{ $keywords ?? '' }}">

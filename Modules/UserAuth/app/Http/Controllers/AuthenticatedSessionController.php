@@ -9,8 +9,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Http\Response as HTTPResponse;
 use Modules\UserAuth\Http\Requests\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
@@ -19,10 +17,9 @@ class AuthenticatedSessionController extends Controller
   {
     return Inertia::render('UserAuth::Login', [
       'canResetPassword' => Route::has('auth.password.request'),
-      'title' => 'Login to ' . config('app.name') . ' Admin Area',
     ])->withViewData([
-      'pageTitle' => 'Login to ' . config('app.name') . ' Admin Area',
-      'metaDesc' => 'Login to access Admin dashboard and manage conference registrants',
+      'title' => 'Login',
+      'metaDesc' => 'Login to access dashboard',
       'ogUrl' => route('app.index'),
       'canonical' => route('app.index'),
     ]);
@@ -31,13 +28,15 @@ class AuthenticatedSessionController extends Controller
   /**
    * Handle an incoming authentication request.
    */
-  public function store(LoginRequest $request): RedirectResponse|HTTPResponse
+  public function store(LoginRequest $request): RedirectResponse
   {
     $request->authenticate();
 
     $request->session()->regenerate();
 
-    return Inertia::location(RouteServiceProvider::home());
+    $location = Auth::guard('web')->user()->is_admin ? route('admin.dashboard') : route('appuser.dashboard');
+
+    return Inertia::location(redirect($location));
   }
 
   /**

@@ -1,9 +1,9 @@
+import path from "path";
 import fs from "node:fs";
 import { defineConfig } from "vite";
 import concat from "rollup-plugin-concat";
 import laravel from "laravel-vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
-import { enhancedImages } from "@sveltejs/enhanced-img";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import collectModuleAssetsPaths from "./vite-module-loader.js";
 
@@ -42,14 +42,13 @@ async function getConfig() {
         input: modulesConfig.paths,
         // refresh: true,
       }),
-      enhancedImages(),
-      svelte({}),
+      svelte(),
     ],
     css: {
       preprocessorOptions: {
         scss: {
           additionalData: `
-            @use '@publicpage-assets/sass/variables' as *;
+            @use '@publicpage-template/css/variables' as *;
           `,
         },
       },
@@ -57,6 +56,7 @@ async function getConfig() {
     resolve: {
       alias: {
         "@": "/resources/js",
+        sweetalert2: path.resolve(__dirname, "node_modules/sweetalert2"),
         ...modulesConfig.aliases,
       },
     },

@@ -24,7 +24,6 @@ if [[ "$email" != "ehi.akhile@gmail.com" ]]; then
     exit 1
   fi
 fi
-
 echo "\t\033[41m*****You should have been running unit tests now!******\033[0m";
 echo "\n\n\n"
 

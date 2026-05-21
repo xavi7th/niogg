@@ -3,6 +3,8 @@
 
 import { writable } from "svelte/store";
 
+export const modalRoot = writable(undefined);
+
 export const pageTitle = writable("NIOGG");
 export const pageHeader = writable("");
 export const pageDescription = writable("");
@@ -18,6 +20,30 @@ window.matchMedia("(min-width: 1023.5px)").addEventListener("change", () => {
 });
 
 export const isOnline = writable(navigator.onLine);
+
+// Dark mode store with localStorage persistence
+const getInitialTheme = () => {
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem("theme");
+    if (stored) return stored === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+  return false;
+};
+
+export const darkMode = writable(getInitialTheme());
+
+if (typeof window !== "undefined") {
+  darkMode.subscribe((value) => {
+    if (value) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  });
+}
 
 let updateOnlineStatus = (e) => {
   const { type } = e;
