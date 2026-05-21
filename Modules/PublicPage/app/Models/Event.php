@@ -2,14 +2,14 @@
 
 namespace Modules\PublicPage\Models;
 
+use App\Models\BaseModel;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\ResponseCache\Facades\ResponseCache;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\PublicPage\Database\Factories\EventFactory;
 
-class Event extends Model
+class Event extends BaseModel
 {
     use HasFactory;
 

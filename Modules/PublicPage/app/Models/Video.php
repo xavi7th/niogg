@@ -2,7 +2,7 @@
 
 namespace Modules\PublicPage\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Spatie\ResponseCache\Facades\ResponseCache;
 use Modules\PublicPage\Services\VideoUploadService;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\PublicPage\Services\VideoThumbnailService;
 use Modules\PublicPage\Database\Factories\VideoFactory;
 
-class Video extends Model
+class Video extends BaseModel
 {
   use HasFactory;
 

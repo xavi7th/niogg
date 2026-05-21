@@ -2,13 +2,13 @@
 
 namespace Modules\PublicPage\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Spatie\ResponseCache\Facades\ResponseCache;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\PublicPage\Database\Factories\EventPhotoFactory;
 
-class EventPhoto extends Model
+class EventPhoto extends BaseModel
 {
     use HasFactory;
 

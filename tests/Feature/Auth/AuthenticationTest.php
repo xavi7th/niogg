@@ -4,7 +4,6 @@ namespace Tests\Feature\Auth;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
@@ -28,7 +27,7 @@ class AuthenticationTest extends TestCase
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::home());
+    $response->assertRedirect(route('appuser.dashboard'));
   }
 
   public function test_users_can_not_authenticate_with_invalid_password(): void
