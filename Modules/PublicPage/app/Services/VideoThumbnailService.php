@@ -7,10 +7,12 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use FFMpeg\Coordinate\TimeCode;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManager;
 use Modules\PublicPage\Models\Video;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
+use FFMpeg\Exception\ExecutableNotFoundException;
 
 class VideoThumbnailService
 {
@@ -51,7 +53,7 @@ class VideoThumbnailService
       throw new InvalidArgumentException('Video file not found: ' . $videoPath);
     }
 
-    $ffmpeg = FFMpeg::create();
+    $ffmpeg = FFMpeg::create(config('ffmpeg'));
     $video = $ffmpeg->open($fullVideoPath);
 
     // Get duration if not provided
@@ -111,10 +113,13 @@ class VideoThumbnailService
         $video->video_url
     );
 
-    $thumbnails = $this->generateFromPath($videoPath, $video->duration_seconds);
+    try {
+        $thumbnails = $this->generateFromPath($videoPath, $video->duration_seconds);
+        $video->thumbnail_url = $thumbnails['medium'];
+    } catch (ExecutableNotFoundException $e) {
+        Log::warning('FFMpeg not available, skipping thumbnail generation for video ' . $video->id . ': ' . $e->getMessage());
+    }
 
-    // Store the medium thumbnail as the main thumbnail
-    $video->thumbnail_url = $thumbnails['medium'];
     $video->save();
 
     return $video;
