@@ -48,11 +48,11 @@ class Handler extends ExceptionHandler
     $response = parent::render($request, $exception);
 
     if (in_array($response->status(), [500, 503, 404, 403, 429]) && $request->header('X-Inertia')) {
-      return back()->withFlash(['error' => $exception->getMessage()]);
+      return back()->with('flash', ['error' => $exception->getMessage()]);
     }
 
     if (in_array($response->status(), [419]) && $request->header('X-Inertia')) {
-      return back()->withFlash(['error' => 'Your session has expired. Please try again']);
+      return back()->with('flash', ['error' => 'Your session has expired. Please try again']);
     }
 
     return $response;

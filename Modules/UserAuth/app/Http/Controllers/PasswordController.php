@@ -21,6 +21,6 @@ class PasswordController extends Controller
       'password' => Hash::make($validated['password']),
     ]);
 
-    return back()->withFlash(['info' => 'Password updated!']);
+    return back()->with('flash', ['info' => 'Password updated!']);
   }
 }
