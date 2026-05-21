@@ -30,7 +30,7 @@ class VideoConversionTest extends TestCase
     $event = Event::factory()->create();
     $uploadId = \Illuminate\Support\Str::uuid()->toString();
 
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test-video.webm',
@@ -38,6 +38,7 @@ class VideoConversionTest extends TestCase
       'total_size' => 10485760,
       'chunks_received' => 2,
       'bytes_received' => 10485760,
+      'received_indices' => [0, 1],
       'status' => 'complete',
     ], now()->addHours(24));
 
@@ -56,7 +57,7 @@ class VideoConversionTest extends TestCase
     $this->assertEquals('video/webm', $video->mime_type);
     $this->assertEquals('pending', $video->conversion_status);
 
-    Queue::assertPushed(ConvertVideoToMp4::class, fn($job) => $job->video->id === $video->id);
+    Queue::assertPushed(ConvertVideoToMp4::class, fn ($job) => $job->video->id === $video->id);
   }
 
   public function test_mp4_video_does_not_dispatch_conversion_job(): void
@@ -64,7 +65,7 @@ class VideoConversionTest extends TestCase
     $event = Event::factory()->create();
     $uploadId = \Illuminate\Support\Str::uuid()->toString();
 
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test-video.mp4',
@@ -72,6 +73,7 @@ class VideoConversionTest extends TestCase
       'total_size' => 10485760,
       'chunks_received' => 2,
       'bytes_received' => 10485760,
+      'received_indices' => [0, 1],
       'status' => 'complete',
     ], now()->addHours(24));
 
@@ -98,7 +100,7 @@ class VideoConversionTest extends TestCase
     $event = Event::factory()->create();
     $uploadId = \Illuminate\Support\Str::uuid()->toString();
 
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test-video.mov',
@@ -106,6 +108,7 @@ class VideoConversionTest extends TestCase
       'total_size' => 10485760,
       'chunks_received' => 2,
       'bytes_received' => 10485760,
+      'received_indices' => [0, 1],
       'status' => 'complete',
     ], now()->addHours(24));
 
@@ -131,7 +134,7 @@ class VideoConversionTest extends TestCase
 
     $job = new ConvertVideoToMp4($video);
 
-    $this->assertEquals("video:{$video->id}:convert-to-mp4", $job->uniqueId());
+    $this->assertEquals('video:' . $video->id . ':convert-to-mp4', $job->uniqueId());
   }
 
   public function test_conversion_job_uses_correct_queue(): void

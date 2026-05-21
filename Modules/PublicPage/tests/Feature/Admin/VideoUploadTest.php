@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Modules\PublicPage\Models\Event;
 use Modules\PublicPage\Models\Video;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\PublicPage\Services\VideoUploadService;
@@ -29,6 +30,7 @@ class VideoUploadTest extends TestCase
       'is_super_admin' => FALSE,
     ]);
     Storage::fake('public');
+    Queue::fake();
   }
 
   public function test_upload_requires_authentication(): void
@@ -80,7 +82,7 @@ class VideoUploadTest extends TestCase
 
     // Verify upload metadata is cached
     $uploadId = $response->json('upload_id');
-    $metadata = cache()->get("upload:{$uploadId}");
+    $metadata = cache()->get('upload:' . $uploadId);
     $this->assertNotNull($metadata);
     $this->assertEquals('initialized', $metadata['status']);
   }
@@ -122,7 +124,7 @@ class VideoUploadTest extends TestCase
     $uploadId = Str::uuid()->toString();
 
     // Initialize upload in cache
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
@@ -165,7 +167,7 @@ class VideoUploadTest extends TestCase
     $uploadId = Str::uuid()->toString();
 
     // Initialize upload in cache with received indices
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test-video.mp4',
@@ -224,7 +226,7 @@ class VideoUploadTest extends TestCase
     $uploadId = Str::uuid()->toString();
 
     // Initialize upload in cache with 25MB total = 3 chunks of 10MB each
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
@@ -267,7 +269,7 @@ class VideoUploadTest extends TestCase
     $uploadId = Str::uuid()->toString();
 
     // Initialize upload in cache
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
@@ -321,7 +323,7 @@ class VideoUploadTest extends TestCase
     $uploadId = Str::uuid()->toString();
 
     // Initialize upload but not complete
-    cache()->put("upload:{$uploadId}", [
+    cache()->put('upload:' . $uploadId, [
       'upload_id' => $uploadId,
       'event_id' => $event->id,
       'original_filename' => 'test.mp4',
