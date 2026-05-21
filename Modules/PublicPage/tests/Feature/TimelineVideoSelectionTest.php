@@ -11,47 +11,31 @@ class TimelineVideoSelectionTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $event;
-
-    protected $videos;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->event = Event::create([
-          'name' => 'Test Event',
-          'description' => 'Test Description',
-          'icon' => '🎯',
-          'category' => 'charity_event',
-          'event_date' => now(),
-          'slug' => 'test-event',
-          'is_published' => TRUE,
+        $this->event = Event::factory()->published()->create([
+            'name' => 'Test Event',
+            'description' => 'Test Description',
+            'icon' => '🎯',
+            'category' => 'charity_event',
+            'event_date' => now(),
+            'slug' => 'test-event',
         ]);
 
-        Video::create([
-          'event_id' => $this->event->id,
-          'title' => 'Featured Video',
-          'description' => 'Featured video description',
-          'video_url' => 'https://example.com/featured.mp4',
-          'thumbnail_url' => 'https://example.com/featured-thumb.jpg',
-          'duration_seconds' => 765,
-          'is_featured' => TRUE,
-          'sort_order' => 1,
+        Video::factory()->featured()->forEvent($this->event)->create([
+            'title' => 'Featured Video',
+            'description' => 'Featured video description',
+            'video_url' => 'https://example.com/featured.mp4',
+            'thumbnail_url' => 'https://example.com/featured-thumb.jpg',
+            'duration_seconds' => 765,
+            'sort_order' => 1,
         ]);
 
-        for ($i = 1; $i <= 3; $i++) {
-            Video::create([
-              'event_id' => $this->event->id,
-              'title' => 'Supporting Video ' . $i,
-              'description' => 'Supporting video ' . $i . ' description',
-              'video_url' => 'https://example.com/video-' . $i . '.mp4',
-              'thumbnail_url' => 'https://example.com/video-' . $i . '-thumb.jpg',
-              'duration_seconds' => 600 + ($i * 60),
-              'is_featured' => FALSE,
-              'sort_order' => $i + 1,
-            ]);
-        }
+        Video::factory()->count(3)->forEvent($this->event)->create([
+            'is_featured' => FALSE,
+        ]);
 
         $this->videos = $this->event->videos()->get();
     }
@@ -93,14 +77,13 @@ class TimelineVideoSelectionTest extends TestCase
 
     public function test_event_ordered_by_date(): void
     {
-        Event::create([
-          'name' => 'Earlier Event',
-          'description' => 'Test',
-          'icon' => '🎉',
-          'category' => 'social_event',
-          'event_date' => now()->subDays(5),
-          'slug' => 'earlier-event',
-          'is_published' => TRUE,
+        Event::factory()->published()->create([
+            'name' => 'Earlier Event',
+            'description' => 'Test',
+            'icon' => '🎉',
+            'category' => 'social_event',
+            'event_date' => now()->subDays(5),
+            'slug' => 'earlier-event',
         ]);
 
         $events = Event::published()->ordered()->get();
@@ -110,14 +93,13 @@ class TimelineVideoSelectionTest extends TestCase
 
     public function test_event_published_scope(): void
     {
-        Event::create([
-          'name' => 'Unpublished Event',
-          'description' => 'Test',
-          'icon' => '🔒',
-          'category' => 'charity_event',
-          'event_date' => now(),
-          'slug' => 'unpublished',
-          'is_published' => FALSE,
+        Event::factory()->draft()->create([
+            'name' => 'Unpublished Event',
+            'description' => 'Test',
+            'icon' => '🔒',
+            'category' => 'charity_event',
+            'event_date' => now(),
+            'slug' => 'unpublished',
         ]);
 
         $published = Event::published()->get();

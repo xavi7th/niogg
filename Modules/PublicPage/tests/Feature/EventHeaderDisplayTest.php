@@ -14,24 +14,22 @@ class EventHeaderDisplayTest extends TestCase
     {
         parent::setUp();
 
-        Event::create([
-          'name' => 'Community Impact Program: Free Medical Outreach',
-          'description' => 'Our annual medical outreach program bringing free healthcare services to underserved communities.',
-          'icon' => '🏥',
-          'category' => 'charity_event',
-          'event_date' => now()->addMonths(2),
-          'slug' => 'charity-event',
-          'is_published' => TRUE,
+        Event::factory()->published()->create([
+            'name' => 'Community Impact Program: Free Medical Outreach',
+            'description' => 'Our annual medical outreach program bringing free healthcare services to underserved communities.',
+            'icon' => '🏥',
+            'category' => 'charity_event',
+            'event_date' => now()->addMonths(2),
+            'slug' => 'charity-event',
         ]);
 
-        Event::create([
-          'name' => 'Excellence Awards & Fundraising Gala Night',
-          'description' => 'An evening of celebration recognizing outstanding contributions.',
-          'icon' => '🎭',
-          'category' => 'gala_night',
-          'event_date' => now()->addMonth(),
-          'slug' => 'gala-night',
-          'is_published' => TRUE,
+        Event::factory()->published()->create([
+            'name' => 'Excellence Awards & Fundraising Gala Night',
+            'description' => 'An evening of celebration recognizing outstanding contributions.',
+            'icon' => '🎭',
+            'category' => 'gala_night',
+            'event_date' => now()->addMonth(),
+            'slug' => 'gala-night',
         ]);
     }
 

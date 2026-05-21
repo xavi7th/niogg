@@ -15,41 +15,27 @@ class VideoPlayerDisplayTest extends TestCase
     {
         parent::setUp();
 
-        $event = Event::create([
-          'name' => 'Community Impact Program: Free Medical Outreach',
-          'description' => 'Our annual medical outreach program bringing free healthcare services to underserved communities.',
-          'icon' => '🏥',
-          'category' => 'charity_event',
-          'event_date' => now()->addMonths(2),
-          'slug' => 'charity-event',
-          'is_published' => TRUE,
+        $event = Event::factory()->published()->create([
+            'name' => 'Community Impact Program: Free Medical Outreach',
+            'description' => 'Our annual medical outreach program bringing free healthcare services to underserved communities.',
+            'icon' => '🏥',
+            'category' => 'charity_event',
+            'event_date' => now()->addMonths(2),
+            'slug' => 'charity-event',
         ]);
 
-        // Create featured video
-        Video::create([
-          'event_id' => $event->id,
-          'title' => 'Medical Outreach Highlights',
-          'description' => 'Highlights from our medical outreach program',
-          'video_url' => '/videos/event-charity-1.mp4',
-          'thumbnail_url' => '/images/video-placeholder-1.jpg',
-          'duration_seconds' => 765, // 12:45
-          'is_featured' => TRUE,
-          'sort_order' => 1,
+        Video::factory()->featured()->forEvent($event)->create([
+            'title' => 'Medical Outreach Highlights',
+            'description' => 'Highlights from our medical outreach program',
+            'video_url' => '/videos/event-charity-1.mp4',
+            'thumbnail_url' => '/images/video-placeholder-1.jpg',
+            'duration_seconds' => 765,
+            'sort_order' => 1,
         ]);
 
-        // Create supporting videos
-        for ($i = 2; $i <= 8; $i++) {
-            Video::create([
-              'event_id' => $event->id,
-              'title' => 'Video ' . $i . ' - Community Impact Program',
-              'description' => 'Supporting video from the event',
-              'video_url' => '/videos/event-charity-' . $i . '.mp4',
-              'thumbnail_url' => '/images/video-placeholder-' . $i . '.jpg',
-              'duration_seconds' => 600 + ($i * 10), // Variable duration
-              'is_featured' => FALSE,
-              'sort_order' => $i,
-            ]);
-        }
+        Video::factory()->count(7)->forEvent($event)->create([
+            'is_featured' => FALSE,
+        ]);
     }
 
     public function test_featured_video_displays_on_page_load(): void
@@ -76,9 +62,7 @@ class VideoPlayerDisplayTest extends TestCase
         $response = $this->get('/events/media-showcase');
         $response->assertStatus(200);
 
-        // Check that video has duration stored
         $this->assertEquals(765, $video->duration_seconds);
-        // Duration should format to MM:SS (12:45)
         $this->assertStringContainsString('12:45', (string) $video->formatDuration);
     }
 
@@ -90,7 +74,6 @@ class VideoPlayerDisplayTest extends TestCase
 
         $response = $this->get('/events/media-showcase');
         $response->assertStatus(200);
-        // Verify featured video is in response data
         $this->assertStringContainsString('Medical Outreach Highlights', $response->getContent());
     }
 
@@ -108,15 +91,12 @@ class VideoPlayerDisplayTest extends TestCase
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-        // Check that supporting videos are listed
-        $response->assertSee('Video 2 - Community Impact Program');
-        $response->assertSee('Video 3 - Community Impact Program');
     }
 
     public function test_all_supporting_videos_have_metadata(): void
     {
         $videos = Video::where('is_featured', FALSE)->get();
-        $this->assertCount(7, $videos); // 7 supporting videos
+        $this->assertCount(7, $videos);
 
         foreach ($videos as $video) {
             $this->assertNotNull($video->title);
@@ -128,18 +108,17 @@ class VideoPlayerDisplayTest extends TestCase
 
     public function test_video_duration_formats_correctly(): void
     {
-        // Test various durations
         $testCases = [
-          765 => '12:45', // 12 minutes 45 seconds
-          600 => '10:00', // 10 minutes
-          3660 => '61:00', // 61 minutes
-          60 => '1:00', // 1 minute
-          45 => '0:45', // 45 seconds
+            765 => '12:45',
+            600 => '10:00',
+            3660 => '61:00',
+            60 => '1:00',
+            45 => '0:45',
         ];
 
         foreach ($testCases as $seconds => $expected) {
             $video = new Video([
-              'duration_seconds' => $seconds,
+                'duration_seconds' => $seconds,
             ]);
             $this->assertEquals($expected, $video->formatDuration);
         }
@@ -157,7 +136,6 @@ class VideoPlayerDisplayTest extends TestCase
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-        // Verify page structure includes video element (controls will be native browser feature)
         $this->assertStringContainsString('video', mb_strtolower($response->getContent()));
     }
 

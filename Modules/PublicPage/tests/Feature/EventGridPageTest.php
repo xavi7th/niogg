@@ -15,156 +15,104 @@ class EventGridPageTest extends TestCase
     {
         parent::setUp();
 
-        // Create test events
-        $this->charityEvent = Event::create([
-          'name' => 'Community Impact Program: Free Medical Outreach',
-          'slug' => 'community-impact-program-free-medical-outreach',
-          'category' => 'charity_event',
-          'icon' => '🏥',
-          'description' => 'Free medical services for underserved communities',
-          'event_date' => '2025-11-15',
-          'is_published' => TRUE,
+        $this->event = Event::factory()->published()->create([
+            'name' => 'Test Event',
+            'slug' => 'test-event',
+            'event_date' => now()->subDays(10),
         ]);
 
-        $this->galaEvent = Event::create([
-          'name' => 'Excellence Awards & Fundraising Gala Night',
-          'slug' => 'excellence-awards-fundraising-gala-night',
-          'category' => 'gala_night',
-          'icon' => '🎭',
-          'description' => 'Annual gala celebrating excellence',
-          'event_date' => '2025-10-20',
-          'is_published' => TRUE,
+        Video::factory()->count(5)->forEvent($this->event)->create([
+            'title' => fn () => $this->faker->sentence(3),
+            'is_featured' => FALSE,
         ]);
 
-        // Create videos for charity event (8 total: 1 featured + 7 supporting)
-        Video::create([
-          'event_id' => $this->charityEvent->id,
-          'title' => 'Medical Outreach Highlights',
-          'video_url' => '/videos/charity-1.mp4',
-          'thumbnail_url' => '/images/video-placeholder-1.jpg',
-          'duration_seconds' => 765,
-          'is_featured' => TRUE,
-          'sort_order' => 1,
+        $this->featuredVideo = Video::factory()->featured()->forEvent($this->event)->create([
+            'title' => 'Featured Video',
         ]);
-
-        for ($i = 2; $i <= 8; $i++) {
-            Video::create([
-              'event_id' => $this->charityEvent->id,
-              'title' => 'Supporting Video ' . $i,
-              'video_url' => '/videos/charity-' . $i . '.mp4',
-              'thumbnail_url' => '/images/video-placeholder-' . $i . '.jpg',
-              'duration_seconds' => 600 + ($i * 30),
-              'is_featured' => FALSE,
-              'sort_order' => $i,
-            ]);
-        }
-
-        // Create videos for gala event (7 total: 1 featured + 6 supporting)
-        Video::create([
-          'event_id' => $this->galaEvent->id,
-          'title' => 'Awards Ceremony Highlights',
-          'video_url' => '/videos/gala-1.mp4',
-          'thumbnail_url' => '/images/video-placeholder-gala-1.jpg',
-          'duration_seconds' => 930,
-          'is_featured' => TRUE,
-          'sort_order' => 1,
-        ]);
-
-        for ($i = 2; $i <= 7; $i++) {
-            Video::create([
-              'event_id' => $this->galaEvent->id,
-              'title' => 'Gala Supporting Video ' . $i,
-              'video_url' => '/videos/gala-' . $i . '.mp4',
-              'thumbnail_url' => '/images/video-placeholder-gala-' . $i . '.jpg',
-              'duration_seconds' => 500 + ($i * 25),
-              'is_featured' => FALSE,
-              'sort_order' => $i,
-            ]);
-        }
     }
 
     public function test_event_grid_url_loads(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
         $response->assertStatus(200);
     }
 
     public function test_correct_event_video_count(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        $this->assertEquals(8, $this->charityEvent->videos()->count());
-        $this->assertEquals(7, $this->galaEvent->videos()->count());
+        $this->assertEquals(6, $this->event->videos()->count());
     }
 
     public function test_no_video_mixing(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $otherEvent = Event::factory()->published()->create();
+        Video::factory()->count(3)->forEvent($otherEvent)->create();
+
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        // Verify only charity videos display
-        $charityVideos = $this->charityEvent->videos()->get();
-        $galaVideos = $this->galaEvent->videos()->get();
+        $eventVideos = $this->event->videos()->get();
+        $otherVideos = $otherEvent->videos()->get();
 
-        $this->assertEquals(8, $charityVideos->count());
-        $this->assertEquals(7, $galaVideos->count());
-        // No Gala videos in Charity event
-        $this->assertFalse($charityVideos->pluck('title')->contains('Gala Supporting Video'));
+        $this->assertEquals(6, $eventVideos->count());
+        $this->assertEquals(3, $otherVideos->count());
     }
 
     public function test_breadcrumb_shows_event_name(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        // Component renders page with event name in title
-        $this->assertNotNull($this->charityEvent->name);
-        $this->assertEquals('Community Impact Program: Free Medical Outreach', $this->charityEvent->name);
+        $this->assertNotNull($this->event->name);
+        $this->assertEquals('Test Event', $this->event->name);
     }
 
     public function test_back_button_navigation(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        // Route exists for back navigation
         $this->assertTrue(route('events.media-showcase') !== NULL);
     }
 
     public function test_page_title_event_name(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        $response->assertInertia(fn () => \Inertia\Testing\AssertableInertia::class);
+        $response->assertInertia(fn ($page) => $page->has('event'));
     }
 
     public function test_responsive_grid_layout(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $event = Event::factory()->published()->create();
+        Video::factory()->count(3)->forEvent($event)->create();
+
+        $response = $this->get(route('events.show', $event));
 
         $response->assertStatus(200);
-        // Component has responsive CSS (verified via component)
-        $this->assertTrue(TRUE);
+        $response->assertSee('grid-cols-1');
+        $response->assertSee('sm:grid-cols-2');
+        $response->assertSee('md:grid-cols-3');
     }
 
     public function test_all_videos_clickable(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        $videos = $this->charityEvent->videos()->get();
-        // All videos exist and are queryable
-        $this->assertEquals(8, $videos->count());
+        $videos = $this->event->videos()->get();
+        $this->assertEquals(6, $videos->count());
     }
 
     public function test_video_metadata_complete(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        $videos = $this->charityEvent->videos()->get();
+        $videos = $this->event->videos()->get();
 
         foreach ($videos as $video) {
             $this->assertNotNull($video->thumbnail_url);
@@ -181,35 +129,38 @@ class EventGridPageTest extends TestCase
 
     public function test_different_events_different_data(): void
     {
-        $charityResponse = $this->get('/events/community-impact-program-free-medical-outreach/videos');
-        $galaResponse = $this->get('/events/excellence-awards-fundraising-gala-night/videos');
+        $event1 = Event::factory()->published()->create();
+        Video::factory()->count(5)->forEvent($event1)->create();
 
-        $charityResponse->assertStatus(200);
-        $galaResponse->assertStatus(200);
+        $event2 = Event::factory()->published()->create();
+        Video::factory()->count(3)->forEvent($event2)->create();
 
-        // Verify different event counts
-        $this->assertEquals(8, $this->charityEvent->videos()->count());
-        $this->assertEquals(7, $this->galaEvent->videos()->count());
+        $response1 = $this->get(route('events.videos', $event1));
+        $response2 = $this->get(route('events.videos', $event2));
+
+        $response1->assertStatus(200);
+        $response2->assertStatus(200);
+
+        $this->assertEquals(5, $event1->videos()->count());
+        $this->assertEquals(3, $event2->videos()->count());
     }
 
     public function test_url_persists_correctly(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
         $response->assertStatus(200);
 
-        // URL remains correct
-        $this->assertStringContainsString('/events/community-impact-program-free-medical-outreach/videos', route('events.videos', $this->charityEvent));
+        $this->assertStringContainsString($this->event->slug, route('events.videos', $this->event));
     }
 
     public function test_featured_video_included(): void
     {
-        $response = $this->get('/events/community-impact-program-free-medical-outreach/videos');
+        $response = $this->get(route('events.videos', $this->event));
 
         $response->assertStatus(200);
-        $featuredVideos = $this->charityEvent->videos()->where('is_featured', TRUE)->get();
+        $featuredVideos = $this->event->videos()->where('is_featured', TRUE)->get();
 
-        // Event has exactly one featured video
         $this->assertEquals(1, $featuredVideos->count());
-        $this->assertEquals('Medical Outreach Highlights', $featuredVideos->first()->title);
+        $this->assertEquals('Featured Video', $featuredVideos->first()->title);
     }
 }

@@ -41,16 +41,16 @@ class VideoThumbnailServiceTest extends TestCase
 
   public function test_delete_thumbnails_handles_empty_url(): void
   {
-    // Should not throw exception
-    $this->service->deleteThumbnails('');
-    $this->assertTrue(TRUE);
+    $service = new VideoThumbnailService();
+    $result = $service->deleteThumbnails('');
+    $this->assertFalse($result);
   }
 
   public function test_delete_thumbnails_handles_null_url(): void
   {
-    // Should not throw exception
-    $this->service->deleteThumbnails(NULL);
-    $this->assertTrue(TRUE);
+    $service = new VideoThumbnailService();
+    $result = $service->deleteThumbnails(NULL);
+    $this->assertFalse($result);
   }
 
   public function test_get_all_sizes_returns_correct_urls(): void
