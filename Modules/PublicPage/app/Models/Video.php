@@ -4,8 +4,10 @@ namespace Modules\PublicPage\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\ResponseCache\Facades\ResponseCache;
+use Modules\PublicPage\Services\VideoUploadService;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\PublicPage\Services\VideoThumbnailService;
 use Modules\PublicPage\Database\Factories\VideoFactory;
 
 class Video extends Model
@@ -57,6 +59,15 @@ class Video extends Model
   {
     static::saved(fn () => ResponseCache::clear());
     static::deleted(fn () => ResponseCache::clear());
+
+    static::deleting(function (Video $video): void {
+      $uploadService = app(VideoUploadService::class);
+      $thumbnailService = app(VideoThumbnailService::class);
+
+      $uploadService->deleteVideoFile($video);
+      $thumbnailService->deleteThumbnails($video->thumbnail_url);
+      $thumbnailService->deleteCustomThumbnail($video->custom_thumbnail_url);
+    });
   }
 
   /**

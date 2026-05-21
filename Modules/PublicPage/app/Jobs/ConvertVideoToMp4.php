@@ -40,12 +40,16 @@ class ConvertVideoToMp4 implements ShouldBeUnique, ShouldQueue
 
     public function uniqueId(): string
     {
-        return "video:{$this->video->id}:convert-to-mp4";
+        return 'video:' . $this->video->id . ':convert-to-mp4';
     }
 
     public function handle(): void
     {
-        $video = Video::findOrFail($this->video->id);
+        $video = Video::find($this->video->id);
+
+        if ($video === NULL) {
+            return;
+        }
 
         if ($video->mime_type === 'video/mp4') {
             return;
@@ -56,11 +60,11 @@ class ConvertVideoToMp4 implements ShouldBeUnique, ShouldQueue
         $sourcePath = $this->getLocalPath($video->video_url);
 
         if ( ! file_exists($sourcePath)) {
-            throw new Exception("Video file not found: {$sourcePath}");
+            throw new Exception('Video file not found: ' . $sourcePath);
         }
 
         $outputFilename = $this->generateOutputFilename();
-        $outputPath = Storage::disk(self::STORAGE_DISK)->path("videos/{$outputFilename}");
+        $outputPath = Storage::disk(self::STORAGE_DISK)->path('videos/' . $outputFilename);
 
         $format = new X264('aac', 'libx264');
         $format->setKiloBitrate(1000)
@@ -71,15 +75,15 @@ class ConvertVideoToMp4 implements ShouldBeUnique, ShouldQueue
             ->export()
             ->toDisk(self::STORAGE_DISK)
             ->inFormat($format)
-            ->save("videos/{$outputFilename}");
+            ->save('videos/' . $outputFilename);
 
         $oldPath = $this->getRelativePath($video->video_url);
 
         $video->update([
-            'video_url' => Storage::disk(self::STORAGE_DISK)->url("videos/{$outputFilename}"),
-            'mime_type' => 'video/mp4',
-            'conversion_status' => 'completed',
-            'conversion_completed_at' => now(),
+          'video_url' => Storage::disk(self::STORAGE_DISK)->url('videos/' . $outputFilename),
+          'mime_type' => 'video/mp4',
+          'conversion_status' => 'completed',
+          'conversion_completed_at' => now(),
         ]);
 
         Storage::disk(self::STORAGE_DISK)->delete($oldPath);
@@ -91,8 +95,8 @@ class ConvertVideoToMp4 implements ShouldBeUnique, ShouldQueue
 
         if ($video) {
             $video->update([
-                'conversion_status' => 'failed',
-                'conversion_error' => $exception->getMessage(),
+              'conversion_status' => 'failed',
+              'conversion_error' => $exception->getMessage(),
             ]);
         }
     }
@@ -114,7 +118,7 @@ class ConvertVideoToMp4 implements ShouldBeUnique, ShouldQueue
       $relativePath = parse_url($url, PHP_URL_PATH);
       $relativePath = str_replace('/storage/', '', $relativePath);
     } else {
-      $relativePath = ltrim(str_replace('/storage/', '', $relativePath), '/');
+      $relativePath = mb_ltrim(str_replace('/storage/', '', $relativePath), '/');
     }
 
     return $relativePath;
@@ -127,6 +131,6 @@ class ConvertVideoToMp4 implements ShouldBeUnique, ShouldQueue
 
     public function middleware(): array
     {
-        return [new \Illuminate\Queue\Middleware\WithoutOverlapping("video:{$this->video->id}")];
+        return [new \Illuminate\Queue\Middleware\WithoutOverlapping('video:' . $this->video->id)];
     }
 }

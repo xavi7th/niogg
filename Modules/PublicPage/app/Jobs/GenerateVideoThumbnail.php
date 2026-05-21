@@ -24,6 +24,12 @@ class GenerateVideoThumbnail implements ShouldQueue
 
     public function handle(VideoThumbnailService $service): void
     {
-        $service->generateForVideo($this->video);
+        $video = Video::find($this->video->id);
+
+        if ($video === NULL) {
+            return;
+        }
+
+        $service->generateForVideo($video);
     }
 }

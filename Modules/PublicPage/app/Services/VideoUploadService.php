@@ -394,4 +394,31 @@ class VideoUploadService
     $chunkPath = $this->getChunkPath($uploadId);
     Storage::disk(self::STORAGE_DISK)->deleteDirectory($chunkPath);
   }
+
+  /**
+   * Delete video file and any converted variants from storage
+   */
+  public function deleteVideoFile(Video $video): void
+  {
+    if (empty($video->video_url)) {
+      return;
+    }
+
+    $videoPath = str_replace(
+        Storage::disk(self::STORAGE_DISK)->url(''),
+        '',
+        $video->video_url
+    );
+
+    if (Storage::disk(self::STORAGE_DISK)->exists($videoPath)) {
+      Storage::disk(self::STORAGE_DISK)->delete($videoPath);
+    }
+
+    if ($video->mime_type !== 'video/mp4' && ! empty($video->upload_id)) {
+      $convertedPath = self::STORAGE_PATH . '/' . $video->upload_id . '_converted.mp4';
+      if (Storage::disk(self::STORAGE_DISK)->exists($convertedPath)) {
+        Storage::disk(self::STORAGE_DISK)->delete($convertedPath);
+      }
+    }
+  }
 }
