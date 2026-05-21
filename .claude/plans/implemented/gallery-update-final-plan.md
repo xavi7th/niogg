@@ -65,6 +65,7 @@ Read every word of this plan before writing a single line of code. Implement pha
 5. **All Artisan/Composer/Node commands must go through Sail.**
 6. **Run `vendor/bin/sail bin pint --dirty` after each phase.**
 7. **Check sibling files for conventions** before writing any new PHP file.
+8. **ALL code MUST use 2-space indentation.** Never use 4-space indentation. This applies to PHP, Svelte, TypeScript, JavaScript, YAML, and all other files.
 
 ---
 

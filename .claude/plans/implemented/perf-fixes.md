@@ -50,6 +50,7 @@ Read every word of this plan before writing a single line of code. Groups A, B, 
 4. **Check sibling files for conventions** before writing any new PHP file.
 5. **Do not create any file not listed in this plan.**
 6. **SSH env changes (Group A) run live on production. Code changes (B, C) are local, tested, then deployed.**
+7. **ALL code MUST use 2-space indentation.** Never use 4-space indentation. This applies to PHP, Svelte, TypeScript, JavaScript, YAML, and all other files.
 
 ---
 

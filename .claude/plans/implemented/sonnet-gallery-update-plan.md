@@ -83,6 +83,7 @@ Read every word of this plan before writing a single line of code. Implement pha
 5. **Do not create any file not listed in this plan.**
 6. **Do not modify any file not listed in this plan.**
 7. **Check sibling files for conventions** before writing any new PHP or Svelte file.
+8. **ALL code MUST use 2-space indentation.** Never use 4-space indentation. This applies to PHP, Svelte, TypeScript, JavaScript, YAML, and all other files.
 
 ---
 
