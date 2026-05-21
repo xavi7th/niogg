@@ -53,7 +53,7 @@
 	function confirmDeleteVideo() {
 		if (!videoToDelete) return;
 
-		router.delete(`/admin/events/${event.id}/videos/${videoToDelete.id}`, {
+		router.delete(route('admin.videos.destroy', videoToDelete.id), {
 			onSuccess: () => {
 				showDeleteDialog = false;
 				videoToDelete = null;
