@@ -27,6 +27,11 @@ class EventsMediaShowcaseController extends Controller
         'events' => $events,
         'pageTitle' => 'Events Media Showcase',
         'sort' => $sort,
+        ])->withViewData([
+            'pageTitle' => 'Events Media Showcase - ' . config('app.alt_name'),
+            'metaDesc' => 'Explore ' . config('app.alt_name') . '\'s events media showcase featuring videos and photos from our governance advocacy, youth empowerment programs, and community engagement activities across Nigeria.',
+            'ogUrl' => route('events.media-showcase'),
+            'canonical' => route('events.media-showcase'),
         ]);
     }
 
