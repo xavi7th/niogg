@@ -295,7 +295,7 @@ class VideoUploadTest extends TestCase
         ->assertJsonPath('message', 'Upload cancelled successfully.');
 
     // Verify cache was cleared
-    $this->assertNull(cache()->get("upload:{$uploadId}"));
+    $this->assertNull(cache()->get('upload:' . $uploadId));
 
     // Note: Storage::fake() has known limitations with deleteDirectory
     // In production, deleteDirectory properly removes the directory
