@@ -32,7 +32,9 @@ class UserAuthServiceProvider extends ServiceProvider
    */
   protected function registerCommands(): void
   {
-    // $this->commands([]);
+    $this->commands([
+      \Modules\UserAuth\Console\CreateStaffAccount::class,
+    ]);
   }
 
   /**
