@@ -5,8 +5,8 @@
 ## SESSION STATE (UPDATE AFTER EACH SESSION)
 
 ```
-CURRENT_PHASE: 18
-STATUS: phases 1-18 complete
+CURRENT_PHASE: 22
+STATUS: all phases complete
 LAST_UPDATED: 2026-05-21
 ```
 
@@ -32,10 +32,10 @@ LAST_UPDATED: 2026-05-21
 | 16 | PublicPage: Middleware (IsAdmin, HandleInertiaRequests) | ✅ | 2026-05-21 | Created IsAdminMiddlewareTest, HandleInertiaRequestsTest covering auth, shared props |
 | 17 | PublicPage: Form Requests (VideoUploadRequest, VideoFormRequest, StoreEventPhotosRequest) | ✅ | 2026-05-21 | Created VideoUploadRequestTest, VideoFormRequestTest covering validation rules |
 | 18 | PublicPage: DTOs, Emails, Notifications | ✅ | 2026-05-21 | Created ContactFormMessageDTOTest, NewContactFormMessageTest covering fromRequest, toArray, mailable content |
-| 19 | PublicPage: Missing edge cases in existing admin controller tests | ⏳ | — | |
-| 20 | PublicPage: Conference module tests | ⏳ | — | |
-| 21 | CI/CD: GitHub Actions workflow | ⏳ | — | |
-| 22 | Playwright: Actual E2E test scaffolding | ⏳ | — | |
+| 19 | PublicPage: Missing edge cases in existing admin controller tests | ✅ | 2026-05-21 | Added negative duration, non-existent event, non-admin delete, title length, zero photos, oversized photo, invalid category, bulk destroy validation |
+| 20 | PublicPage: Conference module tests | ✅ | 2026-05-21 | Created ConferencePageTest, Module TestCase.php, added to phpunit.xml |
+| 21 | CI/CD: GitHub Actions workflow | ✅ | 2026-05-21 | Created tests.yml workflow, dependabot.yml |
+| 22 | Playwright: Actual E2E test scaffolding | ✅ | 2026-05-21 | Created home.spec.ts, admin.spec.ts (config already pointed to tests/e2e) |
 
 ---
 

@@ -561,4 +561,48 @@ class AdminEventControllerTest extends TestCase
 
         $this->assertNull(Cache::get($cacheKey));
     }
+
+    public function test_cannot_create_event_with_invalid_category(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        $response = $this->actingAs($user)
+            ->post('/admin/events', [
+                'name' => 'Test Event',
+                'category' => 'Invalid Category',
+                'event_date' => now()->format('Y-m-d'),
+                'description' => 'Test description',
+            ]);
+
+        $response->assertSessionHasErrors(['category']);
+    }
+
+    public function test_cannot_update_event_with_invalid_category(): void
+    {
+        $user = User::factory()->admin()->create();
+        $event = Event::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->put("/admin/events/{$event->id}", [
+                'name' => 'Updated Event',
+                'category' => 'Invalid Category',
+                'event_date' => now()->format('Y-m-d'),
+                'description' => 'Test description',
+            ]);
+
+        $response->assertSessionHasErrors(['category']);
+    }
+
+    public function test_bulk_destroy_requires_valid_ids(): void
+    {
+        $user = User::factory()->admin()->create();
+
+        $response = $this->actingAs($user)
+            ->deleteJson('/admin/events/bulk', [
+                'event_ids' => [99999],
+            ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['event_ids.0']);
+    }
 }

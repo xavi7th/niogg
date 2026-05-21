@@ -266,4 +266,59 @@ class AdminVideoControllerTest extends TestCase
     $response->assertStatus(302);
     $response->assertSessionHasErrors(['video_ids']);
   }
+
+  public function test_cannot_create_video_with_negative_duration(): void
+  {
+    $user = User::factory()->admin()->create();
+    $event = Event::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->post(route('admin.videos.store', $event), [
+          'title' => 'Test Video',
+          'video_url' => 'https://example.com/video.mp4',
+          'duration_seconds' => -10,
+        ]);
+
+    $response->assertSessionHasErrors(['duration_seconds']);
+  }
+
+  public function test_cannot_create_video_for_non_existent_event(): void
+  {
+    $user = User::factory()->admin()->create();
+
+    $response = $this->actingAs($user)
+        ->post(route('admin.videos.store', ['event' => 99999]), [
+          'title' => 'Test Video',
+          'video_url' => 'https://example.com/video.mp4',
+        ]);
+
+    $response->assertStatus(404);
+  }
+
+  public function test_cannot_delete_video_as_non_admin(): void
+  {
+    $regularUser = User::factory()->create(['is_admin' => FALSE, 'is_super_admin' => FALSE]);
+    $event = Event::factory()->create();
+    $video = Video::factory()->forEvent($event)->create();
+
+    $response = $this->actingAs($regularUser)
+        ->delete(route('admin.videos.destroy', $video));
+
+    $response->assertStatus(403);
+    $this->assertDatabaseHas('videos', ['id' => $video->id]);
+  }
+
+  public function test_title_has_maximum_length(): void
+  {
+    $user = User::factory()->admin()->create();
+    $event = Event::factory()->create();
+
+    $response = $this->actingAs($user)
+        ->post(route('admin.videos.store', $event), [
+          'title' => str_repeat('a', 256),
+          'video_url' => 'https://example.com/video.mp4',
+        ]);
+
+    $response->assertSessionHasErrors(['title']);
+  }
 }
