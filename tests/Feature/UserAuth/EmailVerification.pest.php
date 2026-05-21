@@ -1,35 +1,25 @@
 <?php
 
-namespace Tests\Feature\UserAuth;
-
-use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class EmailVerificationTest extends TestCase
-{
-  use RefreshDatabase;
-
-  public function test_email_verification_screen_can_be_rendered(): void
-  {
+test('email verification screen can be rendered', function (): void {
     $user = User::factory()->unverified()->create();
 
-    $response = $this->actingAs($user)->get(route('verification.notice'));
+    $response = $this->actingAs($user)->get(route('auth.verification.notice'));
 
     $response->assertStatus(200);
-  }
+});
 
-  public function test_email_can_be_verified(): void
-  {
+test('email can be verified', function (): void {
     $user = User::factory()->unverified()->create();
 
     Event::fake();
 
     $verificationUrl = URL::temporarySignedRoute(
-        'verification.verify',
+        'auth.verification.verify',
         now()->addMinutes(60),
         ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]
     );
@@ -37,31 +27,28 @@ class EmailVerificationTest extends TestCase
     $response = $this->actingAs($user)->get($verificationUrl);
 
     Event::assertDispatched(Verified::class);
-    $this->assertTrue($user->fresh()->hasVerifiedEmail());
-  }
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+});
 
-  public function test_email_is_not_verified_with_invalid_hash(): void
-  {
+test('email is not verified with invalid hash', function (): void {
     $user = User::factory()->unverified()->create();
 
     $verificationUrl = URL::temporarySignedRoute(
-        'verification.verify',
+        'auth.verification.verify',
         now()->addMinutes(60),
         ['id' => $user->id, 'hash' => sha1('wrong-email')]
     );
 
     $this->actingAs($user)->get($verificationUrl);
 
-    $this->assertFalse($user->fresh()->hasVerifiedEmail());
-  }
+    expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+});
 
-  public function test_verification_notification_can_be_resent(): void
-  {
+test('verification notification can be resent', function (): void {
     $user = User::factory()->unverified()->create();
 
     $this->actingAs($user)
-        ->post(route('verification.send'));
+        ->post(route('auth.verification.send'));
 
-    $this->assertModelExists($user);
-  }
-}
+    expect($user->exists)->toBeTrue();
+});
