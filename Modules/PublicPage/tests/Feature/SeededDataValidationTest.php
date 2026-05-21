@@ -27,31 +27,31 @@ class SeededDataValidationTest extends TestCase
   {
     $this->assertEquals(3, Event::count());
 
-    $charity = Event::where('category', 'charity_event')->first();
+    $charity = Event::where('category', 'Free Medicals')->first();
     $this->assertNotNull($charity);
-    $this->assertEquals('Community Impact Program: Free Medical Outreach', $charity->name);
+    $this->assertEquals('Free Medical Outreach 2025', $charity->name);
     $this->assertEquals('🏥', $charity->icon);
 
-    $gala = Event::where('category', 'gala_night')->first();
+    $gala = Event::where('category', 'Awards')->first();
     $this->assertNotNull($gala);
-    $this->assertEquals('Excellence Awards & Fundraising Gala Night', $gala->name);
-    $this->assertEquals('🎭', $gala->icon);
+    $this->assertEquals('Excellence Awards & Fundraising Gala', $gala->name);
+    $this->assertEquals('🏆', $gala->icon);
 
-    $social = Event::where('category', 'social_event')->first();
+    $social = Event::where('category', 'Education')->first();
     $this->assertNotNull($social);
     $this->assertEquals('Youth Leadership Summit 2025', $social->name);
-    $this->assertEquals('🎉', $social->icon);
+    $this->assertEquals('🎓', $social->icon);
   }
 
   public function test_event_dates_correct(): void
   {
-    $charity = Event::where('category', 'charity_event')->first();
+    $charity = Event::where('category', 'Free Medicals')->first();
     $this->assertEquals('2025-11-15', $charity->event_date->format('Y-m-d'));
 
-    $gala = Event::where('category', 'gala_night')->first();
+    $gala = Event::where('category', 'Awards')->first();
     $this->assertEquals('2025-10-20', $gala->event_date->format('Y-m-d'));
 
-    $social = Event::where('category', 'social_event')->first();
+    $social = Event::where('category', 'Education')->first();
     $this->assertEquals('2025-09-10', $social->event_date->format('Y-m-d'));
   }
 
@@ -67,13 +67,13 @@ class SeededDataValidationTest extends TestCase
 
   public function test_videos_per_event_correct(): void
   {
-    $charity = Event::where('category', 'charity_event')->first();
+    $charity = Event::where('category', 'Free Medicals')->first();
     $this->assertEquals(8, $charity->videos()->count());
 
-    $gala = Event::where('category', 'gala_night')->first();
+    $gala = Event::where('category', 'Awards')->first();
     $this->assertEquals(7, $gala->videos()->count());
 
-    $social = Event::where('category', 'social_event')->first();
+    $social = Event::where('category', 'Education')->first();
     $this->assertEquals(6, $social->videos()->count());
   }
 
@@ -87,26 +87,26 @@ class SeededDataValidationTest extends TestCase
 
   public function test_featured_video_titles_correct(): void
   {
-    $charity = Event::where('category', 'charity_event')->first();
+    $charity = Event::where('category', 'Free Medicals')->first();
     $charityFeatured = $charity->videos()->where('is_featured', TRUE)->first();
     $this->assertEquals('Medical Outreach Highlights', $charityFeatured->title);
 
-    $gala = Event::where('category', 'gala_night')->first();
+    $gala = Event::where('category', 'Awards')->first();
     $galaFeatured = $gala->videos()->where('is_featured', TRUE)->first();
     $this->assertEquals('Awards Ceremony Highlights', $galaFeatured->title);
   }
 
   public function test_featured_video_durations_correct(): void
   {
-    $charity = Event::where('category', 'charity_event')->first();
+    $charity = Event::where('category', 'Free Medicals')->first();
     $charityFeatured = $charity->videos()->where('is_featured', TRUE)->first();
     $this->assertEquals(765, $charityFeatured->duration_seconds); // 12:45
 
-    $gala = Event::where('category', 'gala_night')->first();
+    $gala = Event::where('category', 'Awards')->first();
     $galaFeatured = $gala->videos()->where('is_featured', TRUE)->first();
     $this->assertEquals(930, $galaFeatured->duration_seconds); // 15:30
 
-    $social = Event::where('category', 'social_event')->first();
+    $social = Event::where('category', 'Education')->first();
     $socialFeatured = $social->videos()->where('is_featured', TRUE)->first();
     $this->assertEquals(600, $socialFeatured->duration_seconds); // 10:00
   }
@@ -160,8 +160,8 @@ class SeededDataValidationTest extends TestCase
 
   public function test_event_slug_generated_from_name(): void
   {
-    $charity = Event::where('category', 'charity_event')->first();
-    $this->assertStringContainsString('community-impact-program-free-medical-outreach', $charity->slug);
+    $charity = Event::where('category', 'Free Medicals')->first();
+    $this->assertEquals('free-medical-outreach-2025', $charity->slug);
   }
 
   public function test_events_ordered_by_date_descending(): void

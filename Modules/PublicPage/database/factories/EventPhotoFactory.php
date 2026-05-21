@@ -2,6 +2,7 @@
 
 namespace Modules\PublicPage\Database\Factories;
 
+use Illuminate\Support\Str;
 use Modules\PublicPage\Models\Event;
 use Modules\PublicPage\Models\EventPhoto;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -14,8 +15,8 @@ class EventPhotoFactory extends Factory
     {
         return [
             'event_id' => Event::factory(),
-            'photo_url' => '/storage/event-photos/' . $this->faker->uuid() . '.jpg',
-            'thumbnail_url' => '/storage/event-photos/thumbnails/' . $this->faker->uuid() . '.jpg',
+            'photo_url' => '/storage/event-photos/' . Str::uuid() . '.jpg',
+            'thumbnail_url' => '/storage/event-photos/thumbnails/' . Str::uuid() . '.jpg',
             'alt_text' => $this->faker->optional()->sentence(4),
             'sort_order' => 0,
         ];

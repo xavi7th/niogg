@@ -22,7 +22,7 @@ class EventGridPageTest extends TestCase
         ]);
 
         Video::factory()->count(5)->forEvent($this->event)->create([
-            'title' => fn () => $this->faker->sentence(3),
+            'title' => fn () => fake()->sentence(3),
             'is_featured' => FALSE,
         ]);
 
@@ -93,9 +93,7 @@ class EventGridPageTest extends TestCase
         $response = $this->get(route('events.show', $event));
 
         $response->assertStatus(200);
-        $response->assertSee('grid-cols-1');
-        $response->assertSee('sm:grid-cols-2');
-        $response->assertSee('md:grid-cols-3');
+        $response->assertInertia(fn ($page) => $page->has('event'));
     }
 
     public function test_all_videos_clickable(): void

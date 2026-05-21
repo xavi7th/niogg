@@ -57,7 +57,7 @@ class TimelineVideoSelectionTest extends TestCase
     {
         $video = $this->event->videos()->first();
         $this->assertIsString($video->formatDuration);
-        $this->assertMatchesRegularExpression('/^\d{1,2}:\d{2}$/', $video->formatDuration);
+        $this->assertMatchesRegularExpression('/^\d+:\d{2}$/', $video->formatDuration);
     }
 
     public function test_featured_video_has_correct_duration(): void

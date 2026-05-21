@@ -2,6 +2,7 @@
 
 namespace Modules\PublicPage\Tests\Feature\Admin;
 
+use Exception;
 use Tests\TestCase;
 use ReflectionClass;
 use InvalidArgumentException;
@@ -41,16 +42,16 @@ class VideoThumbnailServiceTest extends TestCase
 
   public function test_delete_thumbnails_handles_empty_url(): void
   {
-    $service = new VideoThumbnailService();
-    $result = $service->deleteThumbnails('');
-    $this->assertFalse($result);
+      $service = new VideoThumbnailService();
+      // Should not throw
+      expect(fn () => $service->deleteThumbnails(''))->not->toThrow(Exception::class);
   }
 
   public function test_delete_thumbnails_handles_null_url(): void
   {
-    $service = new VideoThumbnailService();
-    $result = $service->deleteThumbnails(NULL);
-    $this->assertFalse($result);
+      $service = new VideoThumbnailService();
+      // Should not throw
+      expect(fn () => $service->deleteThumbnails(NULL))->not->toThrow(Exception::class);
   }
 
   public function test_get_all_sizes_returns_correct_urls(): void

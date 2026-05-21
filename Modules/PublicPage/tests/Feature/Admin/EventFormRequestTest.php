@@ -13,7 +13,7 @@ class EventFormRequestTest extends TestCase
 
     public function test_authorize_returns_true(): void
     {
-        $request = new EventFormRequest;
+        $request = new EventFormRequest();
 
         $this->assertTrue($request->authorize());
     }
@@ -26,7 +26,7 @@ class EventFormRequestTest extends TestCase
 
         $response = $this->actingAs($user)->post('/admin/events', [
             'name' => '',
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
         ]);
 
@@ -41,7 +41,7 @@ class EventFormRequestTest extends TestCase
 
         $response = $this->actingAs($user)->post('/admin/events', [
             'name' => str_repeat('a', 256),
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
         ]);
 
@@ -86,7 +86,7 @@ class EventFormRequestTest extends TestCase
 
         $response = $this->actingAs($user)->post('/admin/events', [
             'name' => 'Test Event',
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => '',
         ]);
 
@@ -101,7 +101,7 @@ class EventFormRequestTest extends TestCase
 
         $response = $this->actingAs($user)->post('/admin/events', [
             'name' => 'Test Event',
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => 'not-a-date',
         ]);
 
@@ -118,7 +118,7 @@ class EventFormRequestTest extends TestCase
             'name' => 'Test Event',
             'description' => 'Test Description',
             'icon' => '🎉',
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
             'is_published' => TRUE,
         ]);
@@ -136,7 +136,7 @@ class EventFormRequestTest extends TestCase
             'name' => 'Test Event',
             'description' => NULL,
             'icon' => NULL,
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
             'is_published' => FALSE,
         ]);
@@ -152,7 +152,7 @@ class EventFormRequestTest extends TestCase
 
         $response = $this->actingAs($user)->post('/admin/events', [
             'name' => 'Test Event',
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
             'icon' => str_repeat('a', 256),
         ]);
@@ -168,7 +168,7 @@ class EventFormRequestTest extends TestCase
 
         $response = $this->actingAs($user)->post('/admin/events', [
             'name' => 'Test Event',
-            'category' => 'Test Category',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
             'is_published' => TRUE,
         ]);

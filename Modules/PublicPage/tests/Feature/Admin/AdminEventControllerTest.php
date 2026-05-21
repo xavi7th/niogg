@@ -234,7 +234,7 @@ class AdminEventControllerTest extends TestCase
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
 
-        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNotNull(Cache::get($cacheKey));
     }
 
     public function test_store_invalidates_cache(): void
@@ -249,16 +249,16 @@ class AdminEventControllerTest extends TestCase
 
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
-        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNotNull(Cache::get($cacheKey));
 
         $this->actingAs($user)->post('/admin/events', [
             'name' => 'New Event',
-            'category' => 'Test',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
             'is_published' => FALSE,
         ]);
 
-        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNull(Cache::get($cacheKey));
     }
 
     public function test_update_invalidates_cache(): void
@@ -273,16 +273,16 @@ class AdminEventControllerTest extends TestCase
 
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
-        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNotNull(Cache::get($cacheKey));
 
         $this->actingAs($user)->put("/admin/events/{$event->id}", [
             'name' => 'Updated Event',
-            'category' => 'Test',
+            'category' => 'Conference',
             'event_date' => '2025-01-01',
             'is_published' => FALSE,
         ]);
 
-        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNull(Cache::get($cacheKey));
     }
 
     public function test_destroy_invalidates_cache(): void
@@ -297,11 +297,11 @@ class AdminEventControllerTest extends TestCase
 
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
-        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNotNull(Cache::get($cacheKey));
 
         $this->actingAs($user)->delete("/admin/events/{$event->id}");
 
-        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNull(Cache::get($cacheKey));
     }
 
     public function test_cache_has_ttl_of_one_hour(): void
@@ -317,7 +317,7 @@ class AdminEventControllerTest extends TestCase
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
 
-        $cached = Cache::tags(['admin.events'])->get($cacheKey);
+        $cached = Cache::get($cacheKey);
         $this->assertNotNull($cached);
     }
 
@@ -395,13 +395,13 @@ class AdminEventControllerTest extends TestCase
 
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
-        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNotNull(Cache::get($cacheKey));
 
         $this->actingAs($user)->post('/admin/events/bulk/publish', [
             'event_ids' => [$event1->id],
         ]);
 
-        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNull(Cache::get($cacheKey));
     }
 
     public function test_bulk_unpublish_requires_authentication(): void
@@ -464,13 +464,13 @@ class AdminEventControllerTest extends TestCase
 
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
-        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNotNull(Cache::get($cacheKey));
 
         $this->actingAs($user)->post('/admin/events/bulk/unpublish', [
             'event_ids' => [$event1->id],
         ]);
 
-        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNull(Cache::get($cacheKey));
     }
 
     public function test_bulk_delete_requires_authentication(): void
@@ -553,12 +553,12 @@ class AdminEventControllerTest extends TestCase
 
         $this->actingAs($user)->get('/admin/events?page=1');
         $cacheKey = 'admin.events.list:page:1:per_page:15';
-        $this->assertNotNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNotNull(Cache::get($cacheKey));
 
         $this->actingAs($user)->delete('/admin/events/bulk', [
             'event_ids' => [$event1->id],
         ]);
 
-        $this->assertNull(Cache::tags(['admin.events'])->get($cacheKey));
+        $this->assertNull(Cache::get($cacheKey));
     }
 }

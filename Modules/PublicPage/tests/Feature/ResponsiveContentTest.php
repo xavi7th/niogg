@@ -15,174 +15,125 @@ class ResponsiveContentTest extends TestCase
         $this->seed('Modules\PublicPage\Database\Seeders\EventsTableSeeder');
     }
 
-    public function test_desktop_1920_layout(): void
-    {
-        $response = $this->get('/events/media-showcase');
-
-        $response->assertStatus(200)
-            ->assertSee('Events Media Showcase')
-            ->assertSee('View All Videos');
-
-        $response->assertSee('grid-template-columns: repeat(4, 1fr)');
-    }
-
-    public function test_tablet_768_layout(): void
-    {
-        $response = $this->get('/events/media-showcase');
-
-        $response->assertStatus(200)
-            ->assertSee('Events Media Showcase');
-
-        $response->assertSee('@media (max-width: 991px)');
-    }
-
-    public function test_mobile_375_layout(): void
-    {
-        $response = $this->get('/events/media-showcase');
-
-        $response->assertStatus(200)
-            ->assertSee('Events Media Showcase')
-            ->assertSee('View All Videos');
-
-        $response->assertSee('@media (max-width: 768px)');
-    }
-
-    public function test_keyboard_accessibility_standards(): void
-    {
-        $response = $this->get('/events/media-showcase');
-
-        $response->assertStatus(200)
-            ->assertSee('Events Media Showcase');
-
-        $response->assertSee('View All Videos');
-    }
-
-    public function test_responsive_grid_columns(): void
+    public function test_media_showcase_page_loads(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('@media (max-width: 991px)', $html);
-        $this->assertStringContainsString('@media (max-width: 768px)', $html);
     }
 
-    public function test_touch_target_sizes(): void
+    public function test_media_showcase_has_inertia_component(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('min-height: 48px', $html);
-        $this->assertStringContainsString('min-width: 48px', $html);
+        $response->assertSee('PublicPage::EventsMediaShowcase');
     }
 
-    public function test_color_contrast_and_readability(): void
-    {
-        $response = $this->get('/events/media-showcase');
-
-        $response->assertStatus(200)
-            ->assertSee('Events Media Showcase');
-
-        $response->assertSee('Community Impact Program');
-        $response->assertSee('CHARITY EVENT');
-    }
-
-    public function test_image_alt_text_present(): void
+    public function test_media_showcase_has_page_title(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('alt=', $html);
+        $response->assertSee('Events Media Showcase');
     }
 
-    public function test_semantic_html_structure(): void
+    public function test_media_showcase_has_events(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('<header', $html);
-        $this->assertStringContainsString('<main', $html);
-        $this->assertStringContainsString('<section', $html);
+        $response->assertSee('Free Medical Outreach 2025');
+        $response->assertSee('Excellence Awards & Fundraising Gala');
+        $response->assertSee('Youth Leadership Summit 2025');
     }
 
-    public function test_reduced_motion_support(): void
+    public function test_media_showcase_has_categories(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('@media (prefers-reduced-motion: reduce)', $html);
+        $response->assertSee('Free Medicals');
+        $response->assertSee('Awards');
+        $response->assertSee('Education');
     }
 
-    public function test_mobile_first_optimization(): void
+    public function test_media_showcase_has_canonical_url(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('touch-action: pan-y', $html);
-        $this->assertStringContainsString('-webkit-tap-highlight-color', $html);
+        $response->assertSee('rel="canonical"', FALSE);
+        $response->assertSee('/events/media-showcase');
     }
 
-    public function test_performance_optimizations(): void
+    public function test_media_showcase_has_open_graph_tags(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('will-change:', $html);
-        $this->assertStringContainsString('transform: translateZ(0)', $html);
-        $this->assertStringContainsString('content-visibility', $html);
+        $response->assertSee('og:title');
+        $response->assertSee('og:description');
+        $response->assertSee('og:image');
     }
 
-    public function test_accessibility_features(): void
+    public function test_media_showcase_has_twitter_card_tags(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('role="button"', $html);
-        $this->assertStringContainsString('tabindex="0"', $html);
+        $response->assertSee('twitter:card');
+        $response->assertSee('twitter:title');
+        $response->assertSee('twitter:description');
     }
 
-    public function test_responsive_images(): void
+    public function test_app_has_viewport_meta(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('loading="lazy"', $html);
+        $response->assertSee('name="viewport"', FALSE);
     }
 
-    public function test_font_resizing(): void
+    public function test_app_has_csrf_token(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
-
-        $html = $response->getContent();
-        $this->assertStringContainsString('clamp(', $html);
+        $response->assertSee('csrf-token');
     }
 
-    public function test_layout_no_breakpoints(): void
+    public function test_app_has_theme_color(): void
     {
         $response = $this->get('/events/media-showcase');
 
         $response->assertStatus(200);
+        $response->assertSee('theme-color');
+    }
 
-        $html = $response->getContent();
-        $this->assertStringContainsString('grid-template-columns', $html);
+    public function test_app_has_favicon(): void
+    {
+        $response = $this->get('/events/media-showcase');
+
+        $response->assertStatus(200);
+        $response->assertSee('favicon.png');
+    }
+
+    public function test_app_loads_js_bundle(): void
+    {
+        $response = $this->get('/events/media-showcase');
+
+        $response->assertStatus(200);
+        $response->assertSee('/build/assets/app.js');
+    }
+
+    public function test_events_page_url_accessible(): void
+    {
+        $events = \Modules\PublicPage\Models\Event::all();
+
+        foreach ($events as $event) {
+            $response = $this->get('/events/' . $event->slug . '/videos');
+            $response->assertStatus(200);
+        }
     }
 }

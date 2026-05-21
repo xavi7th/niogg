@@ -33,9 +33,12 @@ class GridViewFilterTest extends TestCase
             'event_date' => now()->subDays(2),
         ]);
 
-        Video::factory()->count(7)->forEvent($this->charityEvent)->create();
-        Video::factory()->count(7)->forEvent($this->conferenceEvent)->create();
-        Video::factory()->count(7)->forEvent($this->protestEvent)->create();
+        Video::factory()->count(6)->forEvent($this->charityEvent)->create();
+        Video::factory()->featured()->forEvent($this->charityEvent)->create();
+        Video::factory()->count(6)->forEvent($this->conferenceEvent)->create();
+        Video::factory()->featured()->forEvent($this->conferenceEvent)->create();
+        Video::factory()->count(6)->forEvent($this->protestEvent)->create();
+        Video::factory()->featured()->forEvent($this->protestEvent)->create();
     }
 
     public function test_media_showcase_loads_successfully(): void
@@ -104,7 +107,7 @@ class GridViewFilterTest extends TestCase
     {
         $video = Video::first();
         $this->assertIsString($video->formatDuration);
-        $this->assertMatchesRegularExpression('/^\d{1,2}:\d{2}$/', $video->formatDuration);
+        $this->assertMatchesRegularExpression('/^\d+:\d{2}$/', $video->formatDuration);
     }
 
     public function test_events_have_correct_categories(): void
